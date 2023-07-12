@@ -1,0 +1,26 @@
+'use client';
+import AgreementCheckbox from '@/components/AgreementCheckbox';
+import KiwesButton from '@/components/KiwesButton';
+import LanguageBTN from '@/components/LanguageBTN';
+import Image from 'next/image';
+import React from 'react';
+
+export default function register() {
+  return (
+    <main className="text-center">
+      <Image src="/images/logo.png" alt="logo" width={233} height={107} className="mx-auto mt-10" />
+      <div className="mt-10 ">
+        <h1 className="text-xl font-basic text-gray-400">Select Language</h1>
+        <div className="flex justify-center gap-x-10 mt-8">
+          <LanguageBTN>한국어</LanguageBTN>
+          <LanguageBTN>English</LanguageBTN>
+        </div>
+      </div>
+      <div className="mt-10 w-4/5 mx-auto">
+        <AgreementCheckbox>이용약관 동의 / Terms and Conditions Agreement</AgreementCheckbox>
+        <AgreementCheckbox>개인정보 처리방침 동의 / Privacy Policy Agreement</AgreementCheckbox>
+      </div>
+      <KiwesButton>next</KiwesButton>
+    </main>
+  );
+}
