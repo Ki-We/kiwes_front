@@ -1,0 +1,4 @@
+export const jwtToken =
+  'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJreXVyaTk5QG5hdmVyLmNvbSIsImF1dGgiOiJST0xFX1VTRVIsUk9MRV9VU0VSIiwiaXNBZGRpdGlvbmFsSW5mb1Byb3ZpZGVkIjp0cnVlLCJleHAiOjE2OTc4MDA0NjF9.8QTneDDBZeYRPTiuxILzwsh0j4NTbeqLW74T520XYPHUmVyybHEbi8D6x7Gh0U33l7r5PVm6q2L992HP1AgO4Q';
+
+export const chatServer = 'https://chat.kiwes.org';
