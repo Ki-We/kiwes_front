@@ -1,6 +1,8 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import Modal from 'react-native-modal';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {faCircleExclamation} from '@fortawesome/free-solid-svg-icons';
 import {colors, width, height} from '../global';
 
 const ErrorModal = ({isVisible, onClose}) => {
@@ -12,10 +14,13 @@ const ErrorModal = ({isVisible, onClose}) => {
       animationOut={'fadeOut'}
       onBackdropPress={onClose}>
       <View style={styles.modalContainer}>
-        <Text style={styles.modalTitle}>전송에 실패하였습니다.{'\n'}</Text>
-        <Text style={styles.modalText}>
-          네트워크 연결 확인 후{'\n'}다시 시도해주세요.
-        </Text>
+        <FontAwesomeIcon
+          style={{margin: 0, padding: 0}}
+          icon={faCircleExclamation}
+          size={25}
+          color={'red'}
+        />
+        <Text style={styles.modalText}>Host는 채팅방 퇴장이 불가합니다!</Text>
       </View>
     </Modal>
   );
@@ -34,23 +39,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: width * 265,
-    height: height * 200,
+    height: height * 175,
     backgroundColor: '#FFFFFF',
     borderRadius: 20,
   },
-  modalTitle: {
-    textAlign: 'center',
-    color: '#F00',
-    fontFamily: 'Pretendard',
-    fontWeight: '500',
-    fontSize: height * 16,
-  },
   modalText: {
     textAlign: 'center',
-    // textAlign: 'center',
     fontFamily: 'Pretendard',
-    fontWeight: '500',
-    fontSize: height * 16,
+    fontWeight: '600',
+    fontSize: height * 18,
+    marginTop: height * 15,
+    color: 'black',
   },
 });
 

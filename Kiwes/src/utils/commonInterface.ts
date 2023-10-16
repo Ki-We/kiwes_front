@@ -8,6 +8,7 @@ export interface Chat {
   msg: string;
   time: string;
   writer: string;
+  userId: number;
 }
 export interface UserInfo {
   email: string;
@@ -18,12 +19,13 @@ export interface UserInfo {
 export interface ClubSimpleData {
   title: string;
   currentPeople: number;
+  hostId: number;
   hostNickname: string;
   hostThumbnailImage: string;
   members: ClubMember[];
 }
 export interface ClubMember {
   id: number;
-  nickname: string;
+  nickName: string;
   thumbnail: string;
 }
