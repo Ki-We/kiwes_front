@@ -2,27 +2,56 @@ import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import Modal from 'react-native-modal';
 import {colors, width, height} from '../global';
+import axios from 'axios';
+import {jwtToken} from '../utils/metaData';
 
-const KickModal = ({isVisible, onClose, name}) => {
+const KickModal = ({kickedData, onClose, kickUser, clubId}) => {
+  const doKickUser = () => {
+    kickUser(kickedData.id, kickedData.name);
+    axios
+      .delete(
+        `https://api.kiwes.org/api/v1/club/kick/${clubId}/${kickedData.id}`,
+        {
+          headers: {Authorization: jwtToken},
+        },
+      )
+      .then(res => {
+        console.log(res);
+        return res.data;
+      })
+      .then(res => {
+        console.log(res);
+        onClose(0);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
   return (
     <Modal
       style={styles.modal}
-      isVisible={isVisible}
-      animationIn={'bounce'}
-      animationOut={'bounce'}
-      onBackdropPress={onClose}>
+      isVisible={kickedData.isVisible}
+      animationIn={'wobble'}
+      animationOut={'fadeOut'}
+      onBackdropPress={() => {
+        onClose(0);
+      }}>
       <View style={styles.modalContainer}>
         <View style={styles.TextContainer}>
           <Text style={styles.modalTitle}>
-            {name} 님을{'\n'}
+            {kickedData.name} 님을{'\n'}
           </Text>
           <Text style={styles.modalText}>퇴장 하시겠습니까?</Text>
         </View>
         <View style={styles.modalButtonGroup}>
-          <TouchableOpacity style={styles.cancelButton}>
+          <TouchableOpacity
+            style={styles.cancelButton}
+            onPress={() => {
+              onClose(0);
+            }}>
             <Text>취소</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.acceptButton}>
+          <TouchableOpacity style={styles.acceptButton} onPress={doKickUser}>
             <Text>확인</Text>
           </TouchableOpacity>
         </View>

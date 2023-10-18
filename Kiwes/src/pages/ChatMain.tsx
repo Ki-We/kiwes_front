@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   Image,
   SafeAreaView,
@@ -14,14 +14,20 @@ import {ClubInfo} from '../utils/commonInterface';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faUser} from '@fortawesome/free-regular-svg-icons';
 import {ServerAxios as axios} from '../utils/restapi';
+import {useFocusEffect} from '@react-navigation/native';
 
 export function ChatMain({navigation}: any) {
   const [roomList, setRoomList] = useState<ClubInfo[]>([]);
 
-  useEffect(() => {
-    initialize();
-  }, []);
+  // useFocusEffect(() => {
+  //   initialize();
+  // }, []);
 
+  useFocusEffect(
+    useCallback(() => {
+      initialize();
+    }, []),
+  );
   const initialize = async () => {
     const result = await axios
       .get('https://api.kiwes.org/api/v1/club/approval/my-club', {
@@ -32,6 +38,7 @@ export function ChatMain({navigation}: any) {
       .catch(err => {
         console.log(err);
       });
+    console.log(result.data);
     setRoomList(result.data);
   };
 

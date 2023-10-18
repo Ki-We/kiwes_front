@@ -3,13 +3,13 @@ import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import Modal from 'react-native-modal';
 import {colors, width, height} from '../global';
 
-const ExitModal = ({isVisible, onClose, name, exit}) => {
+const ExitModal = ({isVisible, onClose, name, exitClub}) => {
   return (
     <Modal
       style={styles.modal}
       isVisible={isVisible}
-      animationIn={'bounce'}
-      animationOut={'bounce'}
+      animationIn={'wobble'}
+      animationOut={'fadeOut'}
       onBackdropPress={onClose}>
       <View style={styles.modalContainer}>
         <View style={styles.TextContainer}>
@@ -24,7 +24,10 @@ const ExitModal = ({isVisible, onClose, name, exit}) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.acceptButton}
-            onPress={exit && onClose}>
+            onPress={() => {
+              exitClub();
+              onClose();
+            }}>
             <Text>확인</Text>
           </TouchableOpacity>
         </View>

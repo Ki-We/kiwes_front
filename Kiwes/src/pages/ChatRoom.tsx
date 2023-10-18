@@ -1,26 +1,32 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, useCallback} from 'react';
 import {
   SafeAreaView,
   View,
   Text,
   TextInput,
   Keyboard,
+  KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Button,
   StyleSheet,
   FlatList,
   TouchableOpacity,
+  Dimensions,
+  Pressable,
 } from 'react-native';
 import optionIcon from 'react-native-vector-icons/SimpleLineIcons';
 import backIcon from 'react-native-vector-icons/Ionicons';
 import exitIcon from 'react-native-vector-icons/MaterialIcons';
+import banIcon from 'react-native-vector-icons/FontAwesome';
+import kickIcon from 'react-native-vector-icons/FontAwesome6';
+import sendIcon from 'react-native-vector-icons/Feather';
 import {colors, width, height} from '../global';
 import Modal from 'react-native-modal';
-import {GiftedChat, Bubble} from 'react-native-gifted-chat';
 import {io} from 'socket.io-client';
 import ErrorModal from '../components/errorModal';
 import KickModal from '../components/kickedOutModal';
 import ExitModal from '../components/exitModal';
+import ExitFailModal from '../components/exitFailModal';
 
 import axios from 'axios';
 import {chatServer, jwtToken} from '../utils/metaData';
@@ -28,9 +34,9 @@ import ChatBubbleOther from './ChatBubbleOther';
 import ChatBubbleMine from './ChatBubbleMine';
 import ChatBubbleSystem from './ChatBubbleSystem';
 import {ScrollView} from 'react-native-gesture-handler';
-import {Chat, ClubSimpleData} from '../utils/commonInterface';
+import {Chat, ClubMember, ClubSimpleData} from '../utils/commonInterface';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faChessKing, faUser} from '@fortawesome/free-solid-svg-icons';
+import {faBan, faChessKing, faUser} from '@fortawesome/free-solid-svg-icons';
 
 const user1 = {
   _id: 1,
@@ -45,32 +51,66 @@ const initUser = {
   id: 1,
 };
 
+interface KickedUser {
+  isVisible: boolean;
+  id: number;
+  name: string;
+}
+const initKickedUser = {
+  isVisible: false,
+  id: 0,
+  name: '',
+};
+
 const ChatScreen = ({navigation, route}) => {
+  /* 사용 코드*/
   const [clubId, setClubId] = useState(route.params?.clubId ?? 0);
-  const [clubData, setClubData] = useState<ClubSimpleData>();
+  const [clubData, setClubData] = useState<ClubSimpleData | null>(null);
+  const [clubMembers, setClubMembers] = useState<any>({});
   const [user, setUser] = useState(initUser);
+
+  const [sendText, setSendText] = useState('');
   const [messages, setMessages] = useState<Chat[]>([
     {
-      writer: 'system',
+      userId: 0,
       msg: '테스트 사용자 님이 입장하셨습니다.',
       time: '오후 4:35',
     },
-    {writer: '테스트 사용자입니다.', msg: '안녕?', time: '오후 9:55'},
-    {writer: 'Kiwes', msg: 'wefwef', time: '오후 10:16'},
-    {writer: 'Kiwes', msg: 'wefwef', time: '오후 10:19'},
-    {writer: 'Kiwes1', msg: 'sddsfsdfsd', time: '오후 10:19'},
-    {writer: 'Kiwes', msg: 'sadfsadf', time: '오후 10:19'},
-    {writer: 'Kiwes1', msg: 'dwefwef', time: '오후 9:35'},
-    {writer: '규리', msg: 'eeeeee', time: '오후 9:35'},
+    {userId: 2, msg: 'hello?', time: '2023-10-13 12:58'},
+    {userId: 8, msg: ':D', time: '2023-10-13 12:58'},
+    {userId: 2, msg: 'oh hi!', time: '2023-10-13 12:58'},
+    {userId: 8, msg: ':(', time: '2023-10-13 12:59'},
+    {userId: 8, msg: ';0', time: '2023-10-13 12:59'},
+    {userId: 2, msg: ' 😁😁😁😁😁', time: '2023-10-13 12:59'},
+    {userId: 8, msg: '😁😁😁', time: '2023-10-13 12:59'},
+    {userId: 2, msg: 'hello everyone', time: '2023-10-13 13:00'},
+    {userId: 2, msg: 'listen carefully', time: '2023-10-13 13:00'},
+    {userId: 8, msg: 'wakwak', time: '2023-10-13 13:00'},
+    {userId: 8, msg: 'did fd', time: '2023-10-13 13:00'},
     {
-      writer: '규리',
-      msg: '감사합니다~ 다음 모임에 꼭 참여해주세요. 안 참여하면 아주 그냥 큰일이 벌어질 것이야. 거짓말 같지? 아니거든? 진심이거든?',
-      time: '오후 9:45',
+      userId: 3,
+      msg: 'ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ',
+      time: '2023-10-13 13:01',
     },
-    {writer: 'Kiwes2', msg: 'Bbbb', time: '오후 9:46'},
-    {writer: 'Kiwes2', msg: 'EEEEE', time: '오후 9:47'},
-    {writer: 'Kiwes', msg: 'efwefwef', time: '오후 9:47'},
+    {userId: 8, msg: '귤이 두 명이면 뀰', time: '2023-10-13 13:01'},
+    {
+      userId: 2,
+      msg: 'ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ',
+      time: '2023-10-13 13:06',
+    },
   ]);
+
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [isTextInputFocused, setTextInputFocused] = useState(false);
+  const [isErrorModalVisible, setErrorModalVisible] = useState(false);
+  const [isKickModalVisible, setKickModalVisible] = useState(false);
+  const [isExitModalVisible, setExitModalVisible] = useState(false);
+  const [isExitFailModalVisible, setExitFailModalVisible] = useState(false);
+  const [isKickMode, setKickMode] = useState(false);
+
+  const [kickedData, setKickedData] = useState<KickedUser>(initKickedUser);
+  const socket = useRef();
+  const chatScrollRef = useRef<ScrollView>(null);
 
   const initialize = async () => {
     const result = await axios
@@ -83,8 +123,22 @@ const ChatScreen = ({navigation, route}) => {
       .catch(err => {
         console.log(err);
       });
+
     console.log(result.data);
     setClubData(result.data);
+
+    const hostData = {
+      id: result.data.hostId,
+      nickName: result.data.hostNickname,
+      thumbnail: result.data.hostThumbnailImage,
+    };
+
+    let newArr: any = {};
+    newArr[result.data.hostId] = hostData;
+    result.data.members.forEach((m: ClubMember) => {
+      newArr[m.id] = {...m};
+    });
+    setClubMembers(newArr);
 
     const resultMine = await axios
       .get(`https://api.kiwes.org/myid`, {
@@ -100,102 +154,52 @@ const ChatScreen = ({navigation, route}) => {
     setUser(resultMine.data);
     console.log(resultMine.data);
   };
-  const [isTextInputFocused, setTextInputFocused] = useState(false);
-
-  const [isModalVisible, setModalVisible] = useState(false);
-  const [isErrorModalVisible, setErrorModalVisible] = useState(false);
-  const [isKickModalVisible, setKickModalVisible] = useState(false);
-  const [isExitModalVisible, setExitModalVisible] = useState(false);
-  useEffect(() => {
-    initialize();
-    // 텍스트 입력 포커스 상태 변경 시 키보드 이벤트를 구독/해제합니다.
-    const keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
-      () => {
-        setTextInputFocused(true);
-      },
-    );
-    const keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
-      () => {
-        setTextInputFocused(false);
-      },
-    );
-
-    return () => {
-      keyboardDidShowListener.remove();
-      keyboardDidHideListener.remove();
-    };
-  }, []);
-
-  const socket = useRef();
 
   useEffect(() => {
     console.log('------------------------------------');
+    initialize();
+
     socket.current = io(chatServer);
     socket.current.on('connect', () => {
       console.log('connect');
 
-      socket.current?.emit('enter', {roomID: clubId, userID: user1._id});
+      socket.current?.emit('enter', {roomID: clubId, userId: user1._id});
     });
     socket.current?.on('msgList', data => {
       const chat = data.chat;
-
       setMessages(chat);
-      console.log('msgList : ', chat);
     });
     socket.current?.on('sendMSG', data => {
-      console.log('sendMSG : ', data);
+      console.log('newMessage : ', data);
+      setMessages(prev => {
+        return [...prev, data];
+      });
     });
+    socket.current?.on('kickedout', data => {
+      // data = {userId: 1}// 강퇴당한 사람이 1이다.
+      if (data.userId == user.id) {
+        // 내가 강퇴를 당했을 경우
+      } else {
+        setClubData(prev => {
+          if (prev == null) return null;
 
-    // socket.on('chat message', message => {
-    //   setMessages(previousMessages =>
-    //     GiftedChat.append(previousMessages, message),
-    //   );
-    // });
+          let members = prev?.members.filter(m => m.id != data.userId) || [];
+          return {...prev, members};
+        });
+      }
+    });
+    socket.current?.on('error', data => {
+      console.log('error msg : ', data.msg);
 
+      // 네트워크 에러
+    });
     return () => {
       socket.current?.disconnect();
     };
   }, []);
-
-  const kickUser = () => {
-    socket.current.emit('kickedout', {name: user2.name});
-  };
-
-  const exitChat = () => {
-    socket.current.emit('exit', {name: user1.name});
-  };
-
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
-  };
-
-  const toggleErrorModal = () => {
-    setErrorModalVisible(!isErrorModalVisible);
-  };
-  const toggleKickModal = () => {
-    setKickModalVisible(!isKickModalVisible);
-  };
-  const toggleExitModal = () => {
-    setExitModalVisible(!isExitModalVisible);
-  };
-
-  const renderBubble = props => {
-    return (
-      <Bubble
-        {...props}
-        textStyle={{
-          right: {color: 'white'},
-          left: {color: 'black'},
-        }}
-        wrapperStyle={{
-          right: {backgroundColor: '#58C047'},
-          left: {backgroundColor: '#EDEDED'},
-        }}
-      />
-    );
-  };
+  useEffect(() => {
+    chatScrollRef.current?.scrollToEnd({animated: true});
+  }, [messages]);
 
   const colorList = [
     '#3196E8',
@@ -213,11 +217,95 @@ const ChatScreen = ({navigation, route}) => {
 
   const sendMSG = () => {
     const newMessage = {
-      msg: '안녕?',
-      time: '~~',
-      writer: user?.nickName,
+      msg: sendText,
+      userId: user?.id,
     };
-    setMessages([...messages, newMessage]);
+
+    socket.current.emit('sendMSG', newMessage);
+
+    setSendText('');
+    Keyboard.dismiss();
+  };
+
+  const kickUser = (id: number, name: string) => {
+    socket.current?.emit('kickedout', {name, userId: id});
+
+    let members = clubData?.members.filter(m => m.id != id) || [];
+    setClubData({...clubData, members});
+
+    delete clubMembers[id];
+    setClubMembers({...clubMembers});
+  };
+  /* 사용 코드 --END-- */
+
+  // useEffect(() => {
+  //   // 텍스트 입력 포커스 상태 변경 시 키보드 이벤트를 구독/해제합니다.
+  //   const keyboardDidShowListener = Keyboard.addListener(
+  //     'keyboardDidShow',
+  //     () => {
+  //       setTextInputFocused(true);
+  //     },
+  //   );
+  //   const keyboardDidHideListener = Keyboard.addListener(
+  //     'keyboardDidHide',
+  //     () => {
+  //       setTextInputFocused(false);
+  //     },
+  //   );
+
+  //   return () => {
+  //     keyboardDidShowListener.remove();
+  //     keyboardDidHideListener.remove();
+  //   };
+  // }, []);
+
+  const exitClub = async () => {
+    await socket.current.emit('exit', {name: user.nickName});
+    await axios
+      .delete(`https://api.kiwes.org/api/v1/club/application/${clubId}`, {
+        headers: {Authorization: jwtToken},
+      })
+      .then(res => {
+        console.log(res);
+        return res.data;
+      })
+      .then(res => {
+        console.log(res);
+        navigation.pop();
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
+  const toggleErrorModal = () => {
+    setErrorModalVisible(!isErrorModalVisible);
+  };
+  const toggleKickModal = (id: number) => {
+    if (id != 0)
+      setKickedData({
+        id,
+        name: clubMembers[id].nickName,
+        isVisible: !kickedData.isVisible,
+      });
+    else {
+      setKickedData({
+        ...kickedData,
+        isVisible: !kickedData.isVisible,
+      });
+    }
+  };
+  const toggleExitModal = () => {
+    setExitModalVisible(!isExitModalVisible);
+  };
+  const toggleExitFailModal = () => {
+    setExitFailModalVisible(!isExitFailModalVisible);
+  };
+  const kickModeOn = () => {
+    setKickMode(!isKickMode);
   };
 
   return (
@@ -244,38 +332,47 @@ const ChatScreen = ({navigation, route}) => {
         />
       </View>
       <View style={styles.separator} />
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <ScrollView style={{flex: 1}}>
+      <TouchableWithoutFeedback>
+        <ScrollView
+          style={{flex: 1}}
+          showsVerticalScrollIndicator={true}
+          ref={chatScrollRef}>
           {messages.map((message, i) => {
-            if (message.writer == 'system') {
+            if (message.userId == 0) {
               return (
                 <View
-                  key={`chat_${message.writer}_${i}`}
+                  key={`chat_${message.userId}_${i}`}
                   style={styles.chatBubble}>
                   <ChatBubbleSystem chat={message} />
                 </View>
               );
-            } else if (message.writer === user.nickName) {
+            } else if (message.userId === user.id) {
               return (
                 <View
-                  key={`chat_${message.writer}_${i}`}
+                  key={`chat_${message.userId}_${i}`}
                   style={styles.chatBubble}>
                   <ChatBubbleMine chat={message} />
                 </View>
               );
             } else {
-              if (colorMap[message.writer] == undefined) {
+              if (colorMap[message.userId] == undefined) {
                 let num = Object.keys(colorMap).length;
                 if (num == colorList.length) num = num - colorList.length;
-                colorMap[message.writer] = colorList[num];
+                colorMap[message.userId] = colorList[num];
               }
+
+              let writer = '(알수없음)';
+              if (clubMembers[message.userId])
+                writer = clubMembers[message.userId].nickName;
+
               return (
                 <View
-                  key={`chat_${message.writer}_${i}`}
+                  key={`chat_${message.userId}_${i}`}
                   style={styles.chatBubble}>
                   <ChatBubbleOther
+                    writer={writer}
                     chat={message}
-                    color={colorMap[message.writer]}
+                    color={colorMap[message.userId]}
                   />
                 </View>
               );
@@ -283,10 +380,45 @@ const ChatScreen = ({navigation, route}) => {
           })}
         </ScrollView>
       </TouchableWithoutFeedback>
-      {/* <Button title="error" onPress={toggleErrorModal}></Button> */}
+      <KeyboardAvoidingView
+        style={styles.bottomContainer}
+        behavior="padding"
+        enabled>
+        <TextInput
+          style={styles.input}
+          placeholder={'Add Message'}
+          onChangeText={text => {
+            setSendText(text);
+          }}
+          onFocus={() => {
+            chatScrollRef.current?.scrollToEnd({animated: true});
+          }}
+          value={sendText}></TextInput>
+        <Pressable onPress={sendMSG} disabled={sendText == ''}>
+          <Text style={styles.send}>Send</Text>
+        </Pressable>
+      </KeyboardAvoidingView>
 
-      <Button title="aendMSG" onPress={sendMSG} />
-      <Button title="df" onPress={toggleKickModal} />
+      {/* <Button title="error" onPress={toggleErrorModal}></Button> */}
+      {/* <KeyboardAvoidingView
+        style={{flexDirection: 'row', width: Dimensions.get('screen').width}}>
+        <View style={{width: Dimensions.get('screen').width - width * 50}}>
+          <TextInput>a</TextInput>
+        </View>
+        <View style={{width: width * 50}}>
+          <sendIcon.Button
+            backgroundColor="#FFFFFF"
+            iconStyle={{marginRight: 0, padding: 5}}
+            borderRadius={3}
+            name="send"
+            color="#303030"
+            size={25}
+            onPress={sendMSG}
+          />
+        </View>
+      </KeyboardAvoidingView> */}
+
+      {/* <Button title="df" onPress={toggleKickModal} /> */}
       {/* <Button title="df" onPress={toggleExitModal}></Button> */}
 
       <Modal
@@ -300,37 +432,70 @@ const ChatScreen = ({navigation, route}) => {
             <Text style={styles.modalHeaderText}>대화상대</Text>
           </View>
           <ScrollView>
-            <View style={styles.memberList}>
-              <FontAwesomeIcon
-                style={styles.icon}
-                icon={faChessKing}
-                size={25}
-                color={'red'}
-              />
-              <Text>{user.nickName}</Text>
+            <View
+              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <View style={styles.hostMember}>
+                <FontAwesomeIcon
+                  style={styles.icon}
+                  icon={faUser}
+                  size={25}
+                  color={colorMap[user.id]}
+                />
+                <Text>{clubData?.hostNickname}</Text>
+              </View>
+              <View style={{justifyContent: 'center', marginRight: width * 20}}>
+                <FontAwesomeIcon
+                  style={styles.icon}
+                  icon={faChessKing}
+                  size={25}
+                  color={'#58C047'}
+                />
+              </View>
             </View>
             {clubData?.members.map((member, i) => {
-              if (colorMap[member.nickname] == undefined) {
+              if (colorMap[member.id] == undefined) {
                 let num = Object.keys(colorMap).length;
                 if (num == colorList.length) num = num - colorList.length;
-                colorMap[member.nickname] = colorList[num];
+                colorMap[member.id] = colorList[num];
               }
               return (
                 <View
-                  key={`member_${member.id}_${i}`}
-                  style={styles.memberList}>
-                  <FontAwesomeIcon
-                    style={styles.icon}
-                    icon={faUser}
-                    size={25}
-                    color={colorMap[member.nickname]}
-                  />
-                  <Text>{member.nickname}</Text>
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}>
+                  <View
+                    key={`member_${member.id}_${i}`}
+                    style={styles.memberList}>
+                    <FontAwesomeIcon
+                      style={styles.icon}
+                      icon={faUser}
+                      size={25}
+                      color={colorMap[member.id]}
+                    />
+                    <Text>{member.nickName}</Text>
+                  </View>
+                  {isKickMode == true ? (
+                    <View style={styles.kickButton}>
+                      <kickIcon.Button
+                        backgroundColor="#FFFFFF"
+                        iconStyle={{margin: 0, padding: 0}}
+                        name="xmark"
+                        color="#303030"
+                        size={25}
+                        onPress={() => {
+                          toggleKickModal(member.id);
+                        }}
+                      />
+                    </View>
+                  ) : (
+                    <View />
+                  )}
                 </View>
               );
             })}
           </ScrollView>
-          <View style={styles.exitContainer}>
+          <View style={styles.modalBottomContainer}>
             <exitIcon.Button
               // style={styles.exitButton}}
               backgroundColor="#FFFFFF"
@@ -338,40 +503,91 @@ const ChatScreen = ({navigation, route}) => {
               name="logout"
               color="#303030"
               size={25}
-              onPress={toggleExitModal}
+              onPress={
+                user.id !== clubData?.hostId
+                  ? toggleExitModal
+                  : toggleExitFailModal
+              }
             />
+            {user.id === clubData?.hostId && (
+              <banIcon.Button
+                backgroundColor="#FFFFFF"
+                iconStyle={{marginRight: 0, padding: 5}}
+                name="ban"
+                color="#303030"
+                size={25}
+                onPress={kickModeOn}
+              />
+            )}
           </View>
         </SafeAreaView>
       </Modal>
       <ErrorModal isVisible={isErrorModalVisible} onClose={toggleErrorModal} />
       <KickModal
-        isVisible={isKickModalVisible}
         onClose={toggleKickModal}
-        name={user1.name}
+        kickedData={kickedData}
+        kickUser={kickUser}
+        clubId={clubId}
       />
       <ExitModal
         isVisible={isExitModalVisible}
         onClose={toggleExitModal}
-        name={user1.name}
-        exit={exitChat}
+        name={user.nickName}
+        exitClub={exitClub}
+      />
+      <ExitFailModal
+        isVisible={isExitFailModalVisible}
+        onClose={toggleExitFailModal}
       />
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  memberList: {
-    paddingTop: 20,
-    paddingBottom: 20,
+  input: {
+    width: '70%',
+    borderWidth: 1,
+    borderColor: 'black',
+    padding: 10,
+    marginRight: width * 30,
+  },
+  send: {
+    backgroundColor: 'black',
+    color: 'white',
+    padding: 20,
+    textAlign: 'center',
+    textAlignVertical: 'center',
+  },
+  bottomContainer: {
+    marginHorizontal: height * 10,
     flexDirection: 'row',
-    marginLeft: 20,
+    marginBottom: height * 10,
+  },
+  hostMember: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingTop: height * 17,
+    paddingBottom: height * 17,
+    marginLeft: width * 17,
+    marginRight: width * 17,
     alignItems: 'flex-start',
   },
+  memberList: {
+    paddingTop: height * 17,
+    paddingBottom: height * 17,
+    flexDirection: 'row',
+    marginLeft: width * 17,
+    alignItems: 'flex-start',
+  },
+  kickButton: {
+    justifyContent: 'center',
+    marginRight: width * 15,
+  },
   icon: {
-    marginRight: 10,
+    marginRight: width * 10,
   },
   chatBubble: {
-    marginBottom: 20,
+    marginBottom: height * 15,
   },
   container: {
     backgroundColor: '#FFFFFF',
@@ -410,7 +626,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingLeft: 22,
+    paddingLeft: width * 22,
   },
   modalHeaderText: {
     color: '#5F5F5F',
@@ -421,8 +637,9 @@ const styles = StyleSheet.create({
   userListContainer: {
     height: height * 640,
   },
-  exitContainer: {
-    alignItems: 'flex-start',
+  modalBottomContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });
 

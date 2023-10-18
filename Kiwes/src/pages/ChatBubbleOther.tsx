@@ -4,9 +4,11 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faUser} from '@fortawesome/free-solid-svg-icons';
 
 export default function ChatBubbleOther({
+  writer,
   chat,
   color,
 }: {
+  writer: string;
   chat: Chat;
   color: string;
 }) {
@@ -20,10 +22,17 @@ export default function ChatBubbleOther({
             size={25}
             color={color}
           />
-          <Text>{chat.writer}</Text>
         </View>
-        <View style={styles.chat}>
-          <Text style={styles.text}>{chat.msg}</Text>
+        <View style={{position: 'relative'}}>
+          <Text>{writer}</Text>
+          <View style={styles.chatContainer}>
+            <View style={styles.chat}>
+              <Text style={styles.text}>{chat.msg}</Text>
+            </View>
+            <View style={styles.time}>
+              <Text style={styles.timeText}>{chat.time}</Text>
+            </View>
+          </View>
         </View>
       </View>
     </>
@@ -33,6 +42,7 @@ export default function ChatBubbleOther({
 const styles = StyleSheet.create({
   container: {
     position: 'relative',
+    flexDirection: 'row',
   },
   user: {
     flexDirection: 'row',
@@ -42,8 +52,12 @@ const styles = StyleSheet.create({
   icon: {
     marginRight: 10,
   },
+  chatContainer: {
+    flexDirection: 'row',
+  },
   chat: {
-    marginLeft: 35,
+    // marginLeft: 35,
+    marginTop: 10,
     backgroundColor: '#EDEDED',
     paddingLeft: 10,
     paddingRight: 10,
@@ -53,10 +67,20 @@ const styles = StyleSheet.create({
     maxWidth: '70%', // You can adjust the percentage as needed
     borderRadius: 20,
   },
+  time: {
+    alignSelf: 'flex-end',
+    marginLeft: 5,
+  },
   text: {
     color: 'black',
     fontFamily: 'Pretendard-bold',
     fontSize: 13,
     fontWeight: '400',
+  },
+  timeText: {
+    color: 'black',
+    fontFamily: 'Pretendard-bold',
+    fontSize: 10,
+    fontWeight: '600',
   },
 });
