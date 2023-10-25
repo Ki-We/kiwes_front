@@ -19,6 +19,7 @@ import backIcon from 'react-native-vector-icons/Ionicons';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 export function ChatTest({navigation}: any) {
+  const [keyboard, setKeyboard] = useState(false);
   const [messages, setMessages] = useState<Chat[]>([
     {
       userId: 0,
@@ -91,7 +92,41 @@ export function ChatTest({navigation}: any) {
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={{flex: 1}}>
-          <FlatList
+          <Text>a</Text>
+          <Text>a</Text>
+          <Text>a</Text>
+          <Text>a</Text>
+          <Text>a</Text>
+          <Text>a</Text>
+          <Text>a</Text>
+          <Text>a</Text>
+          <Text>a</Text>
+          <Text>a</Text>
+          <Text>a</Text>
+          <Text>a</Text>
+          <Text>a</Text>
+          <Text>a</Text>
+          <Text>a</Text>
+          <Text>a</Text>
+          <Text>a</Text>
+          <Text>a</Text>
+          <Text>a</Text>
+          <Text>a</Text>
+          <Text>a</Text>
+          <Text>a</Text>
+          <Text>a</Text>
+          <Text>a</Text>
+          <Text>a</Text>
+          <Text>a</Text>
+          <Text>a</Text>
+          <Text>a</Text>
+          <Text>a</Text>
+          <Text>a</Text>
+          <Text>a</Text>
+          <Text>a</Text>
+          <Text>a</Text>
+          <Text>a</Text>
+          {/* <FlatList
             data={messages}
             renderItem={renderItem}
             automaticallyAdjustContentInsets={false}
@@ -104,7 +139,7 @@ export function ChatTest({navigation}: any) {
               autoscrollToTopThreshold: 80,
             }}
             automaticallyAdjustKeyboardInsets={true}
-          />
+          /> */}
           <TextInput placeholder={'Add Message'} />
         </KeyboardAvoidingView>
       </TouchableWithoutFeedback>

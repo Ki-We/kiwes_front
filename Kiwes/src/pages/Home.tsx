@@ -12,6 +12,13 @@ export function Home({navigation}: any) {
         }}>
         <Text>ChatTest</Text>
       </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('KeyboardTest');
+        }}>
+        <Text>KeyboardTest</Text>
+      </TouchableOpacity>
     </View>
   );
 }
