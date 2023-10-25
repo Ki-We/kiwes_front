@@ -1,10 +1,17 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
 
-export function Home() {
+export function Home({navigation}: any) {
   return (
     <View>
       <Text>Home Screen</Text>
+
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('Test');
+        }}>
+        <Text>ChatTest</Text>
+      </TouchableOpacity>
     </View>
   );
 }

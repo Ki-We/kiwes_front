@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {
   Image,
   SafeAreaView,
@@ -34,12 +34,17 @@ export function ChatMain({navigation}: any) {
         params: {cursor: 0},
         headers: {Authorization: jwtToken},
       })
-      .then(res => res.data)
+      .then(res => {
+        console.log(res);
+        return res.data;
+      })
       .catch(err => {
         console.log(err);
       });
-    console.log(result.data);
-    setRoomList(result.data);
+    if (result) {
+      console.log(result.data);
+      setRoomList(result.data);
+    }
   };
 
   return (
