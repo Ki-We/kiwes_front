@@ -173,6 +173,8 @@ import MyPage from './src/pages/MyPage';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {colors, width, height} from './src/global';
 import KakaoTest from './src/pages/KakaoTest';
+import ChatTest from './src/pages/ChatTest';
+import KeyboardTest from './src/pages/KeyboardTest';
 // import React from 'react';
 // import {View, Text, Button} from 'react-native';
 // import {NavigationContainer} from '@react-navigation/native';
@@ -281,6 +283,20 @@ function App() {
         <Stack.Screen
           name="KakaoTest"
           component={KakaoTest}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Test"
+          component={ChatTest}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="KeyboardTest"
+          component={KeyboardTest}
           options={{
             headerShown: false,
           }}

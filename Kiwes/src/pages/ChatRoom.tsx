@@ -13,6 +13,8 @@ import {
   TouchableOpacity,
   Dimensions,
   Pressable,
+  NativeModules,
+  Platform,
 } from 'react-native';
 import optionIcon from 'react-native-vector-icons/SimpleLineIcons';
 import backIcon from 'react-native-vector-icons/Ionicons';
@@ -38,14 +40,6 @@ import {Chat, ClubMember, ClubSimpleData} from '../utils/commonInterface';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faBan, faChessKing, faUser} from '@fortawesome/free-solid-svg-icons';
 
-const user1 = {
-  _id: 1,
-  name: 'Kiwes',
-};
-const user2 = {
-  _id: 2,
-  name: 'Kiwes2',
-};
 const initUser = {
   nickName: '',
   id: 1,
@@ -61,6 +55,7 @@ const initKickedUser = {
   id: 0,
   name: '',
 };
+const {StatusBarManager} = NativeModules;
 
 const ChatScreen = ({navigation, route}) => {
   /* 사용 코드*/
@@ -111,6 +106,13 @@ const ChatScreen = ({navigation, route}) => {
   const [kickedData, setKickedData] = useState<KickedUser>(initKickedUser);
   const socket = useRef();
   const chatScrollRef = useRef<ScrollView>(null);
+  const [statusBarHeight, setStatusBarHeight] = useState(height);
+  useEffect(() => {
+    Platform.OS == 'ios' &&
+      StatusBarManager.getHeight((statusBarFrameData: any) => {
+        setStatusBarHeight(height + statusBarFrameData.height);
+      });
+  }, []);
 
   const initialize = async () => {
     const result = await axios
@@ -123,6 +125,8 @@ const ChatScreen = ({navigation, route}) => {
       .catch(err => {
         console.log(err);
       });
+
+    if (!result) return;
 
     console.log(result.data);
     setClubData(result.data);
@@ -151,8 +155,10 @@ const ChatScreen = ({navigation, route}) => {
         console.log(err);
       });
 
-    setUser(resultMine.data);
-    console.log(resultMine.data);
+    if (resultMine) {
+      setUser(resultMine.data);
+      console.log(resultMine.data);
+    }
   };
 
   useEffect(() => {
@@ -163,7 +169,7 @@ const ChatScreen = ({navigation, route}) => {
     socket.current.on('connect', () => {
       console.log('connect');
 
-      socket.current?.emit('enter', {roomID: clubId, userId: user1._id});
+      socket.current?.emit('enter', {roomID: clubId, userId: user.id});
     });
     socket.current?.on('msgList', data => {
       const chat = data.chat;
@@ -308,6 +314,43 @@ const ChatScreen = ({navigation, route}) => {
     setKickMode(!isKickMode);
   };
 
+  const renderItem = ({item}: any) => {
+    const message = item;
+
+    if (message.userId == 0) {
+      return (
+        <View style={styles.chatBubble}>
+          <ChatBubbleSystem chat={message} />
+        </View>
+      );
+    } else if (message.userId === user.id) {
+      return (
+        <View style={styles.chatBubble}>
+          <ChatBubbleMine chat={message} />
+        </View>
+      );
+    } else {
+      if (colorMap[message.userId] == undefined) {
+        let num = Object.keys(colorMap).length;
+        if (num == colorList.length) num = num - colorList.length;
+        colorMap[message.userId] = colorList[num];
+      }
+
+      let writer = '(알수없음)';
+      if (clubMembers[message.userId])
+        writer = clubMembers[message.userId].nickName;
+
+      return (
+        <View style={styles.chatBubble}>
+          <ChatBubbleOther
+            writer={writer}
+            chat={message}
+            color={colorMap[message.userId]}
+          />
+        </View>
+      );
+    }
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -332,7 +375,50 @@ const ChatScreen = ({navigation, route}) => {
         />
       </View>
       <View style={styles.separator} />
+
       <TouchableWithoutFeedback>
+        <View style={{flex: 1}}>
+          <FlatList
+            // contentContainerStyle={styles.contentContainer}
+            data={messages}
+            renderItem={renderItem}
+            automaticallyAdjustContentInsets={false}
+            inverted={true}
+            keyboardDismissMode="interactive"
+            keyboardShouldPersistTaps="handled"
+            contentInsetAdjustmentBehavior="never"
+            maintainVisibleContentPosition={{
+              minIndexForVisible: 0,
+              autoscrollToTopThreshold: 80,
+            }}
+            automaticallyAdjustKeyboardInsets={true}
+          />
+          <KeyboardAvoidingView
+            behavior="padding"
+            keyboardVerticalOffset={statusBarHeight + 44}
+            // keyboardVerticalOffset={150}
+            style={chatInputStyle.bottomContainer}>
+            <TextInput
+              placeholder={'Add Message'}
+              onChangeText={text => {
+                setSendText(text);
+              }}
+              value={sendText}
+            />
+            {/* <TextInput
+              style={chatInputStyle.input}
+              placeholder={'Add Message'}
+              onChangeText={text => {
+                setSendText(text);
+              }}
+              value={sendText}></TextInput>
+            <Pressable onPress={sendMSG} disabled={sendText == ''}>
+              <Text style={chatInputStyle.send}>Send</Text>
+            </Pressable> */}
+          </KeyboardAvoidingView>
+        </View>
+      </TouchableWithoutFeedback>
+      {/* <TouchableWithoutFeedback>
         <ScrollView
           style={{flex: 1}}
           showsVerticalScrollIndicator={true}
@@ -397,30 +483,7 @@ const ChatScreen = ({navigation, route}) => {
         <Pressable onPress={sendMSG} disabled={sendText == ''}>
           <Text style={styles.send}>Send</Text>
         </Pressable>
-      </KeyboardAvoidingView>
-
-      {/* <Button title="error" onPress={toggleErrorModal}></Button> */}
-      {/* <KeyboardAvoidingView
-        style={{flexDirection: 'row', width: Dimensions.get('screen').width}}>
-        <View style={{width: Dimensions.get('screen').width - width * 50}}>
-          <TextInput>a</TextInput>
-        </View>
-        <View style={{width: width * 50}}>
-          <sendIcon.Button
-            backgroundColor="#FFFFFF"
-            iconStyle={{marginRight: 0, padding: 5}}
-            borderRadius={3}
-            name="send"
-            color="#303030"
-            size={25}
-            onPress={sendMSG}
-          />
-        </View>
       </KeyboardAvoidingView> */}
-
-      {/* <Button title="df" onPress={toggleKickModal} /> */}
-      {/* <Button title="df" onPress={toggleExitModal}></Button> */}
-
       <Modal
         isVisible={isModalVisible}
         animationIn={'slideInRight'}
@@ -543,21 +606,24 @@ const ChatScreen = ({navigation, route}) => {
   );
 };
 
-const styles = StyleSheet.create({
+const chatInputStyle = StyleSheet.create({
   input: {
     width: '70%',
     borderWidth: 1,
     borderColor: 'black',
-    padding: 10,
     marginRight: width * 30,
   },
   send: {
     backgroundColor: 'black',
     color: 'white',
-    padding: 20,
     textAlign: 'center',
     textAlignVertical: 'center',
   },
+  bottomContainer: {
+    flexDirection: 'row',
+  },
+});
+const styles = StyleSheet.create({
   bottomContainer: {
     marginHorizontal: height * 10,
     flexDirection: 'row',

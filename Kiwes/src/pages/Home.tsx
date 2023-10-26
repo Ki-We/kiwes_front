@@ -12,6 +12,20 @@ export function Home({navigation}: any) {
         }}>
         <Text>카카오 로그인</Text>
       </TouchableOpacity>
+      
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('Test');
+        }}>
+        <Text>ChatTest</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('KeyboardTest');
+        }}>
+        <Text>KeyboardTest</Text>
+      </TouchableOpacity>
     </View>
   );
 }
