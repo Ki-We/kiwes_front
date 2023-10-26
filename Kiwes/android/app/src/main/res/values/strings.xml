@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Kiwes</string>
+    <string name="kakao_app_key">4d0990e1893c092dfd2f4c485ecceafc</string>
 </resources>

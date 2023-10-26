@@ -8,6 +8,13 @@ export function Home({navigation}: any) {
 
       <TouchableOpacity
         onPress={() => {
+          navigation.navigate('KakaoTest');
+        }}>
+        <Text>카카오 로그인</Text>
+      </TouchableOpacity>
+      
+      <TouchableOpacity
+        onPress={() => {
           navigation.navigate('Test');
         }}>
         <Text>ChatTest</Text>
