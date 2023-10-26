@@ -1,26 +1,20 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import Modal from 'react-native-modal';
-import {colors, width, height} from '../global';
-import axios from 'axios';
-import {jwtToken} from '../utils/metaData';
+import {width, height} from '../global';
+import {apiServer, jwtToken} from '../utils/metaData';
+import {RESTAPIBuilder} from '../utils/restapiBuilder';
 
 const KickModal = ({kickedData, onClose, kickUser, clubId}) => {
   const doKickUser = () => {
     kickUser(kickedData.id, kickedData.name);
-    axios
-      .delete(
-        `https://api.kiwes.org/api/v1/club/kick/${clubId}/${kickedData.id}`,
-        {
-          headers: {Authorization: jwtToken},
-        },
-      )
-      .then(res => {
-        console.log(res);
-        return res.data;
-      })
-      .then(res => {
-        console.log(res);
+    const url = `${apiServer}/api/v1/club/kick/${clubId}/${kickedData.id}`;
+    new RESTAPIBuilder(url, 'DELETE')
+      .setNeedToken(true)
+      .build()
+      .run()
+      .then(({data}) => {
+        console.log(data);
         onClose(0);
       })
       .catch(err => {

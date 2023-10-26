@@ -1,7 +1,8 @@
 import {View, Button} from 'react-native';
 import React from 'react';
 import * as KakaoLogin from '@react-native-seoul/kakao-login';
-import axios from 'axios';
+import {apiServer} from '../utils/metaData';
+import {RESTAPIBuilder} from '../utils/restapiBuilder';
 
 export default function KakaoTest() {
   const signInWithKakao = async () => {
@@ -16,16 +17,15 @@ export default function KakaoTest() {
 
     console.log('Login Success', JSON.stringify(result));
 
-    const loginResult = await axios
-      .post(`https://api.kiwes.org/oauth/kakao?token=${result?.accessToken}`)
-      .then(res => {
-        return res.data;
-      })
+    const url = `${apiServer}/oauth/kakao?token=${result?.accessToken}`;
+    const {data} = await new RESTAPIBuilder(url, 'POST')
+      .build()
+      .run()
       .catch(err => {
         console.log(err);
       });
 
-    console.log('loginResult : ', loginResult);
+    console.log('loginResult : ', data.accessToken);
   };
 
   return (

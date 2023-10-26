@@ -22,7 +22,7 @@ import exitIcon from 'react-native-vector-icons/MaterialIcons';
 import banIcon from 'react-native-vector-icons/FontAwesome';
 import kickIcon from 'react-native-vector-icons/FontAwesome6';
 import sendIcon from 'react-native-vector-icons/Feather';
-import {colors, width, height} from '../global';
+import {width, height} from '../global';
 import Modal from 'react-native-modal';
 import {io} from 'socket.io-client';
 import ErrorModal from '../components/errorModal';
@@ -30,8 +30,7 @@ import KickModal from '../components/kickedOutModal';
 import ExitModal from '../components/exitModal';
 import ExitFailModal from '../components/exitFailModal';
 
-import axios from 'axios';
-import {chatServer, jwtToken} from '../utils/metaData';
+import {apiServer, chatServer, jwtToken} from '../utils/metaData';
 import ChatBubbleOther from './ChatBubbleOther';
 import ChatBubbleMine from './ChatBubbleMine';
 import ChatBubbleSystem from './ChatBubbleSystem';
@@ -39,6 +38,7 @@ import {ScrollView} from 'react-native-gesture-handler';
 import {Chat, ClubMember, ClubSimpleData} from '../utils/commonInterface';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faBan, faChessKing, faUser} from '@fortawesome/free-solid-svg-icons';
+import {RESTAPIBuilder} from '../utils/restapiBuilder';
 
 const initUser = {
   nickName: '',
@@ -115,49 +115,46 @@ const ChatScreen = ({navigation, route}) => {
   }, []);
 
   const initialize = async () => {
-    const result = await axios
-      .get(`https://api.kiwes.org/api/v1/club/info/simple/${clubId}`, {
-        headers: {Authorization: jwtToken},
-      })
-      .then(res => {
-        return res.data;
-      })
+    const urlClub = `${apiServer}/api/v1/club/info/simple/${clubId}`;
+    const {data} = await new RESTAPIBuilder(urlClub, 'GET')
+      .setNeedToken(true)
+      .build()
+      .run()
       .catch(err => {
         console.log(err);
       });
+    if (!data) {
+      return;
+    }
 
-    if (!result) return;
-
-    console.log(result.data);
-    setClubData(result.data);
+    console.log(data);
+    setClubData(data);
 
     const hostData = {
-      id: result.data.hostId,
-      nickName: result.data.hostNickname,
-      thumbnail: result.data.hostThumbnailImage,
+      id: data.hostId,
+      nickName: data.hostNickname,
+      thumbnail: data.hostThumbnailImage,
     };
 
     let newArr: any = {};
-    newArr[result.data.hostId] = hostData;
-    result.data.members.forEach((m: ClubMember) => {
+    newArr[data.hostId] = hostData;
+    data.members.forEach((m: ClubMember) => {
       newArr[m.id] = {...m};
     });
     setClubMembers(newArr);
 
-    const resultMine = await axios
-      .get(`https://api.kiwes.org/myid`, {
-        headers: {Authorization: jwtToken},
-      })
-      .then(res => {
-        return res.data;
-      })
+    const urlMyInfo = `${apiServer}/myid`;
+    const {data: dataMyInfo} = await new RESTAPIBuilder(urlMyInfo, 'GET')
+      .setNeedToken(true)
+      .build()
+      .run()
       .catch(err => {
         console.log(err);
       });
 
-    if (resultMine) {
-      setUser(resultMine.data);
-      console.log(resultMine.data);
+    if (dataMyInfo) {
+      console.log(dataMyInfo);
+      setUser(dataMyInfo);
     }
   };
 
@@ -267,21 +264,16 @@ const ChatScreen = ({navigation, route}) => {
 
   const exitClub = async () => {
     await socket.current.emit('exit', {name: user.nickName});
-    await axios
-      .delete(`https://api.kiwes.org/api/v1/club/application/${clubId}`, {
-        headers: {Authorization: jwtToken},
-      })
-      .then(res => {
-        console.log(res);
-        return res.data;
-      })
-      .then(res => {
-        console.log(res);
+
+    const url = `${apiServer}/api/v1/club/application/${clubId}`;
+    await new RESTAPIBuilder(url, 'DELETE')
+      .setNeedToken(true)
+      .build()
+      .run()
+      .then(() => {
         navigation.pop();
       })
-      .catch(err => {
-        console.log(err);
-      });
+      .catch(err => console.log(err));
   };
 
   const toggleModal = () => {
