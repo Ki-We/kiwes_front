@@ -172,6 +172,7 @@ import MyPage from './src/pages/MyPage';
 // export default App;
 import Icon from 'react-native-vector-icons/Ionicons';
 import {colors, width, height} from './src/global';
+import KakaoTest from './src/pages/KakaoTest';
 // import React from 'react';
 // import {View, Text, Button} from 'react-native';
 // import {NavigationContainer} from '@react-navigation/native';
@@ -273,6 +274,13 @@ function App() {
         <Stack.Screen
           name="ChatRoom"
           component={ChatRoom}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="KakaoTest"
+          component={KakaoTest}
           options={{
             headerShown: false,
           }}
