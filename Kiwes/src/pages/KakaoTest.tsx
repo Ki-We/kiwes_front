@@ -17,9 +17,7 @@ export default function KakaoTest() {
     console.log('Login Success', JSON.stringify(result));
 
     const loginResult = await axios
-      .post(`https://api.kiwes.org/oauth/kakao`, {
-        token: result?.accessToken,
-      })
+      .post(`https://api.kiwes.org/oauth/kakao?token=${result?.accessToken}`)
       .then(res => {
         return res.data;
       })
