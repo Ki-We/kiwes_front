@@ -9,38 +9,28 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {width, height} from '../global';
-import {jwtToken} from '../utils/metaData';
+import {apiServer} from '../utils/metaData';
 import {ClubInfo} from '../utils/commonInterface';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faUser} from '@fortawesome/free-regular-svg-icons';
-import {ServerAxios as axios} from '../utils/restapi';
 import {useFocusEffect} from '@react-navigation/native';
+import {RESTAPIBuilder} from '../utils/restapiBuilder';
 
 export function ChatMain({navigation}: any) {
   const [roomList, setRoomList] = useState<ClubInfo[]>([]);
-
-  // useFocusEffect(() => {
-  //   initialize();
-  // }, []);
-
   useFocusEffect(
     useCallback(() => {
       initialize();
     }, []),
   );
   const initialize = async () => {
-    const result = await axios
-      .get('https://api.kiwes.org/api/v1/club/approval/my-club', {
-        params: {cursor: 0},
-        headers: {Authorization: jwtToken},
-      })
-      .then(res => {
-        console.log(res);
-        return res.data;
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    const url = `${apiServer}/api/v1/club/approval/my-club?cursor=0`;
+    const result = await new RESTAPIBuilder(url, 'GET')
+      .setNeedToken(true)
+      .build()
+      .run()
+      .catch(err => console.log(err));
+
     if (result) {
       console.log(result.data);
       setRoomList(result.data);

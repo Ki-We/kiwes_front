@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -10,6 +10,7 @@ import ChatMain from './src/pages/ChatMain';
 import ChatRoom from './src/pages/ChatRoom';
 import Test from './src/pages/Test';
 import MyPage from './src/pages/MyPage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // const Stack = createStackNavigator();
 // const Tab = createBottomTabNavigator();
@@ -172,9 +173,10 @@ import MyPage from './src/pages/MyPage';
 // export default App;
 import Icon from 'react-native-vector-icons/Ionicons';
 import {colors, width, height} from './src/global';
-import KakaoTest from './src/pages/KakaoTest';
 import ChatTest from './src/pages/ChatTest';
 import KeyboardTest from './src/pages/KeyboardTest';
+import Login from './src/pages/Login';
+import SplashPage from './src/pages/SplashPage';
 // import React from 'react';
 // import {View, Text, Button} from 'react-native';
 // import {NavigationContainer} from '@react-navigation/native';
@@ -260,56 +262,76 @@ const BottomTab = ({navigation}) => {
 };
 
 function App() {
+  const [isLogin, setIsLogin] = useState(false);
+  useEffect(() => {
+    checkLoginState();
+  }, []);
+  const checkLoginState = async () => {
+    const userData = await AsyncStorage.getItem('userdata');
+    console.log(userData);
+  };
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="bottomTab"
-          component={BottomTab}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="CreateMeeting"
-          component={CreateMeeting}
-          options={{title: 'CreateMeeting'}}
-        />
-        <Stack.Screen
-          name="ChatRoom"
-          component={ChatRoom}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="KakaoTest"
-          component={KakaoTest}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="Test"
-          component={ChatTest}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="KeyboardTest"
-          component={KeyboardTest}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="ChatMain"
-          component={ChatMain}
-          options={{
-            headerShown: false,
-          }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Login">
+          <Stack.Screen
+            name="Login"
+            component={Login}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Splash"
+            component={SplashPage}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="Home"
+            component={Home}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="BottomTab"
+            component={BottomTab}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="CreateMeeting"
+            component={CreateMeeting}
+            options={{title: 'CreateMeeting'}}
+          />
+          <Stack.Screen
+            name="ChatRoom"
+            component={ChatRoom}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="Test"
+            component={ChatTest}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="KeyboardTest"
+            component={KeyboardTest}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="ChatMain"
+            component={ChatMain}
+            options={{
+              headerShown: false,
+            }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </>
   );
 }
 
