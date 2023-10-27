@@ -1,4 +1,4 @@
-import {jwtToken} from './metaData';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {RESTAPIBuilder} from './restapiBuilder';
 
 // async function refreshToken(header: HeadersInit, params: RequestInit, url: string) {
@@ -46,9 +46,15 @@ export class RESTAPI {
     };
     // console.log('needToken', this.builder.needToken)
     if (this.builder.needToken) {
+      let jwt = '';
+      const userData = await AsyncStorage.getItem('userData');
+      if (userData) {
+        const tokenData = JSON.parse(userData);
+        jwt = tokenData.accessToken;
+      }
       params.headers = {
         ...params.headers,
-        Authorization: `Bearer ${jwtToken}`,
+        Authorization: `Bearer ${jwt}`,
       };
     }
 

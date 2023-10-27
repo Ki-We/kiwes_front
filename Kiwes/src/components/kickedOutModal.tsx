@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import Modal from 'react-native-modal';
 import {width, height} from '../global';
-import {apiServer, jwtToken} from '../utils/metaData';
+import {apiServer} from '../utils/metaData';
 import {RESTAPIBuilder} from '../utils/restapiBuilder';
 
 const KickModal = ({kickedData, onClose, kickUser, clubId}) => {

@@ -30,7 +30,7 @@ import KickModal from '../components/kickedOutModal';
 import ExitModal from '../components/exitModal';
 import ExitFailModal from '../components/exitFailModal';
 
-import {apiServer, chatServer, jwtToken} from '../utils/metaData';
+import {apiServer, chatServer} from '../utils/metaData';
 import ChatBubbleOther from './ChatBubbleOther';
 import ChatBubbleMine from './ChatBubbleMine';
 import ChatBubbleSystem from './ChatBubbleSystem';
