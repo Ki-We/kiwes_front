@@ -1,6 +1,7 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Chat} from '../utils/commonInterface';
 import {
+  Keyboard,
   View,
   Text,
   SafeAreaView,
@@ -16,6 +17,7 @@ import ChatBubbleMine from './ChatBubbleMine';
 import ChatBubbleOther from './ChatBubbleOther';
 import {KeyboardAvoidingView} from 'react-native';
 import backIcon from 'react-native-vector-icons/Ionicons';
+import sendIcon from 'react-native-vector-icons/Feather';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 export function ChatTest({navigation}: any) {
@@ -49,6 +51,22 @@ export function ChatTest({navigation}: any) {
       time: '2023-10-13 13:06',
     },
   ]);
+
+  const [keyboardStatus, setKeyboardStatus] = useState('20');
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
+      setKeyboardStatus('0');
+    });
+    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
+      setKeyboardStatus('20');
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
 
   const renderItem = ({item}: any) => {
     const message = item;
@@ -91,7 +109,8 @@ export function ChatTest({navigation}: any) {
       <TouchableWithoutFeedback style={{flex: 1}}>
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={{flex: 1}}>
+          keyboardVerticalOffset={keyboardStatus}
+          style={{flex: 1, backgroundColor: '#FFFFFF'}}>
           <FlatList
             data={messages}
             renderItem={renderItem}
@@ -106,7 +125,25 @@ export function ChatTest({navigation}: any) {
             }}
             automaticallyAdjustKeyboardInsets={true}
           />
-          <TextInput placeholder={'Add Message'} />
+          <View style={styles.inputContainer}>
+            <View style={{width: '80%'}}>
+              <TextInput style={styles.input} />
+            </View>
+            <View
+              style={{
+                height: height * 50,
+                marginLeft: 10,
+              }}>
+              <sendIcon.Button
+                backgroundColor="#FFFFFF"
+                iconStyle={{margin: 0, padding: 0}}
+                name="send"
+                color="#8A8A8A"
+                size={height * 30}
+                onPress={() => navigation.pop()}
+              />
+            </View>
+          </View>
         </KeyboardAvoidingView>
       </TouchableWithoutFeedback>
     </SafeAreaView>
@@ -114,6 +151,28 @@ export function ChatTest({navigation}: any) {
 }
 
 const styles = StyleSheet.create({
+  inputContainer: {
+    borderTopColor: '#EDEDED',
+    borderTopWidth: 2,
+    padding: 20,
+    paddingRight: 5,
+    paddingTop: 10,
+    backgroundColor: '#FFFFFF',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  input: {
+    // width: '80%',
+    borderWidth: 1,
+    borderColor: '#8A8A8A',
+    borderRadius: 20,
+    backgroundColor: '#EDEDED',
+    padding: 5,
+    paddingLeft: 10,
+    fontSize: 13,
+    marginTop: 5,
+    height: height * 35,
+  },
   header: {
     flexDirection: 'row',
     alignItems: 'center',

@@ -2,7 +2,14 @@ import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {View, Image, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {
+  View,
+  Image,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Dimensions,
+} from 'react-native';
 import Home from './src/pages/Home';
 import Wish from './src/pages/Wish';
 import CreateMeeting from './src/pages/CreateMeeting';
@@ -171,6 +178,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // }
 
 // export default App;
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {colors, width, height} from './src/global';
 import ChatTest from './src/pages/ChatTest';
@@ -186,12 +194,22 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const BottomTab = ({navigation}) => {
+  const insets = useSafeAreaInsets();
   const onPress = () => navigation.navigate('CreateMeeting');
-
   return (
     <Tab.Navigator
       initialRouteName="Home"
       screenOptions={{
+        tabBarStyle: {
+          height: height * 65 + insets.bottom,
+          paddingTop: height * 10,
+        },
+        tabBarLabelStyle: {
+          fontFamily: 'Pretendard-Bold',
+          fontSize: width * 10,
+          fontWeight: '600',
+          paddingBottom: height * 5,
+        },
         tabBarActiveTintColor: '#58C047',
       }}>
       <Tab.Screen
@@ -202,6 +220,7 @@ const BottomTab = ({navigation}) => {
           tabBarIcon: ({color, size}) => (
             <Icon name="home-outline" color={color} size={size} />
           ),
+          tabBarLabel: 'Home',
         }}
       />
       <Tab.Screen
@@ -226,9 +245,10 @@ const BottomTab = ({navigation}) => {
                   uri: 'https://s3-alpha-sig.figma.com/img/677f/08a0/65dea42679c06af145f80d3ab5b3d92e?Expires=1696204800&Signature=oGyNfscQ5ZpnKOEED1l7A3B6si9Y4ma5kK50tE1ZyWaFBKkr-no9MCykDBEjPAbkarnNzTRq~bKOulU~semnqW0OFZnOhBXb77PaB5vIaUYA8C2nF~y-EnzFAEwrQrFmzVDGk29r3KZR2a9kukprq6d3nWTlr-o9WDiZp~gW5td0QQQ1keq-4K8CSfUoPiGErPvhOP5AS-FqKrXjvir2mYJvpaZEgYvUDPq8vbCUPtHe3ttPyCpVKxL4HbqEEDPQT--lFFX~6ZAgv6XauEkCtvSzPs1kdeMS4W9rwB20CBLx2pMtkjj3AzMedSq9u66e~3Vhy4zfUS56rD8FSNARpg__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4',
                 }}
                 style={{
+                  // marginTop: height * 10,
                   width: width * 49,
                   height: height * 46,
-                  resizeMode: 'contain',
+                  resizeMode: 'center',
                 }}
               />
             </TouchableOpacity>
@@ -262,6 +282,7 @@ const BottomTab = ({navigation}) => {
 };
 
 function App() {
+  console.log(Dimensions.get('screen').height);
   const [isLogin, setIsLogin] = useState(false);
   useEffect(() => {
     checkLoginState();

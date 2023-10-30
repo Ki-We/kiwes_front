@@ -8,7 +8,7 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
-import {width, height} from '../global';
+import {DeviceHeight, DeviceWidth, width, height} from '../global';
 import {apiServer} from '../utils/metaData';
 import {ClubInfo} from '../utils/commonInterface';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -121,14 +121,15 @@ const styles = StyleSheet.create({
   },
   chatroomContainer: {
     height: height * 620,
-    // backgroundColor: '#58C047',
+    backgroundColor: '#58C047',
     borderBottomColor: '#C0C0C0',
     borderBottomWidth: 2,
   },
   emptyContainer: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    height: height * 620,
+    // height: DeviceHeight - height * 200,
     // backgroundColor: '#58C047',
     borderBottomColor: '#C0C0C0',
     borderBottomWidth: 2,
@@ -197,7 +198,7 @@ const styles = StyleSheet.create({
   bottomNavigate: {
     flexDirection: 'row',
     width: '100%',
-    height: height * 64,
+    // height: height * 64,
     paddingTop: height * 10,
     // justifyContent: 'space-around',
     // paddingHorizontal: 20,

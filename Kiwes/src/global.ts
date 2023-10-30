@@ -11,6 +11,9 @@ export const basicDimensions = {
   width: 370,
 };
 
+export const DeviceHeight: number = Number(Dimensions.get('screen').height);
+export const DeviceWidth: number = Number(Dimensions.get('screen').width);
+
 export const height: number = // 높이 변환 작업
   Number(
     (Dimensions.get('screen').height * (1 / basicDimensions.height)).toFixed(2),

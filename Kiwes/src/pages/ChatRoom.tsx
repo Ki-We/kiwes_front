@@ -239,28 +239,6 @@ const ChatScreen = ({navigation, route}) => {
     delete clubMembers[id];
     setClubMembers({...clubMembers});
   };
-  /* 사용 코드 --END-- */
-
-  // useEffect(() => {
-  //   // 텍스트 입력 포커스 상태 변경 시 키보드 이벤트를 구독/해제합니다.
-  //   const keyboardDidShowListener = Keyboard.addListener(
-  //     'keyboardDidShow',
-  //     () => {
-  //       setTextInputFocused(true);
-  //     },
-  //   );
-  //   const keyboardDidHideListener = Keyboard.addListener(
-  //     'keyboardDidHide',
-  //     () => {
-  //       setTextInputFocused(false);
-  //     },
-  //   );
-
-  //   return () => {
-  //     keyboardDidShowListener.remove();
-  //     keyboardDidHideListener.remove();
-  //   };
-  // }, []);
 
   const exitClub = async () => {
     await socket.current.emit('exit', {name: user.nickName});
@@ -305,6 +283,22 @@ const ChatScreen = ({navigation, route}) => {
   const kickModeOn = () => {
     setKickMode(!isKickMode);
   };
+
+  const [keyboardStatus, setKeyboardStatus] = useState('20');
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
+      setKeyboardStatus('0');
+    });
+    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
+      setKeyboardStatus('20');
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
 
   const renderItem = ({item}: any) => {
     const message = item;
@@ -387,16 +381,41 @@ const ChatScreen = ({navigation, route}) => {
           />
           <KeyboardAvoidingView
             behavior="padding"
-            keyboardVerticalOffset={statusBarHeight + 44}
-            // keyboardVerticalOffset={150}
+            keyboardVerticalOffset={keyboardStatus}
             style={chatInputStyle.bottomContainer}>
-            <TextInput
+            <View style={chatInputStyle.inputContainer}>
+              <View style={{width: '80%'}}>
+                <TextInput
+                  style={chatInputStyle.input}
+                  onChangeText={text => {
+                    setSendText(text);
+                  }}
+                  value={sendText}
+                />
+              </View>
+              <View
+                style={{
+                  height: height * 50,
+                  marginLeft: 10,
+                }}>
+                <sendIcon.Button
+                  backgroundColor="#FFFFFF"
+                  iconStyle={{margin: 0, padding: 0}}
+                  name="send"
+                  color="#8A8A8A"
+                  size={height * 30}
+                  onPress={sendMSG}
+                  disabled={sendText == ''}
+                />
+              </View>
+            </View>
+            {/* <TextInput
               placeholder={'Add Message'}
               onChangeText={text => {
                 setSendText(text);
               }}
               value={sendText}
-            />
+            /> */}
             {/* <TextInput
               style={chatInputStyle.input}
               placeholder={'Add Message'}
@@ -599,20 +618,30 @@ const ChatScreen = ({navigation, route}) => {
 };
 
 const chatInputStyle = StyleSheet.create({
-  input: {
-    width: '70%',
-    borderWidth: 1,
-    borderColor: 'black',
-    marginRight: width * 30,
+  inputContainer: {
+    borderTopColor: '#EDEDED',
+    borderTopWidth: 2,
+    padding: 20,
+    paddingRight: 5,
+    paddingTop: 10,
+    backgroundColor: '#FFFFFF',
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
-  send: {
-    backgroundColor: 'black',
-    color: 'white',
-    textAlign: 'center',
-    textAlignVertical: 'center',
+  input: {
+    borderWidth: 1,
+    borderColor: '#8A8A8A',
+    borderRadius: 20,
+    backgroundColor: '#EDEDED',
+    padding: 5,
+    paddingLeft: 10,
+    fontSize: 13,
+    marginTop: 5,
+    height: height * 35,
   },
   bottomContainer: {
-    flexDirection: 'row',
+    flex: 1,
+    backgroundColor: '#FFFFFF',
   },
 });
 const styles = StyleSheet.create({
