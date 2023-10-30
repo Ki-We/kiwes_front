@@ -28,13 +28,15 @@ export default function Login({navigation}: any) {
     const result = await new RESTAPIBuilder(url, 'GET')
       .setNeedToken(true)
       .build()
-      .run();
+      .run()
+      .catch(err => {
+        console.log(err);
+        AsyncStorage.removeItem('userData');
+      });
 
     if (result) {
       console.log('verify Result : ', result);
       navigation.navigate('BottomTab');
-    } else {
-      await AsyncStorage.removeItem('userData');
     }
   };
   const signInWithApple = async () => {
