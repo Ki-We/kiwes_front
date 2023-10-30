@@ -325,6 +325,22 @@ const ChatScreen = ({navigation, route}) => {
     setKickMode(!isKickMode);
   };
 
+  const [keyboardStatus, setKeyboardStatus] = useState('20');
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
+      setKeyboardStatus('0');
+    });
+    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
+      setKeyboardStatus('20');
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
+
   const renderItem = ({item}: any) => {
     const message = item;
 
@@ -388,7 +404,10 @@ const ChatScreen = ({navigation, route}) => {
       <View style={styles.separator} />
 
       <TouchableWithoutFeedback>
-        <View style={{flex: 1}}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          keyboardVerticalOffset={keyboardStatus}
+          style={{flex: 1, backgroundColor: '#FFFFFF'}}>
           <FlatList
             // contentContainerStyle={styles.contentContainer}
             data={displayData}
@@ -408,30 +427,85 @@ const ChatScreen = ({navigation, route}) => {
             }}
             automaticallyAdjustKeyboardInsets={true}
           />
+          <View style={chatInputStyle.inputContainer}>
+            <View style={{width: '80%'}}>
+              <TextInput
+                style={chatInputStyle.input}
+                onChangeText={text => {
+                  setSendText(text);
+                }}
+                value={sendText}
+              />
+            </View>
+            <View
+              style={{
+                height: height * 50,
+                marginLeft: 10,
+              }}>
+              <sendIcon.Button
+                backgroundColor="#FFFFFF"
+                iconStyle={{margin: 0, padding: 0}}
+                name="send"
+                color="#8A8A8A"
+                size={height * 30}
+                onPress={sendMSG}
+              />
+            </View>
+          </View>
+        </KeyboardAvoidingView>
+
+        {/* <View style={{flex: 1}}>
+        <FlatList
+            // contentContainerStyle={styles.contentContainer}
+            data={displayData}
+            keyExtractor={(item, index) => index.toString()}
+            onEndReached={loadMoreData}
+            onEndReachedThreshold={0.1}
+            // data={messages}
+            renderItem={renderItem}
+            automaticallyAdjustContentInsets={false}
+            inverted={true}
+            keyboardDismissMode="interactive"
+            keyboardShouldPersistTaps="handled"
+            contentInsetAdjustmentBehavior="never"
+            maintainVisibleContentPosition={{
+              minIndexForVisible: 0,
+              autoscrollToTopThreshold: 80,
+            }}
+            automaticallyAdjustKeyboardInsets={true}
+          />
           <KeyboardAvoidingView
-            behavior="padding"
-            keyboardVerticalOffset={statusBarHeight + 44}
-            // keyboardVerticalOffset={150}
-            style={chatInputStyle.bottomContainer}>
-            {/* <TextInput
-              placeholder={'Add Message'}
-              onChangeText={text => {
-                setSendText(text);
-              }}
-              value={sendText}
-            /> */}
-            <TextInput
-              style={chatInputStyle.input}
-              placeholder={'Add Message'}
-              onChangeText={text => {
-                setSendText(text);
-              }}
-              value={sendText}></TextInput>
-            <Pressable onPress={sendMSG} disabled={sendText == ''}>
-              <Text style={chatInputStyle.send}>Send</Text>
-            </Pressable>
-          </KeyboardAvoidingView>
-        </View>
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            keyboardVerticalOffset={keyboardStatus}
+            style={{flex: 1, backgroundColor: '#FFFFFF'}}>
+            <View style={chatInputStyle.inputContainer}>
+              <View style={{width: '80%'}}>
+                <TextInput
+                  style={chatInputStyle.input}
+                  onChangeText={text => {
+                    setSendText(text);
+                  }}
+                  value={sendText}
+                />
+              </View>
+              <View
+                style={{
+                  height: height * 50,
+                  marginLeft: 10,
+                }}>
+                <sendIcon.Button
+                  backgroundColor="#FFFFFF"
+                  iconStyle={{margin: 0, padding: 0}}
+                  name="send"
+                  color="#8A8A8A"
+                  size={height * 30}
+                  onPress={sendMSG}
+                  disabled={sendText == ''}
+                />
+              </View>
+            </View> */}
+        {/* </KeyboardAvoidingView> */}
+        {/* </View> */}
       </TouchableWithoutFeedback>
       {/* <TouchableWithoutFeedback>
         <ScrollView
@@ -622,20 +696,30 @@ const ChatScreen = ({navigation, route}) => {
 };
 
 const chatInputStyle = StyleSheet.create({
-  input: {
-    width: '70%',
-    borderWidth: 1,
-    borderColor: 'black',
-    marginRight: width * 30,
+  inputContainer: {
+    borderTopColor: '#EDEDED',
+    borderTopWidth: 2,
+    padding: 20,
+    paddingRight: 5,
+    paddingTop: 10,
+    backgroundColor: '#FFFFFF',
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
-  send: {
-    backgroundColor: 'black',
-    color: 'white',
-    textAlign: 'center',
-    textAlignVertical: 'center',
+  input: {
+    borderWidth: 1,
+    borderColor: '#8A8A8A',
+    borderRadius: 20,
+    backgroundColor: '#EDEDED',
+    padding: 5,
+    paddingLeft: 10,
+    fontSize: 13,
+    marginTop: 5,
+    height: height * 35,
   },
   bottomContainer: {
-    flexDirection: 'row',
+    flex: 1,
+    backgroundColor: '#FFFFFF',
   },
 });
 const styles = StyleSheet.create({
