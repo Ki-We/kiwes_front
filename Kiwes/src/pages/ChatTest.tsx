@@ -20,35 +20,130 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 export function ChatTest({navigation}: any) {
   const [keyboard, setKeyboard] = useState(false);
-  const [messages, setMessages] = useState<Chat[]>([
-    {
-      userId: 0,
-      msg: '테스트 사용자 님이 입장하셨습니다.',
-      time: '오후 4:35',
-    },
-    {userId: 2, msg: 'hello?', time: '2023-10-13 12:58'},
-    {userId: 8, msg: ':D', time: '2023-10-13 12:58'},
-    {userId: 2, msg: 'oh hi!', time: '2023-10-13 12:58'},
-    {userId: 8, msg: ':(', time: '2023-10-13 12:59'},
-    {userId: 8, msg: ';0', time: '2023-10-13 12:59'},
-    {userId: 2, msg: ' 😁😁😁😁😁', time: '2023-10-13 12:59'},
-    {userId: 8, msg: '😁😁😁', time: '2023-10-13 12:59'},
-    {userId: 2, msg: 'hello everyone', time: '2023-10-13 13:00'},
-    {userId: 2, msg: 'listen carefully', time: '2023-10-13 13:00'},
-    {userId: 8, msg: 'wakwak', time: '2023-10-13 13:00'},
-    {userId: 8, msg: 'did fd', time: '2023-10-13 13:00'},
-    {
-      userId: 3,
-      msg: 'ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ',
-      time: '2023-10-13 13:01',
-    },
-    {userId: 8, msg: '귤이 두 명이면 뀰', time: '2023-10-13 13:01'},
-    {
-      userId: 2,
-      msg: 'ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ',
-      time: '2023-10-13 13:06',
-    },
-  ]);
+  const [messages, setMessages] = useState<Chat[]>(
+    [
+      {
+        userId: 0,
+        msg: '테스트 사용자 님이 입장하셨습니다.',
+        time: '오후 4:35',
+      },
+      {userId: 2, msg: 'hello?', time: '2023-10-13 12:58'},
+      {userId: 8, msg: ':D', time: '2023-10-13 12:58'},
+      {userId: 2, msg: 'oh hi!', time: '2023-10-13 12:58'},
+      {userId: 8, msg: ':(', time: '2023-10-13 12:59'},
+      {userId: 8, msg: ';0', time: '2023-10-13 12:59'},
+      {userId: 2, msg: ' 😁😁😁😁😁', time: '2023-10-13 12:59'},
+      {userId: 8, msg: '😁😁😁', time: '2023-10-13 12:59'},
+      {userId: 2, msg: 'hello everyone', time: '2023-10-13 13:00'},
+      {userId: 2, msg: 'listen carefully', time: '2023-10-13 13:00'},
+      {userId: 8, msg: 'wakwak', time: '2023-10-13 13:00'},
+      {userId: 8, msg: 'did fd', time: '2023-10-13 13:00'},
+      {
+        userId: 3,
+        msg: 'ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ',
+        time: '2023-10-13 13:01',
+      },
+      {userId: 8, msg: '귤이 두 명이면 뀰', time: '2023-10-13 13:01'},
+      {
+        userId: 2,
+        msg: 'ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ',
+        time: '2023-10-13 13:06',
+      },
+      {
+        userId: 0,
+        msg: '테스트 사용자 님이 입장하셨습니다.',
+        time: '오후 4:35',
+      },
+      {userId: 2, msg: 'hello?', time: '2023-10-13 12:58'},
+      {userId: 8, msg: ':D', time: '2023-10-13 12:58'},
+      {userId: 2, msg: 'oh hi!', time: '2023-10-13 12:58'},
+      {userId: 8, msg: ':(', time: '2023-10-13 12:59'},
+      {userId: 8, msg: ';0', time: '2023-10-13 12:59'},
+      {userId: 2, msg: ' 😁😁😁😁😁', time: '2023-10-13 12:59'},
+      {userId: 8, msg: '😁😁😁', time: '2023-10-13 12:59'},
+      {userId: 2, msg: 'hello everyone', time: '2023-10-13 13:00'},
+      {userId: 2, msg: 'listen carefully', time: '2023-10-13 13:00'},
+      {userId: 8, msg: 'wakwak', time: '2023-10-13 13:00'},
+      {userId: 8, msg: 'did fd', time: '2023-10-13 13:00'},
+      {
+        userId: 3,
+        msg: 'ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ',
+        time: '2023-10-13 13:01',
+      },
+      {userId: 8, msg: '귤이 두 명이면 뀰', time: '2023-10-13 13:01'},
+      {
+        userId: 2,
+        msg: 'ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ',
+        time: '2023-10-13 13:06',
+      },
+      {
+        userId: 0,
+        msg: '테스트 사용자 님이 입장하셨습니다.',
+        time: '오후 4:35',
+      },
+      {userId: 2, msg: 'hello?', time: '2023-10-13 12:58'},
+      {userId: 8, msg: ':D', time: '2023-10-13 12:58'},
+      {userId: 2, msg: 'oh hi!', time: '2023-10-13 12:58'},
+      {userId: 8, msg: ':(', time: '2023-10-13 12:59'},
+      {userId: 8, msg: ';0', time: '2023-10-13 12:59'},
+      {userId: 2, msg: ' 😁😁😁😁😁', time: '2023-10-13 12:59'},
+      {userId: 8, msg: '😁😁😁', time: '2023-10-13 12:59'},
+      {userId: 2, msg: 'hello everyone', time: '2023-10-13 13:00'},
+      {userId: 2, msg: 'listen carefully', time: '2023-10-13 13:00'},
+      {userId: 8, msg: 'wakwak', time: '2023-10-13 13:00'},
+      {userId: 8, msg: 'did fd', time: '2023-10-13 13:00'},
+      {
+        userId: 3,
+        msg: 'ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ',
+        time: '2023-10-13 13:01',
+      },
+      {userId: 8, msg: '귤이 두 명이면 뀰', time: '2023-10-13 13:01'},
+      {
+        userId: 2,
+        msg: 'ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ',
+        time: '2023-10-13 13:06',
+      },
+      {
+        userId: 0,
+        msg: '테스트 사용자 님이 입장하셨습니다.',
+        time: '오후 4:35',
+      },
+      {userId: 2, msg: 'hello?', time: '2023-10-13 12:58'},
+      {userId: 8, msg: ':D', time: '2023-10-13 12:58'},
+      {userId: 2, msg: 'oh hi!', time: '2023-10-13 12:58'},
+      {userId: 8, msg: ':(', time: '2023-10-13 12:59'},
+      {userId: 8, msg: ';0', time: '2023-10-13 12:59'},
+      {userId: 2, msg: ' 😁😁😁😁😁', time: '2023-10-13 12:59'},
+      {userId: 8, msg: '😁😁😁', time: '2023-10-13 12:59'},
+      {userId: 2, msg: 'hello everyone', time: '2023-10-13 13:00'},
+      {userId: 2, msg: 'listen carefully', time: '2023-10-13 13:00'},
+      {userId: 8, msg: 'wakwak', time: '2023-10-13 13:00'},
+      {userId: 8, msg: 'did fd', time: '2023-10-13 13:00'},
+      {
+        userId: 3,
+        msg: 'ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ',
+        time: '2023-10-13 13:01',
+      },
+      {userId: 8, msg: '귤이 두 명이면 뀰', time: '2023-10-13 13:01'},
+      {
+        userId: 2,
+        msg: 'ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ',
+        time: '2023-10-13 13:06',
+      },
+    ].reverse(),
+  );
+  const DATA_PER_PAGE = 10;
+  const [page, setPage] = useState(1);
+  const [displayData, setDisplayData] = useState(
+    messages.slice(0, DATA_PER_PAGE * page),
+  );
+
+  const loadMoreData = () => {
+    console.log('loadMoreData');
+    const nextPage = page + 1;
+    setDisplayData(messages.slice(0, DATA_PER_PAGE * nextPage));
+    setPage(nextPage);
+  };
 
   const renderItem = ({item}: any) => {
     const message = item;
@@ -93,7 +188,11 @@ export function ChatTest({navigation}: any) {
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={{flex: 1}}>
           <FlatList
-            data={messages}
+            data={displayData}
+            keyExtractor={(item, index) => index.toString()}
+            onEndReached={loadMoreData}
+            onEndReachedThreshold={0.1}
+            // data={messages}
             renderItem={renderItem}
             automaticallyAdjustContentInsets={false}
             inverted={true}
