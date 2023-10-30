@@ -1,6 +1,7 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Chat} from '../utils/commonInterface';
 import {
+  Keyboard,
   View,
   Text,
   SafeAreaView,
@@ -16,134 +17,56 @@ import ChatBubbleMine from './ChatBubbleMine';
 import ChatBubbleOther from './ChatBubbleOther';
 import {KeyboardAvoidingView} from 'react-native';
 import backIcon from 'react-native-vector-icons/Ionicons';
+import sendIcon from 'react-native-vector-icons/Feather';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 export function ChatTest({navigation}: any) {
   const [keyboard, setKeyboard] = useState(false);
-  const [messages, setMessages] = useState<Chat[]>(
-    [
-      {
-        userId: 0,
-        msg: '테스트 사용자 님이 입장하셨습니다.',
-        time: '오후 4:35',
-      },
-      {userId: 2, msg: 'hello?', time: '2023-10-13 12:58'},
-      {userId: 8, msg: ':D', time: '2023-10-13 12:58'},
-      {userId: 2, msg: 'oh hi!', time: '2023-10-13 12:58'},
-      {userId: 8, msg: ':(', time: '2023-10-13 12:59'},
-      {userId: 8, msg: ';0', time: '2023-10-13 12:59'},
-      {userId: 2, msg: ' 😁😁😁😁😁', time: '2023-10-13 12:59'},
-      {userId: 8, msg: '😁😁😁', time: '2023-10-13 12:59'},
-      {userId: 2, msg: 'hello everyone', time: '2023-10-13 13:00'},
-      {userId: 2, msg: 'listen carefully', time: '2023-10-13 13:00'},
-      {userId: 8, msg: 'wakwak', time: '2023-10-13 13:00'},
-      {userId: 8, msg: 'did fd', time: '2023-10-13 13:00'},
-      {
-        userId: 3,
-        msg: 'ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ',
-        time: '2023-10-13 13:01',
-      },
-      {userId: 8, msg: '귤이 두 명이면 뀰', time: '2023-10-13 13:01'},
-      {
-        userId: 2,
-        msg: 'ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ',
-        time: '2023-10-13 13:06',
-      },
-      {
-        userId: 0,
-        msg: '테스트 사용자 님이 입장하셨습니다.',
-        time: '오후 4:35',
-      },
-      {userId: 2, msg: 'hello?', time: '2023-10-13 12:58'},
-      {userId: 8, msg: ':D', time: '2023-10-13 12:58'},
-      {userId: 2, msg: 'oh hi!', time: '2023-10-13 12:58'},
-      {userId: 8, msg: ':(', time: '2023-10-13 12:59'},
-      {userId: 8, msg: ';0', time: '2023-10-13 12:59'},
-      {userId: 2, msg: ' 😁😁😁😁😁', time: '2023-10-13 12:59'},
-      {userId: 8, msg: '😁😁😁', time: '2023-10-13 12:59'},
-      {userId: 2, msg: 'hello everyone', time: '2023-10-13 13:00'},
-      {userId: 2, msg: 'listen carefully', time: '2023-10-13 13:00'},
-      {userId: 8, msg: 'wakwak', time: '2023-10-13 13:00'},
-      {userId: 8, msg: 'did fd', time: '2023-10-13 13:00'},
-      {
-        userId: 3,
-        msg: 'ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ',
-        time: '2023-10-13 13:01',
-      },
-      {userId: 8, msg: '귤이 두 명이면 뀰', time: '2023-10-13 13:01'},
-      {
-        userId: 2,
-        msg: 'ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ',
-        time: '2023-10-13 13:06',
-      },
-      {
-        userId: 0,
-        msg: '테스트 사용자 님이 입장하셨습니다.',
-        time: '오후 4:35',
-      },
-      {userId: 2, msg: 'hello?', time: '2023-10-13 12:58'},
-      {userId: 8, msg: ':D', time: '2023-10-13 12:58'},
-      {userId: 2, msg: 'oh hi!', time: '2023-10-13 12:58'},
-      {userId: 8, msg: ':(', time: '2023-10-13 12:59'},
-      {userId: 8, msg: ';0', time: '2023-10-13 12:59'},
-      {userId: 2, msg: ' 😁😁😁😁😁', time: '2023-10-13 12:59'},
-      {userId: 8, msg: '😁😁😁', time: '2023-10-13 12:59'},
-      {userId: 2, msg: 'hello everyone', time: '2023-10-13 13:00'},
-      {userId: 2, msg: 'listen carefully', time: '2023-10-13 13:00'},
-      {userId: 8, msg: 'wakwak', time: '2023-10-13 13:00'},
-      {userId: 8, msg: 'did fd', time: '2023-10-13 13:00'},
-      {
-        userId: 3,
-        msg: 'ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ',
-        time: '2023-10-13 13:01',
-      },
-      {userId: 8, msg: '귤이 두 명이면 뀰', time: '2023-10-13 13:01'},
-      {
-        userId: 2,
-        msg: 'ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ',
-        time: '2023-10-13 13:06',
-      },
-      {
-        userId: 0,
-        msg: '테스트 사용자 님이 입장하셨습니다.',
-        time: '오후 4:35',
-      },
-      {userId: 2, msg: 'hello?', time: '2023-10-13 12:58'},
-      {userId: 8, msg: ':D', time: '2023-10-13 12:58'},
-      {userId: 2, msg: 'oh hi!', time: '2023-10-13 12:58'},
-      {userId: 8, msg: ':(', time: '2023-10-13 12:59'},
-      {userId: 8, msg: ';0', time: '2023-10-13 12:59'},
-      {userId: 2, msg: ' 😁😁😁😁😁', time: '2023-10-13 12:59'},
-      {userId: 8, msg: '😁😁😁', time: '2023-10-13 12:59'},
-      {userId: 2, msg: 'hello everyone', time: '2023-10-13 13:00'},
-      {userId: 2, msg: 'listen carefully', time: '2023-10-13 13:00'},
-      {userId: 8, msg: 'wakwak', time: '2023-10-13 13:00'},
-      {userId: 8, msg: 'did fd', time: '2023-10-13 13:00'},
-      {
-        userId: 3,
-        msg: 'ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ',
-        time: '2023-10-13 13:01',
-      },
-      {userId: 8, msg: '귤이 두 명이면 뀰', time: '2023-10-13 13:01'},
-      {
-        userId: 2,
-        msg: 'ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ',
-        time: '2023-10-13 13:06',
-      },
-    ].reverse(),
-  );
-  const DATA_PER_PAGE = 10;
-  const [page, setPage] = useState(1);
-  const [displayData, setDisplayData] = useState(
-    messages.slice(0, DATA_PER_PAGE * page),
-  );
+  const [messages, setMessages] = useState<Chat[]>([
+    {
+      userId: 0,
+      msg: '테스트 사용자 님이 입장하셨습니다.',
+      time: '오후 4:35',
+    },
+    {userId: 2, msg: 'hello?', time: '2023-10-13 12:58'},
+    {userId: 8, msg: ':D', time: '2023-10-13 12:58'},
+    {userId: 2, msg: 'oh hi!', time: '2023-10-13 12:58'},
+    {userId: 8, msg: ':(', time: '2023-10-13 12:59'},
+    {userId: 8, msg: ';0', time: '2023-10-13 12:59'},
+    {userId: 2, msg: ' 😁😁😁😁😁', time: '2023-10-13 12:59'},
+    {userId: 8, msg: '😁😁😁', time: '2023-10-13 12:59'},
+    {userId: 2, msg: 'hello everyone', time: '2023-10-13 13:00'},
+    {userId: 2, msg: 'listen carefully', time: '2023-10-13 13:00'},
+    {userId: 8, msg: 'wakwak', time: '2023-10-13 13:00'},
+    {userId: 8, msg: 'did fd', time: '2023-10-13 13:00'},
+    {
+      userId: 3,
+      msg: 'ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ',
+      time: '2023-10-13 13:01',
+    },
+    {userId: 8, msg: '귤이 두 명이면 뀰', time: '2023-10-13 13:01'},
+    {
+      userId: 2,
+      msg: 'ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ',
+      time: '2023-10-13 13:06',
+    },
+  ]);
 
-  const loadMoreData = () => {
-    console.log('loadMoreData');
-    const nextPage = page + 1;
-    setDisplayData(messages.slice(0, DATA_PER_PAGE * nextPage));
-    setPage(nextPage);
-  };
+  const [keyboardStatus, setKeyboardStatus] = useState('20');
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
+      setKeyboardStatus('0');
+    });
+    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
+      setKeyboardStatus('20');
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
 
   const renderItem = ({item}: any) => {
     const message = item;
@@ -186,13 +109,10 @@ export function ChatTest({navigation}: any) {
       <TouchableWithoutFeedback style={{flex: 1}}>
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={{flex: 1}}>
+          keyboardVerticalOffset={keyboardStatus}
+          style={{flex: 1, backgroundColor: '#FFFFFF'}}>
           <FlatList
-            data={displayData}
-            keyExtractor={(item, index) => index.toString()}
-            onEndReached={loadMoreData}
-            onEndReachedThreshold={0.1}
-            // data={messages}
+            data={messages}
             renderItem={renderItem}
             automaticallyAdjustContentInsets={false}
             inverted={true}
@@ -205,7 +125,25 @@ export function ChatTest({navigation}: any) {
             }}
             automaticallyAdjustKeyboardInsets={true}
           />
-          <TextInput placeholder={'Add Message'} />
+          <View style={styles.inputContainer}>
+            <View style={{width: '80%'}}>
+              <TextInput style={styles.input} />
+            </View>
+            <View
+              style={{
+                height: height * 50,
+                marginLeft: 10,
+              }}>
+              <sendIcon.Button
+                backgroundColor="#FFFFFF"
+                iconStyle={{margin: 0, padding: 0}}
+                name="send"
+                color="#8A8A8A"
+                size={height * 30}
+                onPress={() => navigation.pop()}
+              />
+            </View>
+          </View>
         </KeyboardAvoidingView>
       </TouchableWithoutFeedback>
     </SafeAreaView>
@@ -213,6 +151,28 @@ export function ChatTest({navigation}: any) {
 }
 
 const styles = StyleSheet.create({
+  inputContainer: {
+    borderTopColor: '#EDEDED',
+    borderTopWidth: 2,
+    padding: 20,
+    paddingRight: 5,
+    paddingTop: 10,
+    backgroundColor: '#FFFFFF',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  input: {
+    // width: '80%',
+    borderWidth: 1,
+    borderColor: '#8A8A8A',
+    borderRadius: 20,
+    backgroundColor: '#EDEDED',
+    padding: 5,
+    paddingLeft: 10,
+    fontSize: 13,
+    marginTop: 5,
+    height: height * 35,
+  },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
