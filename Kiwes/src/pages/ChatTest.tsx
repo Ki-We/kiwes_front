@@ -9,6 +9,8 @@ import {
   TextInput,
   TouchableWithoutFeedback,
   Platform,
+  Alert,
+  TouchableOpacity,
 } from 'react-native';
 import {height, width} from '../global';
 import ChatBubbleSystem from './ChatBubbleSystem';
@@ -163,9 +165,11 @@ export function ChatTest({navigation}: any) {
     } else {
       const writer = '(알수없음)';
       return (
-        <View style={styles.chatBubble}>
+        <TouchableOpacity
+          style={styles.chatBubble}
+          onLongPress={() => Alert.alert('Title', 'Long press detected')}>
           <ChatBubbleOther writer={writer} chat={message} color={'#3196E8'} />
-        </View>
+        </TouchableOpacity>
       );
     }
   };

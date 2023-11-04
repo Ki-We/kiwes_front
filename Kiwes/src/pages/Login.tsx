@@ -5,11 +5,23 @@ import {apiServer} from '../utils/metaData';
 import {RESTAPIBuilder} from '../utils/restapiBuilder';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useFocusEffect} from '@react-navigation/native';
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
+import {
+  GOOGLE_WEB_CLIENT_ID,
+  GOOGLE_WEB_CLIENT_SECRET,
+  GOOGLE_REDIRECT_URI,
+} from '../utils/googleConfig';
 
 export default function Login({navigation}: any) {
   useFocusEffect(
     useCallback(() => {
       checkIsLogin();
+      GoogleSignin.configure({
+        webClientId: GOOGLE_WEB_CLIENT_ID,
+      });
     }, []),
   );
   const checkIsLogin = async () => {
@@ -37,8 +49,56 @@ export default function Login({navigation}: any) {
     console.log('연결 필요');
   };
   const signInWithGoogle = async () => {
-    console.log('연결 필요');
+    GoogleSignin.configure({
+      webClientId: GOOGLE_WEB_CLIENT_ID,
+      offlineAccess: true,
+    });
+    await GoogleSignin.hasPlayServices();
+    const userInfo = await GoogleSignin.signIn().catch(error => {
+      console.log(error);
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        console.log('Login Cancel : ', error.message);
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        console.log(`Login Fail(code:${error.code})`, error.message);
+      }
+      return;
+    });
+    console.log(userInfo);
+    if (!userInfo) {
+      return;
+    }
+    console.log(123);
+    const result = await fetch('https://oauth2.googleapis.com/token', {
+      method: 'POST',
+      body: JSON.stringify({
+        code: userInfo.serverAuthCode,
+        client_id: GOOGLE_WEB_CLIENT_ID,
+        client_secret: GOOGLE_WEB_CLIENT_SECRET,
+        grant_type: 'authorization_code',
+        redirect_uri: GOOGLE_REDIRECT_URI,
+      }),
+    }).then(res => {
+      return res.json();
+    });
+    console.log(result?.accessToken);
+    console.log(result.access_token);
+    console.log(123);
+    const url = `${apiServer}/login/oauth2/code/google?token=${result?.access_token}`;
+    const {data} = await new RESTAPIBuilder(url, 'POST')
+      .build()
+      .run()
+      .catch(err => {
+        console.log(err);
+      });
+    console.log('Login Success');
+    const tokenData = {
+      userId: data.userId,
+      accessToken: data.accessToken,
+    };
+    await AsyncStorage.setItem('userData', JSON.stringify(tokenData));
+    await navigation.navigate('BottomTab');
   };
+
   const signInWithKakao = async () => {
     const result = await KakaoLogin.login().catch(error => {
       console.log(error);
@@ -49,7 +109,6 @@ export default function Login({navigation}: any) {
       }
       return;
     });
-
     if (!result) {
       return;
     }
