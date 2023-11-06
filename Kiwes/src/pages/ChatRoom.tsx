@@ -106,7 +106,22 @@ const ChatScreen = ({navigation, route}) => {
   const [kickedData, setKickedData] = useState<KickedUser>(initKickedUser);
   const socket = useRef();
   const chatScrollRef = useRef<ScrollView>(null);
+
+  const DATA_PER_PAGE = 20;
+  const [page, setPage] = useState(1);
+  const [displayData, setDisplayData] = useState(
+    messages.slice(0, DATA_PER_PAGE * page),
+  );
+
+  const loadMoreData = () => {
+    const nextPage = page + 1;
+
+    setDisplayData(messages.slice(0, DATA_PER_PAGE * nextPage));
+    setPage(nextPage);
+  };
+
   const [statusBarHeight, setStatusBarHeight] = useState(height);
+
   useEffect(() => {
     Platform.OS == 'ios' &&
       StatusBarManager.getHeight((statusBarFrameData: any) => {
@@ -170,13 +185,17 @@ const ChatScreen = ({navigation, route}) => {
     });
     socket.current?.on('msgList', data => {
       const chat = data.chat;
-      setMessages(chat);
+      setMessages(chat.reverse()); //채팅반대로
     });
     socket.current?.on('sendMSG', data => {
-      console.log('newMessage : ', data);
+      messages.unshift(data);
       setMessages(prev => {
-        return [...prev, data];
+        return [data, ...prev];
       });
+
+      const nextPage = 1;
+      setDisplayData(messages.slice(0, DATA_PER_PAGE * nextPage));
+      setPage(nextPage);
     });
     socket.current?.on('kickedout', data => {
       // data = {userId: 1}// 강퇴당한 사람이 1이다.
@@ -363,10 +382,64 @@ const ChatScreen = ({navigation, route}) => {
       <View style={styles.separator} />
 
       <TouchableWithoutFeedback>
-        <View style={{flex: 1}}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          keyboardVerticalOffset={keyboardStatus}
+          style={{flex: 1, backgroundColor: '#FFFFFF'}}>
           <FlatList
             // contentContainerStyle={styles.contentContainer}
-            data={messages}
+            data={displayData}
+            keyExtractor={(item, index) => index.toString()}
+            onEndReached={loadMoreData}
+            onEndReachedThreshold={0.1}
+            // data={messages}
+            renderItem={renderItem}
+            automaticallyAdjustContentInsets={false}
+            inverted={true}
+            keyboardDismissMode="interactive"
+            keyboardShouldPersistTaps="handled"
+            contentInsetAdjustmentBehavior="never"
+            maintainVisibleContentPosition={{
+              minIndexForVisible: 0,
+              autoscrollToTopThreshold: 80,
+            }}
+            automaticallyAdjustKeyboardInsets={true}
+          />
+          <View style={chatInputStyle.inputContainer}>
+            <View style={{width: '80%'}}>
+              <TextInput
+                style={chatInputStyle.input}
+                onChangeText={text => {
+                  setSendText(text);
+                }}
+                value={sendText}
+              />
+            </View>
+            <View
+              style={{
+                height: height * 50,
+                marginLeft: 10,
+              }}>
+              <sendIcon.Button
+                backgroundColor="#FFFFFF"
+                iconStyle={{margin: 0, padding: 0}}
+                name="send"
+                color="#8A8A8A"
+                size={height * 30}
+                onPress={sendMSG}
+              />
+            </View>
+          </View>
+        </KeyboardAvoidingView>
+
+        {/* <View style={{flex: 1}}>
+        <FlatList
+            // contentContainerStyle={styles.contentContainer}
+            data={displayData}
+            keyExtractor={(item, index) => index.toString()}
+            onEndReached={loadMoreData}
+            onEndReachedThreshold={0.1}
+            // data={messages}
             renderItem={renderItem}
             automaticallyAdjustContentInsets={false}
             inverted={true}
@@ -381,41 +454,16 @@ const ChatScreen = ({navigation, route}) => {
           />
           <KeyboardAvoidingView
             behavior="padding"
-            keyboardVerticalOffset={keyboardStatus}
+            keyboardVerticalOffset={statusBarHeight + 44}
+            // keyboardVerticalOffset={150}
             style={chatInputStyle.bottomContainer}>
-            <View style={chatInputStyle.inputContainer}>
-              <View style={{width: '80%'}}>
-                <TextInput
-                  style={chatInputStyle.input}
-                  onChangeText={text => {
-                    setSendText(text);
-                  }}
-                  value={sendText}
-                />
-              </View>
-              <View
-                style={{
-                  height: height * 50,
-                  marginLeft: 10,
-                }}>
-                <sendIcon.Button
-                  backgroundColor="#FFFFFF"
-                  iconStyle={{margin: 0, padding: 0}}
-                  name="send"
-                  color="#8A8A8A"
-                  size={height * 30}
-                  onPress={sendMSG}
-                  disabled={sendText == ''}
-                />
-              </View>
-            </View>
-            {/* <TextInput
+            <TextInput
               placeholder={'Add Message'}
               onChangeText={text => {
                 setSendText(text);
               }}
               value={sendText}
-            /> */}
+            />
             {/* <TextInput
               style={chatInputStyle.input}
               placeholder={'Add Message'}

@@ -1,10 +1,4 @@
-import {
-  StyleSheet,
-  SafeAreaView,
-  Image,
-  Pressable,
-  Platform,
-} from 'react-native';
+import {StyleSheet, SafeAreaView, Image, Pressable} from 'react-native';
 import React, {useCallback} from 'react';
 import * as KakaoLogin from '@react-native-seoul/kakao-login';
 import {apiServer} from '../utils/metaData';
@@ -28,16 +22,21 @@ export default function Login({navigation}: any) {
     const result = await new RESTAPIBuilder(url, 'GET')
       .setNeedToken(true)
       .build()
-      .run();
+      .run()
+      .catch(err => {
+        console.log(err);
+        AsyncStorage.removeItem('userData');
+      });
 
     if (result) {
       console.log('verify Result : ', result);
       navigation.navigate('BottomTab');
-    } else {
-      await AsyncStorage.removeItem('userData');
     }
   };
   const signInWithApple = async () => {
+    console.log('연결 필요');
+  };
+  const signInWithGoogle = async () => {
     console.log('연결 필요');
   };
   const signInWithKakao = async () => {
@@ -79,17 +78,30 @@ export default function Login({navigation}: any) {
         style={styles.image}
         resizeMode="contain"
       />
-      <Pressable
-        onPress={() => {
-          Platform.OS === 'ios' ? signInWithApple() : signInWithKakao();
-        }}>
+      <Pressable onPress={signInWithKakao}>
         <Image
           source={{
-            uri: `https://kiwes-bucket.s3.ap-northeast-2.amazonaws.com/main/${
-              Platform.OS === 'ios' ? 'apple_login' : 'kakao_login'
-            }.png`,
+            uri: `https://kiwes-bucket.s3.ap-northeast-2.amazonaws.com/main/kakao_login.png`,
           }}
-          style={styles.kakao}
+          style={styles.oauth}
+          resizeMode="contain"
+        />
+      </Pressable>
+      <Pressable onPress={signInWithApple}>
+        <Image
+          source={{
+            uri: `https://kiwes-bucket.s3.ap-northeast-2.amazonaws.com/main/apple_login.png`,
+          }}
+          style={styles.oauth}
+          resizeMode="contain"
+        />
+      </Pressable>
+      <Pressable onPress={signInWithGoogle}>
+        <Image
+          source={{
+            uri: `https://kiwes-bucket.s3.ap-northeast-2.amazonaws.com/main/google_login.png`,
+          }}
+          style={styles.oauth}
           resizeMode="contain"
         />
       </Pressable>
@@ -105,9 +117,10 @@ const styles = StyleSheet.create({
   image: {
     aspectRatio: 1,
     width: '100%',
+    marginBottom: 30,
   },
-  kakao: {
-    aspectRatio: 2,
-    width: '80%',
+  oauth: {
+    aspectRatio: 5,
+    width: '70%',
   },
 });
