@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useRef, useCallback} from 'react';
 import {
   SafeAreaView,
+  Alert,
   View,
   Text,
   TextInput,
@@ -346,7 +347,7 @@ const ChatScreen = ({navigation, route}) => {
 
     if (message.userId == 0) {
       return (
-        <View style={styles.chatBubble}>
+        <View style={styles.chatBubble} >
           <ChatBubbleSystem chat={message} />
         </View>
       );
@@ -363,18 +364,20 @@ const ChatScreen = ({navigation, route}) => {
         colorMap[message.userId] = colorList[num];
       }
 
-      let writer = '(알수없음)';
+      let writer = '(알수없음123)';
       if (clubMembers[message.userId])
         writer = clubMembers[message.userId].nickName;
 
       return (
-        <View style={styles.chatBubble}>
+        <TouchableOpacity
+          style={styles.chatBubble}
+          onLongPress={() => Alert.alert('Title', 'Long press detected')}>
           <ChatBubbleOther
             writer={writer}
             chat={message}
             color={colorMap[message.userId]}
           />
-        </View>
+        </TouchableOpacity>
       );
     }
   };
