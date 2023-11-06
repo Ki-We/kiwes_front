@@ -63,11 +63,9 @@ export default function Login({navigation}: any) {
       }
       return;
     });
-    console.log(userInfo);
     if (!userInfo) {
       return;
     }
-    console.log(123);
     const result = await fetch('https://oauth2.googleapis.com/token', {
       method: 'POST',
       body: JSON.stringify({
@@ -80,9 +78,6 @@ export default function Login({navigation}: any) {
     }).then(res => {
       return res.json();
     });
-    console.log(result?.accessToken);
-    console.log(result.access_token);
-    console.log(123);
     const url = `${apiServer}/login/oauth2/code/google?token=${result?.access_token}`;
     const {data} = await new RESTAPIBuilder(url, 'POST')
       .build()
