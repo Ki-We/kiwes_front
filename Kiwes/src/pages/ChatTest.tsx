@@ -10,8 +10,8 @@ import {
   TextInput,
   TouchableWithoutFeedback,
   Platform,
-  Alert,
-  TouchableOpacity,
+  TouchableHighlight,
+  
 } from 'react-native';
 import {height, width} from '../global';
 import ChatBubbleSystem from './ChatBubbleSystem';
@@ -52,7 +52,25 @@ export function ChatTest({navigation}: any) {
       msg: 'ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ',
       time: '2023-10-13 13:06',
     },
+    {
+      userId: 8,
+      msg: 'ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ',
+      time: '2023-10-13 13:06',
+    },
   ]);
+
+  const DATA_PER_PAGE = 20;
+  const [page, setPage] = useState(1);
+  const [displayData, setDisplayData] = useState(
+    messages.slice(0, DATA_PER_PAGE * page),
+  );
+
+  const loadMoreData = () => {
+    const nextPage = page + 1;
+
+    setDisplayData(messages.slice(0, DATA_PER_PAGE * nextPage));
+    setPage(nextPage);
+  };
 
   const [keyboardStatus, setKeyboardStatus] = useState('20');
 
@@ -73,13 +91,13 @@ export function ChatTest({navigation}: any) {
   const renderItem = ({item}: any) => {
     const message = item;
     // 내 id가 2라는 가정
-    if (message.userId == 0)
+    if (message.userId == 0) {
       return (
         <View style={styles.chatBubble}>
           <ChatBubbleSystem chat={message} />
         </View>
       );
-    else if (message.userId == 2) {
+    } else if (message.userId == 2) {
       return (
         <View style={styles.chatBubble}>
           <ChatBubbleMine chat={message} />
@@ -116,7 +134,12 @@ export function ChatTest({navigation}: any) {
           keyboardVerticalOffset={keyboardStatus}
           style={{flex: 1, backgroundColor: '#FFFFFF'}}>
           <FlatList
-            data={messages}
+            // contentContainerStyle={styles.contentContainer}
+            data={displayData}
+            keyExtractor={(item, index) => index.toString()}
+            onEndReached={loadMoreData}
+            onEndReachedThreshold={0.1}
+            // data={messages}
             renderItem={renderItem}
             automaticallyAdjustContentInsets={false}
             inverted={true}
@@ -129,6 +152,20 @@ export function ChatTest({navigation}: any) {
             }}
             automaticallyAdjustKeyboardInsets={true}
           />
+          {/* <FlatList
+            data={messages}
+            renderItem={renderItem}
+            automaticallyAdjustContentInsets={false}
+            inverted={true}
+            keyboardDismissMode="interactive"
+            keyboardShouldPersistTaps="handled"
+            contentInsetAdjustmentBehavior="never"
+            maintainVisibleContentPosition={{
+              minIndexForVisible: 0,
+              autoscrollToTopThreshold: 80,
+            }}
+            automaticallyAdjustKeyboardInsets={true}
+          /> */}
           <View style={styles.inputContainer}>
             <View style={{width: '80%'}}>
               <TextInput style={styles.input} />

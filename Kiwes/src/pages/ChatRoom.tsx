@@ -259,28 +259,6 @@ const ChatScreen = ({navigation, route}) => {
     delete clubMembers[id];
     setClubMembers({...clubMembers});
   };
-  /* 사용 코드 --END-- */
-
-  // useEffect(() => {
-  //   // 텍스트 입력 포커스 상태 변경 시 키보드 이벤트를 구독/해제합니다.
-  //   const keyboardDidShowListener = Keyboard.addListener(
-  //     'keyboardDidShow',
-  //     () => {
-  //       setTextInputFocused(true);
-  //     },
-  //   );
-  //   const keyboardDidHideListener = Keyboard.addListener(
-  //     'keyboardDidHide',
-  //     () => {
-  //       setTextInputFocused(false);
-  //     },
-  //   );
-
-  //   return () => {
-  //     keyboardDidShowListener.remove();
-  //     keyboardDidHideListener.remove();
-  //   };
-  // }, []);
 
   const exitClub = async () => {
     await socket.current.emit('exit', {name: user.nickName});
@@ -478,37 +456,29 @@ const ChatScreen = ({navigation, route}) => {
             automaticallyAdjustKeyboardInsets={true}
           />
           <KeyboardAvoidingView
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            keyboardVerticalOffset={keyboardStatus}
-            style={{flex: 1, backgroundColor: '#FFFFFF'}}>
-            <View style={chatInputStyle.inputContainer}>
-              <View style={{width: '80%'}}>
-                <TextInput
-                  style={chatInputStyle.input}
-                  onChangeText={text => {
-                    setSendText(text);
-                  }}
-                  value={sendText}
-                />
-              </View>
-              <View
-                style={{
-                  height: height * 50,
-                  marginLeft: 10,
-                }}>
-                <sendIcon.Button
-                  backgroundColor="#FFFFFF"
-                  iconStyle={{margin: 0, padding: 0}}
-                  name="send"
-                  color="#8A8A8A"
-                  size={height * 30}
-                  onPress={sendMSG}
-                  disabled={sendText == ''}
-                />
-              </View>
-            </View> */}
-        {/* </KeyboardAvoidingView> */}
-        {/* </View> */}
+            behavior="padding"
+            keyboardVerticalOffset={statusBarHeight + 44}
+            // keyboardVerticalOffset={150}
+            style={chatInputStyle.bottomContainer}>
+            <TextInput
+              placeholder={'Add Message'}
+              onChangeText={text => {
+                setSendText(text);
+              }}
+              value={sendText}
+            />
+            {/* <TextInput
+              style={chatInputStyle.input}
+              placeholder={'Add Message'}
+              onChangeText={text => {
+                setSendText(text);
+              }}
+              value={sendText}></TextInput>
+            <Pressable onPress={sendMSG} disabled={sendText == ''}>
+              <Text style={chatInputStyle.send}>Send</Text>
+            </Pressable> */}
+        {/* </KeyboardAvoidingView>
+        </View> */}
       </TouchableWithoutFeedback>
       {/* <TouchableWithoutFeedback>
         <ScrollView

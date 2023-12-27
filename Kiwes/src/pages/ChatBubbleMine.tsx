@@ -1,15 +1,67 @@
-import {View, Text, StyleSheet} from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, StyleSheet, TouchableHighlight} from 'react-native';
 import {Chat} from '../utils/commonInterface';
+import MyBubbleLongpressModal from '../components/myBubbleLongpressModal';
 
 export default function ChatBubbleMine({chat}: {chat: Chat}) {
+  const [chatBubbleData, setchatMsg] = useState(chat.msg);
+  const setChatBubbleData = translatedText => {
+    setchatMsg(translatedText);
+  };
+
+  const [isMyBubbleLongpressModal, setMyBubbleLongpressModal] = useState(false);
+
+  const toggleMyBubbleLongpressModal = () => {
+    setMyBubbleLongpressModal(!isMyBubbleLongpressModal);
+  };
+
+  const [componentHeight, setComponentHeight] = useState(0);
+  const bubbleHeight = event => {
+    const {height} = event.nativeEvent.layout;
+    setComponentHeight(height);
+  };
+
+  const [inBubblePosition, setInBubblePosition] = useState({x: 0, y: 0});
+  const bubblePosition = event => {
+    const {nativeEvent} = event;
+    const {locationX, locationY} = nativeEvent;
+    setInBubblePosition({x: locationX, y: locationY});
+  };
+  const [clickedPosition, setClickedPosition] = useState({x: 0, y: 0});
+  const backgroundPosition = event => {
+    const {pageX, pageY} = event.nativeEvent;
+    setClickedPosition({x: pageX, y: pageY});
+  };
+
+  const chatBubbleLongPress = () => {
+    toggleMyBubbleLongpressModal();
+  };
   return (
     <View style={styles.container}>
-      <View style={styles.chat}>
-        <Text style={styles.text}>{chat.msg}</Text>
-      </View>
+      <TouchableHighlight
+        style={styles.chat}
+        onLayout={bubbleHeight}
+        onLongPress={event => {
+          bubblePosition(event);
+          backgroundPosition(event);
+          chatBubbleLongPress();
+        }}
+        underlayColor={'#589947'}
+        activeOpacity={1}>
+        <Text style={styles.text}>{chatBubbleData}</Text>
+      </TouchableHighlight>
       <View style={styles.time}>
         <Text style={styles.timeText}>{chat.time}</Text>
       </View>
+      <MyBubbleLongpressModal
+        isVisible={isMyBubbleLongpressModal}
+        onClose={toggleMyBubbleLongpressModal}
+        chatBubbleData={chatBubbleData}
+        backgroundPosition={clickedPosition}
+        inBubblePosition={inBubblePosition}
+        bubbleHeight={componentHeight}
+        setBubbleData={setChatBubbleData}
+      />
     </View>
   );
 }
@@ -21,7 +73,7 @@ const styles = StyleSheet.create({
   },
   chat: {
     marginRight: 10,
-    backgroundColor: '#3DBE14',
+    backgroundColor: '#58C047',
     paddingLeft: 10,
     paddingRight: 10,
     paddingTop: 7,

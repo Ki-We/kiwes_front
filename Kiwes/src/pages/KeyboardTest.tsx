@@ -1,11 +1,10 @@
-import React from 'react';
+import {useState, useEffect} from 'react';
 import {
   StyleSheet,
   KeyboardAvoidingView,
   View,
   TextInput,
   Text,
-  Platform,
   Button,
   Keyboard,
 } from 'react-native';
@@ -15,8 +14,27 @@ const CommentScreen = props => {
     Keyboard.dismiss();
   };
 
+  const [keyboardStatus, setKeyboardStatus] = useState('');
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
+      setKeyboardStatus('0');
+    });
+    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
+      setKeyboardStatus('20');
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
+
   return (
-    <KeyboardAvoidingView style={styles.rootContainer} behavior={'padding'}>
+    <KeyboardAvoidingView
+      style={styles.rootContainer}
+      behavior={'padding'}
+      keyboardVerticalOffset={keyboardStatus}>
       <Button title={'키보드 내리기'} onPress={hideKeyboard} />
       <View style={styles.commentArea}>
         <Text>이곳은 댓글이 보여질 공간 입니다.</Text>
@@ -53,7 +71,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     width: '100%',
-    fontSize: 18,
+    fontSize: 10,
     borderWidth: 1,
     borderColor: 'pink',
   },

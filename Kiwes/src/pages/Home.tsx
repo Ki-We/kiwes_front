@@ -1,6 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity, Image, StyleSheet} from 'react-native';
+
+let imagePath = require('./kiwes.png');
 
 export function Home({navigation}: any) {
   const logout = async () => {
@@ -9,8 +11,9 @@ export function Home({navigation}: any) {
   };
   return (
     <View>
+      <Image source={imagePath} style={styles.image} resizeMode="contain" />
       <Text>Home Screen</Text>
-
+      {console.log('dd')}
       <TouchableOpacity
         onPress={() => {
           navigation.navigate('Test');
@@ -36,5 +39,11 @@ export function Home({navigation}: any) {
     </View>
   );
 }
+const styles = StyleSheet.create({
+  image: {
+    width: 133,
+    height: 167,
+  },
+});
 
 export default Home;
