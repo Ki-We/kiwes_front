@@ -474,8 +474,8 @@ const ChatScreen = ({navigation, route}) => {
             <Pressable onPress={sendMSG} disabled={sendText == ''}>
               <Text style={chatInputStyle.send}>Send</Text>
             </Pressable> */}
-          </KeyboardAvoidingView>
-        </View>
+        {/* </KeyboardAvoidingView>
+        </View> */}
       </TouchableWithoutFeedback>
       {/* <TouchableWithoutFeedback>
         <ScrollView
