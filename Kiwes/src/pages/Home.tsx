@@ -13,6 +13,7 @@ export function Home({navigation}: any) {
     <View>
       <Image source={imagePath} style={styles.image} resizeMode="contain" />
       <Text>Home Screen</Text>
+      {console.log('dd')}
       <TouchableOpacity
         onPress={() => {
           navigation.navigate('Test');

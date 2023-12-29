@@ -10,6 +10,8 @@ import {
   TextInput,
   TouchableWithoutFeedback,
   Platform,
+  TouchableHighlight,
+  
 } from 'react-native';
 import {height, width} from '../global';
 import ChatBubbleSystem from './ChatBubbleSystem';
@@ -18,6 +20,7 @@ import ChatBubbleOther from './ChatBubbleOther';
 import {KeyboardAvoidingView} from 'react-native';
 import backIcon from 'react-native-vector-icons/Ionicons';
 import sendIcon from 'react-native-vector-icons/Feather';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 export function ChatTest({navigation}: any) {
   const [keyboard, setKeyboard] = useState(false);
