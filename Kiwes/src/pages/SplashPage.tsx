@@ -5,7 +5,7 @@ export default function SplashPage() {
     <View style={styles.container}>
       <Image
         source={{
-          uri: 'https://kiwes-bucket.s3.ap-northeast-2.amazonaws.com/main/splash_icon.png',
+          uri: 'https://kiwes2-bucket.s3.ap-northeast-2.amazonaws.com/main/splash_icon.png',
         }}
         style={styles.image}
         resizeMode="contain"

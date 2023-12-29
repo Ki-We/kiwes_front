@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Button, View, Alert, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {launchImageLibrary}  from 'react-native-image-picker';
-import RNFS from 'react-native-fs'
+import {launchImageLibrary} from 'react-native-image-picker';
+import RNFS from 'react-native-fs';
 import { RESTAPIBuilder } from '../utils/restapiBuilder';
 import { apiServer } from '../utils/metaData';
 import { Buffer } from 'buffer';
