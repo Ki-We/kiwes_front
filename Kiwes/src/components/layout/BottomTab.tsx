@@ -6,7 +6,7 @@ import ChatMain from '../../pages/ChatMain';
 import CreateMeeting from '../../pages/CreateMeeting';
 import Home from '../../pages/Home';
 import MyPage from '../../pages/MyPage';
-import Wish from '../../pages/Wish';
+import WishList from '../../pages/WishList';
 
 const Tab = createBottomTabNavigator();
 
@@ -31,7 +31,7 @@ export default function BottomTab({navigation}) {
       />
       <Tab.Screen
         name="wish"
-        component={Wish}
+        component={WishList}
         options={{
           title: 'WISH',
           tabBarIcon: ({color, size}) => (

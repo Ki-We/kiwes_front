@@ -11,7 +11,6 @@ import {
   Dimensions,
 } from 'react-native';
 import Home from './src/pages/Home';
-import Wish from './src/pages/Wish';
 import CreateMeeting from './src/pages/CreateMeeting';
 import ChatMain from './src/pages/ChatMain';
 import ChatRoom from './src/pages/ChatRoom';
@@ -185,6 +184,7 @@ import ChatTest from './src/pages/ChatTest';
 import KeyboardTest from './src/pages/KeyboardTest';
 import Login from './src/pages/Login';
 import SplashPage from './src/pages/SplashPage';
+import WishList from './src/pages/WishList';
 // import React from 'react';
 // import {View, Text, Button} from 'react-native';
 // import {NavigationContainer} from '@react-navigation/native';
@@ -225,7 +225,7 @@ const BottomTab = ({navigation}) => {
       />
       <Tab.Screen
         name="wish"
-        component={Wish}
+        component={WishList}
         options={{
           title: 'WISH',
           tabBarIcon: ({color, size}) => (
