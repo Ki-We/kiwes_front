@@ -11,6 +11,7 @@ import {
   TouchableWithoutFeedback,
   Platform,
   TouchableHighlight,
+  Alert,
   
 } from 'react-native';
 import {height, width} from '../global';
@@ -21,6 +22,7 @@ import {KeyboardAvoidingView} from 'react-native';
 import backIcon from 'react-native-vector-icons/Ionicons';
 import sendIcon from 'react-native-vector-icons/Feather';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export function ChatTest({navigation}: any) {
   const [keyboard, setKeyboard] = useState(false);

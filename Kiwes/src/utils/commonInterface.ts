@@ -29,3 +29,12 @@ export interface ClubMember {
   nickName: string;
   thumbnail: string;
 }
+export interface BoardPost {
+  locationsKeyword: string;
+  clubId: string;
+  title: string;
+  thumbnailImage: string;
+  date: string;
+  heart: boolean;
+  languages: string[];
+}

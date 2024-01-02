@@ -1,10 +1,11 @@
 import React from 'react';
-import { View } from "native-base";
+import { View,Text } from 'react-native';
 
-const ClubPage = ({ club_id }: { club_id?: string }) => {
+const ClubPage = ({route}: any  ) => {
+  const { clubId } = route.params;
     return (
       <View>
-
+        <Text> club_id: {clubId}</Text>
       </View>
   );
 };
