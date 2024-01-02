@@ -11,7 +11,6 @@ import {
   Dimensions,
 } from 'react-native';
 import Home from './src/pages/Home';
-import Wish from './src/pages/Wish';
 import CreateMeeting from './src/pages/CreateMeeting';
 import ChatMain from './src/pages/ChatMain';
 import ChatRoom from './src/pages/ChatRoom';
@@ -185,116 +184,119 @@ import ChatTest from './src/pages/ChatTest';
 import KeyboardTest from './src/pages/KeyboardTest';
 import Login from './src/pages/Login';
 import SplashPage from './src/pages/SplashPage';
+import WishList from './src/pages/WishList';
+import LoginStack from './src/components/layout/LoginStack';
+import { NativeBaseProvider } from 'native-base';
 // import React from 'react';
 // import {View, Text, Button} from 'react-native';
 // import {NavigationContainer} from '@react-navigation/native';
 // import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 // import {Icon} from 'native-base';
-const Stack = createStackNavigator();
-const Tab = createBottomTabNavigator();
+// const Stack = createStackNavigator();
+// const Tab = createBottomTabNavigator();
 
-const BottomTab = ({navigation}) => {
-  const insets = useSafeAreaInsets();
-  const onPress = () => navigation.navigate('CreateMeeting');
-  return (
-    <Tab.Navigator
-      initialRouteName="Home"
-      screenOptions={{
-        tabBarStyle: {
-          height: height * 65 + insets.bottom,
-          paddingTop: height * 10,
-        },
-        tabBarLabelStyle: {
-          fontFamily: 'Pretendard-Bold',
-          fontSize: width * 10,
-          fontWeight: '600',
-          paddingBottom: height * 5,
-        },
-        tabBarActiveTintColor: '#58C047',
-      }}>
-      <Tab.Screen
-        name="Home"
-        component={Home}
-        options={{
-          title: 'HOME',
-          tabBarIcon: ({color, size}) => (
-            <Icon name="home-outline" color={color} size={size} />
-          ),
-          tabBarLabel: 'Home',
-        }}
-      />
-      <Tab.Screen
-        name="wish"
-        component={Wish}
-        options={{
-          title: 'WISH',
-          tabBarIcon: ({color, size}) => (
-            <Icon name="heart-outline" color={color} size={size} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="CreateMeeting"
-        component={CreateMeeting}
-        options={{
-          headerShown: false,
-          tabBarButton: () => (
-            <TouchableOpacity activeOpacity={0.5} onPress={onPress}>
-              <Image
-                source={{
-                  uri: 'https://s3-alpha-sig.figma.com/img/677f/08a0/65dea42679c06af145f80d3ab5b3d92e?Expires=1696204800&Signature=oGyNfscQ5ZpnKOEED1l7A3B6si9Y4ma5kK50tE1ZyWaFBKkr-no9MCykDBEjPAbkarnNzTRq~bKOulU~semnqW0OFZnOhBXb77PaB5vIaUYA8C2nF~y-EnzFAEwrQrFmzVDGk29r3KZR2a9kukprq6d3nWTlr-o9WDiZp~gW5td0QQQ1keq-4K8CSfUoPiGErPvhOP5AS-FqKrXjvir2mYJvpaZEgYvUDPq8vbCUPtHe3ttPyCpVKxL4HbqEEDPQT--lFFX~6ZAgv6XauEkCtvSzPs1kdeMS4W9rwB20CBLx2pMtkjj3AzMedSq9u66e~3Vhy4zfUS56rD8FSNARpg__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4',
-                }}
-                style={{
-                  // marginTop: height * 10,
-                  width: width * 49,
-                  height: height * 46,
-                  resizeMode: 'center',
-                }}
-              />
-            </TouchableOpacity>
-            // >
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="ChatMain"
-        component={ChatMain}
-        options={{
-          headerShown: false,
-          title: 'CHAT',
-          tabBarIcon: ({color, size}) => (
-            <Icon name="chatbox-ellipses-outline" color={color} size={size} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="MyPage"
-        component={MyPage}
-        options={{
-          title: 'MY',
-          tabBarIcon: ({color, size}) => (
-            <Icon name="person-outline" color={color} size={size} />
-          ),
-        }}
-      />
-    </Tab.Navigator>
-  );
-};
+// const BottomTab = ({navigation}) => {
+//   const insets = useSafeAreaInsets();
+//   const onPress = () => navigation.navigate('CreateMeeting');
+//   return (
+//     <Tab.Navigator
+//       initialRouteName="Home"
+//       screenOptions={{
+//         tabBarStyle: {
+//           height: height * 65 + insets.bottom,
+//           paddingTop: height * 10,
+//         },
+//         tabBarLabelStyle: {
+//           fontFamily: 'Pretendard-Bold',
+//           fontSize: width * 10,
+//           fontWeight: '600',
+//           paddingBottom: height * 5,
+//         },
+//         tabBarActiveTintColor: '#58C047',
+//       }}>
+//       <Tab.Screen
+//         name="Home"
+//         component={Home}
+//         options={{
+//           title: 'HOME',
+//           tabBarIcon: ({color, size}) => (
+//             <Icon name="home-outline" color={color} size={size} />
+//           ),
+//           tabBarLabel: 'Home',
+//         }}
+//       />
+//       <Tab.Screen
+//         name="wish"
+//         component={WishList}
+//         options={{
+//           title: 'WISH',
+//           tabBarIcon: ({color, size}) => (
+//             <Icon name="heart-outline" color={color} size={size} />
+//           ),
+//         }}
+//       />
+//       <Tab.Screen
+//         name="CreateMeeting"
+//         component={CreateMeeting}
+//         options={{
+//           headerShown: false,
+//           tabBarButton: () => (
+//             <TouchableOpacity activeOpacity={0.5} onPress={onPress}>
+//               <Image
+//                 source={{
+//                   uri: 'https://s3-alpha-sig.figma.com/img/677f/08a0/65dea42679c06af145f80d3ab5b3d92e?Expires=1696204800&Signature=oGyNfscQ5ZpnKOEED1l7A3B6si9Y4ma5kK50tE1ZyWaFBKkr-no9MCykDBEjPAbkarnNzTRq~bKOulU~semnqW0OFZnOhBXb77PaB5vIaUYA8C2nF~y-EnzFAEwrQrFmzVDGk29r3KZR2a9kukprq6d3nWTlr-o9WDiZp~gW5td0QQQ1keq-4K8CSfUoPiGErPvhOP5AS-FqKrXjvir2mYJvpaZEgYvUDPq8vbCUPtHe3ttPyCpVKxL4HbqEEDPQT--lFFX~6ZAgv6XauEkCtvSzPs1kdeMS4W9rwB20CBLx2pMtkjj3AzMedSq9u66e~3Vhy4zfUS56rD8FSNARpg__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4',
+//                 }}
+//                 style={{
+//                   // marginTop: height * 10,
+//                   width: width * 49,
+//                   height: height * 46,
+//                   resizeMode: 'center',
+//                 }}
+//               />
+//             </TouchableOpacity>
+//             // >
+//           ),
+//         }}
+//       />
+//       <Tab.Screen
+//         name="ChatMain"
+//         component={ChatMain}
+//         options={{
+//           headerShown: false,
+//           title: 'CHAT',
+//           tabBarIcon: ({color, size}) => (
+//             <Icon name="chatbox-ellipses-outline" color={color} size={size} />
+//           ),
+//         }}
+//       />
+//       <Tab.Screen
+//         name="MyPage"
+//         component={MyPage}
+//         options={{
+//           title: 'MY',
+//           tabBarIcon: ({color, size}) => (
+//             <Icon name="person-outline" color={color} size={size} />
+//           ),
+//         }}
+//       />
+//     </Tab.Navigator>
+//   );
+// };
 
 function App() {
-  console.log(Dimensions.get('screen').height);
-  const [isLogin, setIsLogin] = useState(false);
-  useEffect(() => {
-    checkLoginState();
-  }, []);
-  const checkLoginState = async () => {
-    const userData = await AsyncStorage.getItem('userdata');
-    console.log(userData);
-  };
+  // console.log(Dimensions.get('screen').height);
+  // const [isLogin, setIsLogin] = useState(false);
+  // useEffect(() => {
+  //   checkLoginState();
+  // }, []);
+  // const checkLoginState = async () => {
+  //   const userData = await AsyncStorage.getItem('userdata');
+  //   console.log(userData);
+  // };
   return (
-    <>
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Login">
+    <NativeBaseProvider>
+        <LoginStack />
+        {/* <Stack.Navigator initialRouteName="Login">
           <Stack.Screen
             name="Login"
             component={Login}
@@ -350,9 +352,8 @@ function App() {
               headerShown: false,
             }}
           />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </>
+        </Stack.Navigator> */}
+      </NativeBaseProvider>
   );
 }
 

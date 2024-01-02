@@ -1,7 +1,7 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import Modal from 'react-native-modal';
-import {width, height} from '../global';
+import {colors, width, height} from '../global';
 
 const ErrorModal = ({isVisible, onClose}) => {
   return (

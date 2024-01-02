@@ -42,7 +42,11 @@ export default function Login({navigation}: any) {
 
     if (result) {
       console.log('verify Result : ', result);
-      navigation.navigate('BottomTab');
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'BottomTab' }],
+      });
+      // navigation.navigate('BottomTab');
     }
   };
   const signInWithApple = async () => {
@@ -91,7 +95,11 @@ export default function Login({navigation}: any) {
       accessToken: data.accessToken,
     };
     await AsyncStorage.setItem('userData', JSON.stringify(tokenData));
-    await navigation.navigate('BottomTab');
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'BottomTab' }], // 로그인 화면의 라우트 이름을 지정
+    });
+    // await navigation.navigate('BottomTab');
   };
 
   const signInWithKakao = async () => {
@@ -121,7 +129,11 @@ export default function Login({navigation}: any) {
       accessToken: data.accessToken,
     };
     await AsyncStorage.setItem('userData', JSON.stringify(tokenData));
-    await navigation.navigate('BottomTab');
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'BottomTab' }],
+    });
+    // await navigation.navigate('BottomTab');
   };
   return (
     <SafeAreaView style={styles.container}>

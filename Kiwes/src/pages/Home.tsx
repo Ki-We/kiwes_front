@@ -2,12 +2,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react';
 import {View, Text, TouchableOpacity, Image, StyleSheet} from 'react-native';
 
-let imagePath = require('./kiwes.png');
+let imagePath = require('../../assets/images/kiwes.png');
 
 export function Home({navigation}: any) {
   const logout = async () => {
     await AsyncStorage.removeItem('userData');
-    await navigation.navigate('Login');
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'Login' }], // 로그인 화면의 라우트 이름을 지정
+    });
   };
   return (
     <View>
