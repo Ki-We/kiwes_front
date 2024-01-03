@@ -8,16 +8,13 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
 import {RESTAPIBuilder} from '../utils/restapiBuilder';
 import {apiServer} from '../utils/metaData';
 import {useFocusEffect} from '@react-navigation/native';
 import {BoardPost} from '../utils/commonInterface';
 import {languageMap} from '../utils/languageMap';
-
+import Icon from 'react-native-vector-icons/Ionicons';
 const BoardList = ({url, navigateToClub}) => {
-  // const url = `${apiServer}/api/v1/heart/club_list`;
-  // 주소만 바꾸면 됨.
   const screenHeight = Dimensions.get('window').height;
   const [posts, setPosts] = useState<BoardPost[]>([]);
   const fetchData = async () => {
@@ -62,7 +59,7 @@ const BoardList = ({url, navigateToClub}) => {
         .build()
         .run();
 
-      if (response.status !== (updatedPost.heart ? 20201 : 20202)) {
+      if (response.data == undefined) {
         throw new Error('Failed to update heart status');
       }
     } catch (err) {
@@ -86,6 +83,7 @@ const BoardList = ({url, navigateToClub}) => {
         if (scrollPosition < 0) {
           scrollPosition = 0;
         }
+        // 아래 코드는 스크롤 값(coursor)입니다.
         // const scrollRatio = Math.round((scrollPosition / screenHeight) * 10);
       }}
       renderItem={({item}) => (
@@ -111,7 +109,7 @@ const BoardList = ({url, navigateToClub}) => {
               <Text style={styles.info}>{item.locationsKeyword}</Text>
               </View>
               <View style={styles.infoContainer} >
-              <Icon name="globe-outline" />
+              <Icon name="globe-outline"/>
               <Text style={styles.info}>
                 {item.languages
                   .map(code => languageMap[code] || code)
@@ -124,7 +122,7 @@ const BoardList = ({url, navigateToClub}) => {
             style={styles.heartContainer}
             onPress={() => toggleLike(item.clubId)}>
             <Icon
-              name={item.heart ? 'heart' : 'heart-o'}
+              name={item.heart ? 'heart' : 'heart-outline'}
               size={25}
               color="#58C047"
             />
@@ -146,8 +144,8 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   imageContainer: {
-    width: 120,
-    height: 100,
+    width: 122,
+    height: 97  ,
     borderRadius: 30,
   },
   textContainer: {

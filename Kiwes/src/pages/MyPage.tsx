@@ -1,10 +1,17 @@
 import React from 'react';
-import {SafeAreaView, Text} from 'react-native';
+import {TouchableOpacity, SafeAreaView, Text} from 'react-native';
 
-export function MyPage() {
+export function MyPage({navigation}: any) {
   return (
     <SafeAreaView>
       <Text>MyPage Screen</Text>
+
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('PostClub');
+        }}>
+        <Text>PostClub</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }
