@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Ionicons';
 import {RESTAPIBuilder} from '../utils/restapiBuilder';
 import {apiServer} from '../utils/metaData';
 import {useFocusEffect} from '@react-navigation/native';
@@ -102,13 +102,22 @@ const BoardList = ({url, navigateToClub}) => {
           <View style={styles.textContainer}>
             <View>
               <Text style={styles.title}>{item.title}</Text>
-              <Text>{item.date}</Text>
-              <Text>{item.locationsKeyword}</Text>
-              <Text>
+              <View style={styles.infoContainer} >
+              <Icon name="calendar-outline" />
+              <Text style={styles.info}>{item.date}</Text>
+              </View>
+              <View style={styles.infoContainer} >
+              <Icon name="map-outline" />
+              <Text style={styles.info}>{item.locationsKeyword}</Text>
+              </View>
+              <View style={styles.infoContainer} >
+              <Icon name="globe-outline" />
+              <Text style={styles.info}>
                 {item.languages
                   .map(code => languageMap[code] || code)
                   .join(', ')}
               </Text>
+              </View>
             </View>
           </View>
           <TouchableOpacity
@@ -153,6 +162,14 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  infoContainer:{
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  info:{
+    marginLeft:5,
   },
 });
 export default BoardList;

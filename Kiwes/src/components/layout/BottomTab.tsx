@@ -10,7 +10,7 @@ import HomeStack from './HomeStack';
 import WishStack from './WishStack';
 
 const Tab = createBottomTabNavigator();
-let imagePath = require('../../assets/images/putter.png');
+const putterPath = require('../../../assets/images/putter.png');
 
 const BottomTab = ({navigation}: any) => {
   const insets = useSafeAreaInsets();
@@ -61,16 +61,15 @@ const BottomTab = ({navigation}: any) => {
           tabBarButton: () => (
             <TouchableOpacity activeOpacity={0.5} onPress={onPress}>
               <Image
-                source={imagePath}
+                source={putterPath }
                 style={{
-                  // marginTop: height * 10,
                   width: width * 49,
                   height: height * 46,
                   resizeMode: 'center',
+                  opacity:0.8
                 }}
               />
             </TouchableOpacity>
-            // >
           ),
         }}
       />
