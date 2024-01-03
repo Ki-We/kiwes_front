@@ -1,11 +1,9 @@
 import React, {useEffect} from 'react';
-import {Dimensions,} from 'react-native';
+import {Dimensions} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import SplashPage from '../../pages/SplashPage';
 import Home from '../../pages/Home';
-import ChatTest from '../../pages/ChatTest';
-import KeyboardTest from '../../pages/KeyboardTest';
+import ChatRoom from '../../pages/ChatRoom';
 
 const HomeStack = () => {
   console.log(Dimensions.get('screen').height);
@@ -18,35 +16,23 @@ const HomeStack = () => {
   };
   const Stack = createStackNavigator();
   return (
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen
-            name="HomePage"
-            component={Home}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="Splash"
-            component={SplashPage}
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name="Test"
-            component={ChatTest}
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name="KeyboardTest"
-            component={KeyboardTest}
-            options={{
-              headerShown: false,
-            }}
-          />
-        </Stack.Navigator>
+    <Stack.Navigator initialRouteName="Home">
+      <Stack.Screen
+        name="HomePage"
+        component={Home}
+        options={{headerShown: false}}
+      />
+
+      {/* 하단 Stack은 bottom 없이 이동되어야 하는 Stack */}
+      <Stack.Screen
+        name="ChatRoom"
+        component={ChatRoom}
+        options={{
+          headerShown: false,
+        }}
+      />
+    </Stack.Navigator>
   );
-}
+};
 
 export default HomeStack;
