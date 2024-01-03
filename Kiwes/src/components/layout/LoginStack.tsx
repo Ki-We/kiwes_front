@@ -7,10 +7,10 @@ import BottomTab from './BottomTab';
 import {NavigationContainer} from '@react-navigation/native';
 
 const LoginStack = () => {
-  console.log(Dimensions.get('screen').height);
   useEffect(() => {
     checkLoginState();
   }, []);
+  
   const checkLoginState = async () => {
     const userData = await AsyncStorage.getItem('userdata');
     console.log(userData);
