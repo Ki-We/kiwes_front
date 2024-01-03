@@ -18,7 +18,7 @@ const PostClubStep = ({
   Step,
 }: ProfileSetupInterface) => {
   return (
-    <PostLayout>
+    <PostLayout >
       <Funnel>
         <Step name="언어">
           <SetupLayout
