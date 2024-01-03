@@ -1,4 +1,4 @@
-import {Text} from 'react-native';
+import {Text, View} from 'react-native';
 import Header from '../components/layout/Header';
 import PostClubStep from '../components/post/PostClubStep';
 import {useFunnel} from '../hooks/useFunnel';
@@ -15,7 +15,6 @@ export default function PostClub({navigation}: any) {
     <>
       <Header navigation={navigation} title={'모임 개설'} />
       <Text>PostClub</Text>
-
       <PostClubStep
         steps={steps}
         nextClickHandler={nextClickHandler}

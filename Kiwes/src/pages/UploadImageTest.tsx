@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { Button, View, Alert, Image } from 'react-native';
+import React, {useState} from 'react';
+import {Button, View, Alert, Image} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {launchImageLibrary} from 'react-native-image-picker';
 import RNFS from 'react-native-fs';
-import { RESTAPIBuilder } from '../utils/restapiBuilder';
-import { apiServer } from '../utils/metaData';
-import { Buffer } from 'buffer';
+import {RESTAPIBuilder} from '../utils/restapiBuilder';
+import {apiServer} from '../utils/metaData';
+import {Buffer} from 'buffer';
 
 const UploadImageTest = () => {
   const [imageSource, setImageSource] = useState(null);
@@ -34,19 +34,19 @@ const UploadImageTest = () => {
     if (!imageSource || typeof imageSource === 'number') {
       return Alert.alert('이미지를 선택해주세요');
     }
-  
+
     const userData = await AsyncStorage.getItem('userData');
     if (!userData) {
       return Alert.alert('접근 토큰이 없습니다. 로그인 해주세요.');
     }
-    const url =`${apiServer}/mypage/profileImg`;
+    const url = `${apiServer}/mypage/profileImg`;
     const presignedResponse = await new RESTAPIBuilder(url, 'GET')
-    .setNeedToken(true)
-    .build()
-    .run()
-    .catch(err => {
-      console.log(err);
-    });
+      .setNeedToken(true)
+      .build()
+      .run()
+      .catch(err => {
+        console.log(err);
+      });
     const presignedUrl = presignedResponse.data;
     console.log(presignedUrl);
     // Read the file and convert it to binary
@@ -67,17 +67,19 @@ const UploadImageTest = () => {
       console.log(errorMessage);
       return Alert.alert('Upload failed', errorMessage);
     }
-  
+
     Alert.alert('Upload completed');
-  }
-  
+  };
+
   return (
     <View>
       <Button title="갤러리에서 사진 선택" onPress={selectPhotoFromGallery} />
-      {imageSource && <Image source={{ uri:imageSource}} style={{ width: 200, height: 200 }} />}
+      {imageSource && (
+        <Image source={{uri: imageSource}} style={{width: 200, height: 200}} />
+      )}
       <Button title="제출" onPress={onSubmit} />
     </View>
   );
-}
+};
 
 export default UploadImageTest;
