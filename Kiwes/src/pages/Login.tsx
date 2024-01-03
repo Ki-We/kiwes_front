@@ -44,7 +44,7 @@ export default function Login({navigation}: any) {
       console.log('verify Result : ', result);
       navigation.reset({
         index: 0,
-        routes: [{ name: 'BottomTab' }],
+        routes: [{name: 'BottomTab'}],
       });
       // navigation.navigate('BottomTab');
     }
@@ -97,7 +97,7 @@ export default function Login({navigation}: any) {
     await AsyncStorage.setItem('userData', JSON.stringify(tokenData));
     navigation.reset({
       index: 0,
-      routes: [{ name: 'BottomTab' }], // 로그인 화면의 라우트 이름을 지정
+      routes: [{name: 'BottomTab'}], // 로그인 화면의 라우트 이름을 지정
     });
     // await navigation.navigate('BottomTab');
   };
@@ -131,7 +131,7 @@ export default function Login({navigation}: any) {
     await AsyncStorage.setItem('userData', JSON.stringify(tokenData));
     navigation.reset({
       index: 0,
-      routes: [{ name: 'BottomTab' }],
+      routes: [{name: 'BottomTab'}],
     });
     // await navigation.navigate('BottomTab');
   };
@@ -147,7 +147,7 @@ export default function Login({navigation}: any) {
       <Pressable onPress={signInWithKakao}>
         <Image
           source={{
-            uri: `https://kiwes-bucket.s3.ap-northeast-2.amazonaws.com/main/kakao_login.png`,
+            uri: 'https://kiwes-bucket.s3.ap-northeast-2.amazonaws.com/main/kakao_login.png',
           }}
           style={styles.oauth}
           resizeMode="contain"
@@ -156,7 +156,7 @@ export default function Login({navigation}: any) {
       <Pressable onPress={signInWithApple}>
         <Image
           source={{
-            uri: `https://kiwes-bucket.s3.ap-northeast-2.amazonaws.com/main/apple_login.png`,
+            uri: 'https://kiwes-bucket.s3.ap-northeast-2.amazonaws.com/main/apple_login.png',
           }}
           style={styles.oauth}
           resizeMode="contain"
@@ -165,7 +165,7 @@ export default function Login({navigation}: any) {
       <Pressable onPress={signInWithGoogle}>
         <Image
           source={{
-            uri: `https://kiwes-bucket.s3.ap-northeast-2.amazonaws.com/main/google_login.png`,
+            uri: 'https://kiwes-bucket.s3.ap-northeast-2.amazonaws.com/main/google_login.png',
           }}
           style={styles.oauth}
           resizeMode="contain"

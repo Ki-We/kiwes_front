@@ -9,7 +9,7 @@ export function Home({navigation}: any) {
     await AsyncStorage.removeItem('userData');
     navigation.reset({
       index: 0,
-      routes: [{ name: 'Login' }], // 로그인 화면의 라우트 이름을 지정
+      routes: [{name: 'Login'}], // 로그인 화면의 라우트 이름을 지정
     });
   };
   return (
