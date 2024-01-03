@@ -7,19 +7,19 @@ import BoardList from '../BoardList';
 const WishStack = () => {
   const Stack = createStackNavigator();
   return (
-      <Stack.Navigator initialRouteName="WishPage">
-          <Stack.Screen
-            name="WishPage"
-            component={BoardList}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="ClubPage"
-            component={ClubPage}
-            options={{headerShown: false}}
-          />
-      </Stack.Navigator>
+    <Stack.Navigator initialRouteName="WishPage">
+      <Stack.Screen
+        name="WishPage"
+        component={BoardList}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="ClubPage"
+        component={ClubPage}
+        options={{headerShown: false}}
+      />
+    </Stack.Navigator>
   );
-}
+};
 
 export default WishStack;

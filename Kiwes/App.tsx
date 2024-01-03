@@ -1,11 +1,10 @@
-import LoginStack from './src/components/layout/LoginStack';
-
+import DefaultStack from './src/components/layout/DefaultStack';
 
 function App() {
   return (
     <>
-        <LoginStack />
-      </>
+      <DefaultStack />
+    </>
   );
 }
 
