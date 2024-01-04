@@ -10,10 +10,10 @@ import {
 } from 'react-native';
 import {RESTAPIBuilder} from '../utils/restapiBuilder';
 import {apiServer} from '../utils/metaData';
-import {useFocusEffect} from '@react-navigation/native';
 import {BoardPost} from '../utils/commonInterface';
 import {languageMap} from '../utils/languageMap';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {useFocusEffect} from '@react-navigation/native';
 const BoardList = ({url, navigateToClub}) => {
   const screenHeight = Dimensions.get('window').height;
   const [posts, setPosts] = useState<BoardPost[]>([]);
@@ -77,6 +77,7 @@ const BoardList = ({url, navigateToClub}) => {
     <FlatList
       data={posts}
       keyExtractor={item => item.clubId}
+      style={{flex: 1}}
       onScroll={event => {
         // 스크롤 위치를 얻습니다.
         let scrollPosition = event.nativeEvent.contentOffset.y;
@@ -100,21 +101,21 @@ const BoardList = ({url, navigateToClub}) => {
           <View style={styles.textContainer}>
             <View>
               <Text style={styles.title}>{item.title}</Text>
-              <View style={styles.infoContainer} >
-              <Icon name="calendar-outline" />
-              <Text style={styles.info}>{item.date}</Text>
+              <View style={styles.infoContainer}>
+                <Icon name="calendar-outline" />
+                <Text style={styles.info}>{item.date}</Text>
               </View>
-              <View style={styles.infoContainer} >
-              <Icon name="map-outline" />
-              <Text style={styles.info}>{item.locationsKeyword}</Text>
+              <View style={styles.infoContainer}>
+                <Icon name="map-outline" />
+                <Text style={styles.info}>{item.locationsKeyword}</Text>
               </View>
-              <View style={styles.infoContainer} >
-              <Icon name="globe-outline"/>
-              <Text style={styles.info}>
-                {item.languages
-                  .map(code => languageMap[code] || code)
-                  .join(', ')}
-              </Text>
+              <View style={styles.infoContainer}>
+                <Icon name="globe-outline" />
+                <Text style={styles.info}>
+                  {item.languages
+                    .map(code => languageMap[code] || code)
+                    .join(', ')}
+                </Text>
               </View>
             </View>
           </View>
@@ -145,7 +146,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     width: 122,
-    height: 97  ,
+    height: 97,
     borderRadius: 30,
   },
   textContainer: {
@@ -161,13 +162,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
-  infoContainer:{
+  infoContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
   },
-  info:{
-    marginLeft:5,
+  info: {
+    marginLeft: 5,
   },
 });
 export default BoardList;

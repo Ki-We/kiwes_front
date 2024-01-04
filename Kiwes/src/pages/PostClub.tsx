@@ -1,4 +1,5 @@
-import {Text, View} from 'react-native';
+import React from 'react';
+import {Text} from 'react-native';
 import Header from '../components/layout/Header';
 import PostClubStep from '../components/post/PostClubStep';
 import {useFunnel} from '../hooks/useFunnel';

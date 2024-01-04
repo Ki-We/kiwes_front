@@ -3,15 +3,13 @@ import React, {useEffect} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Login from '../../pages/Login';
-// import SplashPage from '../../pages/SplashPage';
-// import Home from '../../pages/Home';
-// import CreateMeeting from '../../pages/CreateMeeting';
-// import ChatTest from '../../pages/ChatTest';
-// import ChatMain from '../../pages/ChatMain';
-// import KeyboardTest from '../../pages/KeyboardTest';
 import BottomTab from './BottomTab';
 import {NavigationContainer} from '@react-navigation/native';
 import PostClub from '../../pages/PostClub';
+import WishList from '../../pages/WishList';
+import ClubPage from '../../pages/ClubPage';
+import AlarmPage from '../../pages/AlarmPage';
+import ApprovalPage from '../ApprovalList';
 
 const LoginStack = () => {
   useEffect(() => {
@@ -25,27 +23,18 @@ const LoginStack = () => {
   const Stack = createStackNavigator();
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
-        <Stack.Screen
-          name="Login"
-          component={Login}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="BottomTab"
-          component={BottomTab}
-          options={{headerShown: false}}
-        />
+      <Stack.Navigator
+        initialRouteName="Login"
+        screenOptions={{headerShown: false}}>
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="BottomTab" component={BottomTab} />
 
         {/* 하단 Stack은 bottom 없이 이동되어야 하는 Stack */}
 
-        <Stack.Screen
-          name="PostClub"
-          component={PostClub}
-          options={{
-            headerShown: false,
-          }}
-        />
+        <Stack.Screen name="PostClub" component={PostClub} />
+        <Stack.Screen name="WishPage" component={WishList} />
+        <Stack.Screen name="ClubPage" component={ClubPage} />
+        <Stack.Screen name="AlarmPage" component={AlarmPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );

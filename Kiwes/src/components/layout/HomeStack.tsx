@@ -16,20 +16,12 @@ const HomeStack = () => {
   };
   const Stack = createStackNavigator();
   return (
-    <Stack.Navigator initialRouteName="Home">
-      <Stack.Screen
-        name="HomePage"
-        component={Home}
-        options={{headerShown: false}}
-      />
+    <Stack.Navigator
+      initialRouteName="Home"
+      screenOptions={{headerShown: false}}>
+      <Stack.Screen name="HomePage" component={Home} />
       {/* 하단 Stack은 bottom 없이 이동되어야 하는 Stack */}
-      <Stack.Screen
-        name="ChatRoom"
-        component={ChatRoom}
-        options={{
-          headerShown: false,
-        }}
-      />
+      <Stack.Screen name="ChatRoom" component={ChatRoom} />
     </Stack.Navigator>
   );
 };
