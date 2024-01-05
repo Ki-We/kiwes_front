@@ -1,3 +1,4 @@
+import React from 'react';
 import {FunnelProps, StepProps} from '../../hooks/useFunnel';
 import PostLayout from './PostLayout';
 import {Text} from 'react-native';
@@ -18,7 +19,7 @@ const PostClubStep = ({
   Step,
 }: ProfileSetupInterface) => {
   return (
-    <PostLayout >
+    <PostLayout>
       <Funnel>
         <Step name="언어">
           <SetupLayout

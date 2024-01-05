@@ -1,3 +1,4 @@
+import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import backIcon from 'react-native-vector-icons/Ionicons';
 import optionIcon from 'react-native-vector-icons/SimpleLineIcons';
@@ -10,7 +11,7 @@ export default function Header({navigation, title, rightBtn}: any) {
       <View style={styles.header}>
         <backIcon.Button
           backgroundColor="#FFFFFF"
-          iconStyle={{marginRight: 0, padding: 5}}
+          iconStyle={styles.icon}
           borderRadius={3}
           name="arrow-back"
           color="#303030"
@@ -22,7 +23,7 @@ export default function Header({navigation, title, rightBtn}: any) {
 
         <optionIcon.Button
           backgroundColor="#FFFFFF"
-          iconStyle={{marginRight: 0, padding: 5}}
+          iconStyle={styles.icon}
           borderRadius={3}
           name="options-vertical"
           color={rightBtn ? '#303030' : '#ffffff'}
@@ -55,5 +56,9 @@ const styles = StyleSheet.create({
     borderBottomColor: '#EDEDED',
     borderBottomWidth: 1.5,
     marginBottom: height * 10,
+  },
+  icon: {
+    marginRight: 0,
+    padding: 5,
   },
 });

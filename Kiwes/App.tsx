@@ -1,3 +1,4 @@
+import React from 'react';
 import DefaultStack from './src/components/layout/DefaultStack';
 
 function App() {
