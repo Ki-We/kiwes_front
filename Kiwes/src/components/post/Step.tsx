@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 import {width} from '../../global';
 
-export default function Step({name, title, children}: any) {
+export default function Step({title, children}: any) {
   return (
     <View>
       <Text style={styles.stepTitle}>{title}</Text>

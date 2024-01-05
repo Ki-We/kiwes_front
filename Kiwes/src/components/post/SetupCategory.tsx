@@ -1,79 +1,97 @@
 import React from 'react';
-import RoundBtn from '../atoms/roundBtn';
+import RoundCategory from '../atoms/roundCategory';
 import {StyleSheet, Text, View} from 'react-native';
 import {height, width} from '../../global';
 
-export default function SetupLang() {
+export default function SetupCategory() {
   return (
     <>
       <View style={styles.text}>
         <Text>
-          <Text style={styles.highlight}>*</Text> 최대 2개 선택 가능
+          <Text style={styles.highlight}>*</Text> 하나만 선택 가능
         </Text>
       </View>
       <View style={styles.container}>
-        <RoundBtn
-          text="한국어"
+        <RoundCategory
+          text="🎮게임/보드게임"
           onPress={() => {
             return;
           }}
         />
-        <RoundBtn
-          text="English"
+        <RoundCategory
+          text="🎟️문화/전시/공연"
           onPress={() => {
             return;
           }}
         />
-        <RoundBtn
-          text="日本語"
+        <RoundCategory
+          text="🍺술"
           onPress={() => {
             return;
           }}
         />
-        <RoundBtn
-          text="中文(简体)"
+        <RoundCategory
+          text="🏀스포츠"
           onPress={() => {
             return;
           }}
         />
-        <RoundBtn
-          text="中文(繁體)"
+        <RoundCategory
+          text="🎨공예/그림"
           onPress={() => {
             return;
           }}
         />
-        <RoundBtn
-          text="Français"
+        <RoundCategory
+          text="❤️봉사활동"
           onPress={() => {
             return;
           }}
         />
-        <RoundBtn
-          text="Español"
+        <RoundCategory
+          text="🥝기타"
           onPress={() => {
             return;
           }}
         />
-        <RoundBtn
-          text="Deutsch"
+        <RoundCategory
+          text="🎧K-pop"
           onPress={() => {
             return;
           }}
         />
-        <RoundBtn
-          text="Tiếng Việt"
+        <RoundCategory
+          text="🍔맛집/카페"
           onPress={() => {
             return;
           }}
         />
-        <RoundBtn
-          text="Pусский"
+        <RoundCategory
+          text="📚스터디"
           onPress={() => {
             return;
           }}
         />
-        <RoundBtn
-          text="기타"
+        <RoundCategory
+          text="✈️여행"
+          onPress={() => {
+            return;
+          }}
+        />
+        <RoundCategory
+          text="🇰🇷한국 문화"
+          onPress={() => {
+            return;
+          }}
+        />
+        <RoundCategory
+          text="🎬영화/드라마/애니"
+          onPress={() => {
+            return;
+          }}
+        />
+        <RoundCategory
+          text="🎉파티/클럽"
           onPress={() => {
             return;
           }}
