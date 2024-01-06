@@ -29,7 +29,7 @@ export default function Search({navigation}: any) {
 
     let temp = await AsyncStorage.getItem('search');
     const keywords = temp ? JSON.parse(temp) : [];
-    if (keywords.length >= 2) keywords.shift();
+    if (keywords.length > 2) keywords.shift();
     await AsyncStorage.setItem('search', JSON.stringify([...keywords, search]));
   };
   const getRecommand = async () => {

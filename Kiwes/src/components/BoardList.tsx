@@ -1,21 +1,31 @@
 import React, {useCallback, useState} from 'react';
 import {FlatList} from 'react-native';
-import {RESTAPIBuilder} from '../utils/restapiBuilder';
 import {BoardPost} from '../utils/commonInterface';
 import {useFocusEffect} from '@react-navigation/native';
 import ListComponent from './atoms/ListComponent';
-const BoardList = ({url, data,fetchData, navigateToClub}: any) => {
-  const screenHeight = Dimensions.get('window').height;
-  const [posts, setPosts] = useState<BoardPost[]>([]);
-  const setData = async () => {
-    setPosts(await fetchData());
+import {RESTAPIBuilder} from '../utils/restapiBuilder';
+const BoardList = ({url, data, navigateToClub}: any) => {
+  const [posts, setPosts] = useState<BoardPost[]>(data || []);
+
+  const fetchData = async () => {
+    if (url == '') return;
+    const {data} = await new RESTAPIBuilder(url, 'GET')
+      .setNeedToken(true)
+      .build()
+      .run()
+      .catch(err => {
+        console.log('err : ', err);
+      });
+
+    console.log(data);
+    setPosts(data);
   };
 
   useFocusEffect(
     useCallback(() => {
-      setData();
+      fetchData();
       return () => {
-        setData();
+        fetchData();
       };
     }, []),
   );
@@ -36,13 +46,12 @@ const BoardList = ({url, data,fetchData, navigateToClub}: any) => {
           // const scrollRatio = Math.round((scrollPosition / screenHeight) * 10);
         }}
         renderItem={({item}) => (
-         
-        <ListComponent
-          item={item}
-          navigateToClub={navigateToClub}
-          posts={posts}
-          setPosts={setPosts}
-        />
+          <ListComponent
+            item={item}
+            navigateToClub={navigateToClub}
+            posts={posts}
+            setPosts={setPosts}
+          />
         )}
       />
     </>
