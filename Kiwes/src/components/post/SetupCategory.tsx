@@ -14,13 +14,14 @@ export default function SetupCategory({post, setPost}: any) {
         </Text>
       </View>
       <View style={styles.container}>
-        {categoryList.map(c => (
+        {categoryList.map(({key, text}, i) => (
           <RoundCategory
-            text={c}
-            isSelect={category === c}
+            key={`category_${i}`}
+            text={text}
+            isSelect={category === key}
             onPress={() => {
-              setCategory(c);
-              setPost({...post, category: c});
+              setCategory(key);
+              setPost({...post, category: key});
             }}
           />
         ))}

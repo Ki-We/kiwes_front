@@ -32,12 +32,13 @@ export default function SetupLang({post, setPost}: any) {
         </Text>
       </View>
       <View style={styles.container}>
-        {langList.map(lang => (
+        {langList.map(({key, text}, i) => (
           <RoundBtn
-            text={lang}
-            isSelect={selectedLang.includes(lang)}
+            key={`lang_${i}`}
+            text={text}
+            isSelect={selectedLang.includes(key)}
             onPress={() => {
-              onPressEvent(lang);
+              onPressEvent(key);
             }}
           />
         ))}

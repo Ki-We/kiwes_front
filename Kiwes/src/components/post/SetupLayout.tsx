@@ -4,6 +4,7 @@ import {height, width} from '../../global';
 
 export default function SetupLayout({
   isStart = false,
+  isEnd = false,
   title,
   children,
   onPrev,
@@ -39,7 +40,7 @@ export default function SetupLayout({
         </Pressable>
         <Pressable style={styles.nextBtn} onPress={onNext}>
           <View style={styles.btn}>
-            <Text style={styles.nextColor}>다음</Text>
+            <Text style={styles.nextColor}>{isEnd ? '등록' : '다음'}</Text>
           </View>
         </Pressable>
       </View>

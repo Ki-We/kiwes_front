@@ -4,12 +4,17 @@ import {height, width} from '../../global';
 import DatePicker from 'react-native-date-picker';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCalendar} from '@fortawesome/free-regular-svg-icons';
+import {TextInput} from 'react-native-gesture-handler';
+import {faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons';
+import MapView, {Marker} from 'react-native-maps';
+import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 
 export default function SetupDetail1({post, setPost}: any) {
   const [date, setDate] = useState(post.date);
   const [open1, setOpen1] = useState(false);
   const [dueTo, setDueTo] = useState(post.dueTo);
   const [open2, setOpen2] = useState(false);
+  const [location, setLocation] = useState({lat: 0, lng: 0});
 
   return (
     <>
@@ -70,6 +75,52 @@ export default function SetupDetail1({post, setPost}: any) {
         />
 
         <Text style={styles.text}>장소</Text>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            placeholderTextColor={'#8A8A8A'}
+            placeholder="모임 장소를 검색해주세요"
+            onChangeText={text => {
+              setPost({...post, locationsKeyword: text});
+            }}
+          />
+          <View style={styles.iconContainer}>
+            <FontAwesomeIcon icon={faMagnifyingGlass} />
+          </View>
+        </View>
+        {/* <View>
+          <MapView
+            style={{flex: 1}}
+            initialRegion={{
+              latitude: 37.7749,
+              longitude: -122.4194,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
+            }}>
+            {location && (
+              <Marker
+                coordinate={{
+                  latitude: location.lat,
+                  longitude: location.lng,
+                }}
+                title="Selected Location"
+              />
+            )}
+          </MapView>
+          <GooglePlacesAutocomplete
+            placeholder="Search"
+            onPress={(data, details = null) => {
+              setLocation({
+                lat: details?.geometry.location.lat || 0,
+                lng: details?.geometry.location.lng || 0,
+              });
+            }}
+            query={{
+              key: 'YOUR_GOOGLE_MAPS_API_KEY',
+              language: 'en',
+            }}
+          />
+        </View> */}
       </View>
     </>
   );
@@ -97,5 +148,25 @@ const styles = StyleSheet.create({
     marginTop: height * 20,
     height: height * 48,
     marginBottom: height * 20,
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 10,
+    backgroundColor: '#F7F7F7',
+    marginTop: height * 20,
+    height: height * 48,
+    marginBottom: height * 20,
+    padding: 5,
+    paddingLeft: 10,
+    paddingRight: 10,
+  },
+  input: {
+    fontSize: 13,
+    color: '#8A8A8A',
+    flex: 1,
+  },
+  iconContainer: {
+    marginRight: width * 5,
   },
 });

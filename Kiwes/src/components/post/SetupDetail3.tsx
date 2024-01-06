@@ -81,17 +81,7 @@ const styles = StyleSheet.create({
     fontSize: width * 13,
     color: '#303030',
   },
-  input: {
-    borderRadius: 10,
-    backgroundColor: '#F7F7F7',
-    padding: 5,
-    paddingLeft: 10,
-    fontSize: 13,
-    color: '#8A8A8A',
-    marginTop: height * 20,
-    height: height * 48,
-    marginBottom: height * 10,
-  },
+
   thumbnail: {
     height: height * 130,
     backgroundColor: '#F7F7F7',
@@ -105,6 +95,17 @@ const styles = StyleSheet.create({
     color: '#8A8A8A',
     whiteSpace: 'pre-line',
     textAlign: 'center',
+  },
+  input: {
+    borderRadius: 10,
+    backgroundColor: '#F7F7F7',
+    padding: 5,
+    paddingLeft: 10,
+    fontSize: 13,
+    color: '#8A8A8A',
+    marginTop: height * 20,
+    height: height * 48,
+    marginBottom: height * 10,
   },
   iconContainer: {
     position: 'absolute',

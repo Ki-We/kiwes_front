@@ -7,6 +7,8 @@ import SetupLayout from './SetupLayout';
 import SetupDetail1 from './SetupDetail1';
 import SetupDetail2 from './SetupDetail2';
 import SetupDetail3 from './SetupDetail3';
+import {apiServer} from '../../utils/metaData';
+import {RESTAPIBuilder} from '../../utils/restapiBuilder';
 
 export interface ProfileSetupInterface {
   steps: string[];
@@ -38,6 +40,22 @@ const PostClubStep = ({
   useEffect(() => {
     console.log(post);
   }, [post]);
+
+  const postClub = () => {
+    const url = `${apiServer}/api/v1/club/article`;
+    new RESTAPIBuilder(url, 'POST')
+      .setNeedToken(true)
+      .setBody(post)
+      .build()
+      .run()
+      .then(({data}) => {
+        console.log(data);
+        console.log('등록 완료');
+      })
+      .catch(err => {
+        console.log('err : ', err);
+      });
+  };
 
   return (
     <PostLayout>
@@ -88,14 +106,11 @@ const PostClubStep = ({
         </Step>
         <Step name="상세정보3">
           <SetupLayout
+            isEnd={true}
             title={'모임의 정보를\n입력해주세요.'}
             onPrev={() => nextClickHandler(steps[3])}
-            onNext={() => {
-              console.log('작성 완료');
-            }}
-            post={post}
-            setPost={setPost}>
-            <SetupDetail3 />
+            onNext={postClub}>
+            <SetupDetail3 post={post} setPost={setPost} />
           </SetupLayout>
         </Step>
       </Funnel>

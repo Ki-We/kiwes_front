@@ -9,7 +9,11 @@ import GenderBtn from './genderBtn';
 
 export default function SetupDetail2({post, setPost}: any) {
   const [gender, setGender] = useState(post.gender);
-  const genderList = ['남자만', '여자만', '누구나'];
+  const genderList = [
+    {key: 'MALE', text: '남자만'},
+    {key: 'FEMALE', text: '여자만'},
+    {key: 'ALL', text: '누구나'},
+  ];
   return (
     <>
       <View style={styles.container}>
@@ -47,13 +51,14 @@ export default function SetupDetail2({post, setPost}: any) {
 
         <Text style={styles.text}>모집 성별</Text>
         <View style={styles.btnContainer}>
-          {genderList.map(g => (
+          {genderList.map(({key, text}, i) => (
             <GenderBtn
-              text={g}
-              isSelect={gender === g}
+              key={`gender_${i}`}
+              text={text}
+              isSelect={gender === key}
               onPress={() => {
-                setGender(g);
-                setPost({...post, gender: g});
+                setGender(key);
+                setPost({...post, gender: key});
               }}
             />
           ))}
