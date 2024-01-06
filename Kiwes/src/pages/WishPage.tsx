@@ -12,20 +12,8 @@ import {width, height} from '../global';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {RESTAPIBuilder} from '../utils/restapiBuilder';
 
-const url = `${apiServer}/api/v1/heart/club_list`;
-const fetchData = async () => {
-  try {
-    const response = await new RESTAPIBuilder(url, 'GET')
-      .setNeedToken(true)
-      .build()
-      .run();
-    return response.data;
-  } catch (err) {
-    console.log(err);
-  }
-};
-
 const WishPage = ({navigation}: any) => {
+  const url = `${apiServer}/api/v1/heart/club_list`;
   const navigateToClub = (clubId: any) => {
     navigation.navigate('ClubPage', {clubId: clubId});
   };
@@ -43,7 +31,7 @@ const WishPage = ({navigation}: any) => {
           </TouchableOpacity>
         </View>
         <SafeAreaView style={{flex: 1}}>
-          <BoardList fetchData={fetchData} navigateToClub={navigateToClub} />
+          <BoardList url={url} navigateToClub={navigateToClub} />
         </SafeAreaView>
       </View>
     </>
