@@ -6,10 +6,11 @@ import Login from '../../pages/Login';
 import BottomTab from './BottomTab';
 import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
 import PostClub from '../../pages/PostClub';
-import WishList from '../../pages/WishList';
 import ClubPage from '../../pages/ClubPage';
 import AlarmPage from '../../pages/AlarmPage';
 import Search from '../../pages/Search';
+import WishPage from '../../pages/WishPage';
+import AlarmStack from './alarmStack';
 
 const LoginStack = () => {
   useEffect(() => {
@@ -40,7 +41,7 @@ const LoginStack = () => {
 
         <Stack.Screen name="Search" component={Search} />
         <Stack.Screen name="PostClub" component={PostClub} />
-        <Stack.Screen name="WishPage" component={WishList} />
+        <Stack.Screen name="WishPage" component={WishPage} />
         <Stack.Screen name="ClubPage" component={ClubPage} />
         <Stack.Screen name="AlarmPage" component={AlarmPage} />
       </Stack.Navigator>

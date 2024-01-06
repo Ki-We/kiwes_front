@@ -8,7 +8,7 @@ import CreateMeeting from '../../pages/CreateMeeting';
 import MyPage from '../../pages/MyPage';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import HomeStack from './HomeStack';
-import WishList from '../../pages/WishList';
+import WishPage from '../../pages/WishPage';
 
 const Tab = createBottomTabNavigator();
 const putterPath = require('../../../assets/images/putter.png');
@@ -46,7 +46,7 @@ const BottomTab = ({navigation}: any) => {
       />
       <Tab.Screen
         name="wish"
-        component={WishList}
+        component={WishPage}
         options={{
           title: 'WISH',
           tabBarIcon: ({color, size}) => (
