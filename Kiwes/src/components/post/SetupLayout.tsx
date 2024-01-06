@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  Button,
-  StyleSheet,
-  ScrollView,
-  Pressable,
-} from 'react-native';
+import {View, Text, StyleSheet, ScrollView, Pressable} from 'react-native';
 import {height, width} from '../../global';
 
 export default function SetupLayout({

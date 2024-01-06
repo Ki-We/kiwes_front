@@ -2,13 +2,14 @@ import React from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {height, width} from '../../global';
 
-export default function RoundBtn({text, isSelect, onPress}: any) {
+export default function GenderBtn({text, isSelect, onPress}: any) {
   return (
     <Pressable
       style={() => [
         styles.button,
         {
-          backgroundColor: isSelect ? '#9BD23C' : '#ffffff',
+          backgroundColor: isSelect ? '#3DBE14' : '#F7F7F7',
+          borderColor: isSelect ? '#3DBE14' : '#8A8A8A',
         },
       ]}
       onPress={onPress}>
@@ -27,11 +28,11 @@ export default function RoundBtn({text, isSelect, onPress}: any) {
 
 const styles = StyleSheet.create({
   button: {
-    width: width * 100,
-    height: height * 44,
-    borderColor: '#9BD23C',
+    flex: 1,
+    margin: width * 3,
+    height: height * 48,
     borderWidth: 1,
-    borderRadius: 30,
+    borderRadius: 10,
     justifyContent: 'center', // 세로 중앙 정렬
     alignItems: 'center', // 가로 중앙 정렬
     marginBottom: height * 20,

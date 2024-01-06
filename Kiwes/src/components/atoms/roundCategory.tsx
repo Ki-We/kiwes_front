@@ -2,11 +2,24 @@ import React from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {height, width} from '../../global';
 
-export default function RoundBtn({text, onPress}: any) {
+export default function RoundBtn({text, isSelect, onPress}: any) {
   return (
-    <Pressable style={styles.button} onPress={onPress}>
+    <Pressable
+      style={() => [
+        styles.button,
+        {
+          backgroundColor: isSelect ? '#9BD23C' : '#ffffff',
+        },
+      ]}
+      onPress={onPress}>
       <View style={styles.buttonContent}>
-        <Text style={styles.text}>{text}</Text>
+        <Text
+          style={{
+            ...styles.text,
+            color: isSelect ? '#ffffff' : '#303030',
+          }}>
+          {text}
+        </Text>
       </View>
     </Pressable>
   );
@@ -33,6 +46,5 @@ const styles = StyleSheet.create({
     fontFamily: 'Pretendard',
     fontWeight: '300',
     fontSize: width * 13,
-    color: '#303030',
   },
 });

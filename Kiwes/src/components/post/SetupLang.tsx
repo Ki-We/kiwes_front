@@ -1,9 +1,29 @@
-import React from 'react';
+import React, {useState} from 'react';
 import RoundBtn from '../atoms/roundBtn';
 import {StyleSheet, Text, View} from 'react-native';
 import {height, width} from '../../global';
+import {langList} from '../../utils/utils';
 
-export default function SetupLang() {
+export default function SetupLang({post, setPost}: any) {
+  const [selectedLang, setSelectedLang] = useState<String[]>(post.languages);
+  const checkLang = () => {
+    if (selectedLang.length >= 2) return false;
+    return true;
+  };
+  const onPressEvent = (lang: String) => {
+    if (selectedLang.includes(lang)) {
+      var s = selectedLang.filter(function (item) {
+        return item !== lang;
+      });
+      setSelectedLang(s);
+      setPost({...post, languages: s});
+      return;
+    }
+    if (checkLang()) {
+      setSelectedLang([...selectedLang, lang]);
+      setPost({...post, languages: [...selectedLang, lang]});
+    }
+  };
   return (
     <>
       <View style={styles.text}>
@@ -12,72 +32,15 @@ export default function SetupLang() {
         </Text>
       </View>
       <View style={styles.container}>
-        <RoundBtn
-          text="한국어"
-          onPress={() => {
-            return;
-          }}
-        />
-        <RoundBtn
-          text="English"
-          onPress={() => {
-            return;
-          }}
-        />
-        <RoundBtn
-          text="日本語"
-          onPress={() => {
-            return;
-          }}
-        />
-        <RoundBtn
-          text="中文(简体)"
-          onPress={() => {
-            return;
-          }}
-        />
-        <RoundBtn
-          text="中文(繁體)"
-          onPress={() => {
-            return;
-          }}
-        />
-        <RoundBtn
-          text="Français"
-          onPress={() => {
-            return;
-          }}
-        />
-        <RoundBtn
-          text="Español"
-          onPress={() => {
-            return;
-          }}
-        />
-        <RoundBtn
-          text="Deutsch"
-          onPress={() => {
-            return;
-          }}
-        />
-        <RoundBtn
-          text="Tiếng Việt"
-          onPress={() => {
-            return;
-          }}
-        />
-        <RoundBtn
-          text="Pусский"
-          onPress={() => {
-            return;
-          }}
-        />
-        <RoundBtn
-          text="기타"
-          onPress={() => {
-            return;
-          }}
-        />
+        {langList.map(lang => (
+          <RoundBtn
+            text={lang}
+            isSelect={selectedLang.includes(lang)}
+            onPress={() => {
+              onPressEvent(lang);
+            }}
+          />
+        ))}
       </View>
     </>
   );

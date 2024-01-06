@@ -1,9 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import RoundCategory from '../atoms/roundCategory';
 import {StyleSheet, Text, View} from 'react-native';
 import {height, width} from '../../global';
+import {categoryList} from '../../utils/utils';
 
-export default function SetupCategory() {
+export default function SetupCategory({post, setPost}: any) {
+  const [category, setCategory] = useState(post.category);
   return (
     <>
       <View style={styles.text}>
@@ -12,90 +14,16 @@ export default function SetupCategory() {
         </Text>
       </View>
       <View style={styles.container}>
-        <RoundCategory
-          text="🎮게임/보드게임"
-          onPress={() => {
-            return;
-          }}
-        />
-        <RoundCategory
-          text="🎟️문화/전시/공연"
-          onPress={() => {
-            return;
-          }}
-        />
-        <RoundCategory
-          text="🍺술"
-          onPress={() => {
-            return;
-          }}
-        />
-        <RoundCategory
-          text="🏀스포츠"
-          onPress={() => {
-            return;
-          }}
-        />
-        <RoundCategory
-          text="🎨공예/그림"
-          onPress={() => {
-            return;
-          }}
-        />
-        <RoundCategory
-          text="❤️봉사활동"
-          onPress={() => {
-            return;
-          }}
-        />
-        <RoundCategory
-          text="🥝기타"
-          onPress={() => {
-            return;
-          }}
-        />
-        <RoundCategory
-          text="🎧K-pop"
-          onPress={() => {
-            return;
-          }}
-        />
-        <RoundCategory
-          text="🍔맛집/카페"
-          onPress={() => {
-            return;
-          }}
-        />
-        <RoundCategory
-          text="📚스터디"
-          onPress={() => {
-            return;
-          }}
-        />
-        <RoundCategory
-          text="✈️여행"
-          onPress={() => {
-            return;
-          }}
-        />
-        <RoundCategory
-          text="🇰🇷한국 문화"
-          onPress={() => {
-            return;
-          }}
-        />
-        <RoundCategory
-          text="🎬영화/드라마/애니"
-          onPress={() => {
-            return;
-          }}
-        />
-        <RoundCategory
-          text="🎉파티/클럽"
-          onPress={() => {
-            return;
-          }}
-        />
+        {categoryList.map(c => (
+          <RoundCategory
+            text={c}
+            isSelect={category === c}
+            onPress={() => {
+              setCategory(c);
+              setPost({...post, category: c});
+            }}
+          />
+        ))}
       </View>
     </>
   );

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {FunnelProps, StepProps} from '../../hooks/useFunnel';
 import PostLayout from './PostLayout';
 import SetupLang from './SetupLang';
@@ -21,6 +21,24 @@ const PostClubStep = ({
   Funnel,
   Step,
 }: ProfileSetupInterface) => {
+  const [post, setPost] = useState({
+    category: '',
+    content: '',
+    cost: -1,
+    date: '',
+    dueTo: '',
+    gender: '남자만',
+    languages: [],
+    location: '',
+    locationsKeyword: '',
+    maxPeople: 0,
+    title: '',
+  });
+
+  useEffect(() => {
+    console.log(post);
+  }, [post]);
+
   return (
     <PostLayout>
       <Funnel>
@@ -28,32 +46,44 @@ const PostClubStep = ({
           <SetupLayout
             isStart={true}
             title={'모임에서 사용할\n언어를 골라주세요.'}
-            onNext={() => nextClickHandler(steps[1])}>
-            <SetupLang />
+            onNext={() => {
+              if (post.languages.length == 0) return;
+              nextClickHandler(steps[1]);
+            }}>
+            <SetupLang post={post} setPost={setPost} />
           </SetupLayout>
         </Step>
         <Step name="카테고리">
           <SetupLayout
             title={'모임의 카테고리를\n골라주세요.'}
             onPrev={() => nextClickHandler(steps[0])}
-            onNext={() => nextClickHandler(steps[2])}>
-            <SetupCategory />
+            onNext={() => {
+              if (post.category == '') return;
+              nextClickHandler(steps[2]);
+            }}>
+            <SetupCategory post={post} setPost={setPost} />
           </SetupLayout>
         </Step>
         <Step name="상세정보1">
           <SetupLayout
             title={'모임의 날짜와 마감일,\n장소를 알려주세요.'}
             onPrev={() => nextClickHandler(steps[1])}
-            onNext={() => nextClickHandler(steps[3])}>
-            <SetupDetail1 />
+            onNext={() => {
+              if (post.date == '' || post.dueTo == '') return;
+              nextClickHandler(steps[3]);
+            }}>
+            <SetupDetail1 post={post} setPost={setPost} />
           </SetupLayout>
         </Step>
         <Step name="상세정보2">
           <SetupLayout
             title={'모임의 비용과 참여인원,\n성별을 골라주세요'}
             onPrev={() => nextClickHandler(steps[2])}
-            onNext={() => nextClickHandler(steps[4])}>
-            <SetupDetail2 />
+            onNext={() => {
+              if (post.cost < 0 || post.maxPeople == 0) return;
+              nextClickHandler(steps[4]);
+            }}>
+            <SetupDetail2 post={post} setPost={setPost} />
           </SetupLayout>
         </Step>
         <Step name="상세정보3">
@@ -62,7 +92,9 @@ const PostClubStep = ({
             onPrev={() => nextClickHandler(steps[3])}
             onNext={() => {
               console.log('작성 완료');
-            }}>
+            }}
+            post={post}
+            setPost={setPost}>
             <SetupDetail3 />
           </SetupLayout>
         </Step>
