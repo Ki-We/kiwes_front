@@ -11,7 +11,6 @@ export default function ListComponent({
   posts,
   setPosts,
 }: any) {
-  console.log(item);
   const toggleLike = async (id: String) => {
     const post = posts.find((post: any) => post.clubId === id);
     if (!post) {
@@ -20,29 +19,27 @@ export default function ListComponent({
 
     // Update state
     const updatedPosts = posts.map((post: any) =>
-      post.clubId === id ? {...post, heart: !post.heart} : post,
+      post.clubId === id
+        ? {...post, isHeart: post.isHeart === 'YES' ? 'NO' : 'YES'}
+        : post,
     );
     setPosts(updatedPosts);
     try {
       const updatedPost = updatedPosts.find((post: any) => post.clubId === id);
       const apiUrl = `${apiServer}/api/v1/heart/${id}`;
-      const response = await new RESTAPIBuilder(
+      await new RESTAPIBuilder(
         apiUrl,
-        updatedPost.heart ? 'PUT' : 'DELETE',
+        updatedPost.isHeart === 'YES' ? 'PUT' : 'DELETE',
       )
         .setNeedToken(true)
         .build()
         .run();
-
-      if (response.data == undefined) {
-        throw new Error('Failed to update heart status');
-      }
     } catch (err) {
       console.error(err);
       // If API call fails, revert state
       setPosts(
         posts.map((post: any) =>
-          post.clubId === id ? {...post, heart: post.heart} : post,
+          post.clubId === id ? {...post, heart: post.isHeart} : post,
         ),
       );
     }
