@@ -52,6 +52,7 @@ export class RESTAPI {
         const tokenData = JSON.parse(userData);
         jwt = tokenData.accessToken;
       }
+      console.log(jwt);
       params.headers = {
         ...params.headers,
         Authorization: `Bearer ${jwt}`,

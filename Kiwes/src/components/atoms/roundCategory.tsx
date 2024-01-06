@@ -27,7 +27,6 @@ export default function RoundBtn({text, isSelect, onPress}: any) {
 
 const styles = StyleSheet.create({
   button: {
-    width: width * 100,
     height: height * 44,
     borderColor: '#9BD23C',
     borderWidth: 1,
@@ -35,6 +34,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center', // 세로 중앙 정렬
     alignItems: 'center', // 가로 중앙 정렬
     marginBottom: height * 20,
+    paddingLeft: width * 10,
+    paddingRight: width * 10,
   },
   buttonContent: {
     justifyContent: 'center', // 세로 중앙 정렬

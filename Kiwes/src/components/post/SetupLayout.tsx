@@ -1,8 +1,15 @@
 import React from 'react';
-import {View, Text, Button, StyleSheet, ScrollView} from 'react-native';
-import {height} from '../../global';
+import {View, Text, StyleSheet, ScrollView, Pressable} from 'react-native';
+import {height, width} from '../../global';
 
-export default function SetupLayout({title, children, onNext}: any) {
+export default function SetupLayout({
+  isStart = false,
+  isEnd = false,
+  title,
+  children,
+  onPrev,
+  onNext,
+}: any) {
   return (
     // <View style={styles1.container}>
     //   <View style={styles1.case1} />
@@ -13,13 +20,29 @@ export default function SetupLayout({title, children, onNext}: any) {
         <Text style={styles.title}>{title}</Text>
       </View>
 
-      <ScrollView style={styles.middleContainer}>
-        <Text>asdf</Text>
-        {children}
-      </ScrollView>
+      <ScrollView style={styles.middleContainer}>{children}</ScrollView>
 
       <View style={styles.buttonContainer}>
-        <Button title="Your Button" onPress={onNext} />
+        <Pressable
+          style={isStart ? styles.prevBtn1 : styles.prevBtn2}
+          onPress={
+            isStart
+              ? () => {
+                  return;
+                }
+              : onPrev
+          }>
+          <View style={styles.btn}>
+            <Text style={isStart ? styles.prevColor1 : styles.prevColor2}>
+              이전
+            </Text>
+          </View>
+        </Pressable>
+        <Pressable style={styles.nextBtn} onPress={onNext}>
+          <View style={styles.btn}>
+            <Text style={styles.nextColor}>{isEnd ? '등록' : '다음'}</Text>
+          </View>
+        </Pressable>
       </View>
     </View>
   );
@@ -30,37 +53,74 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   titleContainer: {
-    height: 150,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'lightblue',
+    height: 100,
+    marginTop: height * 15,
+    marginLeft: width * 20,
   },
   title: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: 'Pretendard',
+    fontWeight: '700',
+    fontSize: width * 24,
+    color: '#303030',
+    whiteSpace: 'pre-line',
   },
   middleContainer: {
     flex: 1,
-    backgroundColor: 'lightgreen',
   },
   buttonContainer: {
-    height: 200,
+    flexDirection: 'row',
+    height: 100,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'lightcoral',
   },
-});
-const styles1 = StyleSheet.create({
-  container: {
-    height: height * 675,
-    backgroundColor: 'white',
+  btn: {
+    justifyContent: 'center', // 세로 중앙 정렬
+    alignItems: 'center', // 가로 중앙 정렬
+    height: '100%',
   },
-  case1: {
-    width: 100,
-    backgroundColor: 'red',
+  prevBtn1: {
+    width: width * 135,
+    height: height * 40,
+    backgroundColor: '#DADADA',
+    borderRadius: 8,
+    borderWidth: 2,
+    borderColor: '#D0D0D0',
+    margin: 10,
   },
-  case2: {
-    width: 100,
-    backgroundColor: 'green',
+  prevColor1: {
+    fontFamily: 'Pretendard',
+    fontWeight: '600',
+    fontSize: width * 16,
+    color: '#E8E8E8',
+  },
+  prevBtn2: {
+    width: width * 135,
+    height: height * 40,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 8,
+    borderWidth: 2,
+    borderColor: '#DADADA',
+    margin: 10,
+  },
+  prevColor2: {
+    fontFamily: 'Pretendard',
+    fontWeight: '600',
+    fontSize: width * 16,
+    color: '#303030',
+  },
+  nextBtn: {
+    width: width * 135,
+    height: height * 40,
+    backgroundColor: '#58C047',
+    borderRadius: 8,
+    borderWidth: 2,
+    borderColor: '#58C047',
+    margin: 10,
+  },
+  nextColor: {
+    fontFamily: 'Pretendard',
+    fontWeight: '700',
+    fontSize: width * 16,
+    color: '#ffffff',
   },
 });
