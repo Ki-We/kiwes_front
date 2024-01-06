@@ -2,12 +2,11 @@ import React, {useState} from 'react';
 import {View, StyleSheet, TouchableOpacity, Text} from 'react-native';
 import backIcon from 'react-native-vector-icons/Ionicons';
 import {width, height} from '../global';
-import ApprovalList from '../components/ApprovalList';
-import AlarmList from '../components/AlarmList';
+import AlarmList from '../components/alarm/AlarmList';
+import AlarmStack from '../components/layout/AlarmStack';
 
 const AlarmPage = ({navigation}: any) => {
   const [selectedTab, setSelectedTab] = useState('알림');
-
   return (
     <>
       <View style={styles.header}>
@@ -60,7 +59,7 @@ const AlarmPage = ({navigation}: any) => {
         </View>
       </View>
       <View style={{flex: 1}}>
-        {selectedTab === '알림' ? <AlarmList /> : <ApprovalList />}
+        {selectedTab === '알림' ? <AlarmList /> : <AlarmStack />}
       </View>
     </>
   );

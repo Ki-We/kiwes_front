@@ -6,10 +6,10 @@ import Login from '../../pages/Login';
 import BottomTab from './BottomTab';
 import {NavigationContainer} from '@react-navigation/native';
 import PostClub from '../../pages/PostClub';
-import WishList from '../../pages/WishList';
 import ClubPage from '../../pages/ClubPage';
 import AlarmPage from '../../pages/AlarmPage';
-import ApprovalPage from '../ApprovalList';
+import WishPage from '../../pages/WishPage';
+import AlarmStack from './alarmStack';
 
 const LoginStack = () => {
   useEffect(() => {
@@ -32,7 +32,7 @@ const LoginStack = () => {
         {/* 하단 Stack은 bottom 없이 이동되어야 하는 Stack */}
 
         <Stack.Screen name="PostClub" component={PostClub} />
-        <Stack.Screen name="WishPage" component={WishList} />
+        <Stack.Screen name="WishPage" component={WishPage} />
         <Stack.Screen name="ClubPage" component={ClubPage} />
         <Stack.Screen name="AlarmPage" component={AlarmPage} />
       </Stack.Navigator>
