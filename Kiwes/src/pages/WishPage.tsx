@@ -10,10 +10,22 @@ import BoardList from '../components/BoardList';
 import {apiServer} from '../utils/metaData';
 import {width, height} from '../global';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {RESTAPIBuilder} from '../utils/restapiBuilder';
 
-const WishList = ({navigation}: any) => {
-  const url = `${apiServer}/api/v1/heart/club_list`;
+const url = `${apiServer}/api/v1/heart/club_list`;
+const fetchData = async () => {
+  try {
+    const response = await new RESTAPIBuilder(url, 'GET')
+      .setNeedToken(true)
+      .build()
+      .run();
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
 
+const WishPage = ({navigation}: any) => {
   const navigateToClub = (clubId: any) => {
     navigation.navigate('ClubPage', {clubId: clubId});
   };
@@ -31,7 +43,7 @@ const WishList = ({navigation}: any) => {
           </TouchableOpacity>
         </View>
         <SafeAreaView style={{flex: 1}}>
-          <BoardList url={url} navigateToClub={navigateToClub} />
+          <BoardList fetchData={fetchData} navigateToClub={navigateToClub} />
         </SafeAreaView>
       </View>
     </>
@@ -61,4 +73,4 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
 });
-export default WishList;
+export default WishPage;

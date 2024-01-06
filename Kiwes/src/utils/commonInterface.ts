@@ -30,11 +30,16 @@ export interface ClubMember {
   thumbnail: string;
 }
 export interface BoardPost {
-  locationsKeyword: string;
+  locationKeyword: string;
   clubId: string;
   title: string;
   thumbnailImage: string;
   date: string;
-  heart: boolean;
+  isHeart: string;
   languages: string[];
+}
+export interface ClubApprovalRequest {
+  clubId: string;
+  title: string;
+  currentPeople: number;
 }

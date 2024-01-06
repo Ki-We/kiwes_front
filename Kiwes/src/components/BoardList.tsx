@@ -14,25 +14,18 @@ import {BoardPost} from '../utils/commonInterface';
 import {languageMap} from '../utils/languageMap';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useFocusEffect} from '@react-navigation/native';
-const BoardList = ({url, navigateToClub}) => {
+const BoardList = ({fetchData, navigateToClub}) => {
   const screenHeight = Dimensions.get('window').height;
   const [posts, setPosts] = useState<BoardPost[]>([]);
-  const fetchData = async () => {
-    try {
-      const response = await new RESTAPIBuilder(url, 'GET')
-        .setNeedToken(true)
-        .build()
-        .run();
-      setPosts(response.data);
-    } catch (err) {
-      console.log(err);
-    }
+  const setData = async () => {
+    setPosts(await fetchData());
   };
+
   useFocusEffect(
     useCallback(() => {
-      fetchData();
+      setData();
       return () => {
-        fetchData();
+        setData();
       };
     }, []),
   );
@@ -45,92 +38,104 @@ const BoardList = ({url, navigateToClub}) => {
 
     // Update state
     const updatedPosts = posts.map(post =>
-      post.clubId === id ? {...post, heart: !post.heart} : post,
+      post.clubId === id
+        ? {...post, isHeart: post.isHeart === 'YES' ? 'NO' : 'YES'}
+        : post,
     );
     setPosts(updatedPosts);
     try {
       const updatedPost = updatedPosts.find(post => post.clubId === id);
       const apiUrl = `${apiServer}/api/v1/heart/${id}`;
-      const response = await new RESTAPIBuilder(
+      await new RESTAPIBuilder(
         apiUrl,
-        updatedPost.heart ? 'PUT' : 'DELETE',
+        updatedPost.isHeart === 'YES' ? 'PUT' : 'DELETE',
       )
         .setNeedToken(true)
         .build()
         .run();
-
-      if (response.data == undefined) {
-        throw new Error('Failed to update heart status');
-      }
     } catch (err) {
       console.error(err);
       // If API call fails, revert state
       setPosts(
         posts.map(post =>
-          post.clubId === id ? {...post, heart: post.heart} : post,
+          post.clubId === id ? {...post, heart: post.isHeart} : post,
         ),
       );
     }
   };
 
   return (
-    <FlatList
-      data={posts}
-      keyExtractor={item => item.clubId}
-      style={{flex: 1}}
-      onScroll={event => {
-        // 스크롤 위치를 얻습니다.
-        let scrollPosition = event.nativeEvent.contentOffset.y;
-        if (scrollPosition < 0) {
-          scrollPosition = 0;
-        }
-        // 아래 코드는 스크롤 값(coursor)입니다.
-        // const scrollRatio = Math.round((scrollPosition / screenHeight) * 10);
-      }}
-      renderItem={({item}) => (
-        <TouchableOpacity
-          style={styles.clubContainer}
-          onPress={() => {
-            navigateToClub(item.clubId);
-          }}>
-          <Image
-            source={{uri: item.thumbnailImage}}
-            style={styles.imageContainer}
-          />
+    <>
+      <FlatList
+        data={posts}
+        keyExtractor={item => item.clubId}
+        style={{flex: 1}}
+        onScroll={event => {
+          // 스크롤 위치를 얻습니다.
+          let scrollPosition = event.nativeEvent.contentOffset.y;
+          if (scrollPosition < 0) {
+            scrollPosition = 0;
+          }
+          // 아래 코드는 스크롤 값(coursor)입니다.
+          // const scrollRatio = Math.round((scrollPosition / screenHeight) * 10);
+        }}
+        renderItem={({item}) => (
+          <TouchableOpacity
+            style={styles.clubContainer}
+            onPress={() => {
+              navigateToClub(item.clubId);
+            }}>
+            <Image
+              source={{uri: item.thumbnailImage}}
+              style={styles.imageContainer}
+            />
 
-          <View style={styles.textContainer}>
-            <View>
-              <Text style={styles.title}>{item.title}</Text>
-              <View style={styles.infoContainer}>
-                <Icon name="calendar-outline" />
-                <Text style={styles.info}>{item.date}</Text>
-              </View>
-              <View style={styles.infoContainer}>
-                <Icon name="map-outline" />
-                <Text style={styles.info}>{item.locationsKeyword}</Text>
-              </View>
-              <View style={styles.infoContainer}>
-                <Icon name="globe-outline" />
-                <Text style={styles.info}>
-                  {item.languages
-                    .map(code => languageMap[code] || code)
-                    .join(', ')}
-                </Text>
+            <View style={styles.textContainer}>
+              <View>
+                <Text style={styles.title}>{item.title}</Text>
+                <View style={styles.infoContainer}>
+                  <Icon
+                    name="calendar-outline"
+                    size={14}
+                    color={'#rgba(0, 0, 0, 0.7)'}
+                  />
+                  <Text style={styles.info}>{item.date}</Text>
+                </View>
+                <View style={styles.infoContainer}>
+                  <Icon
+                    name="map-outline"
+                    size={14}
+                    color={'#rgba(0, 0, 0, 0.7)'}
+                  />
+                  <Text style={styles.info}>{item.locationKeyword}</Text>
+                </View>
+                <View style={styles.infoContainer}>
+                  <Icon
+                    name="globe-outline"
+                    size={14}
+                    color={'#rgba(0, 0, 0, 0.7)'}
+                  />
+                  <Text style={styles.info}>
+                    {item.languages
+                      .map(code => languageMap[code] || code)
+                      .join(', ')}
+                  </Text>
+                </View>
               </View>
             </View>
-          </View>
-          <TouchableOpacity
-            style={styles.heartContainer}
-            onPress={() => toggleLike(item.clubId)}>
-            <Icon
-              name={item.heart ? 'heart' : 'heart-outline'}
-              size={25}
-              color="#58C047"
-            />
+            <TouchableOpacity
+              style={styles.heartContainer}
+              onPress={() => toggleLike(item.clubId)}>
+              <Icon
+                name={item.isHeart === 'YES' ? 'heart' : 'heart-outline'}
+                size={25}
+                color="#58C047"
+              />
+            </TouchableOpacity>
           </TouchableOpacity>
-        </TouchableOpacity>
-      )}
-    />
+        )}
+      />
+    </>
   );
 };
 const styles = StyleSheet.create({
@@ -147,7 +152,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     width: 122,
     height: 97,
-    borderRadius: 30,
+    borderRadius: 20,
   },
   textContainer: {
     flex: 1,
@@ -161,6 +166,8 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: 'bold',
+    color: 'rgba(0, 0, 0, 1)',
+    marginBottom: 3,
   },
   infoContainer: {
     flexDirection: 'row',
@@ -168,6 +175,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   info: {
+    color: 'rgba(0, 0, 0, 0.8)',
     marginLeft: 5,
   },
 });
