@@ -1,23 +1,26 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {
-  View,
-  FlatList,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  Dimensions,
-} from 'react-native';
+import {View, FlatList, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useFocusEffect} from '@react-navigation/native';
 import {ClubApprovalRequest} from '../../utils/commonInterface';
 import {apiServer} from '../../utils/metaData';
 import {RESTAPIBuilder} from '../../utils/restapiBuilder';
 
-const ApprovalRequst = ({fetchData, navigateToRequestList}) => {
-  const screenHeight = Dimensions.get('window').height;
+const ApprovalRequst = ({url, navigateToRequestList}: any) => {
   const [posts, setPosts] = useState<ClubApprovalRequest[]>([]);
   const [cursor, setCursor] = useState(1);
   const [last, setLast] = useState(1);
+  const fetchData = async ({cursor}: any) => {
+    try {
+      const response = await new RESTAPIBuilder(url, 'GET')
+        .setNeedToken(true)
+        .build()
+        .run();
+      return response.data;
+    } catch (err) {
+      console.log(err);
+    }
+  };
   const fetchLast = async () => {
     try {
       const response = await new RESTAPIBuilder(

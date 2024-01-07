@@ -10,10 +10,8 @@ import BoardList from '../components/BoardList';
 import {apiServer} from '../utils/metaData';
 import {width, height} from '../global';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {RESTAPIBuilder} from '../utils/restapiBuilder';
-
+const url = `${apiServer}/api/v1/heart/club_list?cursor=1`;
 const WishPage = ({navigation}: any) => {
-  const url = `${apiServer}/api/v1/heart/club_list`;
   const navigateToClub = (clubId: any) => {
     navigation.navigate('ClubPage', {clubId: clubId});
   };

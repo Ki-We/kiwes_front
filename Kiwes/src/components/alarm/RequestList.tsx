@@ -1,6 +1,5 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {RESTAPIBuilder} from '../../utils/restapiBuilder';
 import {apiServer} from '../../utils/metaData';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {width} from '../../global';
@@ -8,21 +7,9 @@ import ApprovalRequst from './ApprovalRequst';
 
 const url = `${apiServer}/api/v1/club/approval/my-club?cursor=1`;
 
-const RequestList = ({navigation, navigateToRequestList}: any) => {
-  const fetchRequest = async ({cursor}: any) => {
-    try {
-      console.log(`${apiServer}/api/v1/club/approval/my-club?cursor=${cursor}`);
-      const response = await new RESTAPIBuilder(
-        `${apiServer}/api/v1/club/approval/my-club?cursor=${cursor}`,
-        'GET',
-      )
-        .setNeedToken(true)
-        .build()
-        .run();
-      return response.data;
-    } catch (err) {
-      console.log(err);
-    }
+const RequestList = ({navigation}: any) => {
+  const navigateToRequestList = (clubId: any) => {
+    navigation.navigate('ClubApproval', {clubId: clubId});
   };
   return (
     <>
@@ -30,11 +17,10 @@ const RequestList = ({navigation, navigateToRequestList}: any) => {
         <Text style={styles.title}>내 모임</Text>
         <SafeAreaView style={{flex: 1}}>
           <ApprovalRequst
-            fetchData={fetchRequest}
+            url={url}
             navigateToRequestList={navigateToRequestList}
           />
         </SafeAreaView>
-        <View style={{flex: 0.2}}></View>
       </View>
     </>
   );
