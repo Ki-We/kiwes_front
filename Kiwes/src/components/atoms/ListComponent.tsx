@@ -11,6 +11,8 @@ export default function ListComponent({
   posts,
   setPosts,
 }: any) {
+  console.log('-----------item-------------');
+  console.log(item);
   const toggleLike = async (id: String) => {
     const post = posts.find((post: any) => post.clubId === id);
     if (!post) {
@@ -52,7 +54,7 @@ export default function ListComponent({
         navigateToClub(item.clubId);
       }}>
       <Image
-        source={{uri: item.thumbnailImage}}
+        source={{uri: item.thumbnailImage || item.clubThumbnailImg}}
         style={styles.imageContainer}
       />
       <View style={styles.textContainer}>
