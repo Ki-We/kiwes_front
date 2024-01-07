@@ -6,7 +6,6 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  Dimensions,
 } from 'react-native';
 import {RESTAPIBuilder} from '../utils/restapiBuilder';
 import {apiServer} from '../utils/metaData';
@@ -15,7 +14,6 @@ import {languageMap} from '../utils/languageMap';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useFocusEffect} from '@react-navigation/native';
 const BoardList = ({url, data, navigateToClub}: any) => {
-  const screenHeight = Dimensions.get('window').height;
   const [posts, setPosts] = useState<BoardPost[]>(data || []);
   const setData = async () => {
     if (url === '') return;

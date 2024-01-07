@@ -55,20 +55,27 @@ export default function ListComponent({
         source={{uri: item.thumbnailImage}}
         style={styles.imageContainer}
       />
-
       <View style={styles.textContainer}>
         <View>
           <Text style={styles.title}>{item.title}</Text>
           <View style={styles.infoContainer}>
-            <Icon name="calendar-outline" />
+            <Icon
+              name="calendar-outline"
+              size={14}
+              color={'#rgba(0, 0, 0, 0.7)'}
+            />
             <Text style={styles.info}>{item.date}</Text>
           </View>
           <View style={styles.infoContainer}>
-            <Icon name="map-outline" />
+            <Icon name="map-outline" size={14} color={'#rgba(0, 0, 0, 0.7)'} />
             <Text style={styles.info}>{item.locationsKeyword}</Text>
           </View>
           <View style={styles.infoContainer}>
-            <Icon name="globe-outline" />
+            <Icon
+              name="globe-outline"
+              size={14}
+              color={'#rgba(0, 0, 0, 0.7)'}
+            />
             <Text style={styles.info}>
               {item.languages
                 .map((code: any) => languageMap[code] || code)
@@ -77,15 +84,15 @@ export default function ListComponent({
           </View>
         </View>
       </View>
-      <TouchableOpacity
-        style={styles.heartContainer}
-        onPress={() => toggleLike(item.clubId)}>
-        <Icon
-          name={item.heart ? 'heart' : 'heart-outline'}
-          size={25}
-          color="#58C047"
-        />
-      </TouchableOpacity>
+      <View style={styles.heartContainer}>
+        <TouchableOpacity onPress={() => toggleLike(item.clubId)}>
+          <Icon
+            name={item.heart ? 'heart' : 'heart-outline'}
+            size={25}
+            color="#58C047"
+          />
+        </TouchableOpacity>
+      </View>
     </TouchableOpacity>
   );
 }
@@ -93,12 +100,10 @@ export default function ListComponent({
 const styles = StyleSheet.create({
   clubContainer: {
     flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
+    justifyContent: 'space-between',
     padding: 10,
     borderBottomWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.2)',
-    marginLeft: 10,
     marginRight: 10,
   },
   imageContainer: {
@@ -108,8 +113,6 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
     marginLeft: 10,
   },
   heartContainer: {
@@ -118,6 +121,8 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: 'bold',
+    color: 'rgba(0, 0, 0, 1)',
+    marginBottom: 3,
   },
   infoContainer: {
     flexDirection: 'row',
@@ -125,6 +130,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   info: {
+    color: 'rgba(0, 0, 0, 0.8)',
     marginLeft: 5,
   },
 });

@@ -71,7 +71,6 @@ export default function Search({navigation}: any) {
           </View>
           <View style={styles.recommandContainer}>
             <Text style={styles.title}>추천 모임</Text>
-
             {recommand.map((r, i) => (
               <ListComponent
                 key={`recommand_${i}`}
@@ -101,10 +100,8 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   recommandContainer: {
-    margin: 15,
-    flex: 1,
-    alignItems: 'flex-start',
-    alignSelf: 'flex-start',
+    marginLeft: 15,
+    alignSelf: 'stretch',
   },
   title: {
     color: '#000000',
