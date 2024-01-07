@@ -5,11 +5,11 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {width} from '../../global';
 import ApprovalRequst from './ApprovalRequst';
 
-const url = `${apiServer}/api/v1/club/approval/my-club?cursor=1`;
+const url = `${apiServer}/api/v1/club/approval/my-own-club?cursor=0`;
 
 const RequestList = ({navigation}: any) => {
-  const navigateToRequestList = ({clubId}: any) => {
-    navigation.navigate('ClubApproval', {clubId});
+  const navigateToRequestList = (clubId: any) => {
+    navigation.navigate('ClubApproval', {clubId: clubId});
   };
   return (
     <>

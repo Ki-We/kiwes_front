@@ -63,12 +63,10 @@ const ApprovalRequst = ({url, navigateToRequestList}: any) => {
         onScroll={event => {
           const scrollPosition = event.nativeEvent.contentOffset.y;
           if (scrollPosition <= 0) {
-            console.log('리스트의 맨 위에 도달했습니다.');
             setCursor(prevCursor => Math.max(prevCursor - 1, 1)); // cursor의 최소값을 1로 설정
           }
         }}
         onEndReached={() => {
-          console.log('리스트의 끝에 도달했습니다.');
           // if (cursor < last - 6) {
           //   setCursor(prevCursor => prevCursor + 1);
           // }
@@ -92,6 +90,7 @@ const ApprovalRequst = ({url, navigateToRequestList}: any) => {
             <TouchableOpacity
               style={styles.heartContainer}
               onPress={() => {
+                // console.log({clubId: item.clubId, title: item.title});
                 navigateToRequestList({clubId: item.clubId, title: item.title});
               }}>
               <Text style={styles.button}> 보기 </Text>

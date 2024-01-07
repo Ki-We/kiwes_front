@@ -67,6 +67,9 @@ const ClubApproval = ({route}: any) => {
         .setNeedToken(true)
         .build()
         .run();
+      if (!response.data) {
+        return;
+      }
       return response.data;
     } catch (err) {
       console.log(err);
