@@ -29,8 +29,14 @@ export default function Search({navigation}: any) {
 
     let temp = await AsyncStorage.getItem('search');
     const keywords = temp ? JSON.parse(temp) : [];
-    if (keywords.length > 2) keywords.shift();
-    await AsyncStorage.setItem('search', JSON.stringify([...keywords, search]));
+    const first = keywords.shift();
+    keywords.unshift(first);
+
+    if (first == search) {
+      return;
+    }
+    if (keywords.length > 2) keywords.pop();
+    await AsyncStorage.setItem('search', JSON.stringify([search, ...keywords]));
   };
   const getRecommand = async () => {
     const url = `${apiServer}/api/v1/club/popular`;
