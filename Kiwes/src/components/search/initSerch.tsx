@@ -62,7 +62,7 @@ export default function InitSearch({doSearch}: any) {
         <View style={styles.popularContainer}>
           <View>
             {popular.slice(0, 3).map((p, i) => (
-              <Pressable onPress={() => doSearch(p)}>
+              <Pressable key={`popular_l_${i}`} onPress={() => doSearch(p)}>
                 <Text style={styles.popular}>
                   {i + 1}
                   {'           '}
@@ -73,7 +73,7 @@ export default function InitSearch({doSearch}: any) {
           </View>
           <View>
             {popular.slice(3).map((p, i) => (
-              <Pressable onPress={() => doSearch(p)}>
+              <Pressable key={`popular_r_${i}`} onPress={() => doSearch(p)}>
                 <Text style={styles.popular}>
                   {i + 4}
                   {'           '}
