@@ -8,8 +8,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import BoardList from '../BoardList';
 import ApprovalRequst from './ApprovalRequst';
 
-const approvalUrl = `${apiServer}/api/v1/club/approval/simple/approval?cursor=1`;
-const watinglUrl = `${apiServer}/api/v1/club/approval/simple/wating?cursor=1`;
+const approvalUrl = `${apiServer}/api/v1/club/approval/simple/approval?cursor=0`;
+const watinglUrl = `${apiServer}/api/v1/club/approval/simple/wating?cursor=0`;
 
 const ApprovalList = ({navigation}: any) => {
   const navigateToRequestList = (clubId: any) => {
@@ -47,7 +47,7 @@ const ApprovalList = ({navigation}: any) => {
         <TouchableOpacity
           style={styles.retriveContainer}
           onPress={() => {
-            navigation.navigate('WatingList');
+            navigation.navigate('WatingList', {navigateToClub});
           }}>
           <Text style={styles.retrive}>대기중인 모임 모두 보기</Text>
           <Icon
