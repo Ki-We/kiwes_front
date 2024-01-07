@@ -92,7 +92,7 @@ const ApprovalRequst = ({url, navigateToRequestList}: any) => {
             <TouchableOpacity
               style={styles.heartContainer}
               onPress={() => {
-                navigateToRequestList(item.clubId);
+                navigateToRequestList({clubId: item.clubId, title: item.title});
               }}>
               <Text style={styles.button}> 보기 </Text>
             </TouchableOpacity>

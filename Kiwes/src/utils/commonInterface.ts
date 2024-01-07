@@ -43,3 +43,8 @@ export interface ClubApprovalRequest {
   title: string;
   currentPeople: number;
 }
+export interface ClubMemberApprovalRequestEach {
+  nickname: string;
+  profileImg: string;
+  memberId: string;
+}

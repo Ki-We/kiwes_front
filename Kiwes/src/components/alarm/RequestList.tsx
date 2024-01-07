@@ -8,8 +8,8 @@ import ApprovalRequst from './ApprovalRequst';
 const url = `${apiServer}/api/v1/club/approval/my-club?cursor=1`;
 
 const RequestList = ({navigation}: any) => {
-  const navigateToRequestList = (clubId: any) => {
-    navigation.navigate('ClubApproval', {clubId: clubId});
+  const navigateToRequestList = ({clubId}: any) => {
+    navigation.navigate('ClubApproval', {clubId});
   };
   return (
     <>
