@@ -1,6 +1,5 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {RESTAPIBuilder} from '../../utils/restapiBuilder';
 import {apiServer} from '../../utils/metaData';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {width} from '../../global';
@@ -9,34 +8,12 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import BoardList from '../BoardList';
 import ApprovalRequst from './ApprovalRequst';
 
-const url = `${apiServer}/api/v1/club/approval/simple`;
-const fetchData = async () => {
-  try {
-    const response = await new RESTAPIBuilder(url, 'GET')
-      .setNeedToken(true)
-      .build()
-      .run();
-    return response.data.waitings;
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-const fetchRequest = async () => {
-  try {
-    const response = await new RESTAPIBuilder(url, 'GET')
-      .setNeedToken(true)
-      .build()
-      .run();
-    return response.data.requests;
-  } catch (err) {
-    console.log(err);
-  }
-};
+const approvalUrl = `${apiServer}/api/v1/club/approval/simple/approval?cursor=1`;
+const watinglUrl = `${apiServer}/api/v1/club/approval/simple/wating?cursor=1`;
 
 const ApprovalList = ({navigation}: any) => {
   const navigateToRequestList = (clubId: any) => {
-    navigation.navigate('RequestList', {clubId: clubId});
+    navigation.navigate('ClubApproval', {clubId: clubId});
   };
   const navigateToClub = (clubId: any) => {
     navigation.navigate('ClubPage', {clubId: clubId});
@@ -47,7 +24,7 @@ const ApprovalList = ({navigation}: any) => {
         <Text style={styles.title}>승인 요청</Text>
         <SafeAreaView style={{flex: 0.31}}>
           <ApprovalRequst
-            fetchData={fetchRequest}
+            url={approvalUrl}
             navigateToRequestList={navigateToRequestList}
           />
         </SafeAreaView>
@@ -65,7 +42,7 @@ const ApprovalList = ({navigation}: any) => {
         </TouchableOpacity>
         <Text style={styles.title}>승인 대기</Text>
         <SafeAreaView style={{flex: 0.34}}>
-          <BoardList fetchData={fetchData} navigateToClub={navigateToClub} />
+          <BoardList url={watinglUrl} navigateToClub={navigateToClub} />
         </SafeAreaView>
         <TouchableOpacity
           style={styles.retriveContainer}

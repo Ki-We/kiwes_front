@@ -22,9 +22,9 @@ const AlarmList = ({navigation}: any) => {
   };
   useFocusEffect(
     useCallback(() => {
-      fetchData();
+      // fetchData();
       return () => {
-        fetchData();
+        // fetchData();
       };
     }, []),
   );
