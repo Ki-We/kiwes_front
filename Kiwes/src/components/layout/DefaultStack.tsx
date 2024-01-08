@@ -11,6 +11,9 @@ import AlarmPage from '../../pages/AlarmPage';
 import Search from '../../pages/Search';
 import WishPage from '../../pages/WishPage';
 import AlarmStack from './alarmStack';
+import ProfilePage from '../../pages/ProfilePage';
+import AlarmList from '../alarm/AlarmList';
+import SettingPage from '../../pages/SettingPage';
 
 const LoginStack = () => {
   useEffect(() => {
@@ -44,6 +47,9 @@ const LoginStack = () => {
         <Stack.Screen name="WishPage" component={WishPage} />
         <Stack.Screen name="ClubPage" component={ClubPage} />
         <Stack.Screen name="AlarmPage" component={AlarmPage} />
+        <Stack.Screen name="ProfilePage" component={ProfilePage} />
+        <Stack.Screen name="AlarmList" component={AlarmList} />
+        <Stack.Screen name="SettingPage" component={SettingPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );

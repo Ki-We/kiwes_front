@@ -47,7 +47,7 @@ const ApprovalList = ({navigation}: any) => {
         <TouchableOpacity
           style={styles.retriveContainer}
           onPress={() => {
-            navigation.navigate('WatingList', {navigateToClub});
+            navigation.navigate('WatingList');
           }}>
           <Text style={styles.retrive}>대기중인 모임 모두 보기</Text>
           <Icon

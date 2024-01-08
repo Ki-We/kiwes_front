@@ -2,8 +2,8 @@ import React, {useState} from 'react';
 import {View, StyleSheet, TouchableOpacity, Text} from 'react-native';
 import backIcon from 'react-native-vector-icons/Ionicons';
 import {width, height} from '../global';
-import AlarmList from '../components/alarm/AlarmList';
 import AlarmStack from '../components/layout/AlarmStack';
+import ApprovalStack from '../components/layout/ApprovalStack';
 
 const AlarmPage = ({navigation}: any) => {
   const [selectedTab, setSelectedTab] = useState('알림');
@@ -59,7 +59,7 @@ const AlarmPage = ({navigation}: any) => {
         </View>
       </View>
       <View style={{flex: 1}}>
-        {selectedTab === '알림' ? <AlarmList /> : <AlarmStack />}
+        {selectedTab === '알림' ? <AlarmStack /> : <ApprovalStack />}
       </View>
     </>
   );
