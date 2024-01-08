@@ -17,6 +17,12 @@ export function MyPage({navigation}: any) {
         }}>
         <Text>Search</Text>
       </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('SettingPage');
+        }}>
+        <Text>Setting</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }

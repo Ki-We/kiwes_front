@@ -5,7 +5,7 @@ const ClubPage = ({route}: any) => {
   const {clubId} = route.params;
   return (
     <View>
-      <Text> club_id: {clubId}</Text>
+      <Text> clubId: {clubId}</Text>
     </View>
   );
 };

@@ -48,3 +48,12 @@ export interface ClubMemberApprovalRequestEach {
   profileImg: string;
   memberId: string;
 }
+export interface Alarm {
+  type: string;
+  content: string;
+  club_id: string;
+  createAfterHour: string;
+  createAfterDay: string;
+  member_id: string;
+  imageUrl: string;
+}
