@@ -4,6 +4,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Home from '../../pages/Home';
 import ChatRoom from '../../pages/ChatRoom';
+import EventStack from './EventStack';
 
 const HomeStack = () => {
   console.log(Dimensions.get('screen').height);
@@ -19,7 +20,7 @@ const HomeStack = () => {
     <Stack.Navigator initialRouteName="Home">
       <Stack.Screen
         name="HomePage"
-        component={Home}
+        component={EventStack}
         options={{headerShown: false}}
       />
       {/* 하단 Stack은 bottom 없이 이동되어야 하는 Stack */}
