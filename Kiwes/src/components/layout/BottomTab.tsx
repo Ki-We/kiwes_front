@@ -1,3 +1,4 @@
+import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {TouchableOpacity, Image} from 'react-native';
@@ -7,7 +8,7 @@ import CreateMeeting from '../../pages/CreateMeeting';
 import MyPage from '../../pages/MyPage';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import HomeStack from './HomeStack';
-import WishStack from './WishStack';
+import WishPage from '../../pages/WishPage';
 
 const Tab = createBottomTabNavigator();
 const putterPath = require('../../../assets/images/putter.png');
@@ -45,7 +46,7 @@ const BottomTab = ({navigation}: any) => {
       />
       <Tab.Screen
         name="wish"
-        component={WishStack}
+        component={WishPage}
         options={{
           title: 'WISH',
           tabBarIcon: ({color, size}) => (
@@ -61,12 +62,12 @@ const BottomTab = ({navigation}: any) => {
           tabBarButton: () => (
             <TouchableOpacity activeOpacity={0.5} onPress={onPress}>
               <Image
-                source={putterPath }
+                source={putterPath}
                 style={{
                   width: width * 49,
                   height: height * 46,
                   resizeMode: 'center',
-                  opacity:0.8
+                  opacity: 0.8,
                 }}
               />
             </TouchableOpacity>

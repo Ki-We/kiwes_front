@@ -5,12 +5,23 @@ export function MyPage({navigation}: any) {
   return (
     <SafeAreaView>
       <Text>MyPage Screen</Text>
-
       <TouchableOpacity
         onPress={() => {
           navigation.navigate('PostClub');
         }}>
         <Text>PostClub</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('Search');
+        }}>
+        <Text>Search</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('SettingPage');
+        }}>
+        <Text>Setting</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );

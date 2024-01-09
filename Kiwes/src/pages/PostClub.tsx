@@ -1,9 +1,9 @@
-import {Text, View} from 'react-native';
+import React from 'react';
 import Header from '../components/layout/Header';
 import PostClubStep from '../components/post/PostClubStep';
 import {useFunnel} from '../hooks/useFunnel';
 
-const steps = ['언어', '카테고리', '상세정보1', '상세정보2'];
+const steps = ['언어', '카테고리', '상세정보1', '상세정보2', '상세정보3'];
 export default function PostClub({navigation}: any) {
   const {Funnel, Step, setStep} = useFunnel(steps[0]);
 
@@ -14,7 +14,6 @@ export default function PostClub({navigation}: any) {
   return (
     <>
       <Header navigation={navigation} title={'모임 개설'} />
-      <Text>PostClub</Text>
       <PostClubStep
         steps={steps}
         nextClickHandler={nextClickHandler}

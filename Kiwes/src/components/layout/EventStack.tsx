@@ -17,8 +17,7 @@ const EventStack = () => {
   return (
     <Stack.Navigator
       initialRouteName="Home"
-      screenOptions={{ headerShown: true }}
-    >
+      screenOptions={{ headerShown: true }}>
       <Stack.Screen
         name="Home"
         component={Home}

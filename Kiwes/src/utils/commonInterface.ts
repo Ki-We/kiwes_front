@@ -30,11 +30,30 @@ export interface ClubMember {
   thumbnail: string;
 }
 export interface BoardPost {
-  locationsKeyword: string;
+  locationKeyword: string;
   clubId: string;
   title: string;
   thumbnailImage: string;
   date: string;
-  heart: boolean;
+  isHeart: string;
   languages: string[];
+}
+export interface ClubApprovalRequest {
+  clubId: string;
+  title: string;
+  currentPeople: number;
+}
+export interface ClubMemberApprovalRequestEach {
+  nickname: string;
+  profileImg: string;
+  memberId: string;
+}
+export interface Alarm {
+  type: string;
+  content: string;
+  club_id: string;
+  createAfterHour: string;
+  createAfterDay: string;
+  member_id: string;
+  imageUrl: string;
 }
