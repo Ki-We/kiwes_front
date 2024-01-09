@@ -1,8 +1,12 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, Text, Modal, Linking} from 'react-native';
+import {View, StyleSheet, Text, Linking} from 'react-native';
 import Header from '../components/layout/Header';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import LogoutModal from '../components/LogoutModal';
+import {RESTAPIBuilder} from '../utils/restapiBuilder';
+import {apiServer} from '../utils/metaData';
+const url = `${apiServer}/auth/quit`;
 const Terms =
   'https://drive.google.com/file/d/1zIPn45nR6PTI5tkjW80rbFqEx3wmFScS/view?usp=sharing';
 const PrivacyPolicy =
@@ -13,7 +17,34 @@ const openPDF = (pdf: string) => {
 
 const SettingPage = ({navigation}: any) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [modaltype, setModaltype] = useState('승락');
+  const handleOpenLogoutModal = () => {
+    setModalVisible(true);
+    setModaltype('로그아웃');
+  };
+  const handleOpenSecessionModal = () => {
+    setModalVisible(true);
+    setModaltype('탈퇴하기');
+  };
 
+  const handleCloseModal = () => {
+    setModalVisible(false);
+  };
+  const logout = async () => {
+    await AsyncStorage.removeItem('userData');
+    navigation.reset({
+      index: 0,
+      routes: [{name: 'Login'}],
+    });
+  };
+  const secession = async () => {
+    try {
+      await new RESTAPIBuilder(url, 'POST').setNeedToken(true).build().run();
+    } catch (err) {
+      console.log(err);
+    }
+    logout();
+  };
   const openinsta = () => {
     Linking.canOpenURL('instagram://app')
       .then(supported => {
@@ -41,13 +72,19 @@ const SettingPage = ({navigation}: any) => {
         <TouchableOpacity onPress={() => openinsta()}>
           <Text style={styles.text}>DM으로 문의하기</Text>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => handleOpenLogoutModal()}>
           <Text style={styles.text}>로그아웃</Text>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => handleOpenSecessionModal()}>
           <Text style={styles.text}>탈퇴하기</Text>
         </TouchableOpacity>
       </View>
+      <LogoutModal
+        isVisible={modalVisible}
+        onClose={handleCloseModal}
+        exitClub={modaltype === '로그아웃' ? logout : secession}
+        modaltype={modaltype}
+      />
     </>
   );
 };
