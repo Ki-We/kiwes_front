@@ -10,7 +10,6 @@ import ClubPage from '../../pages/ClubPage';
 import AlarmPage from '../../pages/AlarmPage';
 import Search from '../../pages/Search';
 import WishPage from '../../pages/WishPage';
-import AlarmStack from './alarmStack';
 import ProfilePage from '../../pages/ProfilePage';
 import AlarmList from '../alarm/AlarmList';
 import SettingPage from '../../pages/SettingPage';
