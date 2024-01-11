@@ -14,6 +14,11 @@ import {languageMap} from '../utils/languageMap';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useFocusEffect} from '@react-navigation/native';
 import {height} from '../global';
+
+const calculateScrollPosition = (offset, contentHeight, viewportHeight) => {
+  return Math.floor((offset / (contentHeight - viewportHeight)) * height * 10);
+};
+
 const BoardList = ({url, data, navigateToClub}: any) => {
   const [posts, setPosts] = useState<BoardPost[]>(data || []);
   const [cursor, setCursor] = useState(0);
@@ -102,14 +107,13 @@ const BoardList = ({url, data, navigateToClub}: any) => {
         keyExtractor={item => item.clubId}
         style={{flex: 1}}
         onScroll={event => {
-          const contentHeight = event.nativeEvent.contentSize.height; // 스크롤 뷰의 전체 높이
-          const scrollViewHeight = event.nativeEvent.layoutMeasurement.height; // 스크롤 뷰의 뷰포트 높이
-          const scrolledOffset = event.nativeEvent.contentOffset.y; // 현재 스크롤 위치
-          let newScrollPosition =
-            scrolledOffset / (contentHeight - scrollViewHeight);
-          newScrollPosition = Math.round(newScrollPosition * height * 10);
-          if (newScrollPosition > 100 && isMore) {
-            setCursor(prevCursor => prevCursor + 1);
+          if (isMore) {
+            const { contentSize, layoutMeasurement, contentOffset } = event.nativeEvent;
+            const newScrollPosition = calculateScrollPosition(contentOffset.y, contentSize.height, layoutMeasurement.height);
+        
+            if (newScrollPosition > 9) {
+              setCursor(prevCursor => prevCursor + 1);
+            }
           }
         }}
         renderItem={({item}) => (
