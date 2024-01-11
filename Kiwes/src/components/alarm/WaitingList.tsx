@@ -5,7 +5,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {width} from '../../global';
 import BoardList from '../BoardList';
 
-const url = `${apiServer}/api/v1/club/approval/my-waitings?cursor=1`;
+const url = `${apiServer}/api/v1/club/approval/my-waitings?cursor=`;
 
 const WatingList = ({navigation}: any) => {
   const navigateToClub = (clubId: any) => {

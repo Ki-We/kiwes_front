@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   View,
   FlatList,
@@ -13,29 +13,52 @@ import {BoardPost} from '../utils/commonInterface';
 import {languageMap} from '../utils/languageMap';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useFocusEffect} from '@react-navigation/native';
+import {height} from '../global';
 const BoardList = ({url, data, navigateToClub}: any) => {
   const [posts, setPosts] = useState<BoardPost[]>(data || []);
+  const [cursor, setCursor] = useState(0);
+  const [isMore, setIsMore] = useState(true);
   const setData = async () => {
-    if (url === '') return;
-    setPosts(await fetchData());
+    if (url === '' || posts.length === 0) {
+      return;
+    }
+    setPosts(await fetchData(0));
   };
-  const fetchData = async () => {
+  const fetchAndSetData = async () => {
+    const newData = await fetchData(cursor);
+    if (newData && newData.length > 0) {
+      setPosts(prevPosts => {
+        const newPostsWithoutDuplicates = newData.filter(
+          newPost =>
+            !prevPosts.some(prevPost => prevPost.clubId === newPost.clubId),
+        );
+        return [...prevPosts, ...newPostsWithoutDuplicates];
+      });
+    } else {
+      setIsMore(false);
+    }
+  };
+  useEffect(() => {
+    fetchAndSetData();
+  }, [cursor]);
+
+  const fetchData = async (num: number) => {
     try {
-      const response = await new RESTAPIBuilder(url, 'GET')
+      console.log(url + cursor);
+      const response = await new RESTAPIBuilder(url + num, 'GET')
         .setNeedToken(true)
         .build()
         .run();
       return response.data;
     } catch (err) {
       console.log(err);
+      return [];
     }
   };
   useFocusEffect(
     useCallback(() => {
       setData();
-      return () => {
-        setData();
-      };
+      return () => {};
     }, []),
   );
 
@@ -64,7 +87,6 @@ const BoardList = ({url, data, navigateToClub}: any) => {
         .run();
     } catch (err) {
       console.error(err);
-      // If API call fails, revert state
       setPosts(
         posts.map(post =>
           post.clubId === id ? {...post, heart: post.isHeart} : post,
@@ -80,13 +102,15 @@ const BoardList = ({url, data, navigateToClub}: any) => {
         keyExtractor={item => item.clubId}
         style={{flex: 1}}
         onScroll={event => {
-          // 스크롤 위치를 얻습니다.
-          let scrollPosition = event.nativeEvent.contentOffset.y;
-          if (scrollPosition < 0) {
-            scrollPosition = 0;
+          const contentHeight = event.nativeEvent.contentSize.height; // 스크롤 뷰의 전체 높이
+          const scrollViewHeight = event.nativeEvent.layoutMeasurement.height; // 스크롤 뷰의 뷰포트 높이
+          const scrolledOffset = event.nativeEvent.contentOffset.y; // 현재 스크롤 위치
+          let newScrollPosition =
+            scrolledOffset / (contentHeight - scrollViewHeight);
+          newScrollPosition = Math.round(newScrollPosition * height * 10);
+          if (newScrollPosition > 100 && isMore) {
+            setCursor(prevCursor => prevCursor + 1);
           }
-          // 아래 코드는 스크롤 값(coursor)입니다.
-          // const scrollRatio = Math.round((scrollPosition / screenHeight) * 10);
         }}
         renderItem={({item}) => (
           <TouchableOpacity

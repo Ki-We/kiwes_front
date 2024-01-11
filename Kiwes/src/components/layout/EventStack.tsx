@@ -1,14 +1,14 @@
 import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
+import {createStackNavigator} from '@react-navigation/stack';
 import Home from '../../pages/Home';
 import Event from '../../pages/Event';
 import Club from '../../pages/Club';
-import { Image } from 'react-native';
+import {Image} from 'react-native';
 
 const CustomHeader = () => (
   <Image
     source={require('../../../assets/images/logo.png')}
-    style={{ width: 130, height: 60 }}
+    style={{width: 130, height: 60}}
   />
 );
 
@@ -17,13 +17,13 @@ const EventStack = () => {
   return (
     <Stack.Navigator
       initialRouteName="Home"
-      screenOptions={{ headerShown: true }}>
+      screenOptions={{headerShown: true}}>
       <Stack.Screen
         name="Home"
         component={Home}
         options={{
           headerShown: true,
-          headerTitle: (props) => <CustomHeader {...props} />,
+          headerTitle: props => <CustomHeader {...props} />,
         }}
       />
       <Stack.Screen

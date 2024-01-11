@@ -6,7 +6,7 @@ import {width, height} from '../global';
 const LogoutModal = ({isVisible, onClose, exitClub, modaltype}) => {
   const logoutMessage = `${modaltype}하시겠습니까`;
   const secessionMessage =
-    '탈퇴 즉시 회원 정보는 삭제되며,\n삭제된 데이터는 복구할 수 없습니다.\n 탈퇴 후 30일간 재가입이 불가합니다.';
+    '탈퇴 즉시 회원 정보는 삭제되며,\n 탈퇴 후 30일간 재가입이 불가합니다.';
   return (
     <Modal
       style={styles.modal}

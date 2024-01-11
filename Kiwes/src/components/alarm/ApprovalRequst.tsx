@@ -10,7 +10,7 @@ const ApprovalRequst = ({url, navigateToRequestList}: any) => {
   const [posts, setPosts] = useState<ClubApprovalRequest[]>([]);
   const [cursor, setCursor] = useState(1);
   const [last, setLast] = useState(1);
-  const fetchData = async ({cursor}: any) => {
+  const fetchData = async () => {
     try {
       const response = await new RESTAPIBuilder(url, 'GET')
         .setNeedToken(true)

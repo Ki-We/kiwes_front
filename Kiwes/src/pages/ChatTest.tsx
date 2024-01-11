@@ -10,9 +10,7 @@ import {
   TextInput,
   TouchableWithoutFeedback,
   Platform,
-  TouchableHighlight,
   Alert,
-  
 } from 'react-native';
 import {height, width} from '../global';
 import ChatBubbleSystem from './ChatBubbleSystem';
