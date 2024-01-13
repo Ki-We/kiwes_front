@@ -51,9 +51,10 @@ export interface ClubMemberApprovalRequestEach {
 export interface Alarm {
   type: string;
   content: string;
-  club_id: string;
+  clubId: string;
   createAfterHour: string;
   createAfterDay: string;
-  member_id: string;
+  memberId: string;
   imageUrl: string;
+  noticeId: string;
 }

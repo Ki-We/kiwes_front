@@ -19,16 +19,11 @@ const calculateScrollPosition = (offset, contentHeight, viewportHeight) => {
   return Math.floor((offset / (contentHeight - viewportHeight)) * height * 10);
 };
 
-const BoardList = ({url, data, navigateToClub}: any) => {
+const BoardList = ({url, data, navigateToClub, Nothing}: any) => {
   const [posts, setPosts] = useState<BoardPost[]>(data || []);
   const [cursor, setCursor] = useState(0);
   const [isMore, setIsMore] = useState(true);
-  const setData = async () => {
-    if (url === '' || posts.length === 0) {
-      return;
-    }
-    setPosts(await fetchData(0));
-  };
+
   const fetchAndSetData = async () => {
     const newData = await fetchData(cursor);
     if (newData && newData.length > 0) {
@@ -62,7 +57,6 @@ const BoardList = ({url, data, navigateToClub}: any) => {
   };
   useFocusEffect(
     useCallback(() => {
-      setData();
       return () => {};
     }, []),
   );
@@ -102,76 +96,85 @@ const BoardList = ({url, data, navigateToClub}: any) => {
 
   return (
     <>
-      <FlatList
-        data={posts}
-        keyExtractor={item => item.clubId}
-        style={{flex: 1}}
-        onScroll={event => {
-          if (isMore) {
-            const { contentSize, layoutMeasurement, contentOffset } = event.nativeEvent;
-            const newScrollPosition = calculateScrollPosition(contentOffset.y, contentSize.height, layoutMeasurement.height);
-        
-            if (newScrollPosition > 9) {
-              setCursor(prevCursor => prevCursor + 1);
-            }
-          }
-        }}
-        renderItem={({item}) => (
-          <TouchableOpacity
-            style={styles.clubContainer}
-            onPress={() => {
-              navigateToClub(item.clubId);
-            }}>
-            <Image
-              source={{uri: item.thumbnailImage}}
-              style={styles.imageContainer}
-            />
+      {cursor === 0 && !isMore ? (
+        Nothing({text: '조회 가능한 모임이 없어요!'})
+      ) : (
+        <FlatList
+          data={posts}
+          keyExtractor={item => item.clubId}
+          style={{flex: 1}}
+          onScroll={event => {
+            if (isMore) {
+              const {contentSize, layoutMeasurement, contentOffset} =
+                event.nativeEvent;
+              const newScrollPosition = calculateScrollPosition(
+                contentOffset.y,
+                contentSize.height,
+                layoutMeasurement.height,
+              );
 
-            <View style={styles.textContainer}>
-              <View>
-                <Text style={styles.title}>{item.title}</Text>
-                <View style={styles.infoContainer}>
-                  <Icon
-                    name="calendar-outline"
-                    size={14}
-                    color={'#rgba(0, 0, 0, 0.7)'}
-                  />
-                  <Text style={styles.info}>{item.date}</Text>
-                </View>
-                <View style={styles.infoContainer}>
-                  <Icon
-                    name="map-outline"
-                    size={14}
-                    color={'#rgba(0, 0, 0, 0.7)'}
-                  />
-                  <Text style={styles.info}>{item.locationKeyword}</Text>
-                </View>
-                <View style={styles.infoContainer}>
-                  <Icon
-                    name="globe-outline"
-                    size={14}
-                    color={'#rgba(0, 0, 0, 0.7)'}
-                  />
-                  <Text style={styles.info}>
-                    {item.languages
-                      .map(code => languageMap[code] || code)
-                      .join(', ')}
-                  </Text>
+              if (newScrollPosition > 9) {
+                setCursor(prevCursor => prevCursor + 1);
+              }
+            }
+          }}
+          renderItem={({item}) => (
+            <TouchableOpacity
+              style={styles.clubContainer}
+              onPress={() => {
+                navigateToClub(item.clubId);
+              }}>
+              <Image
+                source={{uri: item.thumbnailImage}}
+                style={styles.imageContainer}
+              />
+
+              <View style={styles.textContainer}>
+                <View>
+                  <Text style={styles.title}>{item.title}</Text>
+                  <View style={styles.infoContainer}>
+                    <Icon
+                      name="calendar-outline"
+                      size={14}
+                      color={'#rgba(0, 0, 0, 0.7)'}
+                    />
+                    <Text style={styles.info}>{item.date}</Text>
+                  </View>
+                  <View style={styles.infoContainer}>
+                    <Icon
+                      name="map-outline"
+                      size={14}
+                      color={'#rgba(0, 0, 0, 0.7)'}
+                    />
+                    <Text style={styles.info}>{item.locationKeyword}</Text>
+                  </View>
+                  <View style={styles.infoContainer}>
+                    <Icon
+                      name="globe-outline"
+                      size={14}
+                      color={'#rgba(0, 0, 0, 0.7)'}
+                    />
+                    <Text style={styles.info}>
+                      {item.languages
+                        .map(code => languageMap[code] || code)
+                        .join(', ')}
+                    </Text>
+                  </View>
                 </View>
               </View>
-            </View>
-            <TouchableOpacity
-              style={styles.heartContainer}
-              onPress={() => toggleLike(item.clubId)}>
-              <Icon
-                name={item.isHeart === 'YES' ? 'heart' : 'heart-outline'}
-                size={25}
-                color="#58C047"
-              />
+              <TouchableOpacity
+                style={styles.heartContainer}
+                onPress={() => toggleLike(item.clubId)}>
+                <Icon
+                  name={item.isHeart === 'YES' ? 'heart' : 'heart-outline'}
+                  size={25}
+                  color="#58C047"
+                />
+              </TouchableOpacity>
             </TouchableOpacity>
-          </TouchableOpacity>
-        )}
-      />
+          )}
+        />
+      )}
     </>
   );
 };
