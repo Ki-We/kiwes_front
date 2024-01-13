@@ -1,12 +1,20 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useState, useRef } from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, FlatList } from 'react-native';
+import React, {useState, useRef} from 'react';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  FlatList,
+} from 'react-native';
 import Swiper from 'react-native-swiper';
 
 const categoriesImg = require('../../assets/images/category01.png');
 const noticeBannerImg = require('../../assets/images/nbanner.png');
 
-export function Home({ navigation }: any) {
+export function Home({navigation}: any) {
   const bannerRef = useRef(null);
   const popularGroupsRef = useRef(null);
 
@@ -18,72 +26,73 @@ export function Home({ navigation }: any) {
     await AsyncStorage.removeItem('userData');
     navigation.reset({
       index: 0,
-      routes: [{ name: 'Login' }],
+      routes: [{name: 'Login'}],
     });
   };
 
   const banners = [
-    { key: '1', image: noticeBannerImg },
-    { key: '2', image: noticeBannerImg },
+    {key: '1', image: noticeBannerImg},
+    {key: '2', image: noticeBannerImg},
   ];
 
   const popularGroupImages = [categoriesImg, categoriesImg];
-  const [currentPopularGroupImageIndex, setCurrentPopularGroupImageIndex] = useState(0);
+  const [currentPopularGroupImageIndex, setCurrentPopularGroupImageIndex] =
+    useState(0);
 
   const changePopularGroupImage = () => {
-    setCurrentPopularGroupImageIndex((prevIndex) =>
-      prevIndex === popularGroupImages.length - 1 ? 0 : prevIndex + 1
+    setCurrentPopularGroupImageIndex(prevIndex =>
+      prevIndex === popularGroupImages.length - 1 ? 0 : prevIndex + 1,
     );
     popularGroupsRef.current.scrollBy(1, true);
   };
 
   const categories1stFloor = [
-    { key: '1', name: 'K-pop' },
-    { key: '2', name: '맛집/카페' },
-    { key: '3', name: '스터디' },
-    { key: '4', name: '여행' },
+    {key: '1', name: 'K-pop'},
+    {key: '2', name: '맛집/카페'},
+    {key: '3', name: '스터디'},
+    {key: '4', name: '여행'},
   ];
 
   const categories1stFloor2 = [
-    { key: '1', name: '게임/보드게임' },
-    { key: '2', name: '문화/전시/공연' },
-    { key: '3', name: '술' },
+    {key: '1', name: '게임/보드게임'},
+    {key: '2', name: '문화/전시/공연'},
+    {key: '3', name: '술'},
   ];
 
   const categories2ndFloor = [
-    { key: '5', name: '한국 문화' },
-    { key: '6', name: '영화/드라마/애니' },
-    { key: '7', name: '파티/클럽' },
+    {key: '5', name: '한국 문화'},
+    {key: '6', name: '영화/드라마/애니'},
+    {key: '7', name: '파티/클럽'},
   ];
 
   const categories2ndFloor2 = [
-    { key: '5', name: '스포츠' },
-    { key: '6', name: '공예/그림' },
-    { key: '7', name: '봉사활동' },
-    { key: '8', name: '기타' },
+    {key: '5', name: '스포츠'},
+    {key: '6', name: '공예/그림'},
+    {key: '7', name: '봉사활동'},
+    {key: '8', name: '기타'},
   ];
 
   const language1stFloor = [
-    { key: '8', name: '한글' },
-    { key: '9', name: 'English' },
-    { key: '10', name: '日本語' },
+    {key: '8', name: '한글'},
+    {key: '9', name: 'English'},
+    {key: '10', name: '日本語'},
   ];
 
   const language2ndFloor = [
-    { key: '11', name: '中文(简体)' },
-    { key: '12', name: '中文(繁體)' },
-    { key: '13', name: 'Français' },
+    {key: '11', name: '中文(简体)'},
+    {key: '12', name: '中文(繁體)'},
+    {key: '13', name: 'Français'},
   ];
 
   const language1stFloor2 = [
-    { key: '8', name: 'Deutsch' },
-    { key: '9', name: 'Español' },
-    { key: '10', name: '기타' },
+    {key: '8', name: 'Deutsch'},
+    {key: '9', name: 'Español'},
+    {key: '10', name: '기타'},
   ];
 
   const language2ndFloor2 = [
-    { key: '11', name: 'Tiếng Việt' },
-    { key: '12', name: 'Pусский' },
+    {key: '11', name: 'Tiếng Việt'},
+    {key: '12', name: 'Pусский'},
   ];
 
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -107,7 +116,11 @@ export function Home({ navigation }: any) {
       </View>
     );
   };
-  const renderCategoryPaginationRect = (index: number, total: number, context: any) => {
+  const renderCategoryPaginationRect = (
+    index: number,
+    total: number,
+    context: any,
+  ) => {
     return (
       <View style={styles.paginationContainer}>
         <View style={styles.paginationRect}>
@@ -127,14 +140,18 @@ export function Home({ navigation }: any) {
 
   const renderCategorySwiper = () => {
     return (
-      <Swiper loop={false} showsPagination={true} height={150} renderPagination={renderCategoryPaginationRect}>
+      <Swiper
+        loop={false}
+        showsPagination={true}
+        height={150}
+        renderPagination={renderCategoryPaginationRect}>
         <View>
           <FlatList
             data={categories1stFloor}
             renderItem={renderCategory}
             numColumns={4}
             contentContainerStyle={styles.categoryList}
-            keyExtractor={(item) => item.key}
+            keyExtractor={item => item.key}
             columnWrapperStyle={styles.categoryColumnWrapper}
           />
           <FlatList
@@ -142,7 +159,7 @@ export function Home({ navigation }: any) {
             renderItem={renderCategory}
             numColumns={3}
             contentContainerStyle={styles.categoryList}
-            keyExtractor={(item) => item.key}
+            keyExtractor={item => item.key}
             columnWrapperStyle={styles.categoryColumnWrapper}
           />
         </View>
@@ -152,7 +169,7 @@ export function Home({ navigation }: any) {
             renderItem={renderCategory}
             numColumns={3}
             contentContainerStyle={styles.categoryList}
-            keyExtractor={(item) => item.key}
+            keyExtractor={item => item.key}
             columnWrapperStyle={styles.categoryColumnWrapper}
           />
           <FlatList
@@ -160,7 +177,7 @@ export function Home({ navigation }: any) {
             renderItem={renderCategory}
             numColumns={4}
             contentContainerStyle={styles.categoryList}
-            keyExtractor={(item) => item.key}
+            keyExtractor={item => item.key}
             columnWrapperStyle={styles.categoryColumnWrapper}
           />
         </View>
@@ -169,14 +186,18 @@ export function Home({ navigation }: any) {
   };
   const renderCategorySwiper2 = () => {
     return (
-      <Swiper loop={false} showsPagination={true} height={150} renderPagination={renderCategoryPaginationRect}>
+      <Swiper
+        loop={false}
+        showsPagination={true}
+        height={150}
+        renderPagination={renderCategoryPaginationRect}>
         <View>
           <FlatList
             data={language1stFloor}
             renderItem={renderCategory}
             numColumns={4}
             contentContainerStyle={styles.categoryList}
-            keyExtractor={(item) => item.key}
+            keyExtractor={item => item.key}
             columnWrapperStyle={styles.categoryColumnWrapper}
           />
           <FlatList
@@ -184,7 +205,7 @@ export function Home({ navigation }: any) {
             renderItem={renderCategory}
             numColumns={3}
             contentContainerStyle={styles.categoryList}
-            keyExtractor={(item) => item.key}
+            keyExtractor={item => item.key}
             columnWrapperStyle={styles.categoryColumnWrapper}
           />
         </View>
@@ -194,7 +215,7 @@ export function Home({ navigation }: any) {
             renderItem={renderCategory}
             numColumns={3}
             contentContainerStyle={styles.categoryList}
-            keyExtractor={(item) => item.key}
+            keyExtractor={item => item.key}
             columnWrapperStyle={styles.categoryColumnWrapper}
           />
           <FlatList
@@ -202,14 +223,14 @@ export function Home({ navigation }: any) {
             renderItem={renderCategory}
             numColumns={4}
             contentContainerStyle={styles.categoryList}
-            keyExtractor={(item) => item.key}
+            keyExtractor={item => item.key}
             columnWrapperStyle={styles.categoryColumnWrapper}
           />
         </View>
       </Swiper>
     );
   };
-  const renderCategory = ({ item }: any) => {
+  const renderCategory = ({item}: any) => {
     const textSize = 12;
     const textLength = item.name.length;
     let itemWidth = textLength * (textSize * 1.5);
@@ -222,10 +243,12 @@ export function Home({ navigation }: any) {
       <TouchableOpacity
         style={[
           styles.categoryItem,
-          selectedCategory === item.key ? { backgroundColor: '#9BD23C' } : null,
-          { width: itemWidth, height: 50 }
+          selectedCategory === item.key ? {backgroundColor: '#9BD23C'} : null,
+          {width: itemWidth, height: 50},
         ]}
-        onPress={() => navigation.navigate('Club', { selectedCategory: item.name })}>
+        onPress={() =>
+          navigation.navigate('Club', {selectedCategory: item.name})
+        }>
         <Text style={styles.categoryText}>{item.name}</Text>
       </TouchableOpacity>
     );
@@ -287,20 +310,31 @@ export function Home({ navigation }: any) {
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>카테고리별 모임</Text>
           <View style={styles.sectionContent}>
-            {renderCategorySwiper([categories1stFloor, categories1stFloor2, categories2ndFloor, categories2ndFloor2])}
+            {renderCategorySwiper([
+              categories1stFloor,
+              categories1stFloor2,
+              categories2ndFloor,
+              categories2ndFloor2,
+            ])}
           </View>
         </View>
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>언어별 모임</Text>
           <View style={styles.sectionContent}>
-            {renderCategorySwiper2([language1stFloor, language2ndFloor, language1stFloor2, language2ndFloor2])}
+            {renderCategorySwiper2([
+              language1stFloor,
+              language2ndFloor,
+              language1stFloor2,
+              language2ndFloor2,
+            ])}
           </View>
         </View>
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>추천 모임</Text>
           <View style={styles.sectionContent}>
-            <TouchableOpacity onPress={() => navigation.navigate('Club', { selectedCategory })}>
-            <RecommendedGroup />
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Club', {selectedCategory})}>
+              <RecommendedGroup />
             </TouchableOpacity>
           </View>
         </View>

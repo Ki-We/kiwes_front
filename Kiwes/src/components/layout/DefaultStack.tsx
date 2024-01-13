@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react';
-// import {Dimensions} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Login from '../../pages/Login';
@@ -13,6 +12,7 @@ import WishPage from '../../pages/WishPage';
 import ProfilePage from '../../pages/ProfilePage';
 import AlarmList from '../alarm/AlarmList';
 import SettingPage from '../../pages/SettingPage';
+import NoticePage from '../../pages/NoticePage';
 
 const LoginStack = () => {
   useEffect(() => {
@@ -45,6 +45,7 @@ const LoginStack = () => {
         <Stack.Screen name="PostClub" component={PostClub} />
         <Stack.Screen name="WishPage" component={WishPage} />
         <Stack.Screen name="ClubPage" component={ClubPage} />
+        <Stack.Screen name="NoticePage" component={NoticePage} />
         <Stack.Screen name="AlarmPage" component={AlarmPage} />
         <Stack.Screen name="ProfilePage" component={ProfilePage} />
         <Stack.Screen name="AlarmList" component={AlarmList} />

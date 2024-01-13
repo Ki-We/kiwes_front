@@ -2,10 +2,10 @@ import React from 'react';
 import {View, Text} from 'react-native';
 
 const ProfilePage = ({route}: any) => {
-  const {memberId} = route.params;
+  const {member_Id} = route.params;
   return (
     <View>
-      <Text> memberId: {memberId}</Text>
+      <Text> memberId: {member_Id}</Text>
     </View>
   );
 };

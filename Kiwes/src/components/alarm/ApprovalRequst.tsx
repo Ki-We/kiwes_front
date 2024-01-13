@@ -3,101 +3,113 @@ import {View, FlatList, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useFocusEffect} from '@react-navigation/native';
 import {ClubApprovalRequest} from '../../utils/commonInterface';
-import {apiServer} from '../../utils/metaData';
 import {RESTAPIBuilder} from '../../utils/restapiBuilder';
+import {height} from '../../global';
 
-const ApprovalRequst = ({url, navigateToRequestList}: any) => {
+const calculateScrollPosition = (offset, contentHeight, viewportHeight) => {
+  return Math.floor((offset / (contentHeight - viewportHeight)) * height * 10);
+};
+const ApprovalRequst = ({url, navigateToRequestList, Nothing}: any) => {
   const [posts, setPosts] = useState<ClubApprovalRequest[]>([]);
-  const [cursor, setCursor] = useState(1);
-  const [last, setLast] = useState(1);
-  const fetchData = async () => {
+  const [cursor, setCursor] = useState(0);
+  const [isMore, setIsMore] = useState(true);
+  const setData = async () => {
+    if (url === '' || posts.length === 0) {
+      return;
+    }
+    setPosts(await fetchData(0));
+  };
+  const fetchAndSetData = async () => {
+    const newData = await fetchData(cursor);
+    if (newData && newData.length > 0) {
+      setPosts(prevPosts => {
+        const newPostsWithoutDuplicates = newData.filter(
+          newPost =>
+            !prevPosts.some(prevPost => prevPost.clubId === newPost.clubId),
+        );
+        return [...prevPosts, ...newPostsWithoutDuplicates];
+      });
+    } else {
+      setIsMore(false);
+    }
+  };
+  useEffect(() => {
+    fetchAndSetData();
+  }, [cursor]);
+
+  const fetchData = async (num: number) => {
     try {
-      const response = await new RESTAPIBuilder(url, 'GET')
+      console.log(url + cursor);
+      const response = await new RESTAPIBuilder(url + num, 'GET')
         .setNeedToken(true)
         .build()
         .run();
       return response.data;
     } catch (err) {
       console.log(err);
+      return [];
     }
-  };
-  const fetchLast = async () => {
-    try {
-      const response = await new RESTAPIBuilder(
-        `${apiServer}/api/v1/club/approval/my-club/get-last`,
-        'GET',
-      )
-        .setNeedToken(true)
-        .build()
-        .run();
-      return response.data;
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  const setLastId = async () => {
-    const lastId = await fetchLast();
-    setLast(lastId);
-  };
-  const fetchPosts = async () => {
-    const newPosts = await fetchData({cursor});
-    setPosts(newPosts);
   };
 
-  useEffect(() => {
-    fetchPosts();
-  }, [cursor]);
   useFocusEffect(
     useCallback(() => {
-      setLastId();
+      setData();
       return () => {};
     }, []),
   );
-
   return (
     <>
-      <FlatList
-        data={posts}
-        keyExtractor={item => item.clubId}
-        style={{flex: 1}}
-        onScroll={event => {
-          const scrollPosition = event.nativeEvent.contentOffset.y;
-          if (scrollPosition <= 0) {
-            setCursor(prevCursor => Math.max(prevCursor - 1, 1)); // cursor의 최소값을 1로 설정
-          }
-        }}
-        onEndReached={() => {
-          // if (cursor < last - 6) {
-          //   setCursor(prevCursor => prevCursor + 1);
-          // }
-        }}
-        onEndReachedThreshold={0.5}
-        renderItem={({item}) => (
-          <View style={styles.requestContainer}>
-            <View style={styles.textContainer}>
-              <View>
-                <Text style={styles.title}>{item.title}</Text>
-                <View style={styles.infoContainer}>
-                  <Icon
-                    name="people-outline"
-                    size={24}
-                    color={'#rgba(0, 0, 0, 1)'}
-                  />
-                  <Text style={styles.info}>{item.currentPeople}</Text>
+      {cursor === 0 && !isMore ? (
+        Nothing({text: '조회 가능한 모임이 없어요!'})
+      ) : (
+        <FlatList
+          data={posts}
+          keyExtractor={item => item.clubId}
+          style={{flex: 1}}
+          onScroll={event => {
+            if (isMore) {
+              const {contentSize, layoutMeasurement, contentOffset} =
+                event.nativeEvent;
+              const newScrollPosition = calculateScrollPosition(
+                contentOffset.y,
+                contentSize.height,
+                layoutMeasurement.height,
+              );
+
+              if (newScrollPosition > 9) {
+                setCursor(prevCursor => prevCursor + 1);
+              }
+            }
+          }}
+          renderItem={({item}) => (
+            <View style={styles.requestContainer}>
+              <View style={styles.textContainer}>
+                <View>
+                  <Text style={styles.title}>{item.title}</Text>
+                  <View style={styles.infoContainer}>
+                    <Icon
+                      name="people-outline"
+                      size={24}
+                      color={'#rgba(0, 0, 0, 1)'}
+                    />
+                    <Text style={styles.info}>{item.currentPeople}</Text>
+                  </View>
                 </View>
               </View>
+              <TouchableOpacity
+                style={styles.heartContainer}
+                onPress={() => {
+                  navigateToRequestList({
+                    clubId: item.clubId,
+                    title: item.title,
+                  });
+                }}>
+                <Text style={styles.button}> 보기 </Text>
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity
-              style={styles.heartContainer}
-              onPress={() => {
-                // console.log({clubId: item.clubId, title: item.title});
-                navigateToRequestList({clubId: item.clubId, title: item.title});
-              }}>
-              <Text style={styles.button}> 보기 </Text>
-            </TouchableOpacity>
-          </View>
-        )}
-      />
+          )}
+        />
+      )}
     </>
   );
 };
