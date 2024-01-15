@@ -1,10 +1,17 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {View, FlatList, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {
+  View,
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useFocusEffect} from '@react-navigation/native';
 import {ClubApprovalRequest} from '../../utils/commonInterface';
 import {RESTAPIBuilder} from '../../utils/restapiBuilder';
-import {height} from '../../global';
+import {height, width} from '../../global';
 
 const calculateScrollPosition = (offset, contentHeight, viewportHeight) => {
   return Math.floor((offset / (contentHeight - viewportHeight)) * height * 10);
@@ -87,10 +94,10 @@ const ApprovalRequst = ({url, navigateToRequestList, Nothing}: any) => {
                 <View>
                   <Text style={styles.title}>{item.title}</Text>
                   <View style={styles.infoContainer}>
-                    <Icon
-                      name="people-outline"
-                      size={24}
-                      color={'#rgba(0, 0, 0, 1)'}
+                    <Image
+                      source={require('../../../assets/images/people.png')}
+                      style={styles.image}
+                      resizeMode="contain"
                     />
                     <Text style={styles.info}>{item.currentPeople}</Text>
                   </View>
@@ -137,7 +144,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: 'rgba(0, 0, 0, 0.7)',
+    color: 'rgba(0, 0, 0, 0.9)',
     marginBottom: 18,
   },
   infoContainer: {
@@ -151,7 +158,10 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     color: '#58C047',
   },
-
+  image: {
+    width: width * 28,
+    height: height * 28,
+  },
   button: {
     color: 'rgba(0, 0, 0, 0.8)',
     borderColor: 'rgba(0, 0, 0, 0.8)',

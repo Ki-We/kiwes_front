@@ -23,7 +23,7 @@ const ApprovalList = ({navigation}: any) => {
     <>
       <View style={styles.container}>
         <Text style={styles.title}>승인 요청</Text>
-        <SafeAreaView style={{flex: 0.31}}>
+        <SafeAreaView style={{flex: 0.34}}>
           <ApprovalRequst
             url={approvalUrl}
             navigateToRequestList={navigateToRequestList}
@@ -43,7 +43,7 @@ const ApprovalList = ({navigation}: any) => {
           />
         </TouchableOpacity>
         <Text style={styles.title}>승인 대기</Text>
-        <SafeAreaView style={{flex: 0.34}}>
+        <SafeAreaView style={{flex: 0.37}}>
           <BoardList
             url={watinglUrl}
             navigateToClub={navigateToClub}
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flex: 0.1,
     marginLeft: 20,
-    marginTop: 10,
+    marginTop: 20,
   },
   retrive: {
     color: 'rgba(0, 0, 0, 1)',

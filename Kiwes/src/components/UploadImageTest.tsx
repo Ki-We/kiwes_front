@@ -34,7 +34,8 @@ const UploadImageTest = () => {
     if (!imageSource || typeof imageSource === 'number') {
       return Alert.alert('이미지를 선택해주세요');
     }
-    const url = `${apiServer}/mypage/profileImg`;
+    // const url = `${apiServer}/mypage/profileImg`;
+    const url = `${apiServer}/api/v1/club/article/presigned-url?clubId=1`;
     const presignedResponse = await new RESTAPIBuilder(url, 'GET')
       .setNeedToken(true)
       .build()

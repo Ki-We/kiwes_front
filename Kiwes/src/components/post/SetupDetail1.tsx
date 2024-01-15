@@ -116,7 +116,7 @@ export default function SetupDetail1({post, setPost}: any) {
               });
             }}
             query={{
-              key: 'YOUR_GOOGLE_MAPS_API_KEY',
+              key: 'AIzaSyB7BN0GVGiPqXa70_UJY_87xuwIezFbGZU',
               language: 'en',
             }}
           />

@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
-import {width} from '../../global';
+import {height, width} from '../../global';
 
 const AlarmComponent = ({item, navigateTo}: any) => {
   return (
@@ -37,8 +37,8 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   image: {
-    width: 35,
-    height: 35,
+    width: width * 35,
+    height: height * 35,
     borderRadius: 20,
     marginRight: 10,
   },
