@@ -173,8 +173,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   image: {
-    width: 35,
-    height: 35,
+    width: width * 35,
+    height: height * 35,
     borderRadius: 20,
   },
   title: {

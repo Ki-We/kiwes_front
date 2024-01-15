@@ -5,7 +5,7 @@ import {useFocusEffect} from '@react-navigation/native';
 import {apiServer} from '../../utils/metaData';
 import {Alarm} from '../../utils/commonInterface';
 import AlarmComponent from './AlarmComponent';
-import {height} from '../../global';
+import {height, width} from '../../global';
 import NothingShow from '../NothingShow';
 
 const url = `${apiServer}/api/v1/alarm/`;
@@ -98,8 +98,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   image: {
-    width: 35,
-    height: 35,
+    width: width * 35,
+    height: height * 35,
     borderRadius: 20,
   },
   title: {

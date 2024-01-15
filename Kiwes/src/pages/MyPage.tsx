@@ -1,5 +1,6 @@
 import React from 'react';
-import {TouchableOpacity, SafeAreaView, Text} from 'react-native';
+import {TouchableOpacity, SafeAreaView, Text, View} from 'react-native';
+import UploadImageTest from '../components/UploadImageTest';
 
 export function MyPage({navigation}: any) {
   return (
@@ -17,6 +18,9 @@ export function MyPage({navigation}: any) {
         }}>
         <Text>Setting</Text>
       </TouchableOpacity>
+      <View style={{marginTop: 100}}>
+        <UploadImageTest />
+      </View>
     </SafeAreaView>
   );
 }

@@ -12,7 +12,7 @@ import {apiServer} from '../utils/metaData';
 import {BoardPost} from '../utils/commonInterface';
 import {languageMap} from '../utils/languageMap';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {height} from '../global';
+import {height, width} from '../global';
 
 const calculateScrollPosition = (offset, contentHeight, viewportHeight) => {
   return Math.floor((offset / (contentHeight - viewportHeight)) * height * 10);
@@ -203,8 +203,8 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   imageContainer: {
-    width: 122,
-    height: 97,
+    width: width * 120,
+    height: height * 94,
     borderRadius: 20,
   },
   textContainer: {
@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
   },
   title: {
-    fontSize: 18,
+    fontSize: height * 18,
     fontWeight: 'bold',
     color: 'rgba(0, 0, 0, 1)',
     marginBottom: 3,
