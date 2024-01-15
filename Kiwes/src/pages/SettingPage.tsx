@@ -56,9 +56,12 @@ const SettingPage = ({navigation}: any) => {
       })
       .catch(err => console.error('An error occurred', err));
   };
+  const navigatePop = () => {
+    navigation.pop();
+  };
   return (
     <>
-      <Header navigation={navigation} title={'설정'} />
+      <Header navigatePop={navigatePop} title={'설정'} />
       <View style={styles.container}>
         <TouchableOpacity>
           <Text style={styles.text}>언어 설정</Text>

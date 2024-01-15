@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   FlatList,
@@ -12,15 +12,14 @@ import {apiServer} from '../utils/metaData';
 import {BoardPost} from '../utils/commonInterface';
 import {languageMap} from '../utils/languageMap';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {useFocusEffect} from '@react-navigation/native';
 import {height} from '../global';
 
 const calculateScrollPosition = (offset, contentHeight, viewportHeight) => {
   return Math.floor((offset / (contentHeight - viewportHeight)) * height * 10);
 };
 
-const BoardList = ({url, data, navigateToClub, Nothing}: any) => {
-  const [posts, setPosts] = useState<BoardPost[]>(data || []);
+const BoardList = ({url, navigateToClub, Nothing}: any) => {
+  const [posts, setPosts] = useState<BoardPost[]>([]);
   const [cursor, setCursor] = useState(0);
   const [isMore, setIsMore] = useState(true);
 
@@ -40,7 +39,15 @@ const BoardList = ({url, data, navigateToClub, Nothing}: any) => {
   };
   useEffect(() => {
     fetchAndSetData();
+    console.log(posts);
   }, [cursor]);
+
+  useEffect(() => {
+    setPosts([]);
+    setIsMore(true);
+    setCursor(0);
+    fetchAndSetData();
+  }, [url]);
 
   const fetchData = async (num: number) => {
     try {
@@ -55,18 +62,24 @@ const BoardList = ({url, data, navigateToClub, Nothing}: any) => {
       return [];
     }
   };
-  useFocusEffect(
-    useCallback(() => {
-      return () => {};
-    }, []),
-  );
-
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     return () => {};
+  //   }, []),
+  // );
+  // const removeNoHeartPosts = () => {
+  //   const filteredPosts = posts.filter(post => post.isHeart === 'YES');
+  //   setPosts(filteredPosts);
+  //   console.log(filteredPosts);
+  //   console.log(posts);
+  // };
   const toggleLike = async (id: String) => {
+    console.log(id);
     const post = posts.find(post => post.clubId === id);
     if (!post) {
       return;
     }
-
+    console.log(post);
     // Update state
     const updatedPosts = posts.map(post =>
       post.clubId === id

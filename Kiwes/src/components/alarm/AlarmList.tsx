@@ -55,13 +55,13 @@ const AlarmList = ({navigation}: any) => {
         Nothing({text: '새로운 알림이 없어요!'})
       ) : (
         <ScrollView style={styles.container}>
-          {timePeriods.map(period => {
+          {timePeriods.map((period, index) => {
             const filteredAlarms = alarms.filter(
               r => r.createAfterDay === period,
             );
             return (
               filteredAlarms.length > 0 && (
-                <View style={styles.alarmContainer}>
+                <View key={index} style={styles.alarmContainer}>
                   <Text style={styles.title}>{period}</Text>
                   {filteredAlarms.map((r, index) => (
                     <AlarmComponent
