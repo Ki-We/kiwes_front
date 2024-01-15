@@ -42,7 +42,6 @@ const LoginStack = () => {
         {/* 하단 Stack은 bottom 없이 이동되어야 하는 Stack */}
 
         <Stack.Screen name="Search" component={Search} />
-        <Stack.Screen name="PostClub" component={PostClub} />
         <Stack.Screen name="WishPage" component={WishPage} />
         <Stack.Screen name="ClubPage" component={ClubPage} />
         <Stack.Screen name="NoticePage" component={NoticePage} />

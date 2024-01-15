@@ -11,9 +11,12 @@ export default function PostClub({navigation}: any) {
     if (!steps.includes(s)) setStep(steps[0]);
     setStep(s);
   };
+  const navigatePop = () => {
+    navigation.navigate('HomePage');
+  };
   return (
     <>
-      <Header navigation={navigation} title={'모임 개설'} />
+      <Header navigatePop={navigatePop} title={'모임 개설'} />
       <PostClubStep
         steps={steps}
         nextClickHandler={nextClickHandler}

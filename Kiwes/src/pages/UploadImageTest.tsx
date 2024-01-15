@@ -34,11 +34,6 @@ const UploadImageTest = () => {
     if (!imageSource || typeof imageSource === 'number') {
       return Alert.alert('이미지를 선택해주세요');
     }
-
-    const userData = await AsyncStorage.getItem('userData');
-    if (!userData) {
-      return Alert.alert('접근 토큰이 없습니다. 로그인 해주세요.');
-    }
     const url = `${apiServer}/mypage/profileImg`;
     const presignedResponse = await new RESTAPIBuilder(url, 'GET')
       .setNeedToken(true)

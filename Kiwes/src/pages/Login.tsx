@@ -30,6 +30,9 @@ export default function Login({navigation}: any) {
       return;
     }
 
+    const tokenData = JSON.parse(userData);
+    console.log(tokenData.accessToken);
+
     const url = `${apiServer}/myid`;
     const result = await new RESTAPIBuilder(url, 'GET')
       .setNeedToken(true)
@@ -46,7 +49,6 @@ export default function Login({navigation}: any) {
         index: 0,
         routes: [{name: 'BottomTab'}],
       });
-      // navigation.navigate('BottomTab');
     }
   };
   const signInWithApple = async () => {

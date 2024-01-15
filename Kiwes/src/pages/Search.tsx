@@ -13,21 +13,12 @@ import ListComponent from '../components/atoms/ListComponent';
 
 export default function Search({navigation}: any) {
   const [init, setInit] = useState(true);
-  const [searchList, setSearchList] = useState([]);
+  const [searchKeyward, SetSearchKeyward] = useState();
   const [recommand, setRecommand] = useState([]);
+  let url = `${apiServer}/api/v1/search?keyword=${searchKeyward}&cursor=`;
   const doSearch = async (search: String) => {
-    const url = `${apiServer}/api/v1/search?cursor=0&keyword=${search}`;
-    const {data} = await new RESTAPIBuilder(url, 'GET')
-      .setNeedToken(true)
-      .build()
-      .run()
-      .catch(err => {
-        console.log('err3 : ', err);
-      });
-
-    setSearchList(data || []);
+    SetSearchKeyward(search);
     setInit(false);
-
     let temp = await AsyncStorage.getItem('search');
     const keywords = temp ? JSON.parse(temp) : [];
     const first = keywords.shift();
@@ -36,7 +27,9 @@ export default function Search({navigation}: any) {
     if (first == search) {
       return;
     }
-    if (keywords.length > 2) keywords.pop();
+    if (keywords.length > 2) {
+      keywords.pop();
+    }
     await AsyncStorage.setItem('search', JSON.stringify([search, ...keywords]));
   };
   const getRecommand = async () => {
@@ -56,39 +49,48 @@ export default function Search({navigation}: any) {
   useEffect(() => {
     getRecommand();
   }, []);
+  // eslint-disable-next-line react/no-unstable-nested-components
+  const Nothing = () => {
+    return (
+      <View style={styles.container}>
+        <View>
+          <Image
+            source={{
+              uri: 'https://kiwes2-bucket.s3.ap-northeast-2.amazonaws.com/main/noSearch.png',
+            }}
+            style={styles.image}
+            resizeMode="contain"
+          />
+        </View>
+        <View style={styles.recommandContainer}>
+          <Text style={styles.title}>추천 모임</Text>
+          {recommand.map((r, i) => (
+            <ListComponent
+              key={`recommand_${i}`}
+              item={r}
+              navigateToClub={navigateToClub}
+              posts={recommand}
+              setPosts={setRecommand}
+            />
+          ))}
+        </View>
+      </View>
+    );
+  };
+
   return (
     <>
       <SearchHeader navigation={navigation} doSearch={doSearch} />
       {init ? (
         <InitSearch doSearch={doSearch} navigateToClub={navigateToClub} />
-      ) : searchList.length > 0 ? (
-        <SafeAreaView style={{flex: 1}}>
-          <BoardList data={searchList} url="" navigateToClub={navigateToClub} />
-        </SafeAreaView>
       ) : (
-        <View style={styles.container}>
-          <View>
-            <Image
-              source={{
-                uri: 'https://kiwes2-bucket.s3.ap-northeast-2.amazonaws.com/main/noSearch.png',
-              }}
-              style={styles.image}
-              resizeMode="contain"
-            />
-          </View>
-          <View style={styles.recommandContainer}>
-            <Text style={styles.title}>추천 모임</Text>
-            {recommand.map((r, i) => (
-              <ListComponent
-                key={`recommand_${i}`}
-                item={r}
-                navigationToClub={navigateToClub}
-                posts={recommand}
-                setPosts={setRecommand}
-              />
-            ))}
-          </View>
-        </View>
+        <SafeAreaView style={{flex: 1}}>
+          <BoardList
+            url={url}
+            navigateToClub={navigateToClub}
+            Nothing={Nothing}
+          />
+        </SafeAreaView>
       )}
     </>
   );

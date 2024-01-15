@@ -4,7 +4,7 @@ import backIcon from 'react-native-vector-icons/Ionicons';
 import optionIcon from 'react-native-vector-icons/SimpleLineIcons';
 import {width, height} from '../../global';
 
-export default function Header({navigation, title, rightBtn}: any) {
+export default function Header({title, rightBtn, navigatePop}: any) {
   console.log(title);
   return (
     <>
@@ -16,7 +16,7 @@ export default function Header({navigation, title, rightBtn}: any) {
           name="arrow-back"
           color="#303030"
           size={25}
-          onPress={() => navigation.pop()}
+          onPress={() => navigatePop()}
         />
 
         <Text style={styles.headerText}>{title}</Text>

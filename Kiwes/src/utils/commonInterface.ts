@@ -37,6 +37,7 @@ export interface BoardPost {
   date: string;
   isHeart: string;
   languages: string[];
+  category: string;
 }
 export interface ClubApprovalRequest {
   clubId: string;

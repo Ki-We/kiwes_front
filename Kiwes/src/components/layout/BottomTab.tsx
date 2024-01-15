@@ -9,6 +9,7 @@ import MyPage from '../../pages/MyPage';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import HomeStack from './HomeStack';
 import WishPage from '../../pages/WishPage';
+import PostClub from '../../pages/PostClub';
 
 const Tab = createBottomTabNavigator();
 const putterPath = require('../../../assets/images/putter.png');
@@ -56,7 +57,7 @@ const BottomTab = ({navigation}: any) => {
       />
       <Tab.Screen
         name="CreateMeeting"
-        component={CreateMeeting}
+        component={PostClub}
         options={{
           headerShown: false,
           tabBarButton: () => (
