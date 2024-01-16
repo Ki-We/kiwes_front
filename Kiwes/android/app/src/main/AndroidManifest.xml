@@ -34,5 +34,8 @@
                 android:scheme="kakao4d0990e1893c092dfd2f4c485ecceafc" />
         </intent-filter>
       </activity>
+      <meta-data
+	      android:name="com.google.android.geo.API_KEY"
+	      android:value="AIzaSyBlRgYCAJwXVcFYQ2HVG1C0jBFCwwX3BDA"/>
     </application>
 </manifest>
