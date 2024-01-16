@@ -2,6 +2,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useState, useRef } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, FlatList } from 'react-native';
 import Swiper from 'react-native-swiper';
+import LangClubDetail from '../components/post/LangClubDetail';
+import CategoryClubDetail from '../components/post/CategoryClubDetail';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const categoriesImg = require('../../assets/images/category01.png');
 const noticeBannerImg = require('../../assets/images/nbanner.png');
@@ -9,6 +12,7 @@ const noticeBannerImg = require('../../assets/images/nbanner.png');
 export function Home({ navigation }: any) {
   const bannerRef = useRef(null);
   const popularGroupsRef = useRef(null);
+  const [currentPage, setCurrentPage] = useState(0);
 
   const handleBannerPress = () => {
     navigation.navigate('Event');
@@ -27,212 +31,72 @@ export function Home({ navigation }: any) {
     { key: '2', image: noticeBannerImg },
   ];
 
-  const popularGroupImages = [categoriesImg, categoriesImg];
-  const [currentPopularGroupImageIndex, setCurrentPopularGroupImageIndex] = useState(0);
+  const [popularGroupImages, setPopularGroupImages] = useState([
+    { image: categoriesImg, isLiked: false },
+    { image: categoriesImg, isLiked: false },
+    { image: categoriesImg, isLiked: false },
+    { image: categoriesImg, isLiked: false },
+    { image: categoriesImg, isLiked: false },
+  ]);
 
-  const changePopularGroupImage = () => {
-    setCurrentPopularGroupImageIndex((prevIndex) =>
-      prevIndex === popularGroupImages.length - 1 ? 0 : prevIndex + 1
-    );
-    popularGroupsRef.current.scrollBy(1, true);
+  const togglePopularGroupLike = (index: number) => {
+    const updatedPopularGroupImages = [...popularGroupImages];
+    updatedPopularGroupImages[index].isLiked = !updatedPopularGroupImages[index].isLiked;
+    setPopularGroupImages(updatedPopularGroupImages);
   };
 
-  const categories1stFloor = [
-    { key: '1', name: 'K-pop' },
-    { key: '2', name: '맛집/카페' },
-    { key: '3', name: '스터디' },
-    { key: '4', name: '여행' },
-  ];
+  const handlePopularGroupPress = (index: number) => {
+    console.log(`Clicked on popular group at index ${index}`);
+  };
 
-  const categories1stFloor2 = [
-    { key: '1', name: '게임/보드게임' },
-    { key: '2', name: '문화/전시/공연' },
-    { key: '3', name: '술' },
-  ];
+  const renderRecommendedGroupItem = ({ item }: any) => (
+    <RecommendedGroup
+      title={item.title}
+      date={item.date}
+      location={item.location}
+      languages={item.languages}
+    />
+  );
 
-  const categories2ndFloor = [
-    { key: '5', name: '한국 문화' },
-    { key: '6', name: '영화/드라마/애니' },
-    { key: '7', name: '파티/클럽' },
-  ];
+  const navigateToClubDetail = (title, date, location, languages) => {
+    navigation.navigate('ClubDetail', { title, date, location, languages });
+  };
 
-  const categories2ndFloor2 = [
-    { key: '5', name: '스포츠' },
-    { key: '6', name: '공예/그림' },
-    { key: '7', name: '봉사활동' },
-    { key: '8', name: '기타' },
-  ];
-
-  const language1stFloor = [
-    { key: '8', name: '한글' },
-    { key: '9', name: 'English' },
-    { key: '10', name: '日本語' },
-  ];
-
-  const language2ndFloor = [
-    { key: '11', name: '中文(简体)' },
-    { key: '12', name: '中文(繁體)' },
-    { key: '13', name: 'Français' },
-  ];
-
-  const language1stFloor2 = [
-    { key: '8', name: 'Deutsch' },
-    { key: '9', name: 'Español' },
-    { key: '10', name: '기타' },
-  ];
-
-  const language2ndFloor2 = [
-    { key: '11', name: 'Tiếng Việt' },
-    { key: '12', name: 'Pусский' },
-  ];
-
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const RecommendedGroup = () => {
+  const RecommendedGroup = ({ title, date, location, languages, navigation }: any) => {
+    const [isLiked, setIsLiked] = useState(false);
+    const toggleLike = () => {
+      setIsLiked((prev) => !prev);
+    };
     return (
-      <View style={styles.recommendedGroupsContainer}>
-        <View style={styles.roundedRectangle}>
-          <View style={styles.groupContent}>
-            <Image
-              source={require('../../assets/images/jejuImg.png')}
-              style={styles.groupImage}
-            />
-            <View style={styles.textContent}>
-              <Text style={styles.groupTitle}>제주도 여행 같이 가요~!</Text>
-              <Text style={styles.groupDetail}>23.03.03</Text>
-              <Text style={styles.groupDetail}>제주도</Text>
-              <Text style={styles.groupDetail}>English 한국어</Text>
+      <TouchableOpacity onPress={() => navigateToClubDetail(title, date, location, languages)}>
+        <View style={styles.recommendedGroupsContainer}>
+          <View style={styles.roundedRectangle}>
+            <View style={styles.groupContent}>
+              <Image source={require('../../assets/images/jejuImg.png')} style={styles.groupImage} />
+              <View style={styles.textContent}>
+                <Text style={styles.groupTitle}>{title}</Text>
+                <Text style={styles.groupDetail}>{date}</Text>
+                <Text style={styles.groupDetail}>{location}</Text>
+                <Text style={styles.groupDetail}>{languages.join(', ')}</Text>
+              </View>
             </View>
+            <TouchableOpacity style={styles.RHeartContainer} onPress={toggleLike}>
+              <Icon name={isLiked ? 'heart' : 'heart-outline'} size={24} color={isLiked ? 'green' : '#58C047'} />
+            </TouchableOpacity>
           </View>
         </View>
-      </View>
-    );
-  };
-  const renderCategoryPaginationRect = (index: number, total: number, context: any) => {
-    return (
-      <View style={styles.paginationContainer}>
-        <View style={styles.paginationRect}>
-          {[...Array(total)].map((_, i) => (
-            <View
-              key={i}
-              style={[
-                styles.paginationRectItem,
-                i === index ? styles.paginationRectActive : null,
-              ]}
-            />
-          ))}
-        </View>
-      </View>
-    );
-  };
-
-  const renderCategorySwiper = () => {
-    return (
-      <Swiper loop={false} showsPagination={true} height={150} renderPagination={renderCategoryPaginationRect}>
-        <View>
-          <FlatList
-            data={categories1stFloor}
-            renderItem={renderCategory}
-            numColumns={4}
-            contentContainerStyle={styles.categoryList}
-            keyExtractor={(item) => item.key}
-            columnWrapperStyle={styles.categoryColumnWrapper}
-          />
-          <FlatList
-            data={categories2ndFloor}
-            renderItem={renderCategory}
-            numColumns={3}
-            contentContainerStyle={styles.categoryList}
-            keyExtractor={(item) => item.key}
-            columnWrapperStyle={styles.categoryColumnWrapper}
-          />
-        </View>
-        <View>
-          <FlatList
-            data={categories1stFloor2}
-            renderItem={renderCategory}
-            numColumns={3}
-            contentContainerStyle={styles.categoryList}
-            keyExtractor={(item) => item.key}
-            columnWrapperStyle={styles.categoryColumnWrapper}
-          />
-          <FlatList
-            data={categories2ndFloor2}
-            renderItem={renderCategory}
-            numColumns={4}
-            contentContainerStyle={styles.categoryList}
-            keyExtractor={(item) => item.key}
-            columnWrapperStyle={styles.categoryColumnWrapper}
-          />
-        </View>
-      </Swiper>
-    );
-  };
-  const renderCategorySwiper2 = () => {
-    return (
-      <Swiper loop={false} showsPagination={true} height={150} renderPagination={renderCategoryPaginationRect}>
-        <View>
-          <FlatList
-            data={language1stFloor}
-            renderItem={renderCategory}
-            numColumns={4}
-            contentContainerStyle={styles.categoryList}
-            keyExtractor={(item) => item.key}
-            columnWrapperStyle={styles.categoryColumnWrapper}
-          />
-          <FlatList
-            data={language2ndFloor}
-            renderItem={renderCategory}
-            numColumns={3}
-            contentContainerStyle={styles.categoryList}
-            keyExtractor={(item) => item.key}
-            columnWrapperStyle={styles.categoryColumnWrapper}
-          />
-        </View>
-        <View>
-          <FlatList
-            data={language1stFloor2}
-            renderItem={renderCategory}
-            numColumns={3}
-            contentContainerStyle={styles.categoryList}
-            keyExtractor={(item) => item.key}
-            columnWrapperStyle={styles.categoryColumnWrapper}
-          />
-          <FlatList
-            data={language2ndFloor2}
-            renderItem={renderCategory}
-            numColumns={4}
-            contentContainerStyle={styles.categoryList}
-            keyExtractor={(item) => item.key}
-            columnWrapperStyle={styles.categoryColumnWrapper}
-          />
-        </View>
-      </Swiper>
-    );
-  };
-  const renderCategory = ({ item }: any) => {
-    const textSize = 12;
-    const textLength = item.name.length;
-    let itemWidth = textLength * (textSize * 1.5);
-
-    if (textLength < 5) {
-      itemWidth *= 1.7;
-    }
-
-    return (
-      <TouchableOpacity
-        style={[
-          styles.categoryItem,
-          selectedCategory === item.key ? { backgroundColor: '#9BD23C' } : null,
-          { width: itemWidth, height: 50 }
-        ]}
-        onPress={() => navigation.navigate('Club', { selectedCategory: item.name })}>
-        <Text style={styles.categoryText}>{item.name}</Text>
       </TouchableOpacity>
     );
   };
-  // const renderBannerItem = ({ item }: any) => (
-  //   <Image source={item.image} style={styles.bannerImage} />
-  // );
+
+  const recommendedGroups = [
+    { key: '1', title: '제주도 여행 같이 가요~!', date: '23.03.03', location: '제주도', languages: ['English', '한국어'] },
+    { key: '2', title: '강원도 여행 같이 가요~!', date: '23.03.03', location: '제주도', languages: ['English', '한국어'] },
+    { key: '3', title: '부산 여행 같이 가요~!', date: '23.03.03', location: '제주도', languages: ['English', '한국어'] },
+    { key: '4', title: '서울 여행 같이 가요~!', date: '23.03.03', location: '제주도', languages: ['English', '한국어'] },
+    { key: '5', title: ' 여행 같이 가요~!', date: '23.03.03', location: '제주도', languages: ['English', '한국어'] },
+  ];
+
   const renderPagination = (index: number, total: number, context: any) => {
     return (
       <View style={styles.paginationContainer}>
@@ -250,6 +114,32 @@ export function Home({ navigation }: any) {
       </View>
     );
   };
+
+  const renderFlatListItem = ({ item, index }: any) => (
+    <RecommendedGroup
+      title={item.title}
+      date={item.date}
+      location={item.location}
+      languages={item.languages}
+    />
+  );
+
+  const renderPopularGroupItem = (imageSource: any, index: number) => (
+    <View key={index} style={styles.popularGroupSlide}>
+      <View style={styles.imageContainer}>
+        <Image source={imageSource.image} style={styles.popularGroupsImage} />
+        <View style={styles.PHeartContainer}>
+          <TouchableOpacity onPress={() => togglePopularGroupLike(index)}>
+            {imageSource.isLiked ? (
+              <Icon name="heart" size={24} color="green" />
+            ) : (
+              <Icon name="heart-outline" size={24} color="#58C047" />
+            )}
+          </TouchableOpacity>
+        </View>
+      </View>
+    </View>
+  );
 
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContainer}>
@@ -274,34 +164,51 @@ export function Home({ navigation }: any) {
           style={styles.wrapper1}
           loop={true}
           autoplay={true}
-          autoplayTimeout={5}
+          autoplayTimeout={6}
           showsPagination={true}
           renderPagination={renderPagination}
+          onIndexChanged={(index) => setCurrentPage(index)}
           ref={popularGroupsRef}>
-          {popularGroupImages.map((image, index) => (
-            <View key={index} style={styles.popularGroupSlide}>
-              <Image source={image} style={styles.popularGroupsImage} />
-            </View>
-          ))}
+          {popularGroupImages.map((image, index) => renderPopularGroupItem(image, index))}
         </Swiper>
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>카테고리별 모임</Text>
           <View style={styles.sectionContent}>
-            {renderCategorySwiper([categories1stFloor, categories1stFloor2, categories2ndFloor, categories2ndFloor2])}
+            <CategoryClubDetail post={{ categories: [] }} setPost={() => {}} navigation={navigation} />
           </View>
         </View>
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>언어별 모임</Text>
           <View style={styles.sectionContent}>
-            {renderCategorySwiper2([language1stFloor, language2ndFloor, language1stFloor2, language2ndFloor2])}
+            <LangClubDetail post={{ languages: [] }} setPost={() => {}} navigation={navigation} />
           </View>
         </View>
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>추천 모임</Text>
-          <View style={styles.sectionContent}>
-            <TouchableOpacity onPress={() => navigation.navigate('Club', { selectedCategory })}>
-            <RecommendedGroup />
-            </TouchableOpacity>
+          <Swiper
+            style={styles.wrapper2}
+            loop={true}
+            autoplay={true}
+            autoplayTimeout={6}
+            showsPagination={true}
+            renderPagination={renderPagination}
+            onIndexChanged={(index) => setCurrentPage(index)}
+            ref={popularGroupsRef}>
+            {recommendedGroups.map((item, index) => (
+              <View key={index}>
+                <RecommendedGroup
+                  title={item.title}
+                  date={item.date}
+                  location={item.location}
+                  languages={item.languages}
+                />
+              </View>
+            ))}
+          </Swiper>
+          <View style={[styles.paginationInfo, { marginBottom: 40 }]}>
+            <Text style={styles.paginationText}>
+              Page {currentPage + 1} of {recommendedGroups.length}
+            </Text>
           </View>
         </View>
       </View>
@@ -325,6 +232,10 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 10,
   },
+  wrapper2: {
+    height: 180,
+    marginBottom: -20,
+  },
   popularGroupSlide: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -336,7 +247,6 @@ const styles = StyleSheet.create({
   },
   sectionContainer: {
     alignItems: 'center',
-    marginTop: 5,
   },
   sectionContent: {
     width: '100%',
@@ -458,6 +368,24 @@ const styles = StyleSheet.create({
     fontSize: 12,
     left: 10,
     bottom: -20,
+  },
+  flatListContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    left: 15,
+  },
+  imageContainer: {
+    position: 'relative',
+  },
+  PHeartContainer: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+  },
+  RHeartContainer: {
+    position: 'absolute',
+    bottom: 10,
+    right: 10,
   },
 });
 

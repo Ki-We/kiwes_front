@@ -19,7 +19,7 @@ const calculateScrollPosition = (offset, contentHeight, viewportHeight) => {
   return Math.floor((offset / (contentHeight - viewportHeight)) * height * 10);
 };
 
-const BoardList = ({url, data, navigateToClub}: any) => {
+const ClubList = ({url, data, navigateToClub}: any) => {
   const [posts, setPosts] = useState<BoardPost[]>(data || []);
   const [cursor, setCursor] = useState(0);
   const [isMore, setIsMore] = useState(true);
@@ -73,7 +73,6 @@ const BoardList = ({url, data, navigateToClub}: any) => {
       return;
     }
 
-    // Update state
     const updatedPosts = posts.map(post =>
       post.clubId === id
         ? {...post, isHeart: post.isHeart === 'YES' ? 'NO' : 'YES'}
@@ -215,4 +214,4 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
 });
-export default BoardList;
+export default ClubList;
