@@ -125,7 +125,6 @@ const BoardList = ({url, navigateToClub, Nothing}: any) => {
                 contentSize.height,
                 layoutMeasurement.height,
               );
-
               if (newScrollPosition > 9) {
                 setCursor(prevCursor => prevCursor + 1);
               }

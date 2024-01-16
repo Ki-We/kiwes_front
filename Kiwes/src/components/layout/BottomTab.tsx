@@ -9,10 +9,20 @@ import MyPage from '../../pages/MyPage';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import HomeStack from './HomeStack';
 import WishPage from '../../pages/WishPage';
+import ClubDetail from '../../pages/ClubDetail';
 import PostClub from '../../pages/PostClub';
 
 const Tab = createBottomTabNavigator();
 const putterPath = require('../../../assets/images/putter.png');
+
+ClubDetail.navigationOptions = ({ navigation }) => {
+  // Check if the route has the tab bar visible option
+  const isTabBarVisible = navigation.getParam('tabBarVisible', true);
+
+  return {
+    tabBarVisible: isTabBarVisible,
+  };
+};
 
 const BottomTab = ({navigation}: any) => {
   const insets = useSafeAreaInsets();
@@ -40,7 +50,7 @@ const BottomTab = ({navigation}: any) => {
         options={{
           title: 'HOME',
           tabBarIcon: ({color, size}) => (
-            <Icon name="home-outline" color={color} size={size} />
+            <Icon name={color === '#58C047' ? 'home' : 'home-outline'} color={color} size={size} />
           ),
           tabBarLabel: 'HOME',
         }}
@@ -51,7 +61,7 @@ const BottomTab = ({navigation}: any) => {
         options={{
           title: 'WISH',
           tabBarIcon: ({color, size}) => (
-            <Icon name="heart-outline" color={color} size={size} />
+            <Icon name={color === '#58C047' ? 'heart' : 'heart-outline'} color={color} size={size} />
           ),
         }}
       />
@@ -82,7 +92,7 @@ const BottomTab = ({navigation}: any) => {
           headerShown: false,
           title: 'CHAT',
           tabBarIcon: ({color, size}) => (
-            <Icon name="chatbox-ellipses-outline" color={color} size={size} />
+            <Icon name={color === '#58C047' ? 'chatbox-ellipses' : 'chatbox-ellipses-outline'} color={color} size={size} />
           ),
         }}
       />
@@ -92,7 +102,7 @@ const BottomTab = ({navigation}: any) => {
         options={{
           title: 'MY',
           tabBarIcon: ({color, size}) => (
-            <Icon name="person-outline" color={color} size={size} />
+            <Icon name={color === '#58C047' ? 'person' : 'person-outline'} color={color} size={size} />
           ),
         }}
       />

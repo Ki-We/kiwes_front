@@ -8,8 +8,9 @@ import {
   Image,
   Modal,
 } from 'react-native';
+import BoardList from '../components/BoardList';
 
-const Club = ({navigation, route}: any) => {
+const CategoryClub = ({navigation, route}: any) => {
   const {selectedCategory} = route.params;
   // const [categories, setCategories] = useState([]);
 
@@ -26,7 +27,23 @@ const Club = ({navigation, route}: any) => {
 
   //   fetchCategories();
   // }, []);
-
+  const renderNewCategories = () => {
+    return categories.map((category, index) => (
+      <TouchableOpacity
+        key={category.key}
+        style={[
+          styles.newCategoryItem,
+          // Add margin to the right of the last category item
+          index === categories.length - 1 ? styles.lastNewCategoryItem : null,
+        ]}
+        onPress={() => {
+          // Handle selecting new category
+        }}>
+        <Text style={styles.categoryText}>{category.name}</Text>
+      </TouchableOpacity>
+    ));
+  };
+  
   const [categories] = useState([
     {key: '0', name: '전체'},
     {key: '1', name: 'K-pop'},
@@ -56,21 +73,8 @@ const Club = ({navigation, route}: any) => {
           selectedCategory === category.name ? styles.selectedCategory : null,
         ]}
         onPress={() =>
-          navigation.navigate('Club', {selectedCategory: category.name})
+          navigation.navigate('CategoryClub', {selectedCategory: category.name})
         }>
-        <Text style={styles.categoryText}>{category.name}</Text>
-      </TouchableOpacity>
-    ));
-  };
-
-  const renderNewCategories = () => {
-    return categories.map(category => (
-      <TouchableOpacity
-        key={category.key}
-        style={styles.newCategoryItem}
-        onPress={() => {
-          // Handle selecting new category
-        }}>
         <Text style={styles.categoryText}>{category.name}</Text>
       </TouchableOpacity>
     ));
@@ -78,19 +82,32 @@ const Club = ({navigation, route}: any) => {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity
+        onPress={() => setModalVisible(true)}
+        style={styles.addButtonContainer}>
+        <Image
+          source={require('../../assets/images/categoryAdd.png')}
+          style={styles.addButton}
+        />
+      </TouchableOpacity>
+
       <ScrollView
         horizontal={true}
         contentContainerStyle={styles.scrollContainer}>
         {renderCategories()}
       </ScrollView>
-      <TouchableOpacity
-        onPress={() => setModalVisible(true)}
-        style={styles.addButtonContainer}>
-        <Image
-          source={require('../../assets/images/add.png')}
-          style={styles.addButton}
-        />
-      </TouchableOpacity>
+      
+      {/* Render BoardList component */}
+      <BoardList
+        url={`YOUR_API_ENDPOINT/${selectedCategory}`} // Replace with your API endpoint
+        data={[]} // You can pass initial data if needed
+        navigateToClub={(clubId: string) => {
+          // Handle navigation to the club page
+          // You may want to navigate to a specific club page based on clubId
+          // Example: navigation.navigate('ClubDetails', { clubId });
+        }}
+      />
+
       <Modal
         animationType="slide"
         transparent={true}
@@ -124,16 +141,32 @@ const styles = StyleSheet.create({
   addButtonContainer: {
     position: 'absolute',
     top: 10,
-    right: 0,
+    left: 0,
+    paddingHorizontal: 20,
   },
   addButton: {
+    left: -10,
     width: 50,
     height: 50,
   },
   scrollContainer: {
+    left: 60,
     marginTop: 20,
     paddingBottom: 10,
     height: 50,
+  },
+  newCategoryItem: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    marginRight: 5,
+    borderRadius: 30,
+    borderWidth: 1,
+    borderColor: '#9BD23C',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  lastNewCategoryItem: {
+    marginRight: 20,
   },
   categoryItem: {
     paddingHorizontal: 20,
@@ -177,4 +210,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Club;
+export default CategoryClub;
