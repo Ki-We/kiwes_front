@@ -4,7 +4,6 @@ import {height, width} from '../../global';
 import DatePicker from 'react-native-date-picker';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCalendar} from '@fortawesome/free-regular-svg-icons';
-import {TextInput} from 'react-native-gesture-handler';
 import {faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons';
 import MapView, {Marker} from 'react-native-maps';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
@@ -76,21 +75,47 @@ export default function SetupDetail1({post, setPost}: any) {
 
         <Text style={styles.text}>장소</Text>
         <View style={styles.inputContainer}>
-          <TextInput
+          <GooglePlacesAutocomplete
+            styles={{
+              textInput: {
+                backgroundColor: '#F7F7F7', // 이 부분에 원하는 색상을 입력하세요.
+              },
+            }}
+            placeholder="모임 장소를 검색해주세요"
+            minLength={2}
+            keyboardShouldPersistTaps={'handled'}
+            fetchDetails={false}
+            onFail={error => console.log(error)}
+            onNotFound={() => console.log('no results')}
+            keepResultsAfterBlur={true}
+            enablePoweredByContainer={false}
+            onPress={(data, details = null) => {
+              setPost({...post, locationsKeyword: data});
+              setLocation({
+                lat: details?.geometry.location.lat || 0,
+                lng: details?.geometry.location.lng || 0,
+              });
+            }}
+            query={{
+              key: 'AIzaSyBlRgYCAJwXVcFYQ2HVG1C0jBFCwwX3BDA',
+              language: 'en',
+            }}
+          />
+          {/* <TextInput
             style={styles.input}
             placeholderTextColor={'#8A8A8A'}
             placeholder="모임 장소를 검색해주세요"
             onChangeText={text => {
               setPost({...post, locationsKeyword: text});
             }}
-          />
+          /> */}
           <View style={styles.iconContainer}>
             <FontAwesomeIcon icon={faMagnifyingGlass} />
           </View>
         </View>
-        {/* <View>
+        <View>
           <MapView
-            style={{flex: 1}}
+            style={styles.map}
             initialRegion={{
               latitude: 37.7749,
               longitude: -122.4194,
@@ -107,20 +132,7 @@ export default function SetupDetail1({post, setPost}: any) {
               />
             )}
           </MapView>
-          <GooglePlacesAutocomplete
-            placeholder="Search"
-            onPress={(data, details = null) => {
-              setLocation({
-                lat: details?.geometry.location.lat || 0,
-                lng: details?.geometry.location.lng || 0,
-              });
-            }}
-            query={{
-              key: 'YOUR_GOOGLE_MAPS_API_KEY',
-              language: 'en',
-            }}
-          />
-        </View> */}
+        </View>
       </View>
     </>
   );
@@ -163,10 +175,13 @@ const styles = StyleSheet.create({
   },
   input: {
     fontSize: 13,
-    color: '#8A8A8A',
     flex: 1,
   },
   iconContainer: {
     marginRight: width * 5,
+  },
+  map: {
+    flex: 1,
+    height: height * 150,
   },
 });

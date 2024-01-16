@@ -1,6 +1,14 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useState, useRef } from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, FlatList } from 'react-native';
+import React, {useState, useRef} from 'react';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  FlatList,
+} from 'react-native';
 import Swiper from 'react-native-swiper';
 import LangClubDetail from '../components/post/LangClubDetail';
 import CategoryClubDetail from '../components/post/CategoryClubDetail';
@@ -9,7 +17,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 const categoriesImg = require('../../assets/images/category01.png');
 const noticeBannerImg = require('../../assets/images/nbanner.png');
 
-export function Home({ navigation }: any) {
+export function Home({navigation}: any) {
   const bannerRef = useRef(null);
   const popularGroupsRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(0);
@@ -22,15 +30,14 @@ export function Home({ navigation }: any) {
     await AsyncStorage.removeItem('userData');
     navigation.reset({
       index: 0,
-      routes: [{ name: 'Login' }],
+      routes: [{name: 'Login'}],
     });
   };
 
   const banners = [
-    { key: '1', image: noticeBannerImg },
-    { key: '2', image: noticeBannerImg },
+    {key: '1', image: noticeBannerImg},
+    {key: '2', image: noticeBannerImg},
   ];
-
   const [popularGroupImages, setPopularGroupImages] = useState([
     { image: categoriesImg, isLiked: false },
     { image: categoriesImg, isLiked: false },

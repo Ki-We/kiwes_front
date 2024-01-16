@@ -2,10 +2,11 @@ import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {apiServer} from '../../utils/metaData';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {width} from '../../global';
+import {height, width} from '../../global';
 import ApprovalRequst from './ApprovalRequst';
+import NothingShow from '../NothingShow';
 
-const url = `${apiServer}/api/v1/club/approval/my-own-club?cursor=0`;
+const url = `${apiServer}/api/v1/club/approval/my-own-club?cursor=`;
 
 const RequestList = ({navigation}: any) => {
   const navigateToRequestList = (clubId: any) => {
@@ -19,6 +20,7 @@ const RequestList = ({navigation}: any) => {
           <ApprovalRequst
             url={url}
             navigateToRequestList={navigateToRequestList}
+            Nothing={Nothing}
           />
         </SafeAreaView>
       </View>
@@ -49,6 +51,20 @@ const styles = StyleSheet.create({
     color: 'rgba(0, 0, 0, 1)',
     fontFamily: 'Pretendard-Bold',
     fontSize: width * 14,
+  },
+});
+const Nothing = ({text}: {text: string}) => {
+  return <NothingShow title={text} styleKiwe={styleKiwe} />;
+};
+const styleKiwe = StyleSheet.create({
+  image: {
+    height: height * 300,
+  },
+  text: {
+    fontSize: height * 20,
+    fontWeight: 'bold',
+    color: 'rgba(0, 0, 0, 1)',
+    marginBottom: 3,
   },
 });
 export default RequestList;

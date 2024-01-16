@@ -3,10 +3,11 @@ import React, {useCallback, useState} from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import {RESTAPIBuilder} from '../../utils/restapiBuilder';
 import {apiServer} from '../../utils/metaData';
-import {width} from '../../global';
+import {height, width} from '../../global';
 import {ClubMemberApprovalRequestEach} from '../../utils/commonInterface';
 import {FlatList} from 'react-native-gesture-handler';
 import ApprovalModal from './ApprovalModal';
+import NothingShow from '../NothingShow';
 
 const ClubApproval = ({route}: any) => {
   const {clubId} = route.params;
@@ -14,6 +15,7 @@ const ClubApproval = ({route}: any) => {
   const [members, setMembers] = useState<ClubMemberApprovalRequestEach[]>([]);
   const [member, setMember] = useState<ClubMemberApprovalRequestEach>();
   const [modalVisible, setModalVisible] = useState(false);
+  const [isEmpty, setIsEmpty] = useState(true);
   const [modaltype, setModaltype] = useState('승락');
 
   const handleOpenAcceptModal = ({item}: any) => {
@@ -68,6 +70,7 @@ const ClubApproval = ({route}: any) => {
         .build()
         .run();
       if (!response.data) {
+        setIsEmpty(false);
         return;
       }
       return response.data;
@@ -79,6 +82,9 @@ const ClubApproval = ({route}: any) => {
   const fetchMembers = async () => {
     const newMembers = await fetchData();
     setMembers(newMembers);
+    if (newMembers.length === 0) {
+      setIsEmpty(false);
+    }
   };
   useFocusEffect(
     useCallback(() => {
@@ -89,51 +95,62 @@ const ClubApproval = ({route}: any) => {
     }, []),
   );
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}> {clubId.title}</Text>
-      <FlatList
-        data={members}
-        keyExtractor={item => item.memberId}
-        style={{flex: 1}}
-        renderItem={({item}) => (
-          <View style={styles.memberContainer}>
-            <View>
-              <TouchableOpacity style={styles.profilContainer}>
-                <Image source={{uri: item.profileImg}} style={styles.image} />
+    <>
+      {!isEmpty ? (
+        Nothing({text: '승인 신청자가 아직 없어요!'}, {title: clubId.title})
+      ) : (
+        <View style={styles.container}>
+          <Text style={styles.title}> {clubId.title}</Text>
+          <FlatList
+            data={members}
+            keyExtractor={item => item.memberId}
+            style={{flex: 1}}
+            renderItem={({item}) => (
+              <View style={styles.memberContainer}>
                 <View>
-                  <Text style={styles.text}>{item.nickname}</Text>
+                  <TouchableOpacity style={styles.profilContainer}>
+                    <Image
+                      source={{uri: item.profileImg}}
+                      style={styles.image}
+                    />
+                    <View>
+                      <Text style={styles.text}>{item.nickname}</Text>
+                    </View>
+                  </TouchableOpacity>
                 </View>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                onPress={() => {
-                  {
-                    handleOpenAcceptModal({item});
-                  }
-                }}>
-                <Text style={styles.button}> 승락 </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  {
-                    handleOpenRefuseModal({item});
-                  }
-                }}>
-                <Text style={styles.button}> 거절 </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        )}
-      />
-      <ApprovalModal
-        isVisible={modalVisible}
-        onClose={handleCloseModal}
-        member={member}
-        exitClub={modaltype === '승락' ? handleAcceptClub : handleRefuseClub}
-        modaltype={modaltype}
-      />
-    </View>
+                <View style={styles.buttonContainer}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      {
+                        handleOpenAcceptModal({item});
+                      }
+                    }}>
+                    <Text style={styles.button}> 승락 </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      {
+                        handleOpenRefuseModal({item});
+                      }
+                    }}>
+                    <Text style={styles.button}> 거절 </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )}
+          />
+          <ApprovalModal
+            isVisible={modalVisible}
+            onClose={handleCloseModal}
+            member={member}
+            exitClub={
+              modaltype === '승락' ? handleAcceptClub : handleRefuseClub
+            }
+            modaltype={modaltype}
+          />
+        </View>
+      )}
+    </>
   );
 };
 const styles = StyleSheet.create({
@@ -156,8 +173,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   image: {
-    width: 35,
-    height: 35,
+    width: width * 35,
+    height: height * 35,
     borderRadius: 20,
   },
   title: {
@@ -187,6 +204,26 @@ const styles = StyleSheet.create({
     paddingHorizontal: 7,
     marginBottom: 5,
     marginHorizontal: 3,
+  },
+});
+const Nothing = ({text}: {text: string}, {title}: {title: string}) => {
+  return (
+    <>
+      <Text style={styles.title}> {title}</Text>
+      <NothingShow title={text} styleKiwe={styleKiwe} />
+    </>
+  );
+};
+const styleKiwe = StyleSheet.create({
+  image: {
+    margin: 10,
+    height: height * 300,
+  },
+  text: {
+    fontSize: height * 20,
+    fontWeight: 'bold',
+    color: 'rgba(0, 0, 0, 1)',
+    marginBottom: 3,
   },
 });
 export default ClubApproval;

@@ -10,6 +10,7 @@ import BoardList from '../components/BoardList';
 import {apiServer} from '../utils/metaData';
 import {width, height} from '../global';
 import Icon from 'react-native-vector-icons/Ionicons';
+import NothingShow from '../components/NothingShow';
 const url = `${apiServer}/api/v1/heart/club_list?cursor=`;
 const WishPage = ({navigation}: any) => {
   const navigateToClub = (clubId: any) => {
@@ -29,7 +30,11 @@ const WishPage = ({navigation}: any) => {
           </TouchableOpacity>
         </View>
         <SafeAreaView style={{flex: 1}}>
-          <BoardList url={url} navigateToClub={navigateToClub} />
+          <BoardList
+            url={url}
+            navigateToClub={navigateToClub}
+            Nothing={Nothing}
+          />
         </SafeAreaView>
       </View>
     </>
@@ -59,4 +64,19 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
 });
+const Nothing = ({text}: {text: string}) => {
+  return <NothingShow title={text} styleKiwe={styleKiwe} />;
+};
+const styleKiwe = StyleSheet.create({
+  image: {
+    height: height * 300,
+  },
+  text: {
+    fontSize: height * 20,
+    fontWeight: 'bold',
+    color: 'rgba(0, 0, 0, 1)',
+    margin: 10,
+  },
+});
+
 export default WishPage;

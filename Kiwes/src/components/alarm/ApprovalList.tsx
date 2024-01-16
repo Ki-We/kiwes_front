@@ -2,14 +2,15 @@ import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {apiServer} from '../../utils/metaData';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {width} from '../../global';
+import {height, width} from '../../global';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import BoardList from '../BoardList';
 import ApprovalRequst from './ApprovalRequst';
+import NothingShow from '../NothingShow';
 
-const approvalUrl = `${apiServer}/api/v1/club/approval/simple/approval?cursor=0`;
-const watinglUrl = `${apiServer}/api/v1/club/approval/simple/wating?cursor=0`;
+const approvalUrl = `${apiServer}/api/v1/club/approval/simple/approval?cursor=`;
+const watinglUrl = `${apiServer}/api/v1/club/approval/simple/wating?cursor=`;
 
 const ApprovalList = ({navigation}: any) => {
   const navigateToRequestList = (clubId: any) => {
@@ -22,10 +23,11 @@ const ApprovalList = ({navigation}: any) => {
     <>
       <View style={styles.container}>
         <Text style={styles.title}>승인 요청</Text>
-        <SafeAreaView style={{flex: 0.31}}>
+        <SafeAreaView style={{flex: 0.34}}>
           <ApprovalRequst
             url={approvalUrl}
             navigateToRequestList={navigateToRequestList}
+            Nothing={Nothing}
           />
         </SafeAreaView>
         <TouchableOpacity
@@ -41,8 +43,12 @@ const ApprovalList = ({navigation}: any) => {
           />
         </TouchableOpacity>
         <Text style={styles.title}>승인 대기</Text>
-        <SafeAreaView style={{flex: 0.34}}>
-          <BoardList url={watinglUrl} navigateToClub={navigateToClub} />
+        <SafeAreaView style={{flex: 0.37}}>
+          <BoardList
+            url={watinglUrl}
+            navigateToClub={navigateToClub}
+            Nothing={Nothing}
+          />
         </SafeAreaView>
         <TouchableOpacity
           style={styles.retriveContainer}
@@ -81,12 +87,27 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flex: 0.1,
     marginLeft: 20,
-    marginTop: 10,
+    marginTop: 20,
   },
   retrive: {
     color: 'rgba(0, 0, 0, 1)',
     fontFamily: 'Pretendard-Bold',
     fontSize: width * 14,
+  },
+});
+
+const Nothing = ({text}: {text: string}) => {
+  return <NothingShow title={text} styleKiwe={styleKiwe} />;
+};
+const styleKiwe = StyleSheet.create({
+  image: {
+    height: height * 170,
+  },
+  text: {
+    fontSize: height * 15,
+    fontWeight: 'bold',
+    color: 'rgba(0, 0, 0, 1)',
+    marginBottom: 3,
   },
 });
 

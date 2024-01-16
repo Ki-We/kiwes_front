@@ -13,11 +13,13 @@ export default function ListComponent({
 }: any) {
   console.log('-----------item-------------');
   console.log(item);
-  const toggleLike = async (id: String) => {
+  const toggleLike = async (id) => {
+    console.log('toggleLike called');
     const post = posts.find((post: any) => post.clubId === id);
     if (!post) {
       return;
     }
+    console.log(post);
 
     // Update state
     const updatedPosts = posts.map((post: any) =>
@@ -38,10 +40,9 @@ export default function ListComponent({
         .run();
     } catch (err) {
       console.error(err);
-      // If API call fails, revert state
       setPosts(
         posts.map((post: any) =>
-          post.clubId === id ? {...post, heart: post.isHeart} : post,
+          post.clubId === id ? {...post, isHeart: post.isHeart} : post,
         ),
       );
     }
@@ -89,7 +90,7 @@ export default function ListComponent({
       <View style={styles.heartContainer}>
         <TouchableOpacity onPress={() => toggleLike(item.clubId)}>
           <Icon
-            name={item.heart ? 'heart' : 'heart-outline'}
+            name={item.isHeart === 'YES' ? 'heart' : 'heart-outline'}
             size={25}
             color="#58C047"
           />
