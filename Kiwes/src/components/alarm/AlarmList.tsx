@@ -11,10 +11,10 @@ import NothingShow from '../NothingShow';
 const url = `${apiServer}/api/v1/alarm/`;
 const timePeriods = ['오늘', '어제', '이번 주', '이전 활동'];
 const pageNavigationMap = {
-  CLUB: {page: 'ClubPage', idKey: 'clubId'},
+  CLUB: {page: 'ClubDetail', idKey: 'clubId'},
   CHAT: {page: 'ChatMain', idKey: 'clubId'},
   NOTICE: {page: 'NoticePage', idKey: 'noticeId'},
-  EVENT: {page: 'NoticePage', idKey: 'noticeId'},
+  EVENT: {page: 'EventPage', idKey: 'noticeId'},
 };
 
 const AlarmList = ({navigation}: any) => {

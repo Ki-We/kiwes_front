@@ -10,7 +10,7 @@ const url = `${apiServer}/api/v1/club/approval/my-waitings?cursor=`;
 
 const WatingList = ({navigation}: any) => {
   const navigateToClub = (clubId: any) => {
-    navigation.navigate('ClubPage', {clubId: clubId});
+    navigation.navigate('ClubDetail', {clubId: clubId});
   };
   return (
     <>

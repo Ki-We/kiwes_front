@@ -4,8 +4,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Login from '../../pages/Login';
 import BottomTab from './BottomTab';
 import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
-import PostClub from '../../pages/PostClub';
-import ClubPage from '../../pages/ClubPage';
 import AlarmPage from '../../pages/AlarmPage';
 import Search from '../../pages/Search';
 import WishPage from '../../pages/WishPage';
@@ -13,6 +11,8 @@ import ProfilePage from '../../pages/ProfilePage';
 import AlarmList from '../alarm/AlarmList';
 import SettingPage from '../../pages/SettingPage';
 import NoticePage from '../../pages/NoticePage';
+import ClubDetail from '../../pages/ClubDetail';
+import Event from '../../pages/Event';
 
 const LoginStack = () => {
   useEffect(() => {
@@ -43,12 +43,13 @@ const LoginStack = () => {
 
         <Stack.Screen name="Search" component={Search} />
         <Stack.Screen name="WishPage" component={WishPage} />
-        <Stack.Screen name="ClubPage" component={ClubPage} />
+        <Stack.Screen name="ClubDetail" component={ClubDetail} />
         <Stack.Screen name="NoticePage" component={NoticePage} />
         <Stack.Screen name="AlarmPage" component={AlarmPage} />
         <Stack.Screen name="ProfilePage" component={ProfilePage} />
         <Stack.Screen name="AlarmList" component={AlarmList} />
         <Stack.Screen name="SettingPage" component={SettingPage} />
+        <Stack.Screen name="EventPage" component={Event} />
       </Stack.Navigator>
     </NavigationContainer>
   );
