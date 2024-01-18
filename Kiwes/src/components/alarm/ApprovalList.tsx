@@ -17,7 +17,7 @@ const ApprovalList = ({navigation}: any) => {
     navigation.navigate('ClubApproval', {clubId: clubId});
   };
   const navigateToClub = (clubId: any) => {
-    navigation.navigate('ClubPage', {clubId: clubId});
+    navigation.navigate('ClubDetail', {clubId: clubId});
   };
   return (
     <>
