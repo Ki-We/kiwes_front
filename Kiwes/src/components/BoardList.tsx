@@ -39,7 +39,6 @@ const BoardList = ({url, navigateToClub, Nothing}: any) => {
   };
   useEffect(() => {
     fetchAndSetData();
-    console.log(posts);
   }, [cursor]);
 
   useEffect(() => {
@@ -62,6 +61,7 @@ const BoardList = ({url, navigateToClub, Nothing}: any) => {
       return [];
     }
   };
+
   // useFocusEffect(
   //   useCallback(() => {
   //     return () => {};
@@ -74,12 +74,10 @@ const BoardList = ({url, navigateToClub, Nothing}: any) => {
   //   console.log(posts);
   // };
   const toggleLike = async (id: String) => {
-    console.log(id);
     const post = posts.find(post => post.clubId === id);
     if (!post) {
       return;
     }
-    console.log(post);
     // Update state
     const updatedPosts = posts.map(post =>
       post.clubId === id

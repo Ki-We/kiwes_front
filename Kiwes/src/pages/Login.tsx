@@ -1,4 +1,4 @@
-import {StyleSheet, SafeAreaView, Image, Pressable} from 'react-native';
+import {StyleSheet, SafeAreaView, Image, Pressable, Text} from 'react-native';
 import React, {useCallback} from 'react';
 import * as KakaoLogin from '@react-native-seoul/kakao-login';
 import {apiServer} from '../utils/metaData';
@@ -140,16 +140,14 @@ export default function Login({navigation}: any) {
   return (
     <SafeAreaView style={styles.container}>
       <Image
-        source={{
-          uri: 'https://kiwes-bucket.s3.ap-northeast-2.amazonaws.com/main/loginImg.png',
-        }}
+        source={require('../../assets/images/loginImg.png')}
         style={styles.image}
         resizeMode="contain"
       />
       <Pressable onPress={signInWithKakao}>
         <Image
           source={{
-            uri: 'https://kiwes-bucket.s3.ap-northeast-2.amazonaws.com/main/kakao_login.png',
+            uri: 'https://kiwes2-bucket.s3.ap-northeast-2.amazonaws.com/main/kakao_login.png',
           }}
           style={styles.oauth}
           resizeMode="contain"
@@ -158,7 +156,7 @@ export default function Login({navigation}: any) {
       <Pressable onPress={signInWithApple}>
         <Image
           source={{
-            uri: 'https://kiwes-bucket.s3.ap-northeast-2.amazonaws.com/main/apple_login.png',
+            uri: 'https://kiwes2-bucket.s3.ap-northeast-2.amazonaws.com/main/apple_login.png',
           }}
           style={styles.oauth}
           resizeMode="contain"
@@ -167,7 +165,7 @@ export default function Login({navigation}: any) {
       <Pressable onPress={signInWithGoogle}>
         <Image
           source={{
-            uri: 'https://kiwes-bucket.s3.ap-northeast-2.amazonaws.com/main/google_login.png',
+            uri: 'https://kiwes2-bucket.s3.ap-northeast-2.amazonaws.com/main/google_login.png',
           }}
           style={styles.oauth}
           resizeMode="contain"
@@ -190,5 +188,6 @@ const styles = StyleSheet.create({
   oauth: {
     aspectRatio: 5,
     width: '70%',
+    marginBottom: 5,
   },
 });
