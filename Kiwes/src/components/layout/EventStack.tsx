@@ -2,7 +2,7 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import Home from '../../pages/Home';
 import Event from '../../pages/Event';
-import CategoryClub from '../../pages/CategoryClub';
+import CategoryClub from '../CategoryClub';
 import ClubDetail from '../../pages/ClubDetail';
 import ReviewPage from '../../pages/ReviewPage';
 import {Image} from 'react-native';

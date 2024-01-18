@@ -1,7 +1,7 @@
 import React from 'react';
 import {TouchableOpacity, SafeAreaView, Text, View} from 'react-native';
 import UploadImageTest from '../components/UploadImageTest';
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 
 export function MyPage({navigation}: any) {
   return (

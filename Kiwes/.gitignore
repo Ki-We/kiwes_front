@@ -63,3 +63,7 @@ yarn-error.log
 .metro-health-check*
 
 .vscode
+
+# Google API key
+src/utils/googleConfig.ts
+android/app/src/main/res/values/api_keys.xml

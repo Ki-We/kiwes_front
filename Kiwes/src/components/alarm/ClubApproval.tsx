@@ -125,7 +125,7 @@ const ClubApproval = ({route}: any) => {
                         handleOpenAcceptModal({item});
                       }
                     }}>
-                    <Text style={styles.button}> 승락 </Text>
+                    <Text style={styles.button}> 승인 </Text>
                   </TouchableOpacity>
                   <TouchableOpacity
                     onPress={() => {
@@ -144,7 +144,7 @@ const ClubApproval = ({route}: any) => {
             onClose={handleCloseModal}
             member={member}
             exitClub={
-              modaltype === '승락' ? handleAcceptClub : handleRefuseClub
+              modaltype === '승인' ? handleAcceptClub : handleRefuseClub
             }
             modaltype={modaltype}
           />
