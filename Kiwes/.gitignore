@@ -65,5 +65,5 @@ yarn-error.log
 .vscode
 
 # Google API key
-# src/utils/googleConfig.ts
-# android/app/src/main/res/values/api_keys.xml
+src/utils/googleConfig.ts
+android/app/src/main/res/values/api_keys.xml
