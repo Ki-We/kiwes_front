@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   View,
   FlatList,
@@ -13,6 +13,7 @@ import {BoardPost} from '../utils/commonInterface';
 import {languageMap} from '../utils/languageMap';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {height, width} from '../global';
+import {useFocusEffect} from '@react-navigation/native';
 
 const calculateScrollPosition = (offset, contentHeight, viewportHeight) => {
   return Math.floor((offset / (contentHeight - viewportHeight)) * height * 10);
@@ -27,22 +28,45 @@ const BoardList = ({url, navigateToClub, Nothing}: any) => {
     const newData = await fetchData(cursor);
     if (newData && newData.length > 0) {
       setPosts(prevPosts => {
+        const updatedPosts = prevPosts.map(prevPost => {
+          const newPost = newData.find(
+            ({clubId}) => clubId === prevPost.clubId,
+          );
+          if (newPost) {
+            return JSON.stringify(newPost) !== JSON.stringify(prevPost)
+              ? newPost
+              : prevPost;
+          }
+          return prevPost;
+        });
         const newPostsWithoutDuplicates = newData.filter(
           newPost =>
             !prevPosts.some(prevPost => prevPost.clubId === newPost.clubId),
         );
-        return [...prevPosts, ...newPostsWithoutDuplicates];
+        return [...updatedPosts, ...newPostsWithoutDuplicates];
       });
     } else {
       setIsMore(false);
     }
   };
+
+  const refreshWishData = async () => {
+    let newData: BoardPost[] = [];
+    for (let i = 0; i <= cursor; i++) {
+      const data = await fetchData(i);
+      newData = [...newData, ...data];
+    }
+    if (newData && newData.length > 0) {
+      setPosts(newData);
+    }
+  };
+
   useEffect(() => {
     fetchAndSetData();
   }, [cursor]);
 
   useEffect(() => {
-    setPosts([]);
+    // 검색을 위한
     setIsMore(true);
     setCursor(0);
     fetchAndSetData();
@@ -50,7 +74,6 @@ const BoardList = ({url, navigateToClub, Nothing}: any) => {
 
   const fetchData = async (num: number) => {
     try {
-      console.log(url + cursor);
       const response = await new RESTAPIBuilder(url + num, 'GET')
         .setNeedToken(true)
         .build()
@@ -62,17 +85,20 @@ const BoardList = ({url, navigateToClub, Nothing}: any) => {
     }
   };
 
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     return () => {};
-  //   }, []),
-  // );
-  // const removeNoHeartPosts = () => {
-  //   const filteredPosts = posts.filter(post => post.isHeart === 'YES');
-  //   setPosts(filteredPosts);
-  //   console.log(filteredPosts);
-  //   console.log(posts);
-  // };
+  useFocusEffect(
+    useCallback(() => {
+      if (url === `${apiServer}/api/v1/heart/club_list?cursor=`) {
+        setIsMore(true);
+        refreshWishData();
+      }
+      return () => {
+        if (url === `${apiServer}/api/v1/heart/club_list?cursor=`) {
+          setIsMore(true);
+          refreshWishData();
+        }
+      };
+    }, []),
+  );
   const toggleLike = async (id: String) => {
     const post = posts.find(post => post.clubId === id);
     if (!post) {
