@@ -16,12 +16,12 @@ const ClubApproval = ({route}: any) => {
   const [member, setMember] = useState<ClubMemberApprovalRequestEach>();
   const [modalVisible, setModalVisible] = useState(false);
   const [isEmpty, setIsEmpty] = useState(true);
-  const [modaltype, setModaltype] = useState('승락');
+  const [modaltype, setModaltype] = useState('승인');
 
   const handleOpenAcceptModal = ({item}: any) => {
     setModalVisible(true);
     setMember(item);
-    setModaltype('승락');
+    setModaltype('승인');
   };
   const handleOpenRefuseModal = ({item}: any) => {
     setModalVisible(true);

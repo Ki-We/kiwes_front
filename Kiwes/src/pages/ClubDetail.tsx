@@ -12,7 +12,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 const ClubDetail = ({ route, navigation }) => {
   const { selectedCategory } = route.params;
-
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
 
@@ -30,7 +29,7 @@ const ClubDetail = ({ route, navigation }) => {
   };
 
   const navigateToReviewPage = () => {
-    navigation.navigate('ReviewPage');
+    navigation.navigate('ReviewPage',{clubId: selectedCategory});
   };
 
 

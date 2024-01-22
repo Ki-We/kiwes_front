@@ -53,13 +53,6 @@ const EventStack = () => {
           headerShown: false,
         }}
       />
-      <Stack.Screen
-        name="ReviewPage"
-        component={ReviewPage}
-        options={{
-          headerShown: false,
-        }}
-      />
     </Stack.Navigator>
   );
 };

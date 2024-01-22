@@ -13,6 +13,7 @@ import SettingPage from '../../pages/SettingPage';
 import NoticePage from '../../pages/NoticePage';
 import ClubDetail from '../../pages/ClubDetail';
 import Event from '../../pages/Event';
+import ReviewPage from '../../pages/ReviewPage';
 
 const LoginStack = () => {
   useEffect(() => {
@@ -50,6 +51,7 @@ const LoginStack = () => {
         <Stack.Screen name="AlarmList" component={AlarmList} />
         <Stack.Screen name="SettingPage" component={SettingPage} />
         <Stack.Screen name="EventPage" component={Event} />
+        <Stack.Screen name="ReviewPage" component={ReviewPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );
