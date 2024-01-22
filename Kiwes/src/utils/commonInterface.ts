@@ -59,3 +59,19 @@ export interface Alarm {
   imageUrl: string;
   noticeId: string;
 }
+export interface ReviewDetail {
+  reviewId: string;
+  isAuthorOfReply: boolean;
+  isAuthorOfReview: boolean;
+  isModified: boolean;
+  reviewerId: string;
+  respondentId: string;
+  replyContent: string;
+  replyDate: string;
+  respondentNickname: string;
+  respondentProfileImg: string;
+  reviewContent: string;
+  reviewDate: string;
+  reviewerNickname: string;
+  reviewerProfileImg: string;
+}
