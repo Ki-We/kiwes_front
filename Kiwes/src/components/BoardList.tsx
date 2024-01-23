@@ -15,10 +15,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {height, width} from '../global';
 import {useFocusEffect} from '@react-navigation/native';
 
-const calculateScrollPosition = (offset, contentHeight, viewportHeight) => {
-  return Math.floor((offset / (contentHeight - viewportHeight)) * height * 10);
-};
-
 const BoardList = ({url, navigateToClub, Nothing}: any) => {
   const [posts, setPosts] = useState<BoardPost[]>([]);
   const [cursor, setCursor] = useState(0);
@@ -26,6 +22,7 @@ const BoardList = ({url, navigateToClub, Nothing}: any) => {
 
   const fetchAndSetData = async () => {
     const newData = await fetchData(cursor);
+    console.log('boardList data : ', newData);
     if (newData && newData.length > 0) {
       setPosts(prevPosts => {
         const updatedPosts = prevPosts.map(prevPost => {
@@ -213,6 +210,9 @@ const BoardList = ({url, navigateToClub, Nothing}: any) => {
       )}
     </>
   );
+};
+const calculateScrollPosition = (offset, contentHeight, viewportHeight) => {
+  return Math.floor((offset / (contentHeight - viewportHeight)) * height * 10);
 };
 const styles = StyleSheet.create({
   clubContainer: {

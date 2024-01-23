@@ -4,10 +4,9 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {TouchableOpacity, Image} from 'react-native';
 import {width, height} from '../../global';
 import ChatMain from '../../pages/ChatMain';
-import CreateMeeting from '../../pages/CreateMeeting';
 import MyPage from '../../pages/MyPage';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import HomeStack from './HomeStack';
+import EventStack from './EventStack';
 import WishPage from '../../pages/WishPage';
 import ClubDetail from '../../pages/ClubDetail';
 import PostClub from '../../pages/PostClub';
@@ -46,7 +45,7 @@ const BottomTab = ({navigation}: any) => {
       }}>
       <Tab.Screen
         name="Home"
-        component={HomeStack}
+        component={EventStack}
         options={{
           title: 'HOME',
           tabBarIcon: ({color, size}) => (

@@ -1,9 +1,9 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import ReviewList from '../components/clubdetail/ReviewList';
+import QnAList from '../components/clubdetail/QnAList';
 
-const ReviewPage = ({route, navigation}) => {
+const QnAPage = ({route, navigation}) => {
   const {clubId} = route.params;
   return (
     <View style={styles.container}>
@@ -11,9 +11,9 @@ const ReviewPage = ({route, navigation}) => {
         <TouchableOpacity onPress={() => navigation.pop()}>
           <Icon name="arrow-back" size={30} color="#303030" />
         </TouchableOpacity>
-        <Text style={styles.headerText}>후기</Text>
+        <Text style={styles.headerText}>Q&A</Text>
       </View>
-      <ReviewList clubId={clubId} />
+      <QnAList clubId={clubId} />
     </View>
   );
 };
@@ -41,4 +41,4 @@ const styles = StyleSheet.create({
     marginLeft: 150,
   },
 });
-export default ReviewPage;
+export default QnAPage;
