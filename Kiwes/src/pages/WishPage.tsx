@@ -14,7 +14,7 @@ import NothingShow from '../components/NothingShow';
 const url = `${apiServer}/api/v1/heart/club_list?cursor=`;
 const WishPage = ({navigation}: any) => {
   const navigateToClub = (clubId: any) => {
-    navigation.navigate('ClubPage', {clubId: clubId});
+    navigation.navigate('ClubDetail', {selectedCategory: clubId});
   };
 
   const navigateToAlarm = () => {

@@ -15,7 +15,6 @@ import { Clipboard } from 'react-native';
 
 const ClubDetail = ({ route, navigation }) => {
   const { selectedCategory } = route.params;
-
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
 
@@ -71,9 +70,23 @@ const ClubDetail = ({ route, navigation }) => {
   };
 
   const navigateToReviewPage = () => {
-    navigation.navigate('ReviewPage');
+    navigation.navigate('ReviewPage',{clubId: selectedCategory});
   };
- 
+  const navigateToQnAPage = () => {
+    navigation.navigate('QnAPage',{clubId: selectedCategory});
+  };
+
+  const renderJoinButton = () => {
+    const buttonStyle = isJoined ? styles.cancelButton : styles.joinButton;
+    const buttonText = isJoined ? '참여 취소' : '참여하기';
+
+    return (
+      <TouchableOpacity style={buttonStyle} onPress={toggleJoin}>
+        <Text style={styles.buttonText}>{buttonText}</Text>
+      </TouchableOpacity>
+    );
+  };
+
   const toggleLike = () => {
     setIsLiked((prev) => !prev);
     setLikeCount((prevCount) => (isLiked ? prevCount - 1 : prevCount + 1));
@@ -273,7 +286,7 @@ const ClubDetail = ({ route, navigation }) => {
             '안녕하세요, 구체적인 일정 알 수 있을까요?',
             '2024.01.15 18:45'
           )}
-          <TouchableOpacity onPress={() => /* Navigate to full Q&A list */ null}>
+          <TouchableOpacity onPress={navigateToQnAPage}>
             <Text style={styles.seeAllButton}>Q&A 모두 보기 ></Text>
           </TouchableOpacity>
         </View>

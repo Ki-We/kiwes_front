@@ -1,12 +1,12 @@
 import React from 'react';
 import { View,Text, Image, StyleSheet, Dimensions, ScrollView } from 'react-native';
 
+
 const eventImage = require('../../assets/images/event.png');
 const windowWidth = Dimensions.get('window').width;
 
-const Event = ({route}) => {
-  const { eventId } = route.params;
-
+const Event = ({route}: any) => {
+  const {eventId} = route.params;
   return (
     <ScrollView contentContainerStyle={styles.scrollView}>
       <Text style={styles.color}>{eventId}</Text>
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   eventImage: {
     width: windowWidth,
     height: undefined,
-    aspectRatio: 16/35,
+    aspectRatio: 16 / 35,
     resizeMode: 'cover',
   },
   color: {

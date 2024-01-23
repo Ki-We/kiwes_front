@@ -44,7 +44,7 @@ export default function Search({navigation}: any) {
     setRecommand(data.slice(2));
   };
   const navigateToClub = (clubId: any) => {
-    navigation.navigate('ClubPage', {clubId: clubId});
+    navigation.navigate('ClubDetail', {clubId: clubId});
   };
   useEffect(() => {
     getRecommand();

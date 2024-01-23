@@ -7,6 +7,7 @@ import {faCalendar} from '@fortawesome/free-regular-svg-icons';
 import {faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons';
 import MapView, {Marker} from 'react-native-maps';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
+import { GOOGLE_API_KEY } from '../../utils/googleConfig';
 
 export default function SetupDetail1({post, setPost}: any) {
   const [date, setDate] = useState(post.date);
@@ -97,7 +98,7 @@ export default function SetupDetail1({post, setPost}: any) {
               });
             }}
             query={{
-              key: 'AIzaSyBlRgYCAJwXVcFYQ2HVG1C0jBFCwwX3BDA',
+              key: GOOGLE_API_KEY,
               language: 'en',
             }}
           />

@@ -16,12 +16,12 @@ const ClubApproval = ({route}: any) => {
   const [member, setMember] = useState<ClubMemberApprovalRequestEach>();
   const [modalVisible, setModalVisible] = useState(false);
   const [isEmpty, setIsEmpty] = useState(true);
-  const [modaltype, setModaltype] = useState('승락');
+  const [modaltype, setModaltype] = useState('승인');
 
   const handleOpenAcceptModal = ({item}: any) => {
     setModalVisible(true);
     setMember(item);
-    setModaltype('승락');
+    setModaltype('승인');
   };
   const handleOpenRefuseModal = ({item}: any) => {
     setModalVisible(true);
@@ -125,7 +125,7 @@ const ClubApproval = ({route}: any) => {
                         handleOpenAcceptModal({item});
                       }
                     }}>
-                    <Text style={styles.button}> 승락 </Text>
+                    <Text style={styles.button}> 승인 </Text>
                   </TouchableOpacity>
                   <TouchableOpacity
                     onPress={() => {
@@ -144,7 +144,7 @@ const ClubApproval = ({route}: any) => {
             onClose={handleCloseModal}
             member={member}
             exitClub={
-              modaltype === '승락' ? handleAcceptClub : handleRefuseClub
+              modaltype === '승인' ? handleAcceptClub : handleRefuseClub
             }
             modaltype={modaltype}
           />
