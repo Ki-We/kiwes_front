@@ -59,6 +59,12 @@ export interface Alarm {
   imageUrl: string;
   noticeId: string;
 }
+export interface Banner {
+  type: string;
+  imageUrl: string;
+  url: string;
+  id: number;
+}
 export interface ReviewDetail {
   reviewId: string;
   isAuthorOfReply: boolean;

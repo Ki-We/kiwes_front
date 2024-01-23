@@ -1,12 +1,13 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import RoundCategory from '../atoms/roundCategory';
-import {StyleSheet, View} from 'react-native';
-import {width} from '../../global';
-import {categoryList} from '../../utils/utils';
+import { StyleSheet, View, Text } from 'react-native';
+import { width } from '../../global';
+import { categoryList } from '../../utils/utils';
 import Swiper from 'react-native-swiper';
 
-export default function CategoryClubDetail({post, setPost, navigation}: any) {
+export default function CategoryClubDetail({ post, setPost, navigation }: any) {
   const [category, setCategory] = useState(post.category);
+  const [selectedCategoryIndex, setSelectedCategoryIndex] = useState(null);
 
   const splitIndex = Math.ceil(categoryList.length / 2);
   const firstRowCategoryList = categoryList.slice(splitIndex);
@@ -30,6 +31,14 @@ export default function CategoryClubDetail({post, setPost, navigation}: any) {
     );
   };
 
+  const handleCategoryPress = (key: string, index: number) => {
+    setCategory(key);
+    setSelectedCategoryIndex(index);
+    setPost({...post, category: key});
+    console.log('Selected Category Index:', index);
+    navigation.navigate('CategoryClub', {selectedCategory: key, categoryIndex: index, cursor: index});
+  };
+
   return (
     <>
       <Swiper
@@ -37,37 +46,33 @@ export default function CategoryClubDetail({post, setPost, navigation}: any) {
         showsPagination={true}
         index={0}
         style={styles.swiper}
-        renderPagination={renderPaginationRect}
-      >
+        renderPagination={renderPaginationRect}>
         <View style={styles.container}>
-          {firstRowCategoryList.map(({ key, text }, i) => (
+          {firstRowCategoryList.map(({key, text}, i) => (
             <RoundCategory
               key={`category_${i}`}
               text={text}
               isSelect={category === key}
-              onPress={() => {
-                setCategory(key);
-                setPost({ ...post, category: key });
-                navigation.navigate('CategoryClub', { selectedCategory: text });
-              }}
+              onPress={() => handleCategoryPress(key, i)}
             />
           ))}
         </View>
         <View style={styles.container}>
-          {secondRowCategoryList.map(({ key, text }, i) => (
+          {secondRowCategoryList.map(({key, text}, i) => (
             <RoundCategory
               key={`category_${i}`}
               text={text}
               isSelect={category === key}
-              onPress={() => {
-                setCategory(key);
-                setPost({ ...post, category: key });
-                navigation.navigate('CategoryClub', { selectedCategory: text });
-              }}
+              onPress={() => handleCategoryPress(key, i + splitIndex)}
             />
           ))}
         </View>
       </Swiper>
+      {selectedCategoryIndex !== null && (
+        <View style={styles.selectedCategoryInfo}>
+          <Text>Selected Category Index: {selectedCategoryIndex}</Text>
+        </View>
+      )}
     </>
   );
 }
@@ -104,5 +109,9 @@ const styles = StyleSheet.create({
   },
   paginationRectActive: {
     backgroundColor: '#9BD23C',
+  },
+  selectedCategoryInfo: {
+    marginTop: 20,
+    alignItems: 'center',
   },
 });

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -9,6 +9,9 @@ import {
   Modal,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {RESTAPIBuilder} from '../utils/restapiBuilder';
+import {apiServer} from '../utils/metaData';
+import { Clipboard } from 'react-native';
 
 const ClubDetail = ({ route, navigation }) => {
   const { selectedCategory } = route.params;
@@ -18,14 +21,52 @@ const ClubDetail = ({ route, navigation }) => {
   const [isJoined, setIsJoined] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
+  const [isAdminMode, setIsAdminMode] = useState(false);
+  const [isMoreModalVisible, setIsMoreModalVisible] = useState(false);
+
+  const [currentParticipants, setCurrentParticipants] = useState(0);
+  const [maxParticipants, setMaxParticipants] = useState(5);
+
+  const [isRecruitmentComplete, setIsRecruitmentComplete] = useState(false);
+
+  const copyToClipboard = () => {
+    const clubURL = 'https://kiwes.com/club';
+    Clipboard.setString(clubURL);
+    alert('친구들과 함께 모임을 즐겨보세요!');
+  };
+
+  useEffect(() => {
+  }, [isJoined]);
+
   const toggleJoin = () => {
-    setIsJoined((prev) => !prev);
+    if (currentParticipants < maxParticipants && !isRecruitmentComplete) {
+      setIsJoined((prev) => !prev);
+  
+      if (!isJoined) {
+        setCurrentParticipants((prevCount) => prevCount + 1);
+  
+        setIsModalVisible(true);
+        setTimeout(() => {
+          setIsModalVisible(false);
+        }, 1500);
+      }
+    } else {
+      if (isRecruitmentComplete) {
+        alert('이미 참여 인원이 모두 찼습니다.');
+        setTimeout(() => {
+          setIsRecruitmentComplete(true);
+        }, 0);
+      }
+    }
+  };
+  
 
-    setIsModalVisible(true);
+  const toggleMode = () => {
+    setIsAdminMode((prev) => !prev);
+  };
 
-    setTimeout(() => {
-      setIsModalVisible(false);
-    }, 1500);
+  const toggleMoreModal = () => {
+    setIsMoreModalVisible((prev) => !prev);
   };
 
   const navigateToReviewPage = () => {
@@ -63,7 +104,8 @@ const ClubDetail = ({ route, navigation }) => {
 
   const clubDescription =
     '우리 모임은 재미있는 활동과 교류를 통해 다양한 사람들을 만나는 공간입니다. 우리 모임은 재미있는 활동과 교류를 통해 다양한 사람들을 만나는 공간입니다. 우리 모임은 재미있는 활동과 교류를 통해 다양한 사람들을 만나는 공간입니다. 우리 모임은 재미있는 활동과 교류를 통해 다양한 사람들을 만나는 공간입니다.';
-  const clubLocation = '상세 주소 예시';
+  const clubLocation = '홍대입구역';
+  const detailLocation = '서울 마포구 양화로 160';
 
   const clubData = {
     date: 'March 2',
@@ -74,6 +116,34 @@ const ClubDetail = ({ route, navigation }) => {
     cost: '15,000원',
     gender: '누구나',
     image: require('../../assets/images/clubDetailImage.png'),
+  };
+
+  const renderJoinButton = () => {
+    let buttonStyle, buttonText, onPressFunction;
+  
+    if (isRecruitmentComplete) {
+      buttonStyle = styles.cancelButton;
+      buttonText = '모집 마감';
+      onPressFunction = null;
+    } else if (isJoined) {
+      buttonStyle = styles.cancelButton;
+      buttonText = '참여 취소';
+      onPressFunction = toggleJoin;
+    } else if (currentParticipants < maxParticipants) {
+      buttonStyle = styles.joinButton;
+      buttonText = '참여하기';
+      onPressFunction = toggleJoin;
+    } else {
+      buttonStyle = styles.cancelButton;
+      buttonText = '이미 참여 인원이 모두 찼습니다.';
+      onPressFunction = null;
+    }
+  
+    return (
+      <TouchableOpacity style={buttonStyle} onPress={onPressFunction}>
+        <Text style={styles.buttonText}>{buttonText}</Text>
+      </TouchableOpacity>
+    );
   };
 
   const renderSection = (title, text) => (
@@ -96,15 +166,47 @@ const ClubDetail = ({ route, navigation }) => {
     </View>
   );
 
+  const renderMoreModal = () => (
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={isMoreModalVisible}>
+      <View style={styles.modalContainer}>
+        <View style={styles.moreModalContent}>
+          <TouchableOpacity onPress={() => null}>
+            <Text style={styles.moreModalText}>수정</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => null}>
+            <Text style={styles.moreModalText}>삭제</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={toggleMoreModal}>
+            <Text style={styles.moreModalText}>X</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </Modal>
+  );
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => { copyToClipboard(); }}>
           <Icon name="arrow-back" size={30} color="#303030" />
           <Image source={image.share} style={styles.share} />
-          <Image source={image.more} style={styles.more} />
+          {isAdminMode && (
+            <TouchableOpacity onPress={toggleMoreModal} style={styles.moreContainer}>
+              <Image source={image.more} style={styles.more} />
+            </TouchableOpacity>
+          )}
+          <TouchableOpacity onPress={toggleMode} style={styles.toggleButtonContainer}>
+            <Text style={styles.toggleButton}>
+              {isAdminMode ? 'User Mode' : 'Admin Mode'}
+            </Text>
+          </TouchableOpacity>
         </TouchableOpacity>
       </View>
+
+      {renderMoreModal()}
       <View style={styles.imageContent}>
         <Image source={clubData.image} style={styles.clubImage} />
       </View>
@@ -154,7 +256,7 @@ const ClubDetail = ({ route, navigation }) => {
               </View>
               <View style={styles.limitItem}>
                 <Text style={styles.limitText}>모집 인원</Text>
-                <Text style={styles.participantText}>5</Text>
+                <Text style={styles.participantText}>{maxParticipants}</Text>
               </View>
             </View>
           </View>
@@ -168,6 +270,7 @@ const ClubDetail = ({ route, navigation }) => {
         <View style={styles.locationContainer}>
           <Text style={styles.clubInfoTitle}>장소</Text>
           <Text style={styles.clubLocationText}>{clubLocation}</Text>
+          <Text style={styles.detailLocationText}>{detailLocation}</Text>
           <Image source={image.location} style={styles.locationImage} />
         </View>
 
@@ -209,8 +312,9 @@ const ClubDetail = ({ route, navigation }) => {
         visible={isModalVisible}>
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalText}><Text style={styles.green}>참여 신청</Text>이 완료되었습니다!</Text>
-
+            <Text style={styles.modalText}>
+              <Text style={styles.green}>참여 신청</Text>이 완료되었습니다!
+            </Text>
           </View>
         </View>
       </Modal>
@@ -395,15 +499,20 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   clubLocationText: {
-    color: '#D9D9D9',
-    fontSize: 14,
-    borderWidth: 1,
-    borderColor: '#303030',
-    borderRadius: 15,
-    padding: 15,
+    color: '#303030',
+    fontSize: 16,
+    fontWeight: 'bold',
     width: 326,
     marginBottom: 20,
-    marginLeft: 30,
+    marginLeft: 28,
+  },
+  detailLocationText: {
+    color: '#8A8A8A',
+    fontSize: 14,
+    width: 326,
+    marginBottom: 18,
+    marginLeft: 28,
+    marginTop: -15,
   },
   locationImage: {
     marginLeft: 30,
@@ -463,7 +572,7 @@ const styles = StyleSheet.create({
   cancelButton: {
     width: 110,
     height: 50,
-    backgroundColor: '#D3D3D3',
+    backgroundColor: '#AFAFAF',
     borderRadius: 25,
     alignItems: 'center',
     justifyContent: 'center',
@@ -485,7 +594,7 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     backgroundColor: 'white',
-    borderRadius: 60,
+    borderRadius: 20,
     width: 300,
     padding: 50,
     alignItems: 'center',
@@ -500,5 +609,38 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#58C047',
   },
+  toggleButtonContainer: {
+    marginLeft: 50, 
+    width: 100,
+    height: 30,
+    alignItems: 'center',
+    marginTop: -20,
+    borderRadius: 20,
+    backgroundColor: 'black',
+  },
+  moreContainer: {
+    marginLeft: 200,
+    width: 100,
+  },
+  more: {
+    marginTop: -25,
+  },
+  moreModalContent: {
+    backgroundColor: 'white',
+    borderRadius: 20,
+    width: 100,
+    padding: 10,
+    alignItems: 'center',
+    marginTop: 50,
+    marginLeft: 'auto',
+    marginRight: 10,
+  },
+  moreModalText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#303030',
+    marginVertical: 10,
+  },
 });
+
 export default ClubDetail;
