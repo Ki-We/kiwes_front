@@ -13,7 +13,7 @@ export default function ListComponent({
 }: any) {
   console.log('-----------item-------------');
   console.log(item);
-  const toggleLike = async (id) => {
+  const toggleLike = async id => {
     console.log('toggleLike called');
     const post = posts.find((post: any) => post.clubId === id);
     if (!post) {
@@ -71,7 +71,7 @@ export default function ListComponent({
           </View>
           <View style={styles.infoContainer}>
             <Icon name="map-outline" size={14} color={'#rgba(0, 0, 0, 0.7)'} />
-            <Text style={styles.info}>{item.locationsKeyword}</Text>
+            <Text style={styles.info}>{item.locationKeyword}</Text>
           </View>
           <View style={styles.infoContainer}>
             <Icon

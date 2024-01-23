@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {FunnelProps, StepProps} from '../../hooks/useFunnel';
 import PostLayout from './PostLayout';
 import SetupLang from './SetupLang';
@@ -11,6 +11,7 @@ import {apiServer} from '../../utils/metaData';
 import {RESTAPIBuilder} from '../../utils/restapiBuilder';
 import RNFS from 'react-native-fs';
 import {Buffer} from 'buffer';
+import {useFocusEffect} from '@react-navigation/native';
 
 export interface ProfileSetupInterface {
   navigation: any;
@@ -27,7 +28,7 @@ const PostClubStep = ({
   Funnel,
   Step,
 }: ProfileSetupInterface) => {
-  const [post, setPost] = useState({
+  const initPost = {
     category: '',
     content: '',
     cost: -1,
@@ -36,11 +37,14 @@ const PostClubStep = ({
     gender: '남자만',
     languages: [],
     location: '',
-    locationsKeyword: '',
+    locationKeyword: '',
+    latitude: 0,
+    longitude: 0,
     maxPeople: 0,
     title: '',
     imageSource: '',
-  });
+  };
+  const [post, setPost] = useState(initPost);
 
   const postClub = async () => {
     const url = `${apiServer}/api/v1/club/article`;
@@ -91,6 +95,14 @@ const PostClubStep = ({
     }
   };
 
+  useFocusEffect(
+    useCallback(() => {
+      return () => {
+        nextClickHandler('언어');
+        setPost(initPost);
+      };
+    }, []),
+  );
   return (
     <PostLayout>
       <Funnel>

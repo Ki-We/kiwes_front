@@ -59,3 +59,10 @@ export interface Alarm {
   imageUrl: string;
   noticeId: string;
 }
+
+export interface LocationType {
+  name: string;
+  address: string;
+  latitude: number;
+  longitude: number;
+}
