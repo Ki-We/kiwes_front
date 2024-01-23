@@ -22,6 +22,7 @@ const BoardList = ({url, navigateToClub, Nothing}: any) => {
 
   const fetchAndSetData = async () => {
     const newData = await fetchData(cursor);
+    console.log('boardList data : ', newData);
     if (newData && newData.length > 0) {
       setPosts(prevPosts => {
         const updatedPosts = prevPosts.map(prevPost => {

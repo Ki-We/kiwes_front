@@ -76,17 +76,6 @@ const ClubDetail = ({ route, navigation }) => {
     navigation.navigate('QnAPage',{clubId: selectedCategory});
   };
 
-  const renderJoinButton = () => {
-    const buttonStyle = isJoined ? styles.cancelButton : styles.joinButton;
-    const buttonText = isJoined ? '참여 취소' : '참여하기';
-
-    return (
-      <TouchableOpacity style={buttonStyle} onPress={toggleJoin}>
-        <Text style={styles.buttonText}>{buttonText}</Text>
-      </TouchableOpacity>
-    );
-  };
-
   const toggleLike = () => {
     setIsLiked((prev) => !prev);
     setLikeCount((prevCount) => (isLiked ? prevCount - 1 : prevCount + 1));
