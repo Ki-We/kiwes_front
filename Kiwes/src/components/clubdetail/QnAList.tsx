@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import {RESTAPIBuilder} from '../../utils/restapiBuilder';
 import {height} from '../../global';
-import {ReviewDetail} from '../../utils/commonInterface';
+import {QnADetail} from '../../utils/commonInterface';
 import {apiServer} from '../../utils/metaData';
 import sendIcon from 'react-native-vector-icons/Feather';
 import {useFocusEffect} from '@react-navigation/native';
@@ -20,11 +20,10 @@ import NothingShow from '../NothingShow';
 import {ScrollView} from 'react-native-gesture-handler';
 import ReivewErrorModal from './ReivewErrorModal';
 
-const ReviewList = ({clubId}: any) => {
-  const url = `${apiServer}/api/v1/review/entire/${clubId}?cursor=`;
-  const [reviews, setReviews] = useState<ReviewDetail[]>([]);
-  const [sending, setSending] = useState('REVIEW');
-  const [reviewId, setReviewId] = useState('');
+const QnAList = ({clubId}: any) => {
+  const [qnas, setQnas] = useState<QnADetail[]>([]);
+  const [sending, setSending] = useState('REGISTER');
+  const [qnaId, setQnaId] = useState('');
   const [cursor, setCursor] = useState(0);
   const [isMore, setIsMore] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
@@ -40,25 +39,20 @@ const ReviewList = ({clubId}: any) => {
   const fetchAndSetData = async () => {
     const newData = await fetchData(cursor);
     if (newData && newData.length > 0) {
-      setReviews(prevReviews => {
-        const updatedReviews = prevReviews.map(prevReviews => {
-          const newReview = newData.find(
-            ({reviewId}) => reviewId === prevReviews.reviewId,
-          );
-          if (newReview) {
-            return JSON.stringify(newReview) !== JSON.stringify(prevReviews)
-              ? newReview
-              : prevReviews;
+      setQnas(prevQnas => {
+        const updatedQnas = prevQnas.map(prevQnas => {
+          const newQna = newData.find(({qnaId}) => qnaId === prevQnas.qnaId);
+          if (newQna) {
+            return JSON.stringify(newQna) !== JSON.stringify(prevQnas)
+              ? newQna
+              : prevQnas;
           }
-          return prevReviews;
+          return prevQnas;
         });
-        const newReviewsWithoutDuplicates = newData.filter(
-          newReview =>
-            !prevReviews.some(
-              prevReviews => prevReviews.reviewId === newReview.reviewId,
-            ),
+        const newQnasWithoutDuplicates = newData.filter(
+          newQna => !prevQnas.some(prevQnas => prevQnas.qnaId === newQna.qnaId),
         );
-        return [...updatedReviews, ...newReviewsWithoutDuplicates];
+        return [...updatedQnas, ...newQnasWithoutDuplicates];
       });
     } else {
       setIsMore(false);
@@ -67,12 +61,13 @@ const ReviewList = ({clubId}: any) => {
 
   const fetchData = async (num: number) => {
     try {
+      const url = `${apiServer}/api/v1/qna/entire/${clubId}?cursor=`;
       const response = await new RESTAPIBuilder(url + num, 'GET')
         .setNeedToken(true)
         .build()
         .run();
       setIsHost(response.data.isHost);
-      return response.data.reviews;
+      return response.data.qnas;
     } catch (err) {
       console.log(err);
       return [];
@@ -86,19 +81,19 @@ const ReviewList = ({clubId}: any) => {
   useFocusEffect(
     useCallback(() => {
       setInputText('');
-      setReviewId('');
-      setSending('REVIEW');
+      setQnaId('');
+      setSending('REGISTER');
       return () => {};
     }, []),
   );
 
-  const modify = async reviewId => {
+  const modify = async qnaId => {
     console.log('수정');
-    console.log(reviewId);
     const content = {content: inputText};
-    const urlModify = `${apiServer}/api/v1/review/${clubId}/${reviewId}`;
+    const urlModify = `${apiServer}/api/v1/qna/${clubId}/${qnaId}`;
+    console.log(urlModify);
     try {
-      await new RESTAPIBuilder(urlModify, 'put')
+      await new RESTAPIBuilder(urlModify, 'PUT')
         .setNeedToken(true)
         .setBody(content)
         .build()
@@ -112,34 +107,37 @@ const ReviewList = ({clubId}: any) => {
     }
   };
 
-  const deleteReview = async reviewId => {
+  const deleteQuestion = async qnaId => {
     console.log('삭제');
-    const urlDelete = `${apiServer}/api/v1/review/${clubId}/${reviewId}`;
+    const urlDelete = `${apiServer}/api/v1/qna/question/${clubId}/${qnaId}`;
+    console.log(urlDelete);
     try {
       await new RESTAPIBuilder(urlDelete, 'DELETE')
         .setNeedToken(true)
         .build()
         .run();
-      const newReviews = reviews.filter(review => review.reviewId !== reviewId);
-      setReviews(newReviews);
+      const updatedAnswer = qnas.map(qna =>
+        qna.qnaId === qnaId ? {...qna, isAuthorOfAnswer: false} : qna,
+      );
+      setQnas(updatedAnswer);
     } catch (err) {
       console.log(err);
       return [];
     }
   };
 
-  const deleteReply = async reviewId => {
+  const deleteAnswer = async qnaId => {
     console.log('삭제');
-    const urlDelete = `${apiServer}/api/v1/review/${reviewId}`;
+    const urlDelete = `${apiServer}/api/v1/qna/answer/${clubId}/${qnaId}`;
     try {
       await new RESTAPIBuilder(urlDelete, 'DELETE')
         .setNeedToken(true)
         .build()
         .run();
-      const updatedReviews = reviews.map(review =>
-        review.reviewId === reviewId ? {...review, respondentId: null} : review,
+      const updatedAnswer = qnas.map(qna =>
+        qna.qnaId === qnaId ? {...qna, qnaId: null} : qna,
       );
-      setReviews(updatedReviews);
+      setQnas(updatedAnswer);
     } catch (err) {
       console.log(err);
       return [];
@@ -147,11 +145,11 @@ const ReviewList = ({clubId}: any) => {
   };
 
   const register = async () => {
-    console.log('review');
+    console.log('register');
     const content = {content: inputText};
-    const urlreView = `${apiServer}/api/v1/review/${clubId}`;
+    const urlreRegister = `${apiServer}/api/v1/qna/question/${clubId}`;
     try {
-      await new RESTAPIBuilder(urlreView, 'POST')
+      await new RESTAPIBuilder(urlreRegister, 'POST')
         .setNeedToken(true)
         .setBody(content)
         .build()
@@ -159,7 +157,7 @@ const ReviewList = ({clubId}: any) => {
       setCursor(0);
       setIsMore(true);
       setInputText('');
-      setSending('REVIEW');
+      setSending('REGISTER');
       fetchAndSetData();
     } catch (err) {
       setModalVisible(true);
@@ -167,13 +165,13 @@ const ReviewList = ({clubId}: any) => {
     }
   };
 
-  const reply = async reviewId => {
-    console.log('replyReview');
+  const reply = async qnaId => {
+    console.log('reply');
     console.log(inputText);
     const content = {content: inputText};
-    const urlReply = `${apiServer}/api/v1/review/reply/${clubId}/${reviewId}`;
+    const urlreply = `${apiServer}/api/v1/qna/answer/${clubId}/${qnaId}`;
     try {
-      await new RESTAPIBuilder(urlReply, 'POST')
+      await new RESTAPIBuilder(urlreply, 'POST')
         .setNeedToken(true)
         .setBody(content)
         .build()
@@ -181,7 +179,7 @@ const ReviewList = ({clubId}: any) => {
       setCursor(0);
       setIsMore(true);
       setInputText('');
-      setSending('REVIEW');
+      setSending('REGISTER');
       fetchAndSetData();
     } catch (err) {
       console.log(err);
@@ -197,8 +195,7 @@ const ReviewList = ({clubId}: any) => {
         </ScrollView>
       ) : (
         <FlatList
-          data={reviews}
-          // keyExtractor={item => item.reviewId}
+          data={qnas}
           style={styles.qaContainer}
           onScroll={event => {
             if (isMore) {
@@ -218,40 +215,45 @@ const ReviewList = ({clubId}: any) => {
             <View>
               <View style={styles.qaItem}>
                 <Image
-                  source={{uri: item.reviewerProfileImg}}
+                  source={{uri: item.questionerProfileImg}}
                   style={styles.qaProfileImage}
                 />
                 <View style={styles.qaContent}>
-                  <Text style={styles.qaNickname}>{item.reviewerNickname}</Text>
-                  <Text style={styles.qaText}>{item.reviewContent}</Text>
+                  <Text style={styles.qaNickname}>
+                    {item.questionerNickname}
+                  </Text>
+                  <Text style={styles.qaText}>{item.questionContent}</Text>
                   <View style={styles.buttonContainer}>
                     <Text style={styles.qaDateTime}>
-                      {item.isModified ? '수정됨 ' : ''}
-                      {item.reviewDate}
+                      {item.isModified && item.isDeleted === 'NO'
+                        ? '수정됨 '
+                        : ''}
+                      {item.qdate}
                     </Text>
-                    {item.isAuthorOfReview ? (
+                    {item.isAuthorOfQuestion && item.isDeleted === 'NO' ? (
                       <View style={styles.buttonContainer}>
                         <TouchableOpacity
                           style={styles.button}
                           onPress={() => {
-                            setReviewId(item.reviewId);
+                            console.log(item.isDeleted);
+                            setQnaId(item.qnaId);
                             setSending('MODIFY');
-                            setInputText(item.reviewContent);
+                            setInputText(item.questionContent);
                             inputRef.current.focus();
                           }}>
                           <Text style={styles.buttonText}>수정</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                           onPress={() => {
-                            deleteReview(item.reviewId);
+                            deleteQuestion(item.qnaId);
                           }}>
                           <Text style={styles.buttonText}>삭제</Text>
                         </TouchableOpacity>
                       </View>
-                    ) : isHost && !item.respondentId ? (
+                    ) : isHost && item.isAnswered === 'NO' ? (
                       <TouchableOpacity
                         onPress={() => {
-                          setReviewId(item.reviewId);
+                          setQnaId(item.qnaId);
                           setSending('REPLY');
                           setInputText('');
                           inputRef.current.focus();
@@ -264,7 +266,7 @@ const ReviewList = ({clubId}: any) => {
                   </View>
                 </View>
               </View>
-              {item.respondentId ? (
+              {item.isAnswered === 'YES' ? (
                 <View style={styles.replyItem}>
                   <Image
                     source={{uri: item.respondentProfileImg}}
@@ -274,27 +276,27 @@ const ReviewList = ({clubId}: any) => {
                     <Text style={styles.qaNickname}>
                       {item.respondentNickname}
                     </Text>
-                    <Text style={styles.qaText}>{item.replyContent}</Text>
+                    <Text style={styles.qaText}>{item.answerContent}</Text>
                     <View style={styles.buttonContainer}>
                       <Text style={styles.qaDateTime}>
                         {item.isModified ? '수정됨 ' : ''}
-                        {item.reviewDate}
+                        {item.adate}
                       </Text>
-                      {item.isAuthorOfReply ? (
+                      {item.isAuthorOfAnswer ? (
                         <View style={styles.buttonContainer}>
                           <TouchableOpacity
                             style={styles.button}
                             onPress={() => {
-                              setReviewId(item.reviewId);
+                              setQnaId(item.qnaId);
                               setSending('REPLY');
-                              setInputText(item.reviewContent);
+                              setInputText(item.answerContent);
                               inputRef.current.focus();
                             }}>
                             <Text style={styles.buttonText}>수정</Text>
                           </TouchableOpacity>
                           <TouchableOpacity
                             onPress={() => {
-                              deleteReply(item.reviewId);
+                              deleteAnswer(item.qnaId);
                             }}>
                             <Text style={styles.buttonText}>삭제</Text>
                           </TouchableOpacity>
@@ -338,15 +340,15 @@ const ReviewList = ({clubId}: any) => {
             color="#8A8A8A"
             size={height * 30}
             onPress={() => {
-              if (sending === 'REVIEW') {
+              if (sending === 'REGISTER') {
                 register();
               } else if (sending === 'MODIFY') {
-                modify(reviewId);
+                modify(qnaId);
               } else if (sending === 'REPLY') {
-                reply(reviewId);
+                reply(qnaId);
               }
-              setReviewId('');
-              setSending('REVIEW');
+              setQnaId('');
+              setSending('REGISTER');
               setInputText('');
             }}
           />
@@ -450,4 +452,4 @@ const styleKiwe = StyleSheet.create({
     margin: 10,
   },
 });
-export default ReviewList;
+export default QnAList;

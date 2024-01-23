@@ -75,3 +75,21 @@ export interface ReviewDetail {
   reviewerNickname: string;
   reviewerProfileImg: string;
 }
+export interface QnADetail {
+  adate: string;
+  answerContent: string;
+  isAuthorOfAnswer: boolean;
+  isAuthorOfQuestion: boolean;
+  isModified: boolean;
+  qdate: string;
+  qnaId: string;
+  questionContent: string;
+  questionerId: string;
+  questionerNickname: string;
+  questionerProfileImg: string;
+  respondentId: string;
+  respondentNickname: string;
+  respondentProfileImg: string;
+  isDeleted: string;
+  isAnswered: string;
+}
