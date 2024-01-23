@@ -5,17 +5,41 @@ import DatePicker from 'react-native-date-picker';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCalendar} from '@fortawesome/free-regular-svg-icons';
 import {faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons';
-import MapView, {Marker} from 'react-native-maps';
-import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
-import { GOOGLE_API_KEY } from '../../utils/googleConfig';
+// import MapView, { PROVIDER_GOOGLE} from 'react-native-maps';
+import {FlatList, TextInput} from 'react-native-gesture-handler';
+import {GOOGLE_WEB_API_KIEY} from '../../utils/googleConfig';
+import {RESTAPIBuilder} from '../../utils/restapiBuilder';
+import {LocationType} from '../../utils/commonInterface';
 
 export default function SetupDetail1({post, setPost}: any) {
   const [date, setDate] = useState(post.date);
   const [open1, setOpen1] = useState(false);
   const [dueTo, setDueTo] = useState(post.dueTo);
   const [open2, setOpen2] = useState(false);
-  const [location, setLocation] = useState({lat: 0, lng: 0});
+  const [search, setSearch] = useState('');
+  const [searchResult, setSearchResult] = useState<LocationType[]>([]);
 
+  const searchLocation = async () => {
+    const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${search}&language=ko&key=${GOOGLE_WEB_API_KIEY}`;
+    const {results}: any = await new RESTAPIBuilder(url, 'GET')
+      .build()
+      .run()
+      .catch(err => {
+        console.log('search location err : ', err);
+        return;
+      });
+
+    const result = results.map((r: any) => {
+      return {
+        address: r.formatted_address,
+        latitude: r.geometry.location.lat,
+        longitude: r.geometry.location.lng,
+        name: r.name,
+      };
+    });
+
+    setSearchResult(result);
+  };
   return (
     <>
       <View style={styles.container}>
@@ -75,70 +99,88 @@ export default function SetupDetail1({post, setPost}: any) {
         />
 
         <Text style={styles.text}>장소</Text>
+        {/* <MapView
+          provider={PROVIDER_GOOGLE}
+          style={styles.map}
+          initialRegion={{
+            latitude: 37.7749,
+            longitude: -122.4194,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }}
+        /> */}
+
         <View style={styles.inputContainer}>
-          <GooglePlacesAutocomplete
-            styles={{
-              textInput: {
-                backgroundColor: '#F7F7F7', // 이 부분에 원하는 색상을 입력하세요.
-              },
-            }}
-            placeholder="모임 장소를 검색해주세요"
-            minLength={2}
-            keyboardShouldPersistTaps={'handled'}
-            fetchDetails={false}
-            onFail={error => console.log(error)}
-            onNotFound={() => console.log('no results')}
-            keepResultsAfterBlur={true}
-            enablePoweredByContainer={false}
-            onPress={(data, details = null) => {
-              setPost({...post, locationsKeyword: data});
-              setLocation({
-                lat: details?.geometry.location.lat || 0,
-                lng: details?.geometry.location.lng || 0,
-              });
-            }}
-            query={{
-              key: GOOGLE_API_KEY,
-              language: 'en',
-            }}
-          />
-          {/* <TextInput
+          <TextInput
+            value={search}
             style={styles.input}
             placeholderTextColor={'#8A8A8A'}
             placeholder="모임 장소를 검색해주세요"
             onChangeText={text => {
-              setPost({...post, locationsKeyword: text});
+              setSearch(text);
+              // setPost({...post, locationKeyword: text});
             }}
-          /> */}
-          <View style={styles.iconContainer}>
+            onSubmitEditing={searchLocation}
+            returnKeyType="search"
+          />
+          <Pressable style={styles.iconContainer} onPress={searchLocation}>
             <FontAwesomeIcon icon={faMagnifyingGlass} />
+          </Pressable>
+        </View>
+        {searchResult.length > 0 && (
+          <View style={styles_location.container}>
+            <FlatList
+              data={searchResult}
+              renderItem={({item}) => (
+                <Pressable
+                  style={styles_location.content}
+                  onPress={() => {
+                    setPost({
+                      ...post,
+                      location: item.address,
+                      locationKeyword: item.name,
+                      latitude: item.latitude,
+                      longitude: item.longitude,
+                    });
+                    setSearch(item.name);
+                    setSearchResult([]);
+                  }}>
+                  <Text style={styles_location.name}>{item.name}</Text>
+                  <Text style={styles_location.address}>{item.address}</Text>
+                </Pressable>
+              )}
+              ItemSeparatorComponent={() => (
+                <View style={{height: height * 10}}></View>
+              )}
+              numColumns={1}
+            />
           </View>
-        </View>
-        <View>
-          <MapView
-            style={styles.map}
-            initialRegion={{
-              latitude: 37.7749,
-              longitude: -122.4194,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
-            }}>
-            {location && (
-              <Marker
-                coordinate={{
-                  latitude: location.lat,
-                  longitude: location.lng,
-                }}
-                title="Selected Location"
-              />
-            )}
-          </MapView>
-        </View>
+        )}
       </View>
     </>
   );
 }
 
+const styles_location = StyleSheet.create({
+  container: {
+    height: height * 150,
+    marginLeft: width * 5,
+  },
+  content: {
+    flex: 1,
+  },
+  address: {
+    fontSize: 13,
+    color: '#303030',
+    marginBottom: 5,
+  },
+  name: {
+    fontSize: 14,
+    color: '#303030',
+    fontWeight: 'bold',
+    marginBottom: 3,
+  },
+});
 const styles = StyleSheet.create({
   container: {
     margin: width * 20,
@@ -181,8 +223,11 @@ const styles = StyleSheet.create({
   iconContainer: {
     marginRight: width * 5,
   },
-  map: {
-    flex: 1,
-    height: height * 150,
+  searhText: {
+    marginLeft: width * 3,
   },
+  // map: {
+  //   flex: 1,
+  //   height: height * 150,
+  // },
 });

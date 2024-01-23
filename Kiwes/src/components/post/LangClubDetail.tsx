@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import RoundBtn from '../atoms/roundBtn';
-import { StyleSheet, View } from 'react-native';
-import { height, width } from '../../global';
-import { langList } from '../../utils/utils';
+import {StyleSheet, View} from 'react-native';
+import {height, width} from '../../global';
+import {langList} from '../../utils/utils';
 import Swiper from 'react-native-swiper';
 
-export default function LangClubDetail({ post, setPost, navigation }: any) {
-  const [selectedLang, setSelectedLang] = useState<String[]>(post?.languages || []);
+export default function LangClubDetail({post, setPost, navigation}: any) {
+  const [selectedLang, setSelectedLang] = useState<String[]>(
+    post?.languages || [],
+  );
 
   const checkLang = () => {
     if (selectedLang.length >= 1) return false;
@@ -19,12 +21,12 @@ export default function LangClubDetail({ post, setPost, navigation }: any) {
         return item !== lang;
       });
       setSelectedLang(s);
-      setPost({ ...post, languages: s });
+      setPost({...post, languages: s});
       return;
     }
     if (checkLang()) {
       setSelectedLang([...selectedLang, lang]);
-      setPost({ ...post, languages: [...selectedLang, lang] });
+      setPost({...post, languages: [...selectedLang, lang]});
     }
   };
 
@@ -60,27 +62,27 @@ export default function LangClubDetail({ post, setPost, navigation }: any) {
         style={styles.swiper}
         renderPagination={renderPaginationRect}>
         <View style={styles.container}>
-          {firstRowLangList.map(({ key, text }, i) => (
+          {firstRowLangList.map(({key, text}, i) => (
             <RoundBtn
               key={`lang_${i}`}
               text={text}
               isSelect={selectedLang.includes(key)}
               onPress={() => {
                 onPressEvent(key);
-                navigation.navigate('CategoryClub', { selectedLang: text });
+                navigation.navigate('CategoryClub', {selectedLang: text});
               }}
             />
           ))}
         </View>
         <View style={styles.container}>
-          {secondRowLangList.map(({ key, text }, i) => (
+          {secondRowLangList.map(({key, text}, i) => (
             <RoundBtn
               key={`lang_${i}`}
               text={text}
               isSelect={selectedLang.includes(key)}
               onPress={() => {
                 onPressEvent(key);
-                navigation.navigate('CategoryClub', { selectedLang: text });
+                navigation.navigate('CategoryClub', {selectedLang: text});
               }}
             />
           ))}

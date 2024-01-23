@@ -6,3 +6,5 @@ export const GOOGLE_WEB_CLIENT_SECRET = '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';
 export const GOOGLE_REDIRECT_URI =
   'https://api.kiwes.org/login/oauth2/code/google';
 export const GOOGLE_API_KEY = 'AIzaSyBlRgYCAJwXVcFYQ2HVG1C0jBFCwwX3BDA';
+
+export const GOOGLE_WEB_API_KIEY = 'AIzaSyCT7G8k8wXvjRguAiNpJHaC8edn8QU8iC8';

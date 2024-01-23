@@ -7,7 +7,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import BoardList from '../components/BoardList';
 import {useEffect, useState} from 'react';
 import InitSearch from '../components/search/initSerch';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, Keyboard, Pressable, StyleSheet, Text, View} from 'react-native';
 import {width} from '../global';
 import ListComponent from '../components/atoms/ListComponent';
 
@@ -79,7 +79,11 @@ export default function Search({navigation}: any) {
   };
 
   return (
-    <>
+    <Pressable
+      style={{flex: 1}}
+      onPress={() => {
+        Keyboard.dismiss();
+      }}>
       <SearchHeader navigation={navigation} doSearch={doSearch} />
       {init ? (
         <InitSearch doSearch={doSearch} navigateToClub={navigateToClub} />
@@ -92,7 +96,7 @@ export default function Search({navigation}: any) {
           />
         </SafeAreaView>
       )}
-    </>
+    </Pressable>
   );
 }
 const styles = StyleSheet.create({

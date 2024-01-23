@@ -3,6 +3,7 @@ import RoundBtn from '../atoms/roundBtn';
 import {StyleSheet, Text, View} from 'react-native';
 import {height, width} from '../../global';
 import {langList} from '../../utils/utils';
+import {FlatList} from 'react-native-gesture-handler';
 
 export default function SetupLang({post, setPost}: any) {
   const [selectedLang, setSelectedLang] = useState<String[]>(post.languages);
@@ -32,16 +33,21 @@ export default function SetupLang({post, setPost}: any) {
         </Text>
       </View>
       <View style={styles.container}>
-        {langList.map(({key, text}, i) => (
-          <RoundBtn
-            key={`lang_${i}`}
-            text={text}
-            isSelect={selectedLang.includes(key)}
-            onPress={() => {
-              onPressEvent(key);
-            }}
-          />
-        ))}
+        <FlatList
+          data={langList}
+          renderItem={({item}) => (
+            <View style={{marginLeft: width * 5, marginRight: width * 5}}>
+              <RoundBtn
+                text={item.text}
+                isSelect={selectedLang.includes(item.key)}
+                onPress={() => {
+                  onPressEvent(item.key);
+                }}
+              />
+            </View>
+          )}
+          numColumns={3}
+        />
       </View>
     </>
   );
@@ -49,10 +55,9 @@ export default function SetupLang({post, setPost}: any) {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    margin: width * 20,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   text: {
     marginLeft: width * 20,
