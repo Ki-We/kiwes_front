@@ -18,6 +18,7 @@ export default function PostClub({navigation}: any) {
     <>
       <Header navigatePop={navigatePop} title={'모임 개설'} />
       <PostClubStep
+        navigation={navigation}
         steps={steps}
         nextClickHandler={nextClickHandler}
         Funnel={Funnel}

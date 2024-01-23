@@ -9,8 +9,11 @@ import SetupDetail2 from './SetupDetail2';
 import SetupDetail3 from './SetupDetail3';
 import {apiServer} from '../../utils/metaData';
 import {RESTAPIBuilder} from '../../utils/restapiBuilder';
+import RNFS from 'react-native-fs';
+import {Buffer} from 'buffer';
 
 export interface ProfileSetupInterface {
+  navigation: any;
   steps: string[];
   nextClickHandler: (nextStep: string) => void;
   Funnel: React.ComponentType<FunnelProps>;
@@ -18,6 +21,7 @@ export interface ProfileSetupInterface {
 }
 
 const PostClubStep = ({
+  navigation,
   steps,
   nextClickHandler,
   Funnel,
@@ -35,26 +39,56 @@ const PostClubStep = ({
     locationsKeyword: '',
     maxPeople: 0,
     title: '',
+    imageSource: '',
   });
 
-  useEffect(() => {
-    console.log(post);
-  }, [post]);
-
-  const postClub = () => {
+  const postClub = async () => {
     const url = `${apiServer}/api/v1/club/article`;
-    new RESTAPIBuilder(url, 'POST')
+    const {data} = await new RESTAPIBuilder(url, 'POST')
       .setNeedToken(true)
       .setBody(post)
       .build()
       .run()
-      .then(({data}) => {
-        console.log(data);
-        console.log('등록 완료');
-      })
       .catch(err => {
-        console.log('err : ', err);
+        console.log('post club err1 : ', err);
       });
+
+    console.log(`${data.clubId} 모임 개설 완료`);
+    await uploadClubImage(data.clubId).catch(err => {
+      console.log('post club err2 : ', err);
+    });
+    console.log(`${data.clubId} 모임 이미지 업로드 완료`);
+    navigation.navigate('ClubDetail', {selectedCategory: data.clubId});
+  };
+  const uploadClubImage = async (clubId: number) => {
+    if (!post.imageSource || typeof post.imageSource === 'number') {
+      throw new Error('이미지를 선택해주세요');
+    }
+    // const url = `${apiServer}/mypage/profileImg`;
+    const url = `${apiServer}/api/v1/club/article/presigned-url?clubId=${clubId}`;
+    const presignedResponse = await new RESTAPIBuilder(url, 'GET')
+      .setNeedToken(true)
+      .build()
+      .run()
+      .catch(err => {
+        console.log('post club err3 : ', err);
+      });
+    const presignedUrl = presignedResponse.data;
+    const imageData = await RNFS.readFile(post.imageSource, 'base64');
+    const binaryData = new Buffer(imageData, 'base64');
+
+    const uploadResponse = await fetch(presignedUrl, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'image/jpeg',
+      },
+      body: binaryData,
+    });
+    console.log(uploadResponse);
+    if (!uploadResponse.ok) {
+      const errorMessage = await uploadResponse.text();
+      console.log('post club err4 : ', errorMessage);
+    }
   };
 
   return (

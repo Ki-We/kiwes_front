@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useEffect, useState} from 'react';
-import {StyleSheet, View, Text, Pressable} from 'react-native';
+import {StyleSheet, View, Text, Pressable, Keyboard} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import SearchBtn from './searchBtn';
 import {height, width} from '../../global';
@@ -36,7 +36,10 @@ export default function InitSearch({doSearch}: any) {
     getPopular();
   }, []);
   return (
-    <>
+    <Pressable
+      onPress={() => {
+        Keyboard.dismiss();
+      }}>
       <View style={styles.conatiner}>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>최근 검색어</Text>
@@ -84,7 +87,7 @@ export default function InitSearch({doSearch}: any) {
           </View>
         </View>
       </View>
-    </>
+    </Pressable>
   );
 }
 const styles = StyleSheet.create({

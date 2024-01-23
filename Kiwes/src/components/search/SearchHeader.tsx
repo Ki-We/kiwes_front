@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, Pressable} from 'react-native';
 import backIcon from 'react-native-vector-icons/Ionicons';
 import {width, height} from '../../global';
 import {TextInput} from 'react-native-gesture-handler';
@@ -30,9 +30,11 @@ export default function SearchHeader({navigation, doSearch}: any) {
             onSubmitEditing={() => doSearch(search)}
             returnKeyType="search"
           />
-          <View style={styles.iconContainer}>
+          <Pressable
+            style={styles.iconContainer}
+            onPress={() => doSearch(search)}>
             <FontAwesomeIcon icon={faMagnifyingGlass} />
-          </View>
+          </Pressable>
         </View>
       </View>
     </>
