@@ -59,3 +59,10 @@ export interface Alarm {
   imageUrl: string;
   noticeId: string;
 }
+
+export interface Banner {
+  type: string;
+  imageUrl: string;
+  url: string;
+  id: number;
+}

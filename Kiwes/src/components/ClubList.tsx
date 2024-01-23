@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   FlatList,
@@ -7,35 +7,33 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
-import {RESTAPIBuilder} from '../utils/restapiBuilder';
-import {apiServer} from '../utils/metaData';
-import {BoardPost} from '../utils/commonInterface';
-import {languageMap} from '../utils/languageMap';
+import { RESTAPIBuilder } from '../utils/restapiBuilder';
+import { apiServer } from '../utils/metaData';
+import { BoardPost } from '../utils/commonInterface';
+import { languageMap } from '../utils/languageMap';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {useFocusEffect} from '@react-navigation/native';
-import {height} from '../global';
+import { useFocusEffect } from '@react-navigation/native';
+import { height } from '../global';
 
-const calculateScrollPosition = (offset, contentHeight, viewportHeight) => {
-  return Math.floor((offset / (contentHeight - viewportHeight)) * height * 10);
-};
-
-const ClubList = ({url, data, navigateToClub}: any) => {
+const ClubList = ({ url, data, navigateToClub }: any) => {
   const [posts, setPosts] = useState<BoardPost[]>(data || []);
   const [cursor, setCursor] = useState(0);
   const [isMore, setIsMore] = useState(true);
+
   const setData = async () => {
     if (url === '' || posts.length === 0) {
       return;
     }
     setPosts(await fetchData(0));
   };
+
   const fetchAndSetData = async () => {
     const newData = await fetchData(cursor);
     if (newData && newData.length > 0) {
-      setPosts(prevPosts => {
+      setPosts((prevPosts) => {
         const newPostsWithoutDuplicates = newData.filter(
-          newPost =>
-            !prevPosts.some(prevPost => prevPost.clubId === newPost.clubId),
+          (newPost) =>
+            !prevPosts.some((prevPost) => prevPost.clubId === newPost.clubId)
         );
         return [...prevPosts, ...newPostsWithoutDuplicates];
       });
@@ -43,13 +41,13 @@ const ClubList = ({url, data, navigateToClub}: any) => {
       setIsMore(false);
     }
   };
+
   useEffect(() => {
     fetchAndSetData();
   }, [cursor]);
 
   const fetchData = async (num: number) => {
     try {
-      console.log(url + cursor);
       const response = await new RESTAPIBuilder(url + num, 'GET')
         .setNeedToken(true)
         .build()
@@ -60,31 +58,33 @@ const ClubList = ({url, data, navigateToClub}: any) => {
       return [];
     }
   };
+
   useFocusEffect(
-    useCallback(() => {
+    React.useCallback(() => {
       setData();
       return () => {};
-    }, []),
+    }, [])
   );
 
   const toggleLike = async (id: String) => {
-    const post = posts.find(post => post.clubId === id);
+    const post = posts.find((post) => post.clubId === id);
     if (!post) {
       return;
     }
 
-    const updatedPosts = posts.map(post =>
+    const updatedPosts = posts.map((post) =>
       post.clubId === id
-        ? {...post, isHeart: post.isHeart === 'YES' ? 'NO' : 'YES'}
-        : post,
+        ? { ...post, isHeart: post.isHeart === 'YES' ? 'NO' : 'YES' }
+        : post
     );
     setPosts(updatedPosts);
+
     try {
-      const updatedPost = updatedPosts.find(post => post.clubId === id);
-      const apiUrl = `${apiServer}/api/v1/heart/${id}`;
+      const updatedPost = updatedPosts.find((post) => post.clubId === id);
+      const apiUrl = `${apiServer}/api/v1/club/category/1`;
       await new RESTAPIBuilder(
         apiUrl,
-        updatedPost.isHeart === 'YES' ? 'PUT' : 'DELETE',
+        updatedPost.isHeart === 'YES' ? 'PUT' : 'DELETE'
       )
         .setNeedToken(true)
         .build()
@@ -92,9 +92,9 @@ const ClubList = ({url, data, navigateToClub}: any) => {
     } catch (err) {
       console.error(err);
       setPosts(
-        posts.map(post =>
-          post.clubId === id ? {...post, heart: post.isHeart} : post,
-        ),
+        posts.map((post) =>
+          post.clubId === id ? { ...post, heart: post.isHeart } : post
+        )
       );
     }
   };
@@ -103,25 +103,35 @@ const ClubList = ({url, data, navigateToClub}: any) => {
     <>
       <FlatList
         data={posts}
-        keyExtractor={item => item.clubId}
-        style={{flex: 1}}
-        onScroll={event => {
+        keyExtractor={(item) => item.clubId}
+        style={{ flex: 1 }}
+        onScroll={(event) => {
           if (isMore) {
-            const { contentSize, layoutMeasurement, contentOffset } = event.nativeEvent;
-            const newScrollPosition = calculateScrollPosition(contentOffset.y, contentSize.height, layoutMeasurement.height);
+            const {
+              contentSize,
+              layoutMeasurement,
+              contentOffset,
+            } = event.nativeEvent;
+            const newScrollPosition = calculateScrollPosition(
+              contentOffset.y,
+              contentSize.height,
+              layoutMeasurement.height
+            );
             if (newScrollPosition > 9) {
-              setCursor(prevCursor => prevCursor + 1);
+              setCursor((prevCursor) => prevCursor + 1);
             }
           }
         }}
-        renderItem={({item}) => (
+        renderItem={({ item }) => (
           <TouchableOpacity
             style={styles.clubContainer}
             onPress={() => {
               navigateToClub(item.clubId);
-            }}>
+            }}
+          >
+            {/* 이 부분에서 모임 정보 데이터를 표시하도록 수정 */}
             <Image
-              source={{uri: item.thumbnailImage}}
+              source={{ uri: item.thumbnailImage }}
               style={styles.imageContainer}
             />
 
@@ -152,7 +162,7 @@ const ClubList = ({url, data, navigateToClub}: any) => {
                   />
                   <Text style={styles.info}>
                     {item.languages
-                      .map(code => languageMap[code] || code)
+                      .map((code) => languageMap[code] || code)
                       .join(', ')}
                   </Text>
                 </View>
@@ -160,7 +170,8 @@ const ClubList = ({url, data, navigateToClub}: any) => {
             </View>
             <TouchableOpacity
               style={styles.heartContainer}
-              onPress={() => toggleLike(item.clubId)}>
+              onPress={() => toggleLike(item.clubId)}
+            >
               <Icon
                 name={item.isHeart === 'YES' ? 'heart' : 'heart-outline'}
                 size={25}
@@ -173,6 +184,7 @@ const ClubList = ({url, data, navigateToClub}: any) => {
     </>
   );
 };
+
 const styles = StyleSheet.create({
   clubContainer: {
     flexDirection: 'row',

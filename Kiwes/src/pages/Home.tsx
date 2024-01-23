@@ -1,5 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, {useState, useRef} from 'react';
+import React, {useState, useCallback, useRef, useEffect} from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+
 import {
   View,
   Text,
@@ -13,17 +15,136 @@ import Swiper from 'react-native-swiper';
 import LangClubDetail from '../components/post/LangClubDetail';
 import CategoryClubDetail from '../components/post/CategoryClubDetail';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {RESTAPIBuilder} from '../utils/restapiBuilder';
+import {apiServer} from '../utils/metaData';
 
 const categoriesImg = require('../../assets/images/category01.png');
 const noticeBannerImg = require('../../assets/images/nbanner.png');
+const bannerUrl = `${apiServer}/api/v1/banner`;
+const popularUrl = `${apiServer}/api/v1/club/popular`;
+const url = `${apiServer}/api/v1/club/info/detail/1`;
 
 export function Home({navigation}: any) {
   const bannerRef = useRef(null);
   const popularGroupsRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(0);
+  const [data, setData] = useState();
 
-  const handleBannerPress = () => {
-    navigation.navigate('Event');
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  interface Banner {
+    type: string;
+    imageUrl: string;
+    url: string;
+    id: number;
+  }
+  const [popularClubs, setPopularClubs] = useState([]);
+
+  const fetchPopularClubs = async () => {
+    try {
+      const response = await new RESTAPIBuilder(`${apiServer}/api/v1/club/popular`, 'GET')
+        .setNeedToken(true)
+        .build()
+        .run();
+        setPopularClubs(response.data);
+        console.log("popular API Response:", response.data);
+      // if (response.status === 200) {
+      //   setPopularClubs(response.data);
+      // } else {
+      //   console.error('Failed to fetch popular clubs:', response);
+      // }
+    } catch (error) {
+      console.error('Error fetching popular clubs:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchPopularClubs();
+  }, []);
+
+  const [banners, setBanners] = useState<Banner[]>([]);
+
+  const handleCategoryPress = (category: string) => {
+    const updatedCategories = selectedCategories.includes(category)
+      ? selectedCategories.filter((item) => item !== category)
+      : [...selectedCategories, category];
+
+    setSelectedCategories(updatedCategories);
+
+    const postData = {
+      sortedBy: updatedCategories,
+    };
+
+    const categoryUrl = `${apiServer}/api/v1/club/category`;
+
+    new RESTAPIBuilder(categoryUrl, 'POST')
+      .setNeedToken(true)
+      .setBody({ clubSortRequestDto: postData })
+      .build()
+      .run()
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const fetchData = async (num: number) => {
+    try {
+      const response = await new RESTAPIBuilder(url, 'GET')
+        .setNeedToken(true)
+        .build()
+        .run();
+      console.log(response);
+      return response.data;
+    } catch (err) {
+      console.log(err);
+      return [];
+    }
+  };
+
+  const fetchBanners = async () => {
+    try {
+      const response = await new RESTAPIBuilder(bannerUrl, 'GET')
+        .setNeedToken(true)
+        .build()
+        .run();
+      console.log("Banner API Response:", response.data);
+      setBanners(response.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  useEffect(() => {
+    fetchBanners();
+  }, []);
+  useEffect(() => {
+    fetchBanners();
+  }, []);
+
+  const fetchAndSetData = async () => {
+    try {
+      const newData = await fetchData();
+      console.log(newData);
+      if (newData && newData.baseInfo) {
+        setData(newData);
+        console.log(newData.baseInfo);
+        console.log(newData.baseInfo.title);
+      } else {
+        console.error("Data or baseInfo is undefined in the response.");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useFocusEffect(
+    useCallback(() => {
+      fetchAndSetData();
+      return () => {};
+    }, []),
+  );
+  const handleBannerPress = (id) => {
+    navigation.navigate('Event', {eventId: id});
   };
 
   const logout = async () => {
@@ -34,10 +155,6 @@ export function Home({navigation}: any) {
     });
   };
 
-  const banners = [
-    {key: '1', image: noticeBannerImg},
-    {key: '2', image: noticeBannerImg},
-  ];
   const [popularGroupImages, setPopularGroupImages] = useState([
     { image: categoriesImg, isLiked: false },
     { image: categoriesImg, isLiked: false },
@@ -52,56 +169,53 @@ export function Home({navigation}: any) {
     setPopularGroupImages(updatedPopularGroupImages);
   };
 
-  const handlePopularGroupPress = (index: number) => {
-    console.log(`Clicked on popular group at index ${index}`);
+  const navigateToClubDetail = (clubId):any => {
+    navigation.navigate('ClubDetail', { selectedCategory: clubId });
   };
 
-  const renderRecommendedGroupItem = ({ item }: any) => (
-    <RecommendedGroup
-      title={item.title}
-      date={item.date}
-      location={item.location}
-      languages={item.languages}
-    />
-  );
-
-  const navigateToClubDetail = (title, date, location, languages) => {
-    navigation.navigate('ClubDetail', { title, date, location, languages });
-  };
-
-  const RecommendedGroup = ({ title, date, location, languages, navigation }: any) => {
+  const RecommendedGroup = ({ title, date, location, languages, clubId,navigation }: any) => {
     const [isLiked, setIsLiked] = useState(false);
     const toggleLike = () => {
       setIsLiked((prev) => !prev);
     };
     return (
-      <TouchableOpacity onPress={() => navigateToClubDetail(title, date, location, languages)}>
+      <TouchableOpacity onPress={() => navigateToClubDetail(clubId)}>
         <View style={styles.recommendedGroupsContainer}>
           <View style={styles.roundedRectangle}>
             <View style={styles.groupContent}>
               <Image source={require('../../assets/images/jejuImg.png')} style={styles.groupImage} />
               <View style={styles.textContent}>
-                <Text style={styles.groupTitle}>{title}</Text>
-                <Text style={styles.groupDetail}>{date}</Text>
-                <Text style={styles.groupDetail}>{location}</Text>
-                <Text style={styles.groupDetail}>{languages.join(', ')}</Text>
+                <View style={styles.infoContainer}>
+                  <Text style={styles.groupTitle}>{title}</Text>
+                </View>
+                <View style={styles.infoContainer}>
+                  <Icon name="calendar-outline" size={14} color={'rgba(0, 0, 0, 0.7)'} style={styles.icon} />
+                  <Text style={styles.groupDetail}>{date}</Text>
+                </View>
+                <View style={styles.infoContainer}>
+                  <Icon name="location-outline" size={14} color={'rgba(0, 0, 0, 0.7)'} style={styles.icon} />
+                  <Text style={styles.groupDetail}>{location}</Text>
+                </View>
+                <View style={styles.infoContainer}>
+                  <Icon name="globe" size={14} color={'rgba(0, 0, 0, 0.7)'} style={styles.icon} />
+                  <Text style={styles.groupDetail}>{languages.join(', ')}</Text>
+                </View>
               </View>
+              <TouchableOpacity style={styles.RHeartContainer} onPress={toggleLike}>
+                <Icon name={isLiked ? 'heart' : 'heart-outline'} size={24} color={isLiked ? 'green' : '#58C047'} />
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.RHeartContainer} onPress={toggleLike}>
-              <Icon name={isLiked ? 'heart' : 'heart-outline'} size={24} color={isLiked ? 'green' : '#58C047'} />
-            </TouchableOpacity>
           </View>
         </View>
       </TouchableOpacity>
     );
   };
-
   const recommendedGroups = [
     { key: '1', title: '제주도 여행 같이 가요~!', date: '23.03.03', location: '제주도', languages: ['English', '한국어'] },
     { key: '2', title: '강원도 여행 같이 가요~!', date: '23.03.03', location: '제주도', languages: ['English', '한국어'] },
     { key: '3', title: '부산 여행 같이 가요~!', date: '23.03.03', location: '제주도', languages: ['English', '한국어'] },
     { key: '4', title: '서울 여행 같이 가요~!', date: '23.03.03', location: '제주도', languages: ['English', '한국어'] },
-    { key: '5', title: ' 여행 같이 가요~!', date: '23.03.03', location: '제주도', languages: ['English', '한국어'] },
+    { key: '5', title: '여수 여행 같이 가요~!', date: '23.03.03', location: '제주도', languages: ['English', '한국어'] },
   ];
 
   const renderPagination = (index: number, total: number, context: any) => {
@@ -121,50 +235,53 @@ export function Home({navigation}: any) {
       </View>
     );
   };
-
-  const renderFlatListItem = ({ item, index }: any) => (
-    <RecommendedGroup
-      title={item.title}
-      date={item.date}
-      location={item.location}
-      languages={item.languages}
-    />
-  );
-
-  const renderPopularGroupItem = (imageSource: any, index: number) => (
-    <View key={index} style={styles.popularGroupSlide}>
-      <View style={styles.imageContainer}>
-        <Image source={imageSource.image} style={styles.popularGroupsImage} />
-        <View style={styles.PHeartContainer}>
-          <TouchableOpacity onPress={() => togglePopularGroupLike(index)}>
-            {imageSource.isLiked ? (
-              <Icon name="heart" size={24} color="green" />
-            ) : (
-              <Icon name="heart-outline" size={24} color="#58C047" />
-            )}
-          </TouchableOpacity>
+  const renderPopularGroupItem = (imageSource: any, clubId: number) => (
+    <TouchableOpacity onPress={() => navigateToClubDetail(clubId)}>
+      <View key={index} style={styles.popularGroupSlide}>
+        <View style={styles.imageContainer}>
+          <Image source={imageSource.image} style={styles.popularGroupsImage} />
+          <View style={styles.overlayContainer}>
+          <Text style={styles.overlayText1}>저랑 K팝 얘기 할 친구 찾아요</Text>
+            <View style={styles.overlayTextContainer}>
+              <Text style={styles.overlayText}>23.03.12</Text>
+              <View style={styles.overlayTextContainer2}>
+              <Text style={styles.overlayText2}>Sinchon</Text>
+              </View>
+              <Text style={styles.overlayText}>English</Text>
+            </View>
+          </View>
+          <View style={styles.PHeartContainer}>
+            <TouchableOpacity onPress={() => togglePopularGroupLike(index)}>
+              {imageSource.isLiked ? (
+                <Icon name="heart" size={24} color="green" />
+              ) : (
+                <Icon name="heart-outline" size={24} color="#58C047" />
+              )}
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
-
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContainer}>
       <View style={styles.container}>
         <TouchableOpacity onPress={handleBannerPress}>
-          <Swiper
-            style={styles.wrapper}
-            loop={false}
-            autoplay={false}
-            autoplayTimeout={5}
-            showsPagination={false}
-            ref={bannerRef}>
-            {banners.map((item, index) => (
-              <View key={index}>
-                <Image source={item.image} style={styles.bannerImage} />
+        <Swiper
+          style={styles.wrapper}
+          loop={false}
+          autoplay={false}
+          autoplayTimeout={5}
+          showsPagination={false}
+          ref={bannerRef}>
+          {banners.map((banner, index) => (
+            <TouchableOpacity key={index} onPress={() => handleBannerPress(banner.id)}>
+              <View>
+                <Image source={{ uri: banner.url }} style={styles.bannerImage} />
               </View>
-            ))}
-          </Swiper>
+            </TouchableOpacity>
+          ))}
+        </Swiper>
         </TouchableOpacity>
         <Text style={styles.sectionTitle}>인기 모임</Text>
         <Swiper
@@ -176,12 +293,27 @@ export function Home({navigation}: any) {
           renderPagination={renderPagination}
           onIndexChanged={(index) => setCurrentPage(index)}
           ref={popularGroupsRef}>
-          {popularGroupImages.map((image, index) => renderPopularGroupItem(image, index))}
+          {popularClubs.map((club, index) => (
+            <View key={index}>
+              <TouchableOpacity onPress={() => navigateToClubDetail(club.clubId)}>
+              <View style={styles.popularGroupSlide}>
+                  <View style={styles.imageContainer}>
+                  <Image source={{ uri: club.thumbnailImage }} style={styles.popularGroupsImage} />
+                  </View>
+                </View>
+              </TouchableOpacity>
+            </View>
+          ))}
         </Swiper>
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>카테고리별 모임</Text>
           <View style={styles.sectionContent}>
-            <CategoryClubDetail post={{ categories: [] }} setPost={() => {}} navigation={navigation} />
+            <CategoryClubDetail
+              post={{ categories: selectedCategories }}
+              setPost={() => {}}
+              navigation={navigation}
+              onCategoryPress={handleCategoryPress}
+            />
           </View>
         </View>
         <View style={styles.sectionContainer}>
@@ -359,7 +491,7 @@ const styles = StyleSheet.create({
     width: 150,
     height: 100,
     marginLeft: 10,
-    marginBottom: -50,
+    marginBottom: -7,
   },
   textContent: {
     marginLeft: 10,
@@ -367,8 +499,8 @@ const styles = StyleSheet.create({
   groupTitle: {
     color: '#303030',
     fontSize: 16,
-    right: 5,
-    bottom: -11,
+    right: 10,
+    bottom: -25,
   },
   groupDetail: {
     color: '#303030',
@@ -394,6 +526,52 @@ const styles = StyleSheet.create({
     bottom: 10,
     right: 10,
   },
+  overlayTextContainer2: {
+    marginVertical: 5,
+  },
+  overlayContainer: {
+    position: 'absolute',
+    top: 240,
+    left: -260,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: 5,
+  },
+  overlayText: {
+    width: 70,
+    textAlign: 'center',
+    color: '#303030',
+    fontSize: 14,
+    borderRadius: 30,
+    backgroundColor: '#B4DD6D',
+  },
+  overlayText2: {
+    width: 70,
+    textAlign: 'center',
+    color: '#303030',
+    fontSize: 14,
+    borderRadius: 30,
+    backgroundColor: '#FFFFD8',
+  },
+  overlayText1: {
+    width: 300,
+    top: -230,
+    left: 70,
+    textAlign: 'center',
+    color: 'white',
+    fontSize: 14,
+  },
+  infoContainer: {
+    top: -20,
+    left: 20,
+  },
+  icon: {
+    top: 35,
+    left: -15,
+  },
 });
 
 export default Home;
+
