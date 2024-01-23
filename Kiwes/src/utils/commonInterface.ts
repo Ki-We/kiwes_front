@@ -99,3 +99,44 @@ export interface QnADetail {
   isDeleted: string;
   isAnswered: string;
 }
+
+export interface BoardPost {
+  locationKeyword: string;
+  clubId: string;
+  title: string;
+  thumbnailImage: string;
+  date: string;
+  isHeart: string;
+  languages: string[];
+}
+export interface ClubApprovalRequest {
+  clubId: string;
+  title: string;
+  currentPeople: number;
+}
+export interface ClubMemberApprovalRequestEach {
+  nickname: string;
+  profileImg: string;
+  memberId: string;
+}
+export interface OwnClubInfo {
+  clubId: number;
+  title: string;
+  currentPeople: number;
+}
+export interface ReviewList {
+  isHost: boolean;
+  ReviewDetailDto: {
+    reviewerProfileImg: string;
+    reviewerNickname: string;
+    reviewContent: string;
+    reviewDate: string;
+    respondentProfileImg: string;
+    respondentNickname: string;
+    replyContent: string;
+    replyDate: string;
+    isAuthorOfReview: boolean;
+    isAuthorOfReply: boolean;
+    isModified: boolean;
+  };
+}
