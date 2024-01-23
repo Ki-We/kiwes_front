@@ -31,7 +31,9 @@ const ClubDetail = ({ route, navigation }) => {
   const navigateToReviewPage = () => {
     navigation.navigate('ReviewPage',{clubId: selectedCategory});
   };
-
+  const navigateToQnAPage = () => {
+    navigation.navigate('QnAPage',{clubId: selectedCategory});
+  };
 
   const renderJoinButton = () => {
     const buttonStyle = isJoined ? styles.cancelButton : styles.joinButton;
@@ -181,7 +183,7 @@ const ClubDetail = ({ route, navigation }) => {
             '안녕하세요, 구체적인 일정 알 수 있을까요?',
             '2024.01.15 18:45'
           )}
-          <TouchableOpacity onPress={() => /* Navigate to full Q&A list */ null}>
+          <TouchableOpacity onPress={navigateToQnAPage}>
             <Text style={styles.seeAllButton}>Q&A 모두 보기 ></Text>
           </TouchableOpacity>
         </View>

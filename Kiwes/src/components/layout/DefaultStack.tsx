@@ -14,6 +14,7 @@ import NoticePage from '../../pages/NoticePage';
 import ClubDetail from '../../pages/ClubDetail';
 import Event from '../../pages/Event';
 import ReviewPage from '../../pages/ReviewPage';
+import QnAPage from '../../pages/QnAPage';
 
 const LoginStack = () => {
   useEffect(() => {
@@ -52,6 +53,7 @@ const LoginStack = () => {
         <Stack.Screen name="SettingPage" component={SettingPage} />
         <Stack.Screen name="EventPage" component={Event} />
         <Stack.Screen name="ReviewPage" component={ReviewPage} />
+        <Stack.Screen name="QnAPage" component={QnAPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );
