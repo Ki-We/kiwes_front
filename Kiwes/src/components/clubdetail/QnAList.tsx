@@ -18,7 +18,6 @@ import sendIcon from 'react-native-vector-icons/Feather';
 import {useFocusEffect} from '@react-navigation/native';
 import NothingShow from '../NothingShow';
 import {ScrollView} from 'react-native-gesture-handler';
-import ReivewErrorModal from './ReivewErrorModal';
 
 const QnAList = ({clubId}: any) => {
   const [qnas, setQnas] = useState<QnADetail[]>([]);
@@ -26,15 +25,10 @@ const QnAList = ({clubId}: any) => {
   const [qnaId, setQnaId] = useState('');
   const [cursor, setCursor] = useState(0);
   const [isMore, setIsMore] = useState(true);
-  const [modalVisible, setModalVisible] = useState(false);
   const [isHost, setIsHost] = useState(false);
   const [inputText, setInputText] = useState('');
 
   const inputRef = useRef();
-
-  const handleCloseModal = () => {
-    setModalVisible(false);
-  };
 
   const fetchAndSetData = async () => {
     const newData = await fetchData(cursor);
@@ -117,7 +111,14 @@ const QnAList = ({clubId}: any) => {
         .build()
         .run();
       const updatedAnswer = qnas.map(qna =>
-        qna.qnaId === qnaId ? {...qna, isAuthorOfAnswer: false} : qna,
+        qna.qnaId === qnaId
+          ? {
+              ...qna,
+              isAuthorOfQuestion: false,
+              isDeleted: 'YES',
+              questionContent: '삭제된 질문입니다.',
+            }
+          : qna,
       );
       setQnas(updatedAnswer);
     } catch (err) {
@@ -135,7 +136,7 @@ const QnAList = ({clubId}: any) => {
         .build()
         .run();
       const updatedAnswer = qnas.map(qna =>
-        qna.qnaId === qnaId ? {...qna, qnaId: null} : qna,
+        qna.qnaId === qnaId ? {...qna, isAnswered: 'NO'} : qna,
       );
       setQnas(updatedAnswer);
     } catch (err) {
@@ -160,7 +161,6 @@ const QnAList = ({clubId}: any) => {
       setSending('REGISTER');
       fetchAndSetData();
     } catch (err) {
-      setModalVisible(true);
       console.log(err);
     }
   };
@@ -354,7 +354,6 @@ const QnAList = ({clubId}: any) => {
           />
         </View>
       </View>
-      <ReivewErrorModal isVisible={modalVisible} onClose={handleCloseModal} />
     </KeyboardAvoidingView>
   );
 };

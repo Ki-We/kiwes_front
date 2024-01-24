@@ -58,16 +58,16 @@ const styles = StyleSheet.create({
   },
   modalTitle: {
     textAlign: 'center',
+    fontWeight: 'bold',
     color: '#3DBE14',
     fontFamily: 'Pretendard',
-    fontWeight: '500',
     fontSize: height * 16,
   },
   modalText: {
     textAlign: 'center',
+    fontWeight: 'bold',
     color: '#303030',
     fontFamily: 'Pretendard',
-    fontWeight: '500',
     fontSize: height * 16,
   },
   modalButtonGroup: {
