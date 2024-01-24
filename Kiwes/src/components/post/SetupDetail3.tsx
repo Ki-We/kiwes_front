@@ -64,6 +64,7 @@ export default function SetupDetail3({post, setPost}: any) {
           style={styles.textarea}
           placeholderTextColor={'#8A8A8A'}
           placeholder="모임에 대해 소개해주세요"
+          multiline={true}
           onChangeText={text => {
             setPost({...post, content: text});
           }}
@@ -123,6 +124,7 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   textarea: {
+    flexShrink: 1,
     borderRadius: 10,
     backgroundColor: '#F7F7F7',
     padding: 5,
