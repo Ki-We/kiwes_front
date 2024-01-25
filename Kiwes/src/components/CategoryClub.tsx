@@ -12,9 +12,11 @@ import {
 import BoardList from './BoardList';
 import {apiServer} from '../utils/metaData';
 import {width, height} from '../global';
+import {allCategoryList as categories} from '../utils/utils';
 const url = `${apiServer}/api/v1/heart/club_list?cursor=`;
 const CategoryClub = ({navigation, route}: any) => {
   const {selectedCategory} = route.params;
+  const [selected, setSelected] = useState(selectedCategory);
   const [category, setCategory] = useState({key: '0', name: '전체'});
 
   const navigateToClub = (clubId: any) => {
@@ -35,38 +37,20 @@ const CategoryClub = ({navigation, route}: any) => {
   //   ));
   // };
 
-  const [categories] = useState([
-    {key: '0', name: '전체'},
-    {key: '1', name: 'K-pop'},
-    {key: '2', name: '맛집/카페'},
-    {key: '3', name: '스터디'},
-    {key: '4', name: '여행'},
-    {key: '5', name: '게임/보드게임'},
-    {key: '6', name: '문화/전시/공연'},
-    {key: '7', name: '술'},
-    {key: '8', name: '한국 문화'},
-    {key: '9', name: '영화/드라마/애니'},
-    {key: '10', name: '파티/클럽'},
-    {key: '11', name: '스포츠'},
-    {key: '12', name: '공예/그림'},
-    {key: '13', name: '봉사활동'},
-    {key: '14', name: '기타'},
-  ]);
-
   const [modalVisible, setModalVisible] = useState(false);
 
   const renderCategories = () => {
     return categories.map(category => (
       <TouchableOpacity
-        key={category.key}
+        key={`category_${category.key}`}
         style={[
           styles.categoryItem,
-          selectedCategory === category.name ? styles.selectedCategory : null,
+          category.key === selected ? styles.selectedCategory : null,
         ]}
-        onPress={() =>
-          navigation.navigate('CategoryClub', {selectedCategory: category.name})
-        }>
-        <Text style={styles.categoryText}>{category.name}</Text>
+        onPress={() => setSelected(category.key)}>
+        <Text style={[category.key === selected ? styles.selectedText : null]}>
+          {category.text}
+        </Text>
       </TouchableOpacity>
     ));
   };
@@ -231,6 +215,9 @@ const styles = StyleSheet.create({
   selectedCategory: {
     backgroundColor: '#9BD23C',
   },
+  selectedText: {
+    color: '#FFFFFF',
+  },
   modalContainer: {
     flex: 1,
     justifyContent: 'flex-end',
@@ -248,11 +235,6 @@ const styles = StyleSheet.create({
   },
   modalCategorySelectedText: {
     color: '#000',
-  },
-  modalCategoryRow: {
-    flexDirection: 'column',
-    marginTop: 20,
-    marginBottom: 10,
   },
   categorySelectionText: {
     // 카테고리 선택

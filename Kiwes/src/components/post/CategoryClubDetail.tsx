@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import RoundCategory from '../atoms/roundCategory';
-import { StyleSheet, View, Text } from 'react-native';
-import { width } from '../../global';
-import { categoryList } from '../../utils/utils';
+import {StyleSheet, View, Text} from 'react-native';
+import {width} from '../../global';
+import {allCategoryList as categoryList} from '../../utils/utils';
 import Swiper from 'react-native-swiper';
 
-export default function CategoryClubDetail({ post, setPost, navigation }: any) {
+export default function CategoryClubDetail({post, setPost, navigation}: any) {
   const [category, setCategory] = useState(post.category);
   const [selectedCategoryIndex, setSelectedCategoryIndex] = useState(null);
 
   const splitIndex = Math.ceil(categoryList.length / 2);
-  const firstRowCategoryList = categoryList.slice(splitIndex);
-  const secondRowCategoryList = categoryList.slice(0, splitIndex);
+  const secondRowCategoryList = categoryList.slice(splitIndex);
+  const firstRowCategoryList = categoryList.slice(0, splitIndex);
 
   const renderPaginationRect = (index: number, total: number, context: any) => {
     return (
@@ -36,7 +36,9 @@ export default function CategoryClubDetail({ post, setPost, navigation }: any) {
     setSelectedCategoryIndex(index);
     setPost({...post, category: key});
     console.log('Selected Category Index:', index);
-    navigation.navigate('CategoryClub', {selectedCategory: key, categoryIndex: index, cursor: index});
+    navigation.navigate('CategoryClub', {
+      selectedCategory: key,
+    });
   };
 
   return (
@@ -52,7 +54,7 @@ export default function CategoryClubDetail({ post, setPost, navigation }: any) {
             <RoundCategory
               key={`category_${i}`}
               text={text}
-              isSelect={category === key}
+              isSelect={false}
               onPress={() => handleCategoryPress(key, i)}
             />
           ))}
@@ -62,7 +64,7 @@ export default function CategoryClubDetail({ post, setPost, navigation }: any) {
             <RoundCategory
               key={`category_${i}`}
               text={text}
-              isSelect={category === key}
+              isSelect={false}
               onPress={() => handleCategoryPress(key, i + splitIndex)}
             />
           ))}
@@ -82,7 +84,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    margin: width * 20,
+    margin: width * 18,
   },
   swiper: {
     height: 170,
