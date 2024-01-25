@@ -13,6 +13,7 @@ import BoardList from './BoardList';
 import {apiServer} from '../utils/metaData';
 import {width, height} from '../global';
 import {allCategoryList as categories} from '../utils/utils';
+import {FlatList} from 'react-native-gesture-handler';
 const url = `${apiServer}/api/v1/heart/club_list?cursor=`;
 const CategoryClub = ({navigation, route}: any) => {
   const {selectedCategory} = route.params;
@@ -55,6 +56,8 @@ const CategoryClub = ({navigation, route}: any) => {
     ));
   };
 
+  const [containerWidth, setContainerWidth] = useState(0);
+
   return (
     <>
       <View style={styles.container}>
@@ -96,56 +99,49 @@ const CategoryClub = ({navigation, route}: any) => {
                 <Text style={styles.categorySelectionText}>카테고리 선택</Text>
                 <Image source={require('../../assets/images/close.png')} />
               </TouchableOpacity>
-              {/* <Text style={styles.modalTitle}>카테고리 선택</Text> */}
               <View style={styles.modalCategoriesContainer}>
-                {categories
-                  .reduce((rows, category, index) => {
-                    if (index % 2 === 0) {
-                      rows.push([category]);
-                    } else {
-                      rows[rows.length - 1].push(category);
-                    }
-                    return rows;
-                  }, [])
-                  .map((row, rowIndex) => (
-                    <View key={rowIndex} style={styles.modalCategoryRow}>
-                      {row.map(item => (
-                        <View style={{flex: 1}}>
-                          {category.name === item.name ? (
-                            <View
-                              style={{
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                              }}>
-                              <Text
-                                style={[
-                                  styles.modalCategoryText,
-                                  styles.modalCategorySelectedText,
-                                ]}>
-                                {item.name}
-                              </Text>
-                              <Image
-                                source={require('../../assets/images/check.png')}
-                                style={styles.checkImage}
-                              />
-                            </View>
-                          ) : (
-                            <TouchableOpacity
-                              key={item.key}
-                              onPress={() => {
-                                console.log('Selected Category:', item.name);
-                                setCategory(item);
-                                setModalVisible(false);
-                              }}>
-                              <Text style={styles.modalCategoryText}>
-                                {item.name}
-                              </Text>
-                            </TouchableOpacity>
-                          )}
+                <FlatList
+                  data={categories}
+                  onLayout={e => setContainerWidth(e.nativeEvent.layout.width)}
+                  ItemSeparatorComponent={() => (
+                    <View style={{height: height * 35}}></View>
+                  )}
+                  renderItem={({item}) => (
+                    <View style={{width: containerWidth / 2}}>
+                      {item.key === selected ? (
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                          }}>
+                          <Text
+                            style={[
+                              styles.modalCategoryText,
+                              styles.modalCategorySelectedText,
+                            ]}>
+                            {item.simple}
+                          </Text>
+                          <Image
+                            source={require('../../assets/images/check.png')}
+                            style={styles.checkImage}
+                          />
                         </View>
-                      ))}
+                      ) : (
+                        <TouchableOpacity
+                          key={item.key}
+                          onPress={() => {
+                            setSelected(item.key);
+                            setModalVisible(false);
+                          }}>
+                          <Text style={styles.modalCategoryText}>
+                            {item.simple}
+                          </Text>
+                        </TouchableOpacity>
+                      )}
                     </View>
-                  ))}
+                  )}
+                  numColumns={2}
+                />
               </View>
             </View>
           </View>
@@ -193,7 +189,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   scrollView: {
-    left: 40,
+    paddingLeft: width * 40,
   },
   lastNewCategoryItem: {
     marginRight: 20,
@@ -240,7 +236,7 @@ const styles = StyleSheet.create({
     // 카테고리 선택
     fontSize: width * 14,
     color: '#000',
-    right: width * 205,
+    right: width * 195,
   },
   modalCategory: {
     // 카테고리 아이템
@@ -262,13 +258,9 @@ const styles = StyleSheet.create({
     marginRight: 30,
   },
   modalCategoriesContainer: {
-    marginTop: 50,
-  },
-  modalCategoryRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 20,
-    marginBottom: 10,
+    marginTop: height * 70,
+    marginBottom: height * 40,
+    paddingHorizontal: width * 10,
   },
 });
 
