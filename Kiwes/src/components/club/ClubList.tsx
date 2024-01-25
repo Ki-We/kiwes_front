@@ -1,45 +1,43 @@
-import React from 'react';
-import {useState} from 'react';
+import {Image, View, Text, Modal, StyleSheet} from 'react-native';
+import {height, width} from '../../global';
 import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Modal,
-  Image,
+  FlatList,
   ScrollView,
-} from 'react-native';
-import BoardList from './BoardList';
-import {apiServer} from '../utils/metaData';
-import {width, height} from '../global';
-import {allCategoryList as categories} from '../utils/utils';
-import {FlatList} from 'react-native-gesture-handler';
-const url = `${apiServer}/api/v1/heart/club_list?cursor=`;
-const CategoryClub = ({navigation, route}: any) => {
-  const {selectedCategory} = route.params;
-  const [selected, setSelected] = useState(selectedCategory);
-  const [category, setCategory] = useState({key: '0', name: '전체'});
+  TouchableOpacity,
+} from 'react-native-gesture-handler';
+import {allCategoryList as categories, langList} from '../../utils/utils';
+import {useEffect, useState} from 'react';
+import {apiServer} from '../../utils/metaData';
+import {RESTAPIBuilder} from '../../utils/restapiBuilder';
+import {BoardPost} from '../../utils/commonInterface';
+import BoardDefaultList from '../BoardDefaultList';
 
-  const navigateToClub = (clubId: any) => {
-    navigation.navigate('ClubPage', {clubId: clubId});
+export default function ClubList({navigation, selectedItem, type}: any) {
+  const [selected, setSelected] = useState(selectedItem);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [containerWidth, setContainerWidth] = useState(0);
+  const [data, setData] = useState<BoardPost[]>([]);
+
+  const renderItems = () => {
+    if (type == 'category') return renderCategories();
+    else if (type == 'language') return renderLangagues();
   };
 
-  // const renderNewCategories = () => {
-  //   return categories.map((category, index) => (
-  //     <TouchableOpacity
-  //       key={category.key}
-  //       style={[
-  //         styles.newCategoryItem,
-  //         index === categories.length - 1 ? styles.lastNewCategoryItem : null,
-  //       ]}
-  //       onPress={() => {}}>
-  //       <Text style={styles.categoryText}>{category.name}</Text>
-  //     </TouchableOpacity>
-  //   ));
-  // };
-
-  const [modalVisible, setModalVisible] = useState(false);
-
+  const renderLangagues = () => {
+    return langList.map(lang => (
+      <TouchableOpacity
+        key={`language_${lang.key}`}
+        style={[
+          styles.categoryItem,
+          lang.key === selected ? styles.selectedCategory : null,
+        ]}
+        onPress={() => setSelected(lang.key)}>
+        <Text style={[lang.key === selected ? styles.selectedText : null]}>
+          {lang.text}
+        </Text>
+      </TouchableOpacity>
+    ));
+  };
   const renderCategories = () => {
     return categories.map(category => (
       <TouchableOpacity
@@ -56,7 +54,61 @@ const CategoryClub = ({navigation, route}: any) => {
     ));
   };
 
-  const [containerWidth, setContainerWidth] = useState(0);
+  const navigateToClub = (clubId: any) => {
+    navigation.navigate('Home', {
+      screen: 'ClubDetail',
+      params: {clubId: clubId},
+    });
+  };
+
+  useEffect(() => {
+    type == 'category' ? fetchCategory() : fetchLanguage();
+  }, [selected]);
+
+  const fetchCategory = () => {
+    if (selected == 'ALL') getAllClub();
+    else getSpecifiedClub();
+  };
+  const getAllClub = async () => {
+    const url = `${apiServer}/api/v1/club/getClubs?cursor=0`;
+    const {data} = await new RESTAPIBuilder(url, 'GET')
+      .setNeedToken(true)
+      .build()
+      .run()
+      .catch(err => console.error('get All club : ', err));
+    setData(data);
+  };
+  const getSpecifiedClub = async () => {
+    const url = `${apiServer}/api/v1/club/category?cursor=0`;
+    const postData = {clubSortRequestDto: {sortedBy: [selected]}};
+    console.log('url : ', url);
+    console.log('postData : ', postData);
+    const {data} = await new RESTAPIBuilder(url, 'POST')
+      .setNeedToken(true)
+      .setBody(postData)
+      .build()
+      .run()
+      .catch(error => {
+        console.error('get Specified club - catgory : ', error);
+      });
+    console.log(data);
+    setData(data);
+  };
+  const fetchLanguage = async () => {
+    const postData = {
+      sortedBy: [selected],
+    };
+    const url = `${apiServer}/api/v1/club/language?cursor=0`;
+    const {data} = await new RESTAPIBuilder(url, 'POST')
+      .setNeedToken(true)
+      .setBody({clubSortRequestDto: postData})
+      .build()
+      .run()
+      .catch(error => {
+        console.error('get Specified club - language: ', error);
+      });
+    setData(data);
+  };
 
   return (
     <>
@@ -64,12 +116,11 @@ const CategoryClub = ({navigation, route}: any) => {
         <View style={styles.headerContainer}>
           <TouchableOpacity
             onPress={() => {
-              console.log('Add button pressed');
               setModalVisible(true);
             }}
             style={styles.addButtonContainer}>
             <Image
-              source={require('../../assets/images/categoryAdd.png')}
+              source={require('../../../assets/images/categoryAdd.png')}
               style={styles.addButton}
             />
           </TouchableOpacity>
@@ -78,11 +129,11 @@ const CategoryClub = ({navigation, route}: any) => {
             <ScrollView
               horizontal={true}
               contentContainerStyle={styles.scrollContainer}>
-              {renderCategories()}
+              {renderItems()}
             </ScrollView>
           </View>
         </View>
-        <BoardList url={url} navigateToClub={navigateToClub} />
+        <BoardDefaultList data={data} navigateToClub={navigateToClub} />
         <Modal
           animationType="slide"
           transparent={true}
@@ -96,12 +147,14 @@ const CategoryClub = ({navigation, route}: any) => {
               <TouchableOpacity
                 style={styles.closeButton}
                 onPress={() => setModalVisible(false)}>
-                <Text style={styles.categorySelectionText}>카테고리 선택</Text>
-                <Image source={require('../../assets/images/close.png')} />
+                <Text style={styles.categorySelectionText}>
+                  {type == 'category' ? '카테고리' : '언어'} 선택
+                </Text>
+                <Image source={require('../../../assets/images/close.png')} />
               </TouchableOpacity>
               <View style={styles.modalCategoriesContainer}>
                 <FlatList
-                  data={categories}
+                  data={type == 'category' ? categories : langList}
                   onLayout={e => setContainerWidth(e.nativeEvent.layout.width)}
                   ItemSeparatorComponent={() => (
                     <View style={{height: height * 35}}></View>
@@ -122,7 +175,7 @@ const CategoryClub = ({navigation, route}: any) => {
                             {item.simple}
                           </Text>
                           <Image
-                            source={require('../../assets/images/check.png')}
+                            source={require('../../../assets/images/check.png')}
                             style={styles.checkImage}
                           />
                         </View>
@@ -149,7 +202,7 @@ const CategoryClub = ({navigation, route}: any) => {
       </View>
     </>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -263,5 +316,3 @@ const styles = StyleSheet.create({
     paddingHorizontal: width * 10,
   },
 });
-
-export default CategoryClub;

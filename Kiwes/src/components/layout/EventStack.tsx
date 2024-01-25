@@ -2,10 +2,11 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import Home from '../../pages/Home';
 import Event from '../../pages/Event';
-import CategoryClub from '../CategoryClub';
+import ClubCategory from '../../pages/ClubCategory';
 import ClubDetail from '../../pages/ClubDetail';
 import ReviewPage from '../../pages/ReviewPage';
 import {Image} from 'react-native';
+import ClubLanguage from '../../pages/ClubLanguage';
 
 const CustomHeader = () => (
   <Image
@@ -38,11 +39,20 @@ const EventStack = () => {
         }}
       />
       <Stack.Screen
-        name="CategoryClub"
-        component={CategoryClub}
+        name="ClubCategory"
+        component={ClubCategory}
         options={{
           headerShown: true,
           headerTitle: '카테고리별 모임',
+          headerTitleAlign: 'center',
+        }}
+      />
+      <Stack.Screen
+        name="ClubLanguage"
+        component={ClubLanguage}
+        options={{
+          headerShown: true,
+          headerTitle: '언어별 모임',
           headerTitleAlign: 'center',
         }}
       />

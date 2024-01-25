@@ -1,19 +1,18 @@
-import React, {useState} from 'react';
+import React from 'react';
 import RoundCategory from '../atoms/roundCategory';
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {width} from '../../global';
-import {allCategoryList as categoryList} from '../../utils/utils';
+import {categoryList, langList} from '../../utils/utils';
 import Swiper from 'react-native-swiper';
+import RoundBtn from '../atoms/roundBtn';
 
-export default function CategoryClubDetail({post, setPost, navigation}: any) {
-  const [category, setCategory] = useState(post.category);
-  const [selectedCategoryIndex, setSelectedCategoryIndex] = useState(null);
+export default function ClubListDetail({type, navigation}: any) {
+  const allList = type == 'category' ? categoryList : langList;
+  const splitIndex = Math.ceil(allList.length / 2);
+  const secondRowCategoryList = allList.slice(splitIndex);
+  const firstRowCategoryList = allList.slice(0, splitIndex);
 
-  const splitIndex = Math.ceil(categoryList.length / 2);
-  const secondRowCategoryList = categoryList.slice(splitIndex);
-  const firstRowCategoryList = categoryList.slice(0, splitIndex);
-
-  const renderPaginationRect = (index: number, total: number, context: any) => {
+  const renderPaginationRect = (index: number, total: number) => {
     return (
       <View style={styles.paginationContainer}>
         <View style={styles.paginationRect}>
@@ -31,16 +30,33 @@ export default function CategoryClubDetail({post, setPost, navigation}: any) {
     );
   };
 
-  const handleCategoryPress = (key: string, index: number) => {
-    setCategory(key);
-    setSelectedCategoryIndex(index);
-    setPost({...post, category: key});
-    console.log('Selected Category Index:', index);
-    navigation.navigate('CategoryClub', {
-      selectedCategory: key,
-    });
+  const handlePress = (key: string) => {
+    type == 'category'
+      ? navigation.navigate('ClubCategory', {
+          selectedItem: key,
+        })
+      : navigation.navigate('ClubLanguage', {
+          selectedItem: key,
+        });
   };
 
+  const renderBtn = (key: string, text: string) => {
+    return type == 'category' ? (
+      <RoundCategory
+        text={text}
+        isSelect={false}
+        onPress={() => handlePress(key)}
+      />
+    ) : (
+      <RoundBtn
+        text={text}
+        isSelect={false}
+        onPress={() => {
+          handlePress(key);
+        }}
+      />
+    );
+  };
   return (
     <>
       <Swiper
@@ -51,30 +67,15 @@ export default function CategoryClubDetail({post, setPost, navigation}: any) {
         renderPagination={renderPaginationRect}>
         <View style={styles.container}>
           {firstRowCategoryList.map(({key, text}, i) => (
-            <RoundCategory
-              key={`category_${i}`}
-              text={text}
-              isSelect={false}
-              onPress={() => handleCategoryPress(key, i)}
-            />
+            <View key={`first_${i}`}>{renderBtn(key, text)}</View>
           ))}
         </View>
         <View style={styles.container}>
           {secondRowCategoryList.map(({key, text}, i) => (
-            <RoundCategory
-              key={`category_${i}`}
-              text={text}
-              isSelect={false}
-              onPress={() => handleCategoryPress(key, i + splitIndex)}
-            />
+            <View key={`second${i}`}>{renderBtn(key, text)}</View>
           ))}
         </View>
       </Swiper>
-      {selectedCategoryIndex !== null && (
-        <View style={styles.selectedCategoryInfo}>
-          <Text>Selected Category Index: {selectedCategoryIndex}</Text>
-        </View>
-      )}
     </>
   );
 }
@@ -84,7 +85,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    margin: width * 18,
+    margin: width * 20,
   },
   swiper: {
     height: 170,
@@ -111,9 +112,5 @@ const styles = StyleSheet.create({
   },
   paginationRectActive: {
     backgroundColor: '#9BD23C',
-  },
-  selectedCategoryInfo: {
-    marginTop: 20,
-    alignItems: 'center',
   },
 });
