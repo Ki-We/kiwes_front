@@ -15,53 +15,53 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {height, width} from '../global';
 import NothingDefault from './NothingDefault';
 
-const BoardDefaultList = ({navigateToClub, data}: any) => {
+const BoardDefaultList = ({navigateToClub, fetchData, selected, data}: any) => {
   const [posts, setPosts] = useState<BoardPost[]>(data);
   const [cursor, setCursor] = useState(0);
   const [isMore, setIsMore] = useState(true);
 
-  const fetchAndSetData = async () => {
-    const newData = await fetchData(cursor);
-    if (newData && newData.length > 0) {
-      setPosts(prevPosts => {
-        const updatedPosts = prevPosts.map(prevPost => {
-          const newPost = newData.find(
-            ({clubId}) => clubId === prevPost.clubId,
-          );
-          if (newPost) {
-            return JSON.stringify(newPost) !== JSON.stringify(prevPost)
-              ? newPost
-              : prevPost;
-          }
-          return prevPost;
-        });
-        const newPostsWithoutDuplicates = newData.filter(
-          newPost =>
-            !prevPosts.some(prevPost => prevPost.clubId === newPost.clubId),
-        );
-        return [...updatedPosts, ...newPostsWithoutDuplicates];
-      });
-    } else {
-      setIsMore(false);
-    }
+  // const fetchAndSetData = async () => {
+  //   const newData = await fetchData(cursor);
+  //   console.log('newData : ', newData);
+  //   if (newData && newData.length > 0) {
+  //     setPosts(prevPosts => {
+  //       const updatedPosts = prevPosts.map(prevPost => {
+  //         const newPost = newData.find(
+  //           ({clubId}) => clubId === prevPost.clubId,
+  //         );
+  //         if (newPost) {
+  //           return JSON.stringify(newPost) !== JSON.stringify(prevPost)
+  //             ? newPost
+  //             : prevPost;
+  //         }
+  //         return prevPost;
+  //       });
+  //       const newPostsWithoutDuplicates = newData.filter(
+  //         newPost =>
+  //           !prevPosts.some(prevPost => prevPost.clubId === newPost.clubId),
+  //       );
+  //       return [...updatedPosts, ...newPostsWithoutDuplicates];
+  //     });
+  //   } else {
+  //     setIsMore(false);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   fetchAndSetData();
+  // }, [cursor]);
+  useEffect(() => {
+    fetchNewData();
+  }, [selected]);
+  const fetchNewData = async () => {
+    const data = await fetchData(cursor);
+    setPosts(data);
   };
 
   useEffect(() => {
-    fetchAndSetData();
-  }, [cursor]);
-
-  const fetchData = async (num: number) => {
-    try {
-      const response = await new RESTAPIBuilder(url + num, 'GET')
-        .setNeedToken(true)
-        .build()
-        .run();
-      return response.data;
-    } catch (err) {
-      console.log(err);
-      return [];
-    }
-  };
+    console.log('****************');
+    console.log(posts);
+  }, [posts]);
 
   const toggleLike = async (id: String) => {
     const post = posts.find(post => post.clubId === id);
@@ -155,9 +155,10 @@ const BoardDefaultList = ({navigateToClub, data}: any) => {
                       color={'#rgba(0, 0, 0, 0.7)'}
                     />
                     <Text style={styles.info}>
-                      {item.languages
-                        .map(code => languageMap[code] || code)
-                        .join(', ')}
+                      {item.languages &&
+                        item.languages
+                          .map(code => languageMap[code] || code)
+                          .join(', ')}
                     </Text>
                   </View>
                 </View>

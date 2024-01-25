@@ -62,27 +62,27 @@ export default function ClubList({navigation, selectedItem, type}: any) {
   };
 
   useEffect(() => {
-    type == 'category' ? fetchCategory() : fetchLanguage();
+    type == 'category' ? fetchCategory(0) : fetchLanguage(0);
+    console.log('change selected menu');
   }, [selected]);
 
-  const fetchCategory = () => {
-    if (selected == 'ALL') getAllClub();
-    else getSpecifiedClub();
+  const fetchCategory = (cursor: number) => {
+    if (selected == 'ALL') return getAllClub(cursor);
+    else return getSpecifiedClub(cursor);
   };
-  const getAllClub = async () => {
-    const url = `${apiServer}/api/v1/club/getClubs?cursor=0`;
+  const getAllClub = async (cursor: number) => {
+    const url = `${apiServer}/api/v1/club/getClubs?cursor=${cursor}`;
     const {data} = await new RESTAPIBuilder(url, 'GET')
       .setNeedToken(true)
       .build()
       .run()
       .catch(err => console.error('get All club : ', err));
     setData(data);
+    return data;
   };
-  const getSpecifiedClub = async () => {
-    const url = `${apiServer}/api/v1/club/category?cursor=0`;
-    const postData = {clubSortRequestDto: {sortedBy: [selected]}};
-    console.log('url : ', url);
-    console.log('postData : ', postData);
+  const getSpecifiedClub = async (cursor: number) => {
+    const url = `${apiServer}/api/v1/club/category?cursor=${cursor}`;
+    const postData = {sortedBy: [selected]};
     const {data} = await new RESTAPIBuilder(url, 'POST')
       .setNeedToken(true)
       .setBody(postData)
@@ -91,23 +91,22 @@ export default function ClubList({navigation, selectedItem, type}: any) {
       .catch(error => {
         console.error('get Specified club - catgory : ', error);
       });
-    console.log(data);
     setData(data);
+    return data;
   };
-  const fetchLanguage = async () => {
-    const postData = {
-      sortedBy: [selected],
-    };
-    const url = `${apiServer}/api/v1/club/language?cursor=0`;
+  const fetchLanguage = async (cursor: number) => {
+    const postData = {sortedBy: [selected]};
+    const url = `${apiServer}/api/v1/club/language?cursor=${cursor}`;
     const {data} = await new RESTAPIBuilder(url, 'POST')
       .setNeedToken(true)
-      .setBody({clubSortRequestDto: postData})
+      .setBody(postData)
       .build()
       .run()
       .catch(error => {
         console.error('get Specified club - language: ', error);
       });
     setData(data);
+    return data;
   };
 
   return (
@@ -133,7 +132,12 @@ export default function ClubList({navigation, selectedItem, type}: any) {
             </ScrollView>
           </View>
         </View>
-        <BoardDefaultList data={data} navigateToClub={navigateToClub} />
+        <BoardDefaultList
+          fetchData={type == 'category' ? fetchCategory : fetchLanguage}
+          data={data}
+          selected={selected}
+          navigateToClub={navigateToClub}
+        />
         <Modal
           animationType="slide"
           transparent={true}
@@ -147,7 +151,15 @@ export default function ClubList({navigation, selectedItem, type}: any) {
               <TouchableOpacity
                 style={styles.closeButton}
                 onPress={() => setModalVisible(false)}>
-                <Text style={styles.categorySelectionText}>
+                <Text
+                  style={[
+                    [
+                      styles.selectionText,
+                      type == 'category'
+                        ? styles.categorySelectionText
+                        : styles.languageSelectionText,
+                    ],
+                  ]}>
                   {type == 'category' ? '카테고리' : '언어'} 선택
                 </Text>
                 <Image source={require('../../../assets/images/close.png')} />
@@ -183,6 +195,7 @@ export default function ClubList({navigation, selectedItem, type}: any) {
                         <TouchableOpacity
                           key={item.key}
                           onPress={() => {
+                            console.log('선탣!!');
                             setSelected(item.key);
                             setModalVisible(false);
                           }}>
@@ -285,10 +298,14 @@ const styles = StyleSheet.create({
   modalCategorySelectedText: {
     color: '#000',
   },
-  categorySelectionText: {
-    // 카테고리 선택
+  selectionText: {
     fontSize: width * 14,
     color: '#000',
+  },
+  categorySelectionText: {
+    right: width * 170,
+  },
+  languageSelectionText: {
     right: width * 195,
   },
   modalCategory: {
@@ -299,7 +316,7 @@ const styles = StyleSheet.create({
   closeButton: {
     position: 'absolute',
     right: width * 30,
-    top: height * 30,
+    top: height * 10,
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -311,7 +328,7 @@ const styles = StyleSheet.create({
     marginRight: 30,
   },
   modalCategoriesContainer: {
-    marginTop: height * 70,
+    marginTop: height * 80,
     marginBottom: height * 40,
     paddingHorizontal: width * 10,
   },
