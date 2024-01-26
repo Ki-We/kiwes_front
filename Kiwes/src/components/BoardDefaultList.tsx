@@ -165,7 +165,7 @@ const BoardDefaultList = ({navigateToClub, fetchData, selected, data}: any) => {
                       size={14}
                       color={'#rgba(0, 0, 0, 0.7)'}
                     />
-                    <Text style={styles.info}>{item.locationKeyword}</Text>
+                    <Text style={styles.info}>{item.location}</Text>
                   </View>
                   <View style={styles.infoContainer}>
                     <Icon
