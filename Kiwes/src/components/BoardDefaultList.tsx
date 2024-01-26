@@ -52,16 +52,35 @@ const BoardDefaultList = ({navigateToClub, fetchData, selected, data}: any) => {
   // }, [cursor]);
   useEffect(() => {
     fetchNewData();
+  }, [cursor, selected]);
+  useEffect(() => {
+    setCursor(0);
   }, [selected]);
   const fetchNewData = async () => {
     const data = await fetchData(cursor);
-    setPosts(data);
-  };
+    if (data && data.length > 0) {
+      if (cursor > 0) {
+        setPosts(prevPosts => {
+          const updatedPosts = prevPosts.map(prevPost => {
+            const newPost = data.find(({clubId}) => clubId === prevPost.clubId);
+            if (newPost) {
+              return JSON.stringify(newPost) !== JSON.stringify(prevPost)
+                ? newPost
+                : prevPost;
+            }
+            return prevPost;
+          });
+          const newPostsWithoutDuplicates = data.filter(
+            newPost =>
+              !prevPosts.some(prevPost => prevPost.clubId === newPost.clubId),
+          );
+          return [...updatedPosts, ...newPostsWithoutDuplicates];
+        });
+      } else setPosts(data);
 
-  useEffect(() => {
-    console.log('****************');
-    console.log(posts);
-  }, [posts]);
+      setIsMore(true);
+    } else setIsMore(false);
+  };
 
   const toggleLike = async (id: String) => {
     const post = posts.find(post => post.clubId === id);

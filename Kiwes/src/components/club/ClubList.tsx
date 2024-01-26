@@ -71,6 +71,7 @@ export default function ClubList({navigation, selectedItem, type}: any) {
     else return getSpecifiedClub(cursor);
   };
   const getAllClub = async (cursor: number) => {
+    console.log('getAllClub cursor : ', cursor);
     const url = `${apiServer}/api/v1/club/getClubs?cursor=${cursor}`;
     const {data} = await new RESTAPIBuilder(url, 'GET')
       .setNeedToken(true)
