@@ -1,4 +1,4 @@
-import {Image, View, Text, Modal, StyleSheet} from 'react-native';
+import {Image, View, Text, Modal, StyleSheet, Pressable} from 'react-native';
 import {height, width} from '../../global';
 import {
   FlatList,
@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
 } from 'react-native-gesture-handler';
 import {allCategoryList as categories, langList} from '../../utils/utils';
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import {apiServer} from '../../utils/metaData';
 import {RESTAPIBuilder} from '../../utils/restapiBuilder';
 import {BoardPost} from '../../utils/commonInterface';
@@ -61,17 +61,11 @@ export default function ClubList({navigation, selectedItem, type}: any) {
     });
   };
 
-  useEffect(() => {
-    type == 'category' ? fetchCategory(0) : fetchLanguage(0);
-    console.log('change selected menu');
-  }, [selected]);
-
   const fetchCategory = (cursor: number) => {
     if (selected == 'ALL') return getAllClub(cursor);
     else return getSpecifiedClub(cursor);
   };
   const getAllClub = async (cursor: number) => {
-    console.log('getAllClub cursor : ', cursor);
     const url = `${apiServer}/api/v1/club/getClubs?cursor=${cursor}`;
     const {data} = await new RESTAPIBuilder(url, 'GET')
       .setNeedToken(true)
@@ -111,110 +105,113 @@ export default function ClubList({navigation, selectedItem, type}: any) {
   };
 
   return (
-    <>
-      <View style={styles.container}>
-        <View style={styles.headerContainer}>
-          <TouchableOpacity
-            onPress={() => {
-              setModalVisible(true);
-            }}
-            style={styles.addButtonContainer}>
-            <Image
-              source={require('../../../assets/images/categoryAdd.png')}
-              style={styles.addButton}
-            />
-          </TouchableOpacity>
+    <View style={styles.container}>
+      <View style={styles.headerContainer}>
+        <TouchableOpacity
+          onPress={() => {
+            setModalVisible(true);
+          }}
+          style={styles.addButtonContainer}>
+          <Image
+            source={require('../../../assets/images/categoryAdd.png')}
+            style={styles.addButton}
+          />
+        </TouchableOpacity>
 
-          <View style={styles.scrollView}>
-            <ScrollView
-              horizontal={true}
-              contentContainerStyle={styles.scrollContainer}>
-              {renderItems()}
-            </ScrollView>
-          </View>
+        <View style={styles.scrollView}>
+          <ScrollView
+            horizontal={true}
+            contentContainerStyle={styles.scrollContainer}>
+            {renderItems()}
+          </ScrollView>
         </View>
-        <BoardDefaultList
-          fetchData={type == 'category' ? fetchCategory : fetchLanguage}
-          data={data}
-          selected={selected}
-          navigateToClub={navigateToClub}
-        />
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            console.log('Modal closed');
-            setModalVisible(false);
-          }}>
-          <View style={styles.modalContainer}>
-            <View style={styles.modalContent}>
-              <TouchableOpacity
-                style={styles.closeButton}
-                onPress={() => setModalVisible(false)}>
-                <Text
-                  style={[
-                    [
-                      styles.selectionText,
-                      type == 'category'
-                        ? styles.categorySelectionText
-                        : styles.languageSelectionText,
-                    ],
-                  ]}>
-                  {type == 'category' ? '카테고리' : '언어'} 선택
-                </Text>
-                <Image source={require('../../../assets/images/close.png')} />
-              </TouchableOpacity>
-              <View style={styles.modalCategoriesContainer}>
-                <FlatList
-                  data={type == 'category' ? categories : langList}
-                  onLayout={e => setContainerWidth(e.nativeEvent.layout.width)}
-                  ItemSeparatorComponent={() => (
-                    <View style={{height: height * 35}}></View>
-                  )}
-                  renderItem={({item}) => (
-                    <View style={{width: containerWidth / 2}}>
-                      {item.key === selected ? (
-                        <View
-                          style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                          }}>
-                          <Text
-                            style={[
-                              styles.modalCategoryText,
-                              styles.modalCategorySelectedText,
-                            ]}>
-                            {item.simple}
-                          </Text>
-                          <Image
-                            source={require('../../../assets/images/check.png')}
-                            style={styles.checkImage}
-                          />
-                        </View>
-                      ) : (
-                        <TouchableOpacity
-                          key={item.key}
-                          onPress={() => {
-                            console.log('선탣!!');
-                            setSelected(item.key);
-                            setModalVisible(false);
-                          }}>
-                          <Text style={styles.modalCategoryText}>
-                            {item.simple}
-                          </Text>
-                        </TouchableOpacity>
-                      )}
-                    </View>
-                  )}
-                  numColumns={2}
-                />
-              </View>
+      </View>
+      <BoardDefaultList
+        fetchData={type == 'category' ? fetchCategory : fetchLanguage}
+        data={data}
+        selected={selected}
+        navigateToClub={navigateToClub}
+      />
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          console.log('Modal closed');
+          setModalVisible(false);
+        }}>
+        <Pressable
+          onPress={() => setModalVisible(false)}
+          style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Pressable
+              style={styles.closeButton}
+              onPress={() => {
+                console.log('close button');
+                setModalVisible(false);
+              }}>
+              <Text
+                style={[
+                  [
+                    styles.selectionText,
+                    type == 'category'
+                      ? styles.categorySelectionText
+                      : styles.languageSelectionText,
+                  ],
+                ]}>
+                {type == 'category' ? '카테고리' : '언어'} 선택
+              </Text>
+              <Image source={require('../../../assets/images/close.png')} />
+            </Pressable>
+            <View style={styles.modalCategoriesContainer}>
+              <FlatList
+                data={type == 'category' ? categories : langList}
+                onLayout={e => setContainerWidth(e.nativeEvent.layout.width)}
+                // ItemSeparatorComponent={() => (
+                //   <View style={{height: height * 35}}></View>
+                // )}
+                renderItem={({item}) => (
+                  <View style={{width: containerWidth / 2}}>
+                    {item.key === selected ? (
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                        }}>
+                        <Text
+                          style={[
+                            styles.modalCategoryText,
+                            styles.modalCategorySelectedText,
+                          ]}>
+                          {item.simple}
+                        </Text>
+                        <Image
+                          source={require('../../../assets/images/check.png')}
+                          style={styles.checkImage}
+                        />
+                      </View>
+                    ) : (
+                      <Pressable
+                        key={item.key}
+                        onPress={() => {
+                          console.log('선택!!');
+                          setSelected(item.key);
+                          setModalVisible(false);
+                        }}>
+                        <Text style={styles.modalCategoryText}>
+                          {item.simple}
+                        </Text>
+                      </Pressable>
+                    )}
+                  </View>
+                )}
+                numColumns={2}
+              />
             </View>
           </View>
-        </Modal>
-      </View>
-    </>
+        </Pressable>
+      </Modal>
+    </View>
   );
 }
 
@@ -288,11 +285,13 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     backgroundColor: '#FFFFFF',
-    padding: 30,
     borderTopLeftRadius: 50,
     borderTopRightRadius: 50,
+    paddingVertical: height * 15,
   },
   modalCategoryText: {
+    paddingVertical: height * 18,
+    paddingLeft: width * 30,
     fontSize: 18,
     color: '#8A8A8A',
   },
@@ -304,20 +303,19 @@ const styles = StyleSheet.create({
     color: '#000',
   },
   categorySelectionText: {
-    right: width * 170,
-  },
-  languageSelectionText: {
     right: width * 195,
   },
+  languageSelectionText: {
+    right: width * 225,
+  },
   modalCategory: {
-    // 카테고리 아이템
     fontSize: 16,
     marginBottom: 50,
   },
   closeButton: {
     position: 'absolute',
     right: width * 30,
-    top: height * 10,
+    top: height * 20,
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -329,7 +327,7 @@ const styles = StyleSheet.create({
     marginRight: 30,
   },
   modalCategoriesContainer: {
-    marginTop: height * 80,
+    marginTop: height * 60,
     marginBottom: height * 40,
     paddingHorizontal: width * 10,
   },
