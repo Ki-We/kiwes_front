@@ -178,6 +178,7 @@ export function Home({navigation}: any) {
     const toggleLike = () => {
       setIsLiked((prev) => !prev);
     };
+    
     return (
       <TouchableOpacity onPress={() => navigateToClubDetail(clubId)}>
         <View style={styles.recommendedGroupsContainer}>
