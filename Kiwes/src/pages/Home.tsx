@@ -9,7 +9,6 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  FlatList,
 } from 'react-native';
 import Swiper from 'react-native-swiper';
 import LangClubDetail from '../components/post/LangClubDetail';
@@ -17,9 +16,9 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {RESTAPIBuilder} from '../utils/restapiBuilder';
 import {apiServer} from '../utils/metaData';
 import ClubListDetail from '../components/club/ClubListDetail';
+import { langList } from '../utils/utils';
 
 const categoriesImg = require('../../assets/images/category01.png');
-const noticeBannerImg = require('../../assets/images/nbanner.png');
 const bannerUrl = `${apiServer}/api/v1/banner`;
 const popularUrl = `${apiServer}/api/v1/club/popular`;
 const url = `${apiServer}/api/v1/club/info/detail/1`;
@@ -50,11 +49,6 @@ export function Home({navigation}: any) {
         .run();
       setPopularClubs(response.data);
       console.log('popular API Response:', response.data);
-      // if (response.status === 200) {
-      //   setPopularClubs(response.data);
-      // } else {
-      //   console.error('Failed to fetch popular clubs:', response);
-      // }
     } catch (error) {
       console.error('Error fetching popular clubs:', error);
     }
@@ -65,32 +59,6 @@ export function Home({navigation}: any) {
   }, []);
 
   const [banners, setBanners] = useState<Banner[]>([]);
-
-  // const handleCategoryPress = (category: string) => {
-  //   const updatedCategories = selectedCategories.includes(category)
-  //     ? selectedCategories.filter(item => item !== category)
-  //     : [...selectedCategories, category];
-
-  //   setSelectedCategories(updatedCategories);
-
-  //   const postData = {
-  //     sortedBy: updatedCategories,
-  //   };
-
-  //   const categoryUrl = `${apiServer}/api/v1/club/category`;
-
-  //   new RESTAPIBuilder(categoryUrl, 'POST')
-  //     .setNeedToken(true)
-  //     .setBody({clubSortRequestDto: postData})
-  //     .build()
-  //     .run()
-  //     .then(response => {
-  //       console.log(response.data);
-  //     })
-  //     .catch(error => {
-  //       console.error(error);
-  //     });
-  // };
 
   const fetchData = async (num: number) => {
     try {
@@ -146,10 +114,9 @@ export function Home({navigation}: any) {
       return () => {};
     }, []),
   );
-  const handleBannerPress = id => {
-    navigation.navigate('Event', {eventId: id});
+  const handleBannerPress = (id, imageUrl) => {
+    navigation.navigate('Event', {eventId: id, imageUrl: imageUrl});
   };
-
   const logout = async () => {
     await AsyncStorage.removeItem('userData');
     navigation.reset({
@@ -177,13 +144,53 @@ export function Home({navigation}: any) {
     navigation.navigate('ClubDetail', {selectedCategory: clubId});
   };
 
+  const renderLanguages = (languages) => {
+    return (
+      <View style={styles.overlayContainer}>
+        {languages.map((language, index) => {
+          const languageUtil = langList.find(item => item.key === language);
+          return (
+            <Text key={index} style={styles.overlayText}>
+              {languageUtil ? languageUtil.text : 'Unknown'}
+            </Text>
+          );
+        })}
+      </View>
+    );
+  };
+
+  renderClubLanguages = (languages) => {
+    return (
+      <View style={styles.infoContainer}>
+        {languages.map((language, index) => {
+          const languageUtil = langList.find(item => item.key === language);
+          return (
+            <Text key={index} style={styles.groupDetail}>
+              {languageUtil ? languageUtil.text : 'Unknown'}
+            </Text>
+          );
+        })}
+      </View>
+    );
+  };
+
+  const convertDate = (dateString: string): string => {
+    const dateParts = dateString.split('-');
+    const year = dateParts[0].substring(2);
+    const month = dateParts[1];
+    const day = dateParts[2];
+  
+    return `${year}.${month}.${day}`;
+  };
+
   const RecommendedGroup = ({
     title,
     date,
-    location,
+    locationKeyword,
     languages,
     clubId,
     navigation,
+    image,
   }: any) => {
     const [isLiked, setIsLiked] = useState(false);
     const toggleLike = () => {
@@ -196,7 +203,7 @@ export function Home({navigation}: any) {
           <View style={styles.roundedRectangle}>
             <View style={styles.groupContent}>
               <Image
-                source={require('../../assets/images/jejuImg.png')}
+                source={image}
                 style={styles.groupImage}
               />
               <View style={styles.textContent}>
@@ -213,23 +220,23 @@ export function Home({navigation}: any) {
                   <Text style={styles.groupDetail}>{date}</Text>
                 </View>
                 <View style={styles.infoContainer}>
-                  <Icon
-                    name="location-outline"
-                    size={14}
-                    color={'rgba(0, 0, 0, 0.7)'}
-                    style={styles.icon}
-                  />
-                  <Text style={styles.groupDetail}>{location}</Text>
-                </View>
-                <View style={styles.infoContainer}>
-                  <Icon
-                    name="globe"
-                    size={14}
-                    color={'rgba(0, 0, 0, 0.7)'}
-                    style={styles.icon}
-                  />
-                  <Text style={styles.groupDetail}>{languages.join(', ')}</Text>
-                </View>
+                <Icon
+                  name="location-outline"
+                  size={14}
+                  color={'rgba(0, 0, 0, 0.7)'}
+                  style={styles.icon}
+                />
+                <Text style={styles.groupDetail}>{locationKeyword}</Text>
+              </View>
+              <View style={styles.infoContainer}>
+                <Icon
+                  name="globe"
+                  size={14}
+                  color={'rgba(0, 0, 0, 0.7)'}
+                  style={styles.icon}
+                />
+              <Text>{languages}</Text>
+              </View>
               </View>
               <TouchableOpacity
                 style={styles.RHeartContainer}
@@ -246,43 +253,6 @@ export function Home({navigation}: any) {
       </TouchableOpacity>
     );
   };
-  const recommendedGroups = [
-    {
-      key: '1',
-      title: '제주도 여행 같이 가요~!',
-      date: '23.03.03',
-      location: '제주도',
-      languages: ['English', '한국어'],
-    },
-    {
-      key: '2',
-      title: '강원도 여행 같이 가요~!',
-      date: '23.03.03',
-      location: '제주도',
-      languages: ['English', '한국어'],
-    },
-    {
-      key: '3',
-      title: '부산 여행 같이 가요~!',
-      date: '23.03.03',
-      location: '제주도',
-      languages: ['English', '한국어'],
-    },
-    {
-      key: '4',
-      title: '서울 여행 같이 가요~!',
-      date: '23.03.03',
-      location: '제주도',
-      languages: ['English', '한국어'],
-    },
-    {
-      key: '5',
-      title: '여수 여행 같이 가요~!',
-      date: '23.03.03',
-      location: '제주도',
-      languages: ['English', '한국어'],
-    },
-  ];
 
   const renderPagination = (index: number, total: number, context: any) => {
     return (
@@ -301,36 +271,6 @@ export function Home({navigation}: any) {
       </View>
     );
   };
-  const renderPopularGroupItem = (imageSource: any, clubId: number) => (
-    <TouchableOpacity onPress={() => navigateToClubDetail(clubId)}>
-      <View key={index} style={styles.popularGroupSlide}>
-        <View style={styles.imageContainer}>
-          <Image source={imageSource.image} style={styles.popularGroupsImage} />
-          <View style={styles.overlayContainer}>
-            <Text style={styles.overlayText1}>
-              저랑 K팝 얘기 할 친구 찾아요
-            </Text>
-            <View style={styles.overlayTextContainer}>
-              <Text style={styles.overlayText}>23.03.12</Text>
-              <View style={styles.overlayTextContainer2}>
-                <Text style={styles.overlayText2}>Sinchon</Text>
-              </View>
-              <Text style={styles.overlayText}>English</Text>
-            </View>
-          </View>
-          <View style={styles.PHeartContainer}>
-            <TouchableOpacity onPress={() => togglePopularGroupLike(index)}>
-              {imageSource.isLiked ? (
-                <Icon name="heart" size={24} color="green" />
-              ) : (
-                <Icon name="heart-outline" size={24} color="#58C047" />
-              )}
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
-    </TouchableOpacity>
-  );
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContainer}>
       <View style={styles.container}>
@@ -364,22 +304,26 @@ export function Home({navigation}: any) {
           autoplayTimeout={6}
           showsPagination={true}
           renderPagination={renderPagination}
-          onIndexChanged={index => setCurrentPage(index)}
+          onIndexChanged={(index: number) => setCurrentPage(index)}
           ref={popularGroupsRef}>
-          {popularClubs.map((club, index) => (
-            <View key={index}>
-              <TouchableOpacity
-                onPress={() => navigateToClubDetail(club.clubId)}>
-                <View style={styles.popularGroupSlide}>
-                  <View style={styles.imageContainer}>
-                    <Image
-                      source={{uri: club.thumbnailImage}}
-                      style={styles.popularGroupsImage}
-                    />
+          {popularClubs.map((club: any, index: number) => (
+            <TouchableOpacity key={index} onPress={() => navigateToClubDetail(club.clubId)}>
+              <View style={styles.popularGroupSlide}>
+                <View style={styles.imageContainer}>
+                  <Image source={{ uri: club.thumbnailImage }} style={styles.popularGroupsImage} />
+                  <View style={styles.overlayContainer}>
+                    <Text style={styles.overlayText1}>{club.title}</Text>
+                    <View style={styles.overlayTextContainer}>
+                    <Text style={styles.overlayText}>{convertDate(club.date)}</Text>
+                      <View style={styles.overlayTextContainer2}>
+                        <Text style={styles.overlayText2}>{club.locationKeyword}</Text>
+                      </View>
+                      <Text>{renderLanguages(club.languages)}</Text>
+                    </View>
                   </View>
                 </View>
-              </TouchableOpacity>
-            </View>
+              </View>
+            </TouchableOpacity>
           ))}
         </Swiper>
         <View style={styles.sectionContainer}>
@@ -405,20 +349,23 @@ export function Home({navigation}: any) {
             renderPagination={renderPagination}
             onIndexChanged={index => setCurrentPage(index)}
             ref={popularGroupsRef}>
-            {recommendedGroups.map((item, index) => (
+            {popularClubs.map((club: any, index: number) => (
               <View key={index}>
                 <RecommendedGroup
-                  title={item.title}
-                  date={item.date}
-                  location={item.location}
-                  languages={item.languages}
+                  image={{ uri: club.thumbnailImage }}
+                  title={club.title}
+                  date={convertDate(club.date)}
+                  locationKeyword={club.locationKeyword}
+                  languages={renderClubLanguages(club.languages)}
+                  clubId={club.clubId}
+                  navigation={navigation}
                 />
               </View>
             ))}
           </Swiper>
           <View style={[styles.paginationInfo, {marginBottom: 40}]}>
             <Text style={styles.paginationText}>
-              Page {currentPage + 1} of {recommendedGroups.length}
+              Page {currentPage + 1} of {RecommendedGroup.length}
             </Text>
           </View>
         </View>

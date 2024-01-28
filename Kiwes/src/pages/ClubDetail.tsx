@@ -9,15 +9,16 @@ import {
   Modal,
 } from 'react-native';
 import { WebView } from 'react-native-webview';
-import Icon from 'react-native-vector-icons/Ionicons';
+import  Icon  from 'react-native-vector-icons/Ionicons';
 import { RESTAPIBuilder } from '../utils/restapiBuilder';
 import { apiServer } from '../utils/metaData';
 import { Clipboard } from 'react-native';
-import { categoryList } from '../utils/utils';
-import { langList } from '../utils/utils';
+import { categoryList, langList } from '../utils/utils';
 import { GOOGLE_WEB_API_KIEY } from '../utils/googleConfig';
+import RoundCategory from '../components/atoms/roundCategory';
+import RoundBtn from '../components/atoms/roundBtn';
 
-const ClubDetail = ({ route, navigation }) => {
+const ClubDetail = ({ route, navigation, type }) => {
   const { selectedCategory } = route.params;
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
@@ -35,6 +36,8 @@ const ClubDetail = ({ route, navigation }) => {
 
   const [clubInfo, setClubInfo] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const allList = type == 'category' ? categoryList : langList;
   
   const image = {
     share: require('../../assets/images/share.png'),
@@ -106,12 +109,17 @@ const ClubDetail = ({ route, navigation }) => {
   const renderTags = (tags) => {
     return (
       <View style={styles.tagContainer}>
-        {tags.map((tag, index) => (
-          <Text key={index} style={styles.tag}>{tag}</Text>
-        ))}
+        {tags.map((tag, index) => {
+          const tagUtil = categoryList.find(item => item.key === tag) || langList.find(item => item.key === tag);
+          return (
+            <Text key={index} style={styles.tag}>
+              {tagUtil ? tagUtil.text : 'Unknown'}
+            </Text>
+          );
+        })}
       </View>
     );
-  };
+  };  
   const renderClubDetail = () => {
     if (!clubInfo) {
       return null;
@@ -697,9 +705,9 @@ const styles = StyleSheet.create({
   tagContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginTop: -30,
-    marginRight: 230,
-    padding: 5,
+    marginTop: 115,
+    marginRight: -5,
+    left: -205,
   },
   tag: {
     borderColor: '#9BD23C',
