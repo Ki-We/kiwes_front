@@ -6,7 +6,7 @@ import { width, height } from '../../global';
 import ChatMain from '../../pages/ChatMain';
 import MyPage from '../../pages/MyPage';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import HomeStack from './HomeStack'; // 수정된 부분: EventStack 대신 HomeStack를 import
+import HomeStack from './HomeStack';
 import WishPage from '../../pages/WishPage';
 import ClubDetail from '../../pages/ClubDetail';
 import PostClub from '../../pages/PostClub';
@@ -28,7 +28,7 @@ const BottomTab = ({ navigation }: any) => {
   const onPress = () => navigation.navigate('CreateMeeting');
   return (
     <Tab.Navigator
-      initialRouteName="Home"
+      initialRouteName="Main"
       screenOptions={{
         tabBarStyle: {
           height: height * 65 + insets.bottom,
@@ -44,10 +44,10 @@ const BottomTab = ({ navigation }: any) => {
         headerShown: false,
       }}>
       <Tab.Screen
-        name="Home"
+        name="HomeStack"
         component={HomeStack}
         options={{
-          title: 'HOME',
+          title: 'HomeStack',
           tabBarIcon: ({ color, size }) => (
             <Icon
               name={color === '#58C047' ? 'home' : 'home-outline'}
@@ -55,7 +55,7 @@ const BottomTab = ({ navigation }: any) => {
               size={size}
             />
           ),
-          tabBarLabel: 'HOME',
+          tabBarLabel: 'HomeStack',
         }}
       />
       <Tab.Screen
