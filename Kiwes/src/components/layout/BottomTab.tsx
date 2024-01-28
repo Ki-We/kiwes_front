@@ -1,12 +1,12 @@
 import React from 'react';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {TouchableOpacity, Image} from 'react-native';
-import {width, height} from '../../global';
+import { TouchableOpacity, Image } from 'react-native';
+import { width, height } from '../../global';
 import ChatMain from '../../pages/ChatMain';
 import MyPage from '../../pages/MyPage';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import EventStack from './EventStack';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import HomeStack from './HomeStack'; // 수정된 부분: EventStack 대신 HomeStack를 import
 import WishPage from '../../pages/WishPage';
 import ClubDetail from '../../pages/ClubDetail';
 import PostClub from '../../pages/PostClub';
@@ -14,7 +14,7 @@ import PostClub from '../../pages/PostClub';
 const Tab = createBottomTabNavigator();
 const putterPath = require('../../../assets/images/putter.png');
 
-ClubDetail.navigationOptions = ({navigation}) => {
+ClubDetail.navigationOptions = ({ navigation }) => {
   // Check if the route has the tab bar visible option
   const isTabBarVisible = navigation.getParam('tabBarVisible', true);
 
@@ -23,7 +23,7 @@ ClubDetail.navigationOptions = ({navigation}) => {
   };
 };
 
-const BottomTab = ({navigation}: any) => {
+const BottomTab = ({ navigation }: any) => {
   const insets = useSafeAreaInsets();
   const onPress = () => navigation.navigate('CreateMeeting');
   return (
@@ -45,10 +45,10 @@ const BottomTab = ({navigation}: any) => {
       }}>
       <Tab.Screen
         name="Home"
-        component={EventStack}
+        component={HomeStack}
         options={{
           title: 'HOME',
-          tabBarIcon: ({color, size}) => (
+          tabBarIcon: ({ color, size }) => (
             <Icon
               name={color === '#58C047' ? 'home' : 'home-outline'}
               color={color}
@@ -63,7 +63,7 @@ const BottomTab = ({navigation}: any) => {
         component={WishPage}
         options={{
           title: 'WISH',
-          tabBarIcon: ({color, size}) => (
+          tabBarIcon: ({ color, size }) => (
             <Icon
               name={color === '#58C047' ? 'heart' : 'heart-outline'}
               color={color}
@@ -98,7 +98,7 @@ const BottomTab = ({navigation}: any) => {
         options={{
           headerShown: false,
           title: 'CHAT',
-          tabBarIcon: ({color, size}) => (
+          tabBarIcon: ({ color, size }) => (
             <Icon
               name={
                 color === '#58C047'
@@ -116,7 +116,7 @@ const BottomTab = ({navigation}: any) => {
         component={MyPage}
         options={{
           title: 'MY',
-          tabBarIcon: ({color, size}) => (
+          tabBarIcon: ({ color, size }) => (
             <Icon
               name={color === '#58C047' ? 'person' : 'person-outline'}
               color={color}
