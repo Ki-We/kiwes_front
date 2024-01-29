@@ -6,7 +6,7 @@ function App() {
   useEffect(() => {
     setTimeout(() => {
       SplashScreen.hide();
-    }, 3000); // 3초 후에 스플래시 화면을 숨깁니다.
+    }, 2000);
   }, []);
 
   return (

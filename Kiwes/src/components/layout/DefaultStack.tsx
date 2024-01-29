@@ -10,7 +10,6 @@ import WishPage from '../../pages/WishPage';
 import ProfilePage from '../../pages/ProfilePage';
 import AlarmList from '../alarm/AlarmList';
 import SettingPage from '../../pages/SettingPage';
-import NoticePage from '../../pages/NoticePage';
 import ClubDetail from '../../pages/ClubDetail';
 import Event from '../../pages/Event';
 import ReviewPage from '../../pages/ReviewPage';
@@ -85,7 +84,6 @@ const LoginStack = () => {
         <Stack.Screen name="Search" component={Search} />
         <Stack.Screen name="WishPage" component={WishPage} />
         <Stack.Screen name="ClubDetail" component={ClubDetail} />
-        <Stack.Screen name="NoticePage" component={NoticePage} />
         <Stack.Screen name="AlarmPage" component={AlarmPage} />
         <Stack.Screen name="ProfilePage" component={ProfilePage} />
         <Stack.Screen name="AlarmList" component={AlarmList} />
