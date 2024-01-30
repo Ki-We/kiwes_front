@@ -16,6 +16,7 @@ export default function SetupCategory({post, setPost}: any) {
       <View style={styles.container}>
         {categoryList.map(({key, text}, i) => (
           <RoundCategory
+            id={key}
             key={`category_${i}`}
             text={text}
             isSelect={category === key}

@@ -31,3 +31,20 @@ export const categoryList: {key: string; text: string; simple: string}[] = [
 export const allCategoryList = [
   {key: 'ALL', text: '전체', simple: '전체'},
 ].concat(categoryList);
+
+export const categoryIcon = {
+  KPOP: require('../../assets/images/icon/KPOP.png'),
+  CAFE: require('../../assets/images/icon/CAFE.png'),
+  CULTURE: require('../../assets/images/icon/CULTURE.png'),
+  DRINK: require('../../assets/images/icon/DRINK.png'),
+  OTHER: require('../../assets/images/icon/OTHER.png'),
+  VOLUNTEER: require('../../assets/images/icon/VOLUNTEER.png'),
+  PARTY: require('../../assets/images/icon/PARTY.png'),
+  KOREAN_CULTURE: require('../../assets/images/icon/KOREAN_CULTURE.png'),
+  STUDY: require('../../assets/images/icon/STUDY.png'),
+  TRAVEL: require('../../assets/images/icon/TRAVEL.png'),
+  CRAFT: require('../../assets/images/icon/CRAFT.png'),
+  SPORTS: require('../../assets/images/icon/SPORTS.png'),
+  MOVIE: require('../../assets/images/icon/MOVIE.png'),
+  GAME: require('../../assets/images/icon/GAME.png'),
+};
