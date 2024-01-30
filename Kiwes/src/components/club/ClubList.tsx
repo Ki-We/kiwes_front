@@ -5,7 +5,11 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native-gesture-handler';
-import {allCategoryList as categories, langList} from '../../utils/utils';
+import {
+  allCategoryList as categories,
+  categoryIcon,
+  langList,
+} from '../../utils/utils';
 import {useState} from 'react';
 import {apiServer} from '../../utils/metaData';
 import {RESTAPIBuilder} from '../../utils/restapiBuilder';
@@ -47,8 +51,15 @@ export default function ClubList({navigation, selectedItem, type}: any) {
           category.key === selected ? styles.selectedCategory : null,
         ]}
         onPress={() => setSelected(category.key)}>
+        {category.key != 'ALL' && (
+          <Image
+            resizeMode="contain"
+            source={categoryIcon[category.key]}
+            style={styles.image}
+          />
+        )}
         <Text style={[category.key === selected ? styles.selectedText : null]}>
-          {category.text}
+          {category.simple}
         </Text>
       </TouchableOpacity>
     ));
@@ -267,6 +278,8 @@ const styles = StyleSheet.create({
     borderColor: '#9BD23C',
     justifyContent: 'center',
     alignItems: 'center',
+    flex: 1,
+    flexDirection: 'row',
   },
   categoryText: {
     fontSize: 12,
@@ -330,5 +343,10 @@ const styles = StyleSheet.create({
     marginTop: height * 60,
     marginBottom: height * 40,
     paddingHorizontal: width * 10,
+  },
+  image: {
+    marginRight: width * 3,
+    width: width * 16,
+    height: width * 16,
   },
 });
