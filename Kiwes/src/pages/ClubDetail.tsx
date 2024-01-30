@@ -106,20 +106,7 @@ const ClubDetail = ({ route, navigation, type }) => {
     setIsLiked((prev) => !prev);
     setLikeCount((prevCount) => (isLiked ? prevCount - 1 : prevCount + 1));
   };
-  const renderTags = (tags) => {
-    return (
-      <View style={styles.tagContainer}>
-        {tags.map((tag, index) => {
-          const tagUtil = categoryList.find(item => item.key === tag) || langList.find(item => item.key === tag);
-          return (
-            <Text key={index} style={styles.tag}>
-              {tagUtil ? tagUtil.text : 'Unknown'}
-            </Text>
-          );
-        })}
-      </View>
-    );
-  };  
+
   const renderClubDetail = () => {
     if (!clubInfo) {
       return null;
@@ -128,7 +115,7 @@ const ClubDetail = ({ route, navigation, type }) => {
     return (
       <>
         <Text style={styles.titleText}>{baseInfo.title}</Text>
-        {renderTags(baseInfo.tags)}
+        {renderBtn(baseInfo.tags)}
         <View style={styles.sectionContainer}>
           {renderSection('모임 날짜', baseInfo.date)}
           {renderSection('모임 마감', baseInfo.dueTo)}
@@ -246,6 +233,39 @@ const ClubDetail = ({ route, navigation, type }) => {
       </View>
     </View>
   );
+  // const renderTags = (tags) => {
+  //   return (
+  //     <View style={styles.tagContainer}>
+  //       {tags.map((tag, index) => {
+  //         const tagUtil = categoryList.find(item => item.key === tag) || langList.find(item => item.key === tag);
+  //         return (
+  //           <Text key={index} style={styles.tag}>
+  //             {tagUtil ? tagUtil.text : 'Unknown'}
+  //           </Text>
+  //         );
+  //       })}
+  //     </View>
+  //   );
+  // };  
+const renderBtn = (tags: string[], text: string, type: string) => {
+  return (
+    <View style={styles.tagContainer}>
+      {tags.map((tag, index) => {
+        const tagUtil = categoryList.find(item => item.key === tag) || langList.find(item => item.key === tag);
+        return (
+          <View key={index} style={styles.tagWrapper}>
+            {type === 'category' ? (
+              <RoundCategory text={tagUtil ? tagUtil.text : 'Unknown'} isSelect={false} />
+            ) : (
+              <RoundBtn text={tagUtil ? tagUtil.text : 'Unknown'} isSelect={false} />
+            )}
+          </View>
+        );
+      })}
+    </View>
+  );
+};
+
   const renderQaItem = () => {
     if (!clubInfo || !clubInfo.qnas) {
       return null;
@@ -481,8 +501,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   profileImage: {
-    width: 70,
-    height: 70,
+    width: 50,
+    height: 50,
     borderRadius: 50,
     marginLeft: 10,
   },
@@ -504,11 +524,13 @@ const styles = StyleSheet.create({
     marginTop: -7,
     marginRight: 90,
     fontWeight: 'bold',
+    width: 130,
   },
   participantContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: -50,
+    marginLeft: -60,
   },
   hostText: {
     position: 'absolute',
@@ -702,12 +724,15 @@ const styles = StyleSheet.create({
     color: '#303030',
     marginVertical: 10,
   },
+  tagWrapper: {
+    marginRight: 5,
+  },
   tagContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     marginTop: 115,
     marginRight: -5,
-    left: -205,
+    left: -165,
   },
   tag: {
     borderColor: '#9BD23C',

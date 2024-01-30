@@ -17,6 +17,7 @@ import {RESTAPIBuilder} from '../utils/restapiBuilder';
 import {apiServer} from '../utils/metaData';
 import ClubListDetail from '../components/club/ClubListDetail';
 import { langList } from '../utils/utils';
+import { Dimensions } from 'react-native';
 
 const categoriesImg = require('../../assets/images/category01.png');
 const bannerUrl = `${apiServer}/api/v1/banner`;
@@ -29,6 +30,7 @@ export function Home({navigation}: any) {
   const [currentPage, setCurrentPage] = useState(0);
   const [data, setData] = useState();
 
+  const [popularClubLikes, setPopularClubLikes] = useState({});
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   interface Banner {
     type: string;
@@ -133,11 +135,11 @@ export function Home({navigation}: any) {
     {image: categoriesImg, isLiked: false},
   ]);
 
-  const togglePopularGroupLike = (index: number) => {
-    const updatedPopularGroupImages = [...popularGroupImages];
-    updatedPopularGroupImages[index].isLiked =
-      !updatedPopularGroupImages[index].isLiked;
-    setPopularGroupImages(updatedPopularGroupImages);
+  const togglePopularClubLike = (clubId: number) => {
+    setPopularClubLikes(prevLikes => ({
+      ...prevLikes,
+      [clubId]: !prevLikes[clubId],
+    }));
   };
 
   const navigateToClubDetail = (clubId): any => {
@@ -179,7 +181,6 @@ export function Home({navigation}: any) {
     const year = dateParts[0].substring(2);
     const month = dateParts[1];
     const day = dateParts[2];
-  
     return `${year}.${month}.${day}`;
   };
 
@@ -285,7 +286,7 @@ export function Home({navigation}: any) {
             {banners.map((banner, index) => (
               <TouchableOpacity
                 key={index}
-                onPress={() => handleBannerPress(banner.id)}>
+                onPress={() => handleBannerPress(banner.id, banner.imageUrl)}>
                 <View>
                   <Image
                     source={{uri: banner.url}}
@@ -310,17 +311,31 @@ export function Home({navigation}: any) {
             <TouchableOpacity key={index} onPress={() => navigateToClubDetail(club.clubId)}>
               <View style={styles.popularGroupSlide}>
                 <View style={styles.imageContainer}>
-                  <Image source={{ uri: club.thumbnailImage }} style={styles.popularGroupsImage} />
+                <Image
+                source={{ uri: club.thumbnailImage }}
+                style={styles.popularGroupsImage}
+                resizeMode="cover"
+              />
+              <Image source={require('../../assets/images/basicProfileImage.png')} style={styles.titleImage} />
                   <View style={styles.overlayContainer}>
-                    <Text style={styles.overlayText1}>{club.title}</Text>
+                  <Text style={styles.overlayText1}>{club.title}</Text>
                     <View style={styles.overlayTextContainer}>
-                    <Text style={styles.overlayText}>{convertDate(club.date)}</Text>
+                      <Text style={styles.overlayText}>{convertDate(club.date)}</Text>
                       <View style={styles.overlayTextContainer2}>
                         <Text style={styles.overlayText2}>{club.locationKeyword}</Text>
                       </View>
                       <Text>{renderLanguages(club.languages)}</Text>
                     </View>
                   </View>
+                  <TouchableOpacity
+                    style={styles.PHeartContainer}
+                    onPress={() => togglePopularClubLike(club.clubId)}>
+                    <Icon
+                      name={popularClubLikes[club.clubId] ? 'heart' : 'heart-outline'}
+                      size={24}
+                      color={popularClubLikes[club.clubId] ? 'green' : '#58C047'}
+                    />
+                  </TouchableOpacity>
                 </View>
               </View>
             </TouchableOpacity>
@@ -534,10 +549,11 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     position: 'relative',
+    top: 5,
   },
   PHeartContainer: {
     position: 'absolute',
-    top: 10,
+    top: 15,
     right: 10,
   },
   RHeartContainer: {
@@ -545,12 +561,18 @@ const styles = StyleSheet.create({
     bottom: 10,
     right: 10,
   },
+  titleImage: {
+    width: 50,
+    height: 50,
+    top: -340,
+    left: 10,
+  },
   overlayTextContainer2: {
     marginVertical: 5,
   },
   overlayContainer: {
     position: 'absolute',
-    top: 240,
+    top: 180,
     left: -260,
     right: 0,
     bottom: 0,
@@ -559,28 +581,28 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   overlayText: {
-    width: 70,
+    width: 65,
     textAlign: 'center',
     color: '#303030',
-    fontSize: 14,
+    fontSize: 13,
     borderRadius: 30,
     backgroundColor: '#B4DD6D',
   },
   overlayText2: {
-    width: 70,
+    width: 65,
     textAlign: 'center',
     color: '#303030',
-    fontSize: 14,
+    fontSize: 13,
     borderRadius: 30,
     backgroundColor: '#FFFFD8',
   },
   overlayText1: {
     width: 300,
-    top: -230,
-    left: 70,
-    textAlign: 'center',
+    top: -220,
+    left: 170,
+    textAlign: 'left',
     color: 'white',
-    fontSize: 14,
+    fontSize: 16,
   },
   infoContainer: {
     top: -20,

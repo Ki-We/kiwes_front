@@ -1,11 +1,11 @@
 import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { TouchableOpacity, Image } from 'react-native';
-import { width, height } from '../../global';
+import {TouchableOpacity, Image} from 'react-native';
+import {width, height} from '../../global';
 import ChatMain from '../../pages/ChatMain';
 import MyPage from '../../pages/MyPage';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import HomeStack from './HomeStack';
 import WishPage from '../../pages/WishPage';
 import ClubDetail from '../../pages/ClubDetail';
@@ -55,7 +55,7 @@ const BottomTab = ({ navigation }: any) => {
               size={size}
             />
           ),
-          tabBarLabel: 'HomeStack',
+          tabBarLabel: 'Home',
         }}
       />
       <Tab.Screen
