@@ -66,10 +66,7 @@ export default function ClubList({navigation, selectedItem, type}: any) {
   };
 
   const navigateToClub = (clubId: any) => {
-    navigation.navigate('Home', {
-      screen: 'ClubDetail',
-      params: {clubId: clubId},
-    });
+    navigation.navigate('ClubDetail', {clubId});
   };
 
   const fetchCategory = (cursor: number) => {

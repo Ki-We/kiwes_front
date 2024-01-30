@@ -13,13 +13,14 @@ import  Icon  from 'react-native-vector-icons/Ionicons';
 import { RESTAPIBuilder } from '../utils/restapiBuilder';
 import { apiServer } from '../utils/metaData';
 import { Clipboard } from 'react-native';
-import { categoryList, langList } from '../utils/utils';
+import { categoryIcon, categoryList, langList } from '../utils/utils';
 import { GOOGLE_WEB_API_KIEY } from '../utils/googleConfig';
 import RoundCategory from '../components/atoms/roundCategory';
 import RoundBtn from '../components/atoms/roundBtn';
+import { height, width } from '../global';
 
 const ClubDetail = ({ route, navigation, type }) => {
-  const { selectedCategory } = route.params;
+  const { clubId } = route.params;
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
 
@@ -66,8 +67,8 @@ const ClubDetail = ({ route, navigation, type }) => {
   };
   
   useEffect(() => {
-    fetchClubDetail(selectedCategory);
-  }, [selectedCategory]);
+    fetchClubDetail(clubId);
+  }, [clubId]);
 
   const toggleJoin = () => {
     if (currentParticipants < maxParticipants && !isRecruitmentComplete) {
@@ -97,10 +98,10 @@ const ClubDetail = ({ route, navigation, type }) => {
     setIsMoreModalVisible((prev) => !prev);
   };
   const navigateToReviewPage = () => {
-    navigation.navigate('ReviewPage', { clubId: selectedCategory });
+    navigation.navigate('ReviewPage', { clubId: clubId });
   };
   const navigateToQnAPage = () => {
-    navigation.navigate('QnAPage', { clubId: selectedCategory });
+    navigation.navigate('QnAPage', { clubId: clubId });
   };
   const toggleLike = () => {
     setIsLiked((prev) => !prev);
@@ -113,7 +114,7 @@ const ClubDetail = ({ route, navigation, type }) => {
     }
     const baseInfo = clubInfo.baseInfo; 
     return (
-      <>
+      <View>
         <Text style={styles.titleText}>{baseInfo.title}</Text>
         {renderBtn(baseInfo.tags)}
         <View style={styles.sectionContainer}>
@@ -123,7 +124,7 @@ const ClubDetail = ({ route, navigation, type }) => {
           {renderSection('성별', baseInfo.gender)}
           {renderSection('장소', baseInfo.locationKeyword)}
         </View>
-      </>
+      </View>
     );
   };
   const renderLocationDetail = () => {
@@ -232,36 +233,35 @@ const ClubDetail = ({ route, navigation, type }) => {
         <Text style={styles.sectionText}>{text}</Text>
       </View>
     </View>
-  );
-  // const renderTags = (tags) => {
-  //   return (
-  //     <View style={styles.tagContainer}>
-  //       {tags.map((tag, index) => {
-  //         const tagUtil = categoryList.find(item => item.key === tag) || langList.find(item => item.key === tag);
-  //         return (
-  //           <Text key={index} style={styles.tag}>
-  //             {tagUtil ? tagUtil.text : 'Unknown'}
-  //           </Text>
-  //         );
-  //       })}
-  //     </View>
-  //   );
-  // };  
-const renderBtn = (tags: string[], text: string, type: string) => {
+  ); 
+  const renderTag = (key:string, type:string) => {
+    let text = 'UNDEFINED'
+    if ( type == 'category' ){ 
+      const category = categoryList.find(c => c.key === key);
+      text = category ? category.simple : 'UNDEFINED';
+    } else {
+      const lang = langList.find(c => c.key === key);
+      text = lang ? lang.text : 'UNDEFINED';
+    }
+
+    return (
+        <View style={styles.tag2}>
+        {type=='category' && <Image
+          resizeMode="contain"
+          source={categoryIcon[key]}
+          style={styles.image}
+        />}
+        <Text style={styles.tagText}>
+          {text}
+        </Text>
+      </View>
+    );
+  }
+const renderBtn = (tags: string[]) => {
   return (
-    <View style={styles.tagContainer}>
-      {tags.map((tag, index) => {
-        const tagUtil = categoryList.find(item => item.key === tag) || langList.find(item => item.key === tag);
-        return (
-          <View key={index} style={styles.tagWrapper}>
-            {type === 'category' ? (
-              <RoundCategory text={tagUtil ? tagUtil.text : 'Unknown'} isSelect={false} />
-            ) : (
-              <RoundBtn text={tagUtil ? tagUtil.text : 'Unknown'} isSelect={false} />
-            )}
-          </View>
-        );
-      })}
+    <View style={styles.tagContainer2}>
+      {renderTag(tags[0], 'category')}
+      {tags.slice(1).map((tag, index) => {return renderTag(tag, 'lang')})}
     </View>
   );
 };
@@ -354,7 +354,7 @@ const renderBtn = (tags: string[], text: string, type: string) => {
         </TouchableOpacity>
         <Text style={styles.likeCount}>{likeCount}</Text>
         </View>
-        <Text style={styles.sectionText}>{selectedCategory}</Text>
+        <Text style={styles.sectionText}>{clubId}</Text>
         <View style={styles.sectionContainer}>
         {renderClubDetail()}
         </View>
@@ -437,7 +437,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#303030',
     marginTop: 30,
-    marginBottom: 70,
+    marginBottom: 50,
     padding: 8,
   },
   sectionContainer: {
@@ -727,22 +727,27 @@ const styles = StyleSheet.create({
   tagWrapper: {
     marginRight: 5,
   },
-  tagContainer: {
+  tagContainer2: {
+    marginLeft: width * 5,
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginTop: 115,
-    marginRight: -5,
-    left: -165,
   },
-  tag: {
+  tag2: {
+    flexDirection: 'row',
+    height: height * 35,
     borderColor: '#9BD23C',
     borderWidth: 1,
+    borderRadius: 30,
+    justifyContent: 'center', // 세로 중앙 정렬
+    alignItems: 'center', // 가로 중앙 정렬
+    marginBottom: height * 20,
+    paddingHorizontal: width * 8,
+    marginRight: width * 10
+  },
+  tagText: {
     color: '#303030',
     paddingHorizontal: 10,
     paddingVertical: 5,
-    borderRadius: 15,
-    marginRight: 5,
-    marginBottom: 5,
   },
   locationTitleText: {
     fontSize: 16,
@@ -755,6 +760,11 @@ const styles = StyleSheet.create({
   },
   mapContainer: {
     marginTop: 10,
+  },
+  image: {
+    marginRight: width * 3,
+    width: width * 16,
+    height: width * 16,
   },
 });
 
