@@ -16,8 +16,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {RESTAPIBuilder} from '../utils/restapiBuilder';
 import {apiServer} from '../utils/metaData';
 import ClubListDetail from '../components/club/ClubListDetail';
-import { langList } from '../utils/utils';
-import { Dimensions } from 'react-native';
+import {langList} from '../utils/utils';
+import {Dimensions} from 'react-native';
 
 const categoriesImg = require('../../assets/images/category01.png');
 const bannerUrl = `${apiServer}/api/v1/banner`;
@@ -143,10 +143,10 @@ export function Home({navigation}: any) {
   };
 
   const navigateToClubDetail = (clubId): any => {
-    navigation.navigate('ClubDetail', {selectedCategory: clubId});
+    navigation.navigate('ClubDetail', {clubId: clubId});
   };
 
-  const renderLanguages = (languages) => {
+  const renderLanguages = languages => {
     return (
       <View style={styles.overlayContainer}>
         {languages.map((language, index) => {
@@ -161,7 +161,7 @@ export function Home({navigation}: any) {
     );
   };
 
-  renderClubLanguages = (languages) => {
+  renderClubLanguages = languages => {
     return (
       <View style={styles.infoContainer}>
         {languages.map((language, index) => {
@@ -197,16 +197,13 @@ export function Home({navigation}: any) {
     const toggleLike = () => {
       setIsLiked(prev => !prev);
     };
-    
+
     return (
       <TouchableOpacity onPress={() => navigateToClubDetail(clubId)}>
         <View style={styles.recommendedGroupsContainer}>
           <View style={styles.roundedRectangle}>
             <View style={styles.groupContent}>
-              <Image
-                source={image}
-                style={styles.groupImage}
-              />
+              <Image source={image} style={styles.groupImage} />
               <View style={styles.textContent}>
                 <View style={styles.infoContainer}>
                   <Text style={styles.groupTitle}>{title}</Text>
@@ -221,23 +218,23 @@ export function Home({navigation}: any) {
                   <Text style={styles.groupDetail}>{date}</Text>
                 </View>
                 <View style={styles.infoContainer}>
-                <Icon
-                  name="location-outline"
-                  size={14}
-                  color={'rgba(0, 0, 0, 0.7)'}
-                  style={styles.icon}
-                />
-                <Text style={styles.groupDetail}>{locationKeyword}</Text>
-              </View>
-              <View style={styles.infoContainer}>
-                <Icon
-                  name="globe"
-                  size={14}
-                  color={'rgba(0, 0, 0, 0.7)'}
-                  style={styles.icon}
-                />
-              <Text>{languages}</Text>
-              </View>
+                  <Icon
+                    name="location-outline"
+                    size={14}
+                    color={'rgba(0, 0, 0, 0.7)'}
+                    style={styles.icon}
+                  />
+                  <Text style={styles.groupDetail}>{locationKeyword}</Text>
+                </View>
+                <View style={styles.infoContainer}>
+                  <Icon
+                    name="globe"
+                    size={14}
+                    color={'rgba(0, 0, 0, 0.7)'}
+                    style={styles.icon}
+                  />
+                  <Text>{languages}</Text>
+                </View>
               </View>
               <TouchableOpacity
                 style={styles.RHeartContainer}
@@ -308,21 +305,30 @@ export function Home({navigation}: any) {
           onIndexChanged={(index: number) => setCurrentPage(index)}
           ref={popularGroupsRef}>
           {popularClubs.map((club: any, index: number) => (
-            <TouchableOpacity key={index} onPress={() => navigateToClubDetail(club.clubId)}>
+            <TouchableOpacity
+              key={index}
+              onPress={() => navigateToClubDetail(club.clubId)}>
               <View style={styles.popularGroupSlide}>
                 <View style={styles.imageContainer}>
-                <Image
-                source={{ uri: club.thumbnailImage }}
-                style={styles.popularGroupsImage}
-                resizeMode="cover"
-              />
-              <Image source={require('../../assets/images/basicProfileImage.png')} style={styles.titleImage} />
+                  <Image
+                    source={{uri: club.thumbnailImage}}
+                    style={styles.popularGroupsImage}
+                    resizeMode="cover"
+                  />
+                  <Image
+                    source={require('../../assets/images/basicProfileImage.png')}
+                    style={styles.titleImage}
+                  />
                   <View style={styles.overlayContainer}>
-                  <Text style={styles.overlayText1}>{club.title}</Text>
+                    <Text style={styles.overlayText1}>{club.title}</Text>
                     <View style={styles.overlayTextContainer}>
-                      <Text style={styles.overlayText}>{convertDate(club.date)}</Text>
+                      <Text style={styles.overlayText}>
+                        {convertDate(club.date)}
+                      </Text>
                       <View style={styles.overlayTextContainer2}>
-                        <Text style={styles.overlayText2}>{club.locationKeyword}</Text>
+                        <Text style={styles.overlayText2}>
+                          {club.locationKeyword}
+                        </Text>
                       </View>
                       <Text>{renderLanguages(club.languages)}</Text>
                     </View>
@@ -331,9 +337,15 @@ export function Home({navigation}: any) {
                     style={styles.PHeartContainer}
                     onPress={() => togglePopularClubLike(club.clubId)}>
                     <Icon
-                      name={popularClubLikes[club.clubId] ? 'heart' : 'heart-outline'}
+                      name={
+                        popularClubLikes[club.clubId]
+                          ? 'heart'
+                          : 'heart-outline'
+                      }
                       size={24}
-                      color={popularClubLikes[club.clubId] ? 'green' : '#58C047'}
+                      color={
+                        popularClubLikes[club.clubId] ? 'green' : '#58C047'
+                      }
                     />
                   </TouchableOpacity>
                 </View>
@@ -367,7 +379,7 @@ export function Home({navigation}: any) {
             {popularClubs.map((club: any, index: number) => (
               <View key={index}>
                 <RecommendedGroup
-                  image={{ uri: club.thumbnailImage }}
+                  image={{uri: club.thumbnailImage}}
                   title={club.title}
                   date={convertDate(club.date)}
                   locationKeyword={club.locationKeyword}

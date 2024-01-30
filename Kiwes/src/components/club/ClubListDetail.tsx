@@ -44,7 +44,6 @@ export default function ClubListDetail({type, navigation}: any) {
     return type == 'category' ? (
       <RoundCategory
         id={key}
-        // text={text}
         isSelect={false}
         onPress={() => handlePress(key)}
       />
