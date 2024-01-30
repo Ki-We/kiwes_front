@@ -13,6 +13,7 @@ import {
   TouchableWithoutFeedback,
   TouchableOpacity,
 } from 'react-native';
+import RNFS from 'react-native-fs';
 import {apiServer} from '../utils/metaData';
 import {RESTAPIBuilder} from '../utils/restapiBuilder';
 import {launchImageLibrary} from 'react-native-image-picker';
@@ -20,6 +21,7 @@ import backIcon from 'react-native-vector-icons/Ionicons';
 import cameraIcon from 'react-native-vector-icons/FontAwesome';
 import {width, height} from '../global';
 import ProfileImageUploadModal from '../components/ProfileImageUploadModal';
+import {Buffer} from 'buffer';
 
 const imagePickerOption = {
   mediaType: 'photo',
@@ -27,20 +29,16 @@ const imagePickerOption = {
   maxHeight: 768,
   includeBase64: Platform.OS === 'android',
 };
-
 let imagePath =
-  'https://s3-alpha-sig.figma.com/img/747c/b110/aab5c4d20ab8d710ceb49bd7c856a200?Expires=1705881600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=GBFZIQeb4if4jqWM37ljfqdQ3UR9wVwmkTAT1fhiw9jYxQ4pJcrkJ1E0Cb6rlTpsWBhc1yE7~zOdp~IEmkbgUftW1KGWvQFZMnNKUlAJYQOR5qELZt4dnD-m7vO0Roe8tjP~l78gPKSeBDVVTZMwc~b07y56xkXhteN6hNjFhScCyveSqcN9sR1sYbdM98xQyqhLeMJwgO4yRo0~mfyYkv~KzERjeKd179tW9KIDDHln9TMmYTXxe6v~L7Z4o69BkOTB~19-sug~2SdyfvK4MuBlhSefC6O1FywLjHhmUNlOkBab~cAI4gqEa2Ms8OGyNkOzW0kMs4xDkDZPZnYcWQ__';
+  'https://s3-alpha-sig.figma.com/img/747c/b110/aab5c4d20ab8d710ceb49bd7c856a200?Expires=1707091200&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=RwnEfVVa6Vt2Drr4~v8aHdrXf42XiLwhO9tooS1b1La~cSbirqZ73z00gRIZ7YpuJRCv~dAGuayDgM5nYEiYa81SJf39zlSksEzdD01iQ9Xu~KilPwubhwlHDrQTgYuqORLF6-6sut-H8CMGBdu98z4JUKQWFdvo0SSxhhgSTOXGm3br26u~RITGwkvFnjcLP5LKvFVhCDsbB70wnPM2Z7YbYb9OhY2oFTbGjc7xmJAw6B5HmzdHXE4Ahb6cgkP-IbdtNXjUtBKXkRXqD-SZPgz4b~5nT9lX3WkvrkI4JkA-8P5mqpxUH7M2lX51jVzWTyLZrbvDbW4GPLw6auYzvA__';
 
-const ProfileSettingPage = ({navigation}) => {
-  const [response, setResponse] = useState('');
-  const [imageFile, setImageFile] = useState(imagePath);
+const ProfileSettingPage = ({route, navigation}) => {
+  const {thumbnailImage, myIntroduction} = route.params;
+  const [imageFile, setImageFile] = useState(thumbnailImage);
   const onPickImage = response => {
     if (response.didCancel || !response) {
       return;
     }
-    // console.log('PickImage', res);
-    console.log(response);
-    setResponse(response);
     setImageFile(response.assets[0].uri);
   };
   const setImageBasic = () => {
@@ -58,19 +56,49 @@ const ProfileSettingPage = ({navigation}) => {
     }
   };
 
+  const profileImageSubmit = async () => {
+    const url = `${apiServer}/mypage/profileImg`;
+    const presignedResponse = await new RESTAPIBuilder(url, 'GET')
+      .setNeedToken(true)
+      .build()
+      .run()
+      .catch(err => {
+        console.log(err);
+      });
+    const presignedUrl = presignedResponse.data;
+    console.log('presignedUrl: ', presignedUrl);
+    // Read the file and convert it to binary
+    console.log('imageFile: ', imageFile);
+    const imageData = await RNFS.readFile(imageFile, 'base64');
+    const binaryData = new Buffer(imageData, 'base64');
+
+    const uploadResponse = await fetch(presignedUrl, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'image/jpeg',
+      },
+      body: binaryData,
+    });
+    console.log(uploadResponse);
+    if (!uploadResponse.ok) {
+      const errorMessage = await uploadResponse.text();
+      console.log(errorMessage);
+    }
+  };
+
   //////////////////////////////////////////////////////////////////////////// 자기소개
 
-  const [introduction, setIntroduction] = useState('');
+  const [introduction, setIntroduction] = useState(myIntroduction);
   const [keyboardStatus, setKeyboardStatus] = useState('20');
 
-  // const buffer = new Buffer(introduction, 'utf-8');
-  // const byteLength = 150 - buffer.length;
+  const buffer = new Buffer(introduction, 'utf-8');
+  const byteLength = 150 - buffer.length;
 
   const handleTextChange = inputText => {
-    // const inputBuffer = new Buffer(inputText, 'utf-8');
-    // if (inputBuffer.length <= 150) {
-    //   setIntroduction(inputText);
-    // }
+    const inputBuffer = new Buffer(inputText, 'utf-8');
+    if (inputBuffer.length <= 150) {
+      setIntroduction(inputText);
+    }
   };
 
   useEffect(() => {
@@ -87,20 +115,26 @@ const ProfileSettingPage = ({navigation}) => {
     };
   }, []);
 
-  // const settingComplete = async () => {
-  //   const url = `${apiServer}/mypage/introduction`;
-  //   const {data} = await new RESTAPIBuilder(url, 'POST')
-  //     .build()
-  //     .run()
-  //     .catch(err => {
-  //       console.log(err);
-  //     });
-  //   console.log(data);
-  //   avigation.pop();
-  // };
-
-  const settingComplete = () => {
+  const introductionSubmit = async () => {
+    const url = `${apiServer}/mypage/introduction`;
+    await new RESTAPIBuilder(url, 'POST')
+      .setNeedToken(true)
+      .setBody(introduction)
+      .build()
+      .run()
+      .then(({data}) => {
+        console.log(data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    console.log(introduction);
     navigation.pop();
+  };
+
+  const settingComplete = async () => {
+    await profileImageSubmit();
+    await introductionSubmit();
   };
 
   return (
@@ -147,8 +181,8 @@ const ProfileSettingPage = ({navigation}) => {
                 <View
                   style={{
                     position: 'absolute',
-                    top: height * 105,
-                    left: width * 90,
+                    top: height * 120,
+                    left: width * 120,
                     height: height * 50,
                     width: width * 50,
                   }}>
@@ -172,6 +206,12 @@ const ProfileSettingPage = ({navigation}) => {
                   padding: 5,
                 }}>
                 <Text style={styles.mainText}>자기소개 (선택)</Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    console.log(imageFile);
+                  }}>
+                  <Text>check</Text>
+                </TouchableOpacity>
               </View>
               <View>
                 <View style={styles.inputContainer}>
@@ -248,7 +288,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   image: {
-    width: width * 120,
+    width: width * 140,
     height: height * 140,
     borderRadius: 90,
     justifyContent: 'center',
@@ -258,7 +298,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#000000',
     borderRadius: 25,
     width: width * 30,
-    height: height * 35,
+    height: height * 30,
   },
   inputContainer: {
     padding: 15,

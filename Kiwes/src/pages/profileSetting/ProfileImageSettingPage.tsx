@@ -31,10 +31,11 @@ const ProfilePictureSettingPage = ({navigation}) => {
     if (response.didCancel || !response) {
       return;
     }
-    // console.log('PickImage', res);
     console.log(response);
     setResponse(response);
+    console.log('Image Uri : ', response.assets[0].uri);
     setImageFile(response.assets[0].uri);
+    console.log('ImageFile : ', imageFile);
   };
   const setImageBasic = () => {
     setImageFile(imagePath);

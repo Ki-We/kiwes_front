@@ -3,7 +3,8 @@ import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {width, height} from '../../global';
 import backIcon from 'react-native-vector-icons/Ionicons';
 
-const GenderSettingPage = ({navigation}) => {
+const GenderSettingPage = ({route, navigation}) => {
+  const {nickname} = route.params;
   const [selectedGender, setSelectedGender] = useState(null);
 
   const handleGenderSelection = gender => {
@@ -23,7 +24,10 @@ const GenderSettingPage = ({navigation}) => {
   );
 
   const handleNext = () => {
-    navigation.navigate('BirthdaySettingPage');
+    navigation.navigate('BirthdaySettingPage', {
+      nickname: nickname,
+      gender: selectedGender,
+    });
   };
 
   return (
@@ -62,11 +66,11 @@ const GenderSettingPage = ({navigation}) => {
       </View>
       <View style={styles.mainContainer}>
         <View style={styles.radioButtonContainer}>
-          {renderRadioButton('남성')}
+          {renderRadioButton('MALE')}
           <Text>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;남</Text>
         </View>
         <View style={styles.radioButtonContainer}>
-          {renderRadioButton('여성')}
+          {renderRadioButton('FEMALE')}
           <Text>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;여</Text>
         </View>
       </View>

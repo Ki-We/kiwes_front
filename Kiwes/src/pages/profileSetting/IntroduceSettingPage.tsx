@@ -14,19 +14,21 @@ import {width, height} from '../../global';
 import {apiServer} from '../../utils/metaData';
 import {RESTAPIBuilder} from '../../utils/restapiBuilder';
 import backIcon from 'react-native-vector-icons/Ionicons';
+import {Buffer} from 'buffer';
 
-const IntroduceSettingPage = ({navigation}) => {
+const IntroduceSettingPage = ({route, navigation}) => {
+  const {nickname, gender, birthday} = route.params;
   const [introduction, setIntroduction] = useState('');
   const [keyboardStatus, setKeyboardStatus] = useState('20');
 
-  // const buffer = new Buffer(introduction, 'utf-8');
-  // const byteLength = 150 - buffer.length;
+  const buffer = new Buffer(introduction, 'utf-8');
+  const byteLength = 150 - buffer.length;
 
   const handleTextChange = inputText => {
-    // const inputBuffer = new Buffer(inputText, 'utf-8');
-    // if (inputBuffer.length <= 150) {
-    //   setIntroduction(inputText);
-    // }
+    const inputBuffer = new Buffer(inputText, 'utf-8');
+    if (inputBuffer.length <= 150) {
+      setIntroduction(inputText);
+    }
   };
 
   useEffect(() => {
@@ -44,7 +46,12 @@ const IntroduceSettingPage = ({navigation}) => {
   }, []);
 
   const handleNext = () => {
-    navigation.navigate('BottomTab');
+    navigation.navigate('NationSettingPage', {
+      nickname: nickname,
+      gender: gender,
+      birthday: birthday,
+      introduction: introduction,
+    });
   };
 
   return (

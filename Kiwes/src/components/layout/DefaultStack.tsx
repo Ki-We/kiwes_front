@@ -25,6 +25,9 @@ import NationDetailSettingPage from '../../pages/basicSetting/NationDetailSettin
 import InterestLanguageSettingPage from '../../pages/basicSetting/InterestLanguageSettingPage';
 import InterestTopicSettingPage from '../../pages/basicSetting/InterestTopicSettingPage';
 import ProfileSettingPage from '../../pages/ProfileSettingPage';
+import ChatTest from '../../pages/ChatTest';
+import ChatRoom from '../../pages/ChatRoom';
+import UploadImageTest from '../UploadImageTest';
 
 const LoginStack = () => {
   useEffect(() => {
@@ -97,6 +100,9 @@ const LoginStack = () => {
         <Stack.Screen name="EventPage" component={Event} />
         <Stack.Screen name="ReviewPage" component={ReviewPage} />
         <Stack.Screen name="QnAPage" component={QnAPage} />
+        <Stack.Screen name="ChatTest" component={ChatTest} />
+        <Stack.Screen name="ChatRoom" component={ChatRoom} />
+        <Stack.Screen name="UploadImageTest" component={UploadImageTest} />
       </Stack.Navigator>
     </NavigationContainer>
   );
