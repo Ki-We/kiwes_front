@@ -1,0 +1,2 @@
+export const PROFILE_CHANGE = 'PROFILE_CHANGE';
+export const PROFILE_CACHE = 'PROFILE_CACHE';
