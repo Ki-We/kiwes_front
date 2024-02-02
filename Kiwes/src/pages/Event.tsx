@@ -1,16 +1,15 @@
 import React from 'react';
-import { View,Text, Image, StyleSheet, Dimensions, ScrollView } from 'react-native';
+import { View, Text, Image, StyleSheet, Dimensions, ScrollView } from 'react-native';
 
-
-const eventImage = require('../../assets/images/event.png');
 const windowWidth = Dimensions.get('window').width;
 
-const Event = ({route}: any) => {
-  const {eventId} = route.params;
+const Event = ({ route }: any) => {
+  const { eventId, imageUrl } = route.params;
+
   return (
     <ScrollView contentContainerStyle={styles.scrollView}>
+      {imageUrl && <Image source={{ uri: imageUrl }} style={styles.eventImage} />}
       <Text style={styles.color}>{eventId}</Text>
-      {/* <Image source={eventImage} style={styles.eventImage} /> */}
     </ScrollView>
   );
 };
@@ -23,13 +22,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   eventImage: {
+    zIndex: 1,
     width: windowWidth,
-    height: undefined,
-    aspectRatio: 16 / 35,
+    height: 900,
     resizeMode: 'cover',
   },
   color: {
-    color: 'black',
+    color: 'white',
   },
 });
 

@@ -69,6 +69,7 @@ const ProfileSettingPage = ({route, navigation}) => {
     console.log('presignedUrl: ', presignedUrl);
     // Read the file and convert it to binary
     console.log('imageFile: ', imageFile);
+
     const imageData = await RNFS.readFile(imageFile, 'base64');
     const binaryData = new Buffer(imageData, 'base64');
 

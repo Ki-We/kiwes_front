@@ -62,7 +62,7 @@ export function MyPage({navigation}: any) {
   });
 
   const navigateToClub = (clubId: any) => {
-    navigation.navigate('ClubPage', {clubId: clubId});
+    navigation.navigate('ClubDetail', {clubId: clubId});
   };
   const initialize = async () => {
     const url = `${apiServer}/mypage`;
@@ -74,7 +74,7 @@ export function MyPage({navigation}: any) {
 
     if (data) {
       setMyPageInfo(data);
-      // console.log('Mypage : ', data);
+      console.log('Mypage : ', data);
     }
   };
   const getParticipatedClubInfo = async () => {
@@ -189,7 +189,7 @@ export function MyPage({navigation}: any) {
           size={25}
           onPress={() => {
             navigation.navigate('ProfileSettingPage', {
-              thumbnailImage: myPageInfo.profileImage,
+              thumbnailImage: myPageInfo.profileImage + '?' + new Date(),
               myIntroduction: myPageInfo.introduction,
             });
             console.log(myPageInfo.profileImage);
@@ -211,7 +211,7 @@ export function MyPage({navigation}: any) {
         <View>
           <Image
             source={{
-              uri: 'https://kiwes2-bucket.s3.ap-northeast-2.amazonaws.com/profileimg/kiwes9899@gmail.com.jpg',
+              uri: myPageInfo.profileImage + '?' + new Date(),
             }}
             style={styles.image}
             resizeMode="cover"
@@ -284,9 +284,7 @@ export function MyPage({navigation}: any) {
                   <TouchableOpacity
                     activeOpacity={0.5}
                     onPress={() => {
-                      navigation.navigate('ClubDetail', {
-                        selectedCategory: club.clubId,
-                      });
+                      navigation.navigate('ClubDetail', {clubId: club.clubId});
                     }}>
                     <Image
                       source={{uri: club.thumbnailImage}}
@@ -307,7 +305,7 @@ export function MyPage({navigation}: any) {
             />
           </SafeAreaView>
         ) : (
-          <View>
+          <View style={{marginBottom: 20}}>
             {reviewList?.map((review: ReviewList) => {
               return (
                 <ScrollView>
@@ -380,7 +378,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   mainContainer: {
-    height: height * 350,
+    // height: height * 100,
   },
   participatedClubIconContainer: {
     flexDirection: 'row',

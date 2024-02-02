@@ -261,14 +261,14 @@ const styles = StyleSheet.create({
   selected: {
     borderColor: '#9BD23C',
     borderWidth: 6,
-    width: width * 80,
+    width: width * 100,
     height: height * 100,
-    borderRadius: 50,
+    borderRadius: 70,
     justifyContent: 'center',
     alignItems: 'center',
   },
   image: {
-    width: width * 70,
+    width: width * 90,
     height: height * 90,
     borderRadius: 50,
     justifyContent: 'center',

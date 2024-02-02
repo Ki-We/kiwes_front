@@ -31,6 +31,9 @@ export interface ClubMember {
 }
 export interface BoardPost {
   locationKeyword: string;
+  location: string;
+  latitude: number;
+  longitude: number;
   clubId: string;
   title: string;
   thumbnailImage: string;

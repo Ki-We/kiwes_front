@@ -62,7 +62,7 @@ const PostClubStep = ({
       console.log('post club err2 : ', err);
     });
     console.log(`${data.clubId} 모임 이미지 업로드 완료`);
-    navigation.navigate('ClubDetail', {selectedCategory: data.clubId});
+    navigation.navigate('ClubDetail', {clubId: data.clubId});
   };
   const uploadClubImage = async (clubId: number) => {
     if (!post.imageSource || typeof post.imageSource === 'number') {

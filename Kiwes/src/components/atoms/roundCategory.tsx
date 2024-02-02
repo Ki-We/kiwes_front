@@ -1,8 +1,13 @@
 import React from 'react';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import {height, width} from '../../global';
+import {categoryIcon, categoryList} from '../../utils/utils';
 
-export default function RoundBtn({text, isSelect, onPress}: any) {
+export default function RoundCategory({id, isSelect, onPress}: any) {
+  // if (text == '')
+  const category = categoryList.find(c => c.key === id);
+  const simple = category ? category.simple : 'UNDEFINED';
+
   return (
     <Pressable
       style={() => [
@@ -13,12 +18,17 @@ export default function RoundBtn({text, isSelect, onPress}: any) {
       ]}
       onPress={onPress}>
       <View style={styles.buttonContent}>
+        <Image
+          resizeMode="contain"
+          source={categoryIcon[id]}
+          style={styles.image}
+        />
         <Text
           style={{
             ...styles.text,
             color: isSelect ? '#ffffff' : '#303030',
           }}>
-          {text}
+          {simple}
         </Text>
       </View>
     </Pressable>
@@ -38,13 +48,21 @@ const styles = StyleSheet.create({
     paddingRight: width * 10,
   },
   buttonContent: {
-    justifyContent: 'center', // 세로 중앙 정렬
-    alignItems: 'center', // 가로 중앙 정렬
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
     height: '100%',
   },
   text: {
+    marginBottom: width * 3,
     fontFamily: 'Pretendard',
     fontWeight: '300',
     fontSize: width * 13,
+  },
+  image: {
+    marginRight: width * 3,
+    width: width * 16,
+    height: width * 16,
   },
 });

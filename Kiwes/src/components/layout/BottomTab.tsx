@@ -6,7 +6,7 @@ import {width, height} from '../../global';
 import ChatMain from '../../pages/ChatMain';
 import MyPage from '../../pages/MyPage';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import EventStack from './EventStack';
+import HomeStack from './HomeStack';
 import WishPage from '../../pages/WishPage';
 import ClubDetail from '../../pages/ClubDetail';
 import PostClub from '../../pages/PostClub';
@@ -23,12 +23,12 @@ ClubDetail.navigationOptions = ({ navigation }) => {
   };
 };
 
-const BottomTab = ({navigation}: any) => {
+const BottomTab = ({ navigation }: any) => {
   const insets = useSafeAreaInsets();
   const onPress = () => navigation.navigate('CreateMeeting');
   return (
     <Tab.Navigator
-      initialRouteName="Home"
+      initialRouteName="Main"
       screenOptions={{
         tabBarStyle: {
           height: height * 65 + insets.bottom,
@@ -44,14 +44,18 @@ const BottomTab = ({navigation}: any) => {
         headerShown: false,
       }}>
       <Tab.Screen
-        name="Home"
-        component={EventStack}
+        name="HomeStack"
+        component={HomeStack}
         options={{
-          title: 'HOME',
-          tabBarIcon: ({color, size}) => (
-            <Icon name={color === '#58C047' ? 'home' : 'home-outline'} color={color} size={size} />
+          title: 'HomeStack',
+          tabBarIcon: ({ color, size }) => (
+            <Icon
+              name={color === '#58C047' ? 'home' : 'home-outline'}
+              color={color}
+              size={size}
+            />
           ),
-          tabBarLabel: 'HOME',
+          tabBarLabel: 'Home',
         }}
       />
       <Tab.Screen
@@ -59,8 +63,12 @@ const BottomTab = ({navigation}: any) => {
         component={WishPage}
         options={{
           title: 'WISH',
-          tabBarIcon: ({color, size}) => (
-            <Icon name={color === '#58C047' ? 'heart' : 'heart-outline'} color={color} size={size} />
+          tabBarIcon: ({ color, size }) => (
+            <Icon
+              name={color === '#58C047' ? 'heart' : 'heart-outline'}
+              color={color}
+              size={size}
+            />
           ),
         }}
       />
@@ -90,8 +98,16 @@ const BottomTab = ({navigation}: any) => {
         options={{
           headerShown: false,
           title: 'CHAT',
-          tabBarIcon: ({color, size}) => (
-            <Icon name={color === '#58C047' ? 'chatbox-ellipses' : 'chatbox-ellipses-outline'} color={color} size={size} />
+          tabBarIcon: ({ color, size }) => (
+            <Icon
+              name={
+                color === '#58C047'
+                  ? 'chatbox-ellipses'
+                  : 'chatbox-ellipses-outline'
+              }
+              color={color}
+              size={size}
+            />
           ),
         }}
       />
@@ -100,8 +116,12 @@ const BottomTab = ({navigation}: any) => {
         component={MyPage}
         options={{
           title: 'MY',
-          tabBarIcon: ({color, size}) => (
-            <Icon name={color === '#58C047' ? 'person' : 'person-outline'} color={color} size={size} />
+          tabBarIcon: ({ color, size }) => (
+            <Icon
+              name={color === '#58C047' ? 'person' : 'person-outline'}
+              color={color}
+              size={size}
+            />
           ),
         }}
       />

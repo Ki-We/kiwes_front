@@ -1,8 +1,13 @@
 import React from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {height, width} from '../../global';
+import {langList} from '../../utils/utils';
 
-export default function RoundBtn({text, isSelect, onPress}: any) {
+export default function RoundBtn({id = '', text, isSelect, onPress}: any) {
+  if (id != '') {
+    const lang = langList.find(c => c.key === id);
+    text = lang?.text;
+  }
   return (
     <Pressable
       style={() => [
