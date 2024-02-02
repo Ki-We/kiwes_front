@@ -18,6 +18,7 @@ import {apiServer} from '../utils/metaData';
 import ClubListDetail from '../components/club/ClubListDetail';
 import {langList} from '../utils/utils';
 import {Dimensions} from 'react-native';
+import {height, width} from '../global';
 
 const categoriesImg = require('../../assets/images/category01.png');
 const bannerUrl = `${apiServer}/api/v1/banner`;
@@ -315,13 +316,40 @@ export function Home({navigation}: any) {
                     style={styles.popularGroupsImage}
                     resizeMode="cover"
                   />
-                  <Image
-                    source={require('../../assets/images/basicProfileImage.png')}
-                    style={styles.titleImage}
-                  />
-                  <View style={styles.overlayContainer}>
-                    <Text style={styles.overlayText1}>{club.title}</Text>
-                    <View style={styles.overlayTextContainer}>
+                  <View style={styles.titleContainer}>
+                    <Image
+                      source={require('../../assets/images/basicProfileImage.png')}
+                      style={styles.titleImage}
+                    />
+                    <View style={styles.titleTextContainer}>
+                      <Text style={styles.titleText}>{club.title}</Text>
+                    </View>
+                  </View>
+                  <View style={styles.overlayAddInfo}>
+                    <View
+                      style={[styles.overlayCommonItem, styles.overlayItem1]}>
+                      <Text style={styles.overlayItemText}>
+                        {convertDate(club.date)}
+                      </Text>
+                    </View>
+                    <View
+                      style={[styles.overlayCommonItem, styles.overlayItem2]}>
+                      <Text style={styles.overlayItemText}>
+                        {club.locationKeyword}
+                      </Text>
+                    </View>
+                    <View
+                      style={[styles.overlayCommonItem, styles.overlayItem3]}>
+                      <Text style={styles.overlayItemText}>
+                        {club.languages.slice(0, 1).map(l => {
+                          const lang = langList.find(item => item.key === l);
+                          return lang ? lang.text : 'UNDEFINED';
+                        })}
+                      </Text>
+                    </View>
+                  </View>
+                  {/* <View style={styles.overlayContainer}>
+                    <View>
                       <Text style={styles.overlayText}>
                         {convertDate(club.date)}
                       </Text>
@@ -332,7 +360,7 @@ export function Home({navigation}: any) {
                       </View>
                       <Text>{renderLanguages(club.languages)}</Text>
                     </View>
-                  </View>
+                  </View> */}
                   <TouchableOpacity
                     style={styles.PHeartContainer}
                     onPress={() => togglePopularClubLike(club.clubId)}>
@@ -573,14 +601,65 @@ const styles = StyleSheet.create({
     bottom: 10,
     right: 10,
   },
+  titleContainer: {
+    flexDirection: 'row',
+    top: -340,
+    left: 10,
+    alignContent: 'center',
+    textAlign: 'center',
+    textAlignVertical: 'center',
+  },
   titleImage: {
     width: 50,
     height: 50,
-    top: -340,
-    left: 10,
+  },
+  titleTextContainer: {
+    flex: 1,
+    marginLeft: width * 6,
+    justifyContent: 'center',
+    paddingBottom: height * 8,
+  },
+  titleText: {
+    textAlign: 'left',
+    color: 'white',
+    fontSize: height * 16,
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+    textShadowOffset: {width: -1, height: 1},
+    textShadowRadius: 10,
   },
   overlayTextContainer2: {
     marginVertical: 5,
+  },
+  overlayAddInfo: {
+    position: 'absolute',
+    flex: 1,
+    bottom: 70,
+    left: 15,
+  },
+  overlayCommonItem: {
+    paddingHorizontal: width * 10,
+    paddingVertical: height * 3,
+    marginVertical: height * 3,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 30,
+  },
+  overlayItem1: {
+    backgroundColor: '#B4DD6D',
+  },
+  overlayItem2: {
+    backgroundColor: '#FFFFD8',
+  },
+  overlayLanguage: {
+    flexDirection: 'row',
+  },
+  overlayItem3: {
+    backgroundColor: '#B4DD6D',
+  },
+  overlayItemText: {
+    textAlign: 'center',
+    color: '#303030',
+    fontSize: height * 12,
   },
   overlayContainer: {
     position: 'absolute',
@@ -590,7 +669,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     justifyContent: 'center',
     alignItems: 'center',
-    marginVertical: 5,
+    marginVertical: height * 10,
   },
   overlayText: {
     width: 65,

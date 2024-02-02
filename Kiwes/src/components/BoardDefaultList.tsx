@@ -227,19 +227,21 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
   },
   title: {
-    fontSize: height * 18,
+    fontSize: height * 16,
     fontWeight: 'bold',
     color: 'rgba(0, 0, 0, 1)',
-    marginBottom: 3,
+    marginBottom: height * 5,
   },
   infoContainer: {
+    paddingBottom: height * 3,
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
   },
   info: {
+    fontSize: height * 11,
     color: 'rgba(0, 0, 0, 0.8)',
-    marginLeft: 5,
+    marginLeft: width * 10,
   },
 });
 export default BoardDefaultList;
