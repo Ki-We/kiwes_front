@@ -14,24 +14,25 @@ import {width, height} from '../../global';
 import {apiServer} from '../../utils/metaData';
 import {RESTAPIBuilder} from '../../utils/restapiBuilder';
 import backIcon from 'react-native-vector-icons/Ionicons';
+import {Buffer} from 'buffer';
 
 const NickNameSettingPage = ({navigation}) => {
   const [nickname, setNickname] = useState('');
   const [keyboardStatus, setKeyboardStatus] = useState('20');
   const [checkStatus, setCheckStatus] = useState('');
 
-  // const buffer = new Buffer(nickname, 'utf-8');
-  // const byteLength = () => {
-  //   return 15 - buffer.length;
-  // };
-  // const lastNickName = nickname.slice(0, -1);
+  const buffer = new Buffer(nickname, 'utf-8');
+  const byteLength = () => {
+    return 15 - buffer.length;
+  };
+
   const handleTextChange = inputText => {
     // 한글 영어 숫자 가능하려면 /[^\w\dㄱ-ㅎㅏ-ㅣ가-힣]/g, '' 입력
-    // const inputBuffer = new Buffer(inputText, 'utf-8');
-    // const filteredText = inputText.replace(/[^a-zA-Z가-힣]/g, '');
-    // if (inputBuffer.length <= 15) {
-    //   setNickname(filteredText);
-    // }
+    const inputBuffer = new Buffer(inputText, 'utf-8');
+    const filteredText = inputText.replace(/[^a-zA-Z가-힣]/g, '');
+    if (inputBuffer.length <= 15) {
+      setNickname(filteredText);
+    }
   };
   const refreshCheckStatus = () => {
     setCheckStatus('');
@@ -53,23 +54,28 @@ const NickNameSettingPage = ({navigation}) => {
 
   const handleNext = () => {
     // 다음 화면으로 이동
-    navigation.navigate('GenderSettingPage');
+    navigation.navigate('GenderSettingPage', {
+      nickname: nickname,
+    });
   };
-  //////////////////////////////////////////////////////////////////////////
-  const check = () => {
-    nickname === '' ? setCheckStatus('false') : setCheckStatus('true');
-  };
-  ///////////////////////////////////////////////////////////////////////////
+
   const checkNinkName = async () => {
     const url = `${apiServer}/nickname`;
-    const {data} = await new RESTAPIBuilder(url, 'POST')
+    await new RESTAPIBuilder(url, 'POST')
+      .setNeedToken(true)
+      .setBody(nickname)
       .build()
       .run()
+      .then(({data}) => {
+        console.log(data);
+        data === '사용 가능한 닉네임입니다'
+          ? setCheckStatus('true')
+          : setCheckStatus('false');
+        console.log(nickname);
+      })
       .catch(err => {
         console.log(err);
       });
-    data === true ? setCheckStatus('true') : setCheckStatus('false');
-    console.log(data);
   };
 
   return (
@@ -126,7 +132,7 @@ const NickNameSettingPage = ({navigation}) => {
               <View>
                 <TouchableOpacity
                   onPress={() => {
-                    check();
+                    checkNinkName();
                     Keyboard.dismiss();
                   }}
                   style={styles.checkButton}>

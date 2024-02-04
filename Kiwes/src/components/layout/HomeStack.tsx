@@ -17,10 +17,17 @@ const HomeStack = () => {
   }, []);
 
   const CustomHeader = () => (
-  <Image
-    source={require('../../../assets/images/logo.png')}
-    style={{width: 130, height: 60}}
-  />
+    <Image
+      source={require('../../../assets/images/logo.png')}
+      style={{width: 130, height: 60}}
+    />
+  );
+
+  const CustomHeader = () => (
+    <Image
+      source={require('../../../assets/images/logo.png')}
+      style={{width: 130, height: 60}}
+    />
   );
 
   const checkLoginState = async () => {
@@ -66,12 +73,12 @@ const HomeStack = () => {
       <Stack.Screen
         name="ReviewPage"
         component={ReviewPage}
-        options={{ headerShown: false }}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="ChatRoom"
         component={ChatRoom}
-        options={{ headerShown: false }}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="Event"

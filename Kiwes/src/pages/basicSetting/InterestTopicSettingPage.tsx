@@ -8,6 +8,9 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
+import {apiServer} from '../../utils/metaData';
+import {RESTAPIBuilder} from '../../utils/restapiBuilder';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {width, height} from '../../global';
 import backIcon from 'react-native-vector-icons/Ionicons';
 
@@ -28,8 +31,11 @@ const images = [
   require('../../../assets/images/other.png'),
 ];
 
-const InterestTopicSettingPage = ({navigation}) => {
+const InterestTopicSettingPage = ({route, navigation}) => {
+  const {nickname, gender, birthday, introduction, nation, interestLanguages} =
+    route.params;
   const [checkedBoxes, setCheckedBoxes] = useState([]);
+  const [selectedTopics, setSelectedTopics] = useState([]);
   const checkBoxValues = [
     'K-pop',
     '한국문화',
@@ -46,17 +52,74 @@ const InterestTopicSettingPage = ({navigation}) => {
     '봉사활동',
     '기타',
   ];
+  const topicCodeMap = {
+    'K-pop': 'KPOP',
+    한국문화: 'KOREAN_CULTURE',
+    '맛집/카페': 'CAFE',
+    스포츠: 'SPORTS',
+    '문화/전시/공연': 'CULTURE',
+    여행: 'TRAVEL',
+    스터디: 'STUDY',
+    '게임/보드게임': 'GAME',
+    '파티/클럽': 'PARTY',
+    술: 'DRINK',
+    '영화/드라마/애니': 'MOVIE',
+    '공예/그림': 'CRAFT',
+    봉사활동: 'VOLUNTEER',
+    기타: 'OTHER',
+  };
+  const valueToCodeMap = value => {
+    const selectedTopicCode = topicCodeMap[value];
+    return selectedTopicCode;
+  };
   const toggleCheckbox = value => {
-    const isChecked = checkedBoxes.includes(value);
+    const isChecked =
+      checkedBoxes.includes(value) &&
+      selectedTopics.includes(valueToCodeMap(value));
     if (isChecked) {
       setCheckedBoxes(checkedBoxes.filter(box => box !== value));
+      setSelectedTopics(
+        selectedTopics.filter(box => box !== valueToCodeMap(value)),
+      );
     } else {
       setCheckedBoxes([...checkedBoxes, value]);
+      setSelectedTopics([...selectedTopics, valueToCodeMap(value)]);
     }
+    console.log(selectedTopics);
   };
 
-  const handleNext = () => {
-    navigation.navigate('BottomTab');
+  const settingComplete = async () => {
+    const userData = await AsyncStorage.getItem('userData');
+    if (userData == null) {
+      return;
+    }
+    const tokenData = JSON.parse(userData);
+    console.log('whole data: ', route.params, checkedBoxes);
+
+    const url = `${apiServer}/additional-info`;
+    const data = {
+      accessToken: tokenData.accessToken,
+      birth: birthday,
+      categories: selectedTopics,
+      introduction: introduction,
+      gender: gender,
+      languages: interestLanguages,
+      nationality: nation,
+      nickName: nickname,
+    };
+    console.log('post data: ', data);
+    await new RESTAPIBuilder(url, 'POST')
+      .setNeedToken(true)
+      .setBody(data)
+      .build()
+      .run()
+      .then(({data}) => {
+        console.log(data);
+        navigation.navigate('BottomTab');
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   return (
@@ -116,7 +179,9 @@ const InterestTopicSettingPage = ({navigation}) => {
           ))}
         </View>
         {checkedBoxes.length > 0 ? (
-          <TouchableOpacity style={styles.nextButton1} onPress={handleNext}>
+          <TouchableOpacity
+            style={styles.nextButton1}
+            onPress={settingComplete}>
             <Text
               style={{
                 color: '#FFFFFF',
@@ -124,7 +189,7 @@ const InterestTopicSettingPage = ({navigation}) => {
                 fontSize: width * 18,
                 fontWeight: '700',
               }}>
-              다음
+              설정완료
             </Text>
           </TouchableOpacity>
         ) : (
@@ -136,7 +201,7 @@ const InterestTopicSettingPage = ({navigation}) => {
                 fontSize: width * 18,
                 fontWeight: '700',
               }}>
-              다음
+              설정완료
             </Text>
           </View>
         )}
@@ -196,14 +261,14 @@ const styles = StyleSheet.create({
   selected: {
     borderColor: '#9BD23C',
     borderWidth: 6,
-    width: width * 80,
+    width: width * 100,
     height: height * 100,
-    borderRadius: 50,
+    borderRadius: 70,
     justifyContent: 'center',
     alignItems: 'center',
   },
   image: {
-    width: width * 70,
+    width: width * 90,
     height: height * 90,
     borderRadius: 50,
     justifyContent: 'center',
