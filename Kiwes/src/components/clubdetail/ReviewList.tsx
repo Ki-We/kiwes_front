@@ -20,7 +20,7 @@ import NothingShow from '../NothingShow';
 import {ScrollView} from 'react-native-gesture-handler';
 import ReivewErrorModal from './ReivewErrorModal';
 
-const ReviewList = ({clubId}: any) => {
+const ReviewList = ({clubId, navigateToProile}: any) => {
   const url = `${apiServer}/api/v1/review/entire/${clubId}?cursor=`;
   const [reviews, setReviews] = useState<ReviewDetail[]>([]);
   const [sending, setSending] = useState('REVIEW');
@@ -187,6 +187,7 @@ const ReviewList = ({clubId}: any) => {
       console.log(err);
     }
   };
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -217,10 +218,13 @@ const ReviewList = ({clubId}: any) => {
           renderItem={({item}) => (
             <View>
               <View style={styles.qaItem}>
-                <Image
-                  source={{uri: item.reviewerProfileImg}}
-                  style={styles.qaProfileImage}
-                />
+                <TouchableOpacity
+                  onPress={() => navigateToProile(item.reviewerId)}>
+                  <Image
+                    source={{uri: item.reviewerProfileImg}}
+                    style={styles.qaProfileImage}
+                  />
+                </TouchableOpacity>
                 <View style={styles.qaContent}>
                   <Text style={styles.qaNickname}>{item.reviewerNickname}</Text>
                   <Text style={styles.qaText}>{item.reviewContent}</Text>
@@ -266,10 +270,14 @@ const ReviewList = ({clubId}: any) => {
               </View>
               {item.respondentId ? (
                 <View style={styles.replyItem}>
-                  <Image
-                    source={{uri: item.respondentProfileImg}}
-                    style={styles.qaProfileImage}
-                  />
+                  <TouchableOpacity
+                    onPress={() => navigateToProile(item.respondentId)}>
+                    <Image
+                      source={{uri: item.respondentProfileImg}}
+                      style={styles.qaProfileImage}
+                    />
+                  </TouchableOpacity>
+
                   <View style={styles.qaContent}>
                     <Text style={styles.qaNickname}>
                       {item.respondentNickname}

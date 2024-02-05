@@ -59,6 +59,7 @@ export interface Alarm {
   createAfterHour: string;
   createAfterDay: string;
   memberId: string;
+  senderId: string;
   imageUrl: string;
   noticeId: string;
 }
