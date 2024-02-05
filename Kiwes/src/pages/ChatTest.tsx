@@ -20,7 +20,7 @@ import {KeyboardAvoidingView} from 'react-native';
 import backIcon from 'react-native-vector-icons/Ionicons';
 import sendIcon from 'react-native-vector-icons/Feather';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 export function ChatTest({navigation}: any) {
   const [keyboard, setKeyboard] = useState(false);
@@ -106,11 +106,9 @@ export function ChatTest({navigation}: any) {
     } else {
       const writer = '(알수없음)';
       return (
-        <TouchableOpacity
-          style={styles.chatBubble}
-          onLongPress={() => Alert.alert('Title', 'Long press detected')}>
+        <View style={styles.chatBubble}>
           <ChatBubbleOther writer={writer} chat={message} color={'#3196E8'} />
-        </TouchableOpacity>
+        </View>
       );
     }
   };
@@ -152,20 +150,6 @@ export function ChatTest({navigation}: any) {
             }}
             automaticallyAdjustKeyboardInsets={true}
           />
-          {/* <FlatList
-            data={messages}
-            renderItem={renderItem}
-            automaticallyAdjustContentInsets={false}
-            inverted={true}
-            keyboardDismissMode="interactive"
-            keyboardShouldPersistTaps="handled"
-            contentInsetAdjustmentBehavior="never"
-            maintainVisibleContentPosition={{
-              minIndexForVisible: 0,
-              autoscrollToTopThreshold: 80,
-            }}
-            automaticallyAdjustKeyboardInsets={true}
-          /> */}
           <View style={styles.inputContainer}>
             <View style={{width: '80%'}}>
               <TextInput style={styles.input} />

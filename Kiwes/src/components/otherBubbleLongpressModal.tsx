@@ -103,7 +103,7 @@ const messageLongpressModal = ({
               }
             : {
                 position: 'absolute',
-                top: backgroundPosition.y - (inBubblePosition.y + 110),
+                top: backgroundPosition.y - (inBubblePosition.y + height * 110),
                 left: 20,
               }
         }

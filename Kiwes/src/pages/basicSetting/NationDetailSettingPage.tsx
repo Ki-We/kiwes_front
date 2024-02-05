@@ -25,7 +25,8 @@ let southAmericaImage =
 let oceaniaImage =
   'https://s3-alpha-sig.figma.com/img/b865/be1b/b7bd83450311fc9947a8aded6e57af87?Expires=1706486400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=Sf9fLyYcr0druVtqH~LK8~okaXI4yddooaMm0i912j5hqubWyL7vodGvvw5i56NfEtzK72fT8aOk8ynbRo-wdmJ6pXyaoIyp6eQNdlXootcotiM34EK3u6P7~2vKnW4l2dUnuBm~~sWL-QvlRpcUOsx~Put~c3WAEsMgDFUjsJ5hP0XYqANctvfsoSxJB8o8VElakIt2gAy9TU0g1oZyp8Y4JvaJzzKfOq2p6n8xh6nm-5dh7SCGMNnXF~IKk-rssC08IozUsjzDeTcwp1VVeSLRcanKgLWRAzCApIpidPMRcS9cbpiAaw4U5rcd2q0ks1E~r31nFzjKSoMWnFQ7Gg__';
 
-const NationDetailSettingPage = ({navigation}) => {
+const NationDetailSettingPage = ({route, navigation}) => {
+  const {nickname, gender, birthday, introduction} = route.params;
   const [selectedNation, setNation] = useState('아시아');
   const [modalVisible, setModalVisible] = useState(false);
   const [modalPosition, setModalPosition] = useState({top: 0, left: 0});
@@ -58,7 +59,13 @@ const NationDetailSettingPage = ({navigation}) => {
   };
 
   const handleNext = () => {
-    navigation.navigate('InterestLanguageSettingPage');
+    navigation.navigate('InterestLanguageSettingPage', {
+      nickname: nickname,
+      gender: gender,
+      birthday: birthday,
+      introduction: introduction,
+      nation: 'FOREIGN',
+    });
   };
 
   return (

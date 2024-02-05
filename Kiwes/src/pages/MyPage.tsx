@@ -10,35 +10,42 @@ import {
 } from 'react-native';
 import BoardList from '../components/BoardList';
 import NothingShow from '../components/NothingShow';
+import ReviewBubble from './ReviewBubble';
 import {apiServer} from '../utils/metaData';
 import {RESTAPIBuilder} from '../utils/restapiBuilder';
 import {useFocusEffect} from '@react-navigation/native';
-import {ClubInfo, OwnClubInfo, ReviewList} from '../utils/commonInterface';
+import {
+  ParticipatedClubInfo,
+  OwnClubInfo,
+  ReviewList,
+} from '../utils/commonInterface';
 import {width, height, DeviceWidth} from '../global';
-import UploadImageTest from '../components/UploadImageTest';
-import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import ProfileSettingIcon from 'react-native-vector-icons/SimpleLineIcons';
 import SettingIcon from 'react-native-vector-icons/SimpleLineIcons';
+import Icon from 'react-native-vector-icons/SimpleLineIcons';
+const myIcon = <Icon name="rocket" size={30} color="#900" />;
 
 export function MyPage({navigation}: any) {
   const [myPageInfo, setMyPageInfo] = useState([]);
-  const [participatedClub, setParticipatedClub] = useState<ClubInfo[]>([]);
+  const [participatedClub, setParticipatedClub] = useState<
+    ParticipatedClubInfo[]
+  >([]);
   const [myOwnClub, setMyOwnClub] = useState<OwnClubInfo[]>([]);
   const [reviewList, setReviewList] = useState<ReviewList[]>([]);
   useFocusEffect(
     useCallback(() => {
       const fetchData = async () => {
         await initialize();
-        await ParticipatedClubInfo();
+        await getParticipatedClubInfo();
         await getOwnClub();
-        // await getReview();
+        await getReview();
       };
 
       fetchData();
     }, []),
   );
 
-  const urlOwn = `${apiServer}/api/v1/club/approval/my-own-club?cursor=`;
+  const urlOwn = `${apiServer}/api/v1/club/approval/host-club-detail?cursor=0`;
   const Nothing = ({text}: {text: string}) => {
     return <NothingShow title={text} styleKiwe={styleKiwe} />;
   };
@@ -55,30 +62,30 @@ export function MyPage({navigation}: any) {
   });
 
   const navigateToClub = (clubId: any) => {
-    navigation.navigate('ClubPage', {clubId: clubId});
+    navigation.navigate('ClubDetail', {clubId: clubId});
   };
   const initialize = async () => {
     const url = `${apiServer}/mypage`;
-    const result = await new RESTAPIBuilder(url, 'GET')
-      .setNeedToken(true)
-      .build()
-      .run()
-      .catch(err => console.log(err));
-
-    if (result) {
-      setMyPageInfo(result.data);
-      console.log(result.data);
-    }
-  };
-  const ParticipatedClubInfo = async () => {
-    const url = `${apiServer}/api/v1/club/approval/my-club?cursor=0`;
     const {data} = await new RESTAPIBuilder(url, 'GET')
       .setNeedToken(true)
       .build()
       .run()
       .catch(err => console.log(err));
 
-    console.log('participate : ', data);
+    if (data) {
+      setMyPageInfo(data);
+      console.log('Mypage : ', data);
+    }
+  };
+  const getParticipatedClubInfo = async () => {
+    const url = `${apiServer}/api/v1/club/approval/my-club-image`;
+    const {data} = await new RESTAPIBuilder(url, 'GET')
+      .setNeedToken(true)
+      .build()
+      .run()
+      .catch(err => console.log(err));
+
+    // console.log('participate : ', data);
     setParticipatedClub(data);
   };
   const getOwnClub = async () => {
@@ -89,27 +96,24 @@ export function MyPage({navigation}: any) {
       .run()
       .catch(err => console.log(err));
 
-    console.log('own : ', data);
+    // console.log('own : ', data);
     setMyOwnClub(data);
   };
-  // const getReview = async () => {
-  //   const url = `${apiServer}/api/v1/review/entire/${clubId}`;
-  //   const result = await new RESTAPIBuilder(url, 'GET')
-  //     .setNeedToken(true)
-  //     .build()
-  //     .run()
-  //     .catch(err => console.log(err));
+  const getReview = async () => {
+    const url = `${apiServer}/api/v1/review/`;
+    const {data} = await new RESTAPIBuilder(url, 'GET')
+      .setNeedToken(true)
+      .build()
+      .run()
+      .catch(err => console.log(err));
 
-  //   if (result) {
-  //     setReviewList(result.data);
-  //     console.log(result.data);
-  //   }
-  // };
+    // console.log('review : ', data);
+    setReviewList(data);
+  };
   ///////////////////////////////////////////////////////// middle Tab
   const [selectedOption, setOption] = useState('참여 모임');
   const handleOptionSelection = option => {
     setOption(option);
-    // console.log(nation);
   };
 
   const optionButton = option => (
@@ -159,23 +163,23 @@ export function MyPage({navigation}: any) {
       )}
     </View>
   );
-  /////////////////////////////////////////////////////////////////////// gridView
-  const handleParticipateClubIconSelection = clubId => {
-    console.log(clubId);
-  };
-  const participatedClubIcon = clubId => (
-    <TouchableOpacity
-      activeOpacity={0.5}
-      style={styles.optionButton}
-      onPress={() => {
-        handleParticipateClubIconSelection(clubId);
-      }}></TouchableOpacity>
-  );
   ///////////////////////////////////////////////////////////////// ownClub
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('ProfileImageSettingPage');
+          }}>
+          <Text>프로필 설정 </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('NationSettingPage');
+          }}>
+          <Text> 기본 설정</Text>
+        </TouchableOpacity>
         <ProfileSettingIcon.Button
           backgroundColor="#FFFFFF"
           iconStyle={{marginRight: 0, padding: 0}}
@@ -184,7 +188,11 @@ export function MyPage({navigation}: any) {
           color="#303030"
           size={25}
           onPress={() => {
-            navigation.navigate('ProfileSettingPage');
+            navigation.navigate('ProfileSettingPage', {
+              thumbnailImage: myPageInfo.profileImage + '?' + new Date(),
+              myIntroduction: myPageInfo.introduction,
+            });
+            console.log(myPageInfo.profileImage);
           }}
         />
         <SettingIcon.Button
@@ -202,20 +210,61 @@ export function MyPage({navigation}: any) {
       <View style={styles.myInfoContainer}>
         <View>
           <Image
-            source={{uri: myPageInfo.profileImage}}
+            source={{
+              uri: myPageInfo.profileImage + '?' + new Date(),
+            }}
             style={styles.image}
-            resizeMode="contain"
+            resizeMode="cover"
           />
+          {/* /////////////////////////////////////////////////////////////////////////////////////////////////////////// */}
+          {/* <TouchableOpacity
+            onPress={() => {
+              console.log(myPageInfo.profileImage);
+            }}>
+            <Text>dfdf</Text>
+          </TouchableOpacity> */}
+          {/* ////////////////////////////////////////////////////////////////////////////////////////////// */}
         </View>
         <View style={{marginTop: height * 15}}>
-          <Text style={styles.profileText}>{myPageInfo.nickname}</Text>
+          <Text style={styles.nickNameText}>{myPageInfo.nickname}</Text>
         </View>
-        <View style={{marginVertical: height * 3, flexDirection: 'row'}}>
-          <Text style={styles.profileText}>
-            {myPageInfo.nationality}&nbsp;&nbsp;
-            {myPageInfo.age}&nbsp;&nbsp;
-            {myPageInfo.gender}
-          </Text>
+        <View
+          style={{
+            marginVertical: height * 3,
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignContent: 'center',
+          }}>
+          <View style={{marginRight: 10}}>
+            {myPageInfo.nationality === 'KOREA' ? (
+              <Image
+                source={require('../../assets/images/korean.png')}
+                style={styles.icon}
+                resizeMode="contain"
+              />
+            ) : (
+              <Image
+                source={require('../../assets/images/foreigner.png')}
+                style={styles.icon}
+                resizeMode="contain"
+              />
+            )}
+          </View>
+          <View>
+            <Text style={styles.profileText}>만&nbsp;{myPageInfo.age}세</Text>
+          </View>
+          <View
+            style={{
+              marginLeft: 10,
+              alignContent: 'center',
+              justifyContent: 'center',
+            }}>
+            {myPageInfo.gender === 'MALE' ? (
+              <Icon name="symbol-male" size={15} color="#000" />
+            ) : (
+              <Icon name="symbol-female" size={15} color="#000" />
+            )}
+          </View>
         </View>
         <View style={{width: width * 250}}>
           <Text style={styles.profileText}>{myPageInfo.introduction}</Text>
@@ -226,13 +275,26 @@ export function MyPage({navigation}: any) {
         {optionButton('개설 모임')}
         {optionButton('후기')}
       </View>
-      <View style={styles.mainContainer}>
+      <ScrollView style={styles.mainContainer}>
         {selectedOption === '참여 모임' ? (
-          <View>
-            {participatedClub?.map((club: ClubInfo) => {
-              return <View>{participatedClubIcon({clubId: club.clubId})}</View>;
+          <View style={styles.participatedClubIconContainer}>
+            {participatedClub?.map((club: ParticipatedClubInfo) => {
+              return (
+                <View>
+                  <TouchableOpacity
+                    activeOpacity={0.5}
+                    onPress={() => {
+                      navigation.navigate('ClubDetail', {clubId: club.clubId});
+                    }}>
+                    <Image
+                      source={{uri: club.thumbnailImage}}
+                      style={styles.participatedClubIcon}
+                      resizeMode="cover"
+                    />
+                  </TouchableOpacity>
+                </View>
+              );
             })}
-            <Text>참여</Text>
           </View>
         ) : selectedOption === '개설 모임' ? (
           <SafeAreaView style={{flex: 1}}>
@@ -243,53 +305,17 @@ export function MyPage({navigation}: any) {
             />
           </SafeAreaView>
         ) : (
-          // <View>
-          //   <BoardList
-          //     url={`${apiServer}/api/v1/heart/club_list?cursor=`}
-          //     navigateToClub={navigateToClub}
-          //     Nothing={Nothing}
-          //   />
-          // </View>
-          <View>
-            <Text>후기</Text>
+          <View style={{marginBottom: 20}}>
+            {reviewList?.map((review: ReviewList) => {
+              return (
+                <ScrollView>
+                  <ReviewBubble reviewList={review} navigation={navigation} />
+                </ScrollView>
+              );
+            })}
           </View>
         )}
-      </View>
-      {/* <TouchableOpacity
-        onPress={() => {
-          navigation.navigate('Search');
-        }}>
-        <Text>Search</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => {
-          navigation.navigate('SettingPage');
-        }}>
-        <Text>Setting</Text>
-      </TouchableOpacity>
-      <View style={{marginTop: 100}}>
-        <UploadImageTest />
-      </View>
-      <GooglePlacesAutocomplete
-        styles={{
-          textInput: {
-            backgroundColor: '#F7F7F7', // 이 부분에 원하는 색상을 입력하세요.
-          },
-        }}
-        placeholder="모임 장소를 검색해주세요"
-        minLength={2}
-        keyboardShouldPersistTaps={'handled'}
-        fetchDetails={false}
-        onFail={error => console.log(error)}
-        onNotFound={() => console.log('no results')}
-        keepResultsAfterBlur={true}
-        enablePoweredByContainer={false}
-        onPress={(data, details = null) => {}}
-        query={{
-          key: 'AIzaSyBlRgYCAJwXVcFYQ2HVG1C0jBFCwwX3BDA',
-          language: 'en',
-        }}
-      /> */}
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -312,11 +338,24 @@ const styles = StyleSheet.create({
     marginBottom: height * 25,
   },
   image: {
-    width: width * 100,
+    width: width * 120,
     height: height * 120,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 80,
+  },
+  icon: {
+    width: width * 20,
+    height: height * 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  nickNameText: {
+    color: '#303030',
+    fontFamily: 'Pretendard',
+    fontSize: width * 13,
+    fontWeight: '700',
+    textAlign: 'center',
   },
   profileText: {
     color: '#303030',
@@ -339,12 +378,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   mainContainer: {
-    height: height * 350,
+    // height: height * 100,
+  },
+  participatedClubIconContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'center',
   },
   participatedClubIcon: {
-    backgroundColor: '#DADADA',
-    width: DeviceWidth / 3,
-    height: height * 70,
+    backgroundColor: '#303030',
+    marginBottom: 2,
+    marginHorizontal: 1,
+    width: DeviceWidth / 3 - 2,
+    height: height * 120,
   },
 });
 

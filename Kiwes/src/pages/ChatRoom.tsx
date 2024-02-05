@@ -177,7 +177,6 @@ const ChatScreen = ({navigation, route}) => {
   useEffect(() => {
     console.log('------------------------------------');
     initialize();
-
     socket.current = io(chatServer);
     socket.current.on('connect', () => {
       console.log('connect');
@@ -325,7 +324,7 @@ const ChatScreen = ({navigation, route}) => {
 
     if (message.userId == 0) {
       return (
-        <View style={styles.chatBubble} >
+        <View style={styles.chatBubble}>
           <ChatBubbleSystem chat={message} />
         </View>
       );
@@ -347,15 +346,13 @@ const ChatScreen = ({navigation, route}) => {
         writer = clubMembers[message.userId].nickName;
 
       return (
-        <TouchableOpacity
-          style={styles.chatBubble}
-          onLongPress={() => Alert.alert('Title', 'Long press detected')}>
+        <View style={styles.chatBubble}>
           <ChatBubbleOther
             writer={writer}
             chat={message}
             color={colorMap[message.userId]}
           />
-        </TouchableOpacity>
+        </View>
       );
     }
   };
