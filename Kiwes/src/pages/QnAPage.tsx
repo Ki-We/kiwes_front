@@ -5,6 +5,9 @@ import QnAList from '../components/clubdetail/QnAList';
 
 const QnAPage = ({route, navigation}) => {
   const {clubId} = route.params;
+  const navigateToProile = (memberId: any) => {
+    navigation.navigate('MyPage', {memberId: memberId});
+  };
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -13,7 +16,7 @@ const QnAPage = ({route, navigation}) => {
         </TouchableOpacity>
         <Text style={styles.headerText}>Q&A</Text>
       </View>
-      <QnAList clubId={clubId} />
+      <QnAList clubId={clubId} navigateToProile={navigateToProile} />
     </View>
   );
 };

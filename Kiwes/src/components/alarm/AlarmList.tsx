@@ -15,16 +15,21 @@ const pageNavigationMap = {
   CHAT: {page: 'ChatMain', idKey: 'clubId'},
   NOTICE: {page: 'NoticePage', idKey: 'noticeId'},
   EVENT: {page: 'EventPage', idKey: 'noticeId'},
+  ACCESS: {page: 'RequestList', idKey: 'clubId'}, // 승인 페이지
 };
 
 const AlarmList = ({navigation}: any) => {
   const [alarms, setAlarms] = useState<Alarm[]>([]);
   const [isEmpty, setIsEmpty] = useState(false);
   const navigateTo = (item: any) => {
+    console.log(item);
     const {page, idKey} = pageNavigationMap[item.type];
     if (page && idKey) {
       navigation.navigate(page, {[idKey]: item[`${idKey}`]});
     }
+  };
+  const navigateToProile = (item: any) => {
+    navigation.navigate('MyPage', {memberId: item.senderId});
   };
   const fetchData = async () => {
     try {
@@ -68,6 +73,7 @@ const AlarmList = ({navigation}: any) => {
                       key={index}
                       item={r}
                       navigateTo={() => navigateTo(r)}
+                      navigateToProile={() => navigateToProile(r)}
                     />
                   ))}
                 </View>

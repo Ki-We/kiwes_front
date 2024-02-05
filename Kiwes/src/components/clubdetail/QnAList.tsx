@@ -19,7 +19,7 @@ import {useFocusEffect} from '@react-navigation/native';
 import NothingShow from '../NothingShow';
 import {ScrollView} from 'react-native-gesture-handler';
 
-const QnAList = ({clubId}: any) => {
+const QnAList = ({clubId, navigateToProile}: any) => {
   const [qnas, setQnas] = useState<QnADetail[]>([]);
   const [sending, setSending] = useState('REGISTER');
   const [qnaId, setQnaId] = useState('');
@@ -214,10 +214,13 @@ const QnAList = ({clubId}: any) => {
           renderItem={({item}) => (
             <View>
               <View style={styles.qaItem}>
-                <Image
-                  source={{uri: item.questionerProfileImg}}
-                  style={styles.qaProfileImage}
-                />
+                <TouchableOpacity
+                  onPress={() => navigateToProile(item.questionerId)}>
+                  <Image
+                    source={{uri: item.questionerProfileImg}}
+                    style={styles.qaProfileImage}
+                  />
+                </TouchableOpacity>
                 <View style={styles.qaContent}>
                   <Text style={styles.qaNickname}>
                     {item.questionerNickname}
@@ -268,10 +271,14 @@ const QnAList = ({clubId}: any) => {
               </View>
               {item.isAnswered === 'YES' ? (
                 <View style={styles.replyItem}>
-                  <Image
-                    source={{uri: item.respondentProfileImg}}
-                    style={styles.qaProfileImage}
-                  />
+                  <TouchableOpacity
+                    onPress={() => navigateToProile(item.respondentId)}>
+                    <Image
+                      source={{uri: item.respondentProfileImg}}
+                      style={styles.qaProfileImage}
+                    />
+                  </TouchableOpacity>
+
                   <View style={styles.qaContent}>
                     <Text style={styles.qaNickname}>
                       {item.respondentNickname}
