@@ -302,21 +302,22 @@ const styles = StyleSheet.create({
   modalCategoryText: {
     paddingVertical: height * 18,
     paddingLeft: width * 30,
-    fontSize: 18,
+    fontSize: height * 17,
     color: '#8A8A8A',
   },
   modalCategorySelectedText: {
     color: '#000',
   },
   selectionText: {
-    fontSize: width * 14,
+    marginTop: height * 15,
+    fontSize: width * 13,
     color: '#000',
   },
   categorySelectionText: {
     right: width * 195,
   },
   languageSelectionText: {
-    right: width * 225,
+    right: width * 220,
   },
   modalCategory: {
     fontSize: 16,
