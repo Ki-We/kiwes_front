@@ -71,18 +71,18 @@ const ClubDetail = ({ route, navigation, type }) => {
     fetchClubDetail(clubId);
   }, [clubId]);
 
-  // const fetchNickName = async () => {
-  //   try {
-  //     const response = await new RESTAPIBuilder(`${apiServer}/api/v1/mynick`, 'GET')
-  //       .setNeedToken(true)
-  //       .build()
-  //       .run();
-  //       //(response.data);
-  //       //console.log("닉네임:", response.data);
-  //   } catch (error) {
-  //     console.error('Error 닉네임:', error);
-  //   }
-  // };
+  const fetchNickName = async () => {
+    try {
+      const response = await new RESTAPIBuilder(`${apiServer}/mynick`, 'GET')
+        .setNeedToken(true)
+        .build()
+        .run();
+        //(response.data);
+        console.log("닉네임:", response.data);
+    } catch (error) {
+      console.error('Error 닉네임:', error);
+    }
+  };
   
   useEffect(() => {
     fetchNickName();
