@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import RoundCategory from '../atoms/roundCategory';
 import {StyleSheet, Text, View} from 'react-native';
-import {height, width} from '../../global';
+import {width} from '../../global';
 import {categoryList} from '../../utils/utils';
 
 export default function SetupCategory({post, setPost}: any) {
@@ -36,13 +36,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    margin: width * 30,
+    margin: width * 20,
     gap: 5,
   },
   text: {
     marginLeft: width * 20,
     color: '#ADADAD',
-    marginBottom: height * 5,
   },
   highlight: {
     color: '#3DBE14',
