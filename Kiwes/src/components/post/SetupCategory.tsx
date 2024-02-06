@@ -35,13 +35,14 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    margin: width * 12,
+    justifyContent: 'center',
+    margin: width * 30,
+    gap: 5,
   },
   text: {
     marginLeft: width * 20,
     color: '#ADADAD',
-    marginBottom: height * 15,
+    marginBottom: height * 5,
   },
   highlight: {
     color: '#3DBE14',

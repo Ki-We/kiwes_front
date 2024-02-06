@@ -199,51 +199,51 @@ export function Home({navigation}: any) {
     return (
       <TouchableOpacity onPress={() => navigateToClubDetail(clubId)}>
         <View style={styles.RecGroupsContainer}>
-            <View style={styles.groupContent}>
-              <Image source={image} style={styles.groupImage} />
-              <View style={styles.textContent}>
-                <View style={styles.infoContainer1}>
-                  <Text style={styles.groupTitle}>{title}</Text>
-                </View>
-                <View style={styles.infoContainer}>
-                  <Icon
-                    name="calendar-outline"
-                    size={height * 14}
-                    color={'rgba(0, 0, 0, 0.7)'}
-                    style={styles.icon}
-                  />
-                  <Text style={styles.groupDetail}>{date}</Text>
-                </View>
-                <View style={styles.infoContainer}>
-                  <Icon
-                    name="location-outline"
-                    size={height * 14}
-                    color={'rgba(0, 0, 0, 0.7)'}
-                    style={styles.icon}
-                  />
-                  <Text style={styles.groupDetail}>{locationKeyword}</Text>
-                </View>
-                <View style={styles.infoContainer}>
-                  <Icon
-                    name="globe"
-                    size={height * 14}
-                    color={'rgba(0, 0, 0, 0.7)'}
-                    style={styles.icon}
-                  />
-                  <Text>{languages}</Text>
-                </View>
+          <View style={styles.groupContent}>
+            <Image source={image} style={styles.groupImage} />
+            <View style={styles.textContent}>
+              <View style={styles.infoContainer1}>
+                <Text style={styles.groupTitle}>{title}</Text>
               </View>
-              <TouchableOpacity
-                style={styles.RHeartContainer}
-                onPress={toggleLike}>
+              <View style={styles.infoContainer}>
                 <Icon
-                  name={isLiked ? 'heart' : 'heart-outline'}
-                  size={height * 26}
-                  color={isLiked ? 'green' : '#58C047'}
+                  name="calendar-outline"
+                  size={14}
+                  color={'rgba(0, 0, 0, 0.7)'}
+                  style={styles.icon}
                 />
-              </TouchableOpacity>
+                <Text style={styles.groupDetail}>{date}</Text>
+              </View>
+              <View style={styles.infoContainer}>
+                <Icon
+                  name="location-outline"
+                  size={14}
+                  color={'rgba(0, 0, 0, 0.7)'}
+                  style={styles.icon}
+                />
+                <Text style={styles.groupDetail}>{locationKeyword}</Text>
+              </View>
+              <View style={styles.infoContainer}>
+                <Icon
+                  name="globe"
+                  size={14}
+                  color={'rgba(0, 0, 0, 0.7)'}
+                  style={styles.icon}
+                />
+                <Text>{languages}</Text>
+              </View>
             </View>
+            <TouchableOpacity
+              style={styles.RHeartContainer}
+              onPress={toggleLike}>
+              <Icon
+                name={isLiked ? 'heart' : 'heart-outline'}
+                size={24}
+                color={isLiked ? 'green' : '#58C047'}
+              />
+            </TouchableOpacity>
           </View>
+        </View>
       </TouchableOpacity>
     );
   };
@@ -342,11 +342,11 @@ export function Home({navigation}: any) {
                       </Text>
                     </View>
                     <View style={styles.overlayMaxInfo}>
-                    <View style={[styles.overlayCommonItem1, styles.overlayItem4]}>
-                      <Text style={styles.overlayItemText2}>
-                      <Icon name="person-outline" size={height * 12} />{' '}
-                      {club.current_max}
-                      </Text>
+                      <View style={[styles.overlayCommonItem1, styles.overlayItem4]}>
+                        <Text style={styles.overlayItemText2}>
+                        <Icon name="person-outline" size={height * 12} />{' '}
+                        {club.current_max}
+                        </Text>
                       </View>
                     </View>
                   </View>
@@ -428,7 +428,7 @@ const styles = StyleSheet.create({
   wrapper1: {
     height: height * 350,
     alignSelf: 'center',
-    marginTop: height * 10,
+    marginVertical: height * 10,
   },
   wrapper2: {
     height: height * 180,
@@ -445,10 +445,11 @@ const styles = StyleSheet.create({
   },
   sectionContainer: {
     alignItems: 'center',
+    marginTop: height * 20,
   },
   sectionContent: {
     width: '100%',
-    alignItems: 'center',
+    justifyContent: 'center',
   },
   sectionTitle: {
     marginTop: height * 40,
