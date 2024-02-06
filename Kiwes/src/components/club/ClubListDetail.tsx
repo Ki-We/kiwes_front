@@ -1,10 +1,10 @@
 import React from 'react';
 import RoundCategory from '../atoms/roundCategory';
 import {StyleSheet, View} from 'react-native';
-import {width} from '../../global';
 import {categoryList, langList} from '../../utils/utils';
 import Swiper from 'react-native-swiper';
 import RoundBtn from '../atoms/roundBtn';
+import {height, width} from '../../global';
 
 export default function ClubListDetail({type, navigation}: any) {
   const swiperHeight = type == 'category' && width < 0.97 ? 200 : 150;
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     height: 150,
   },
   paginationContainer: {
-    marginTop: -20,
+    marginTop: height * -20,
     justifyContent: 'center',
     alignItems: 'center',
   },

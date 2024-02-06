@@ -175,7 +175,7 @@ const BoardList = ({url, navigateToClub, Nothing}: any) => {
                   </View>
                   <View style={styles.infoContainer}>
                     <Icon
-                      name="map-outline"
+                      name="location-outline"
                       size={14}
                       color={'#rgba(0, 0, 0, 0.7)'}
                     />

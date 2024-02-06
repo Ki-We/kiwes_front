@@ -208,25 +208,25 @@ export function Home({navigation}: any) {
               <View style={styles.infoContainer}>
                 <Icon
                   name="calendar-outline"
-                  size={14}
+                  size={height * 14}
                   color={'rgba(0, 0, 0, 0.7)'}
                   style={styles.icon}
                 />
                 <Text style={styles.groupDetail}>{date}</Text>
               </View>
-              <View style={styles.infoContainer}>
+              <View style={[styles.infoContainer, { marginTop: height * -2 }]}>
                 <Icon
                   name="location-outline"
-                  size={14}
+                  size={height * 14}
                   color={'rgba(0, 0, 0, 0.7)'}
                   style={styles.icon}
                 />
                 <Text style={styles.groupDetail}>{locationKeyword}</Text>
               </View>
-              <View style={styles.infoContainer}>
+              <View style={[styles.infoContainer, { marginTop: height * -2 }]}>
                 <Icon
                   name="globe"
-                  size={14}
+                  size={height * 14}
                   color={'rgba(0, 0, 0, 0.7)'}
                   style={styles.icon}
                 />
@@ -238,7 +238,7 @@ export function Home({navigation}: any) {
               onPress={toggleLike}>
               <Icon
                 name={isLiked ? 'heart' : 'heart-outline'}
-                size={24}
+                size={height * 26}
                 color={isLiked ? 'green' : '#58C047'}
               />
             </TouchableOpacity>
@@ -394,7 +394,7 @@ export function Home({navigation}: any) {
             onIndexChanged={index => setCurrentPage(index)}
             ref={popularGroupsRef}>
             {popularClubs.map((club: any, index: number) => (
-              <View key={index}>
+              <View key={index} style={[styles.paginationInfo, {marginBottom: height * 40}]}>
                 <RecommendedGroup
                   image={{uri: club.thumbnailImage}}
                   title={club.title}
@@ -454,7 +454,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     marginTop: height * 40,
     left: width * 35,
-    fontSize: 15,
+    fontSize: height * 15,
     color: '#303030',
     fontWeight: 'bold',
     textAlign: 'left',
@@ -486,7 +486,7 @@ const styles = StyleSheet.create({
     marginHorizontal: height * 3,
   },
   categoryText: {
-    fontSize: 12,
+    fontSize: height * 12,
     color: '#303030',
   },
   paginationContainer: {
@@ -555,15 +555,16 @@ const styles = StyleSheet.create({
   },
   groupTitle: {
     color: '#303030',
-    fontSize: 16,
+    fontSize: height * 14,
+    fontWeight: 'bold',
     right: width * 10,
     bottom: height * -25,
   },
   groupDetail: {
     color: '#303030',
-    fontSize: 12,
-    left: width * 10,
-    bottom: height * -10,
+    fontSize: height * 12,
+    left: width * 2,
+    bottom: height * -11,
   },
   flatListContainer: {
     justifyContent: 'center',
@@ -572,7 +573,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     position: 'relative',
-    top: 5,
+    top: height * 5,
   },
   PHeartContainer: {
     position: 'absolute',
@@ -676,7 +677,7 @@ const styles = StyleSheet.create({
     width: width * 65,
     textAlign: 'center',
     color: '#303030',
-    fontSize: 13,
+    fontSize: height * 13,
     borderRadius: 30,
     backgroundColor: '#B4DD6D',
   },
@@ -698,7 +699,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   icon: {
-    top: height * 12,
+    top: height * 13,
     left: width * -9,
   },
 });
