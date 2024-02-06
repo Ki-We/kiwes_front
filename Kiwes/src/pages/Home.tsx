@@ -11,19 +11,15 @@ import {
   ScrollView,
 } from 'react-native';
 import Swiper from 'react-native-swiper';
-import LangClubDetail from '../components/post/LangClubDetail';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {RESTAPIBuilder} from '../utils/restapiBuilder';
 import {apiServer} from '../utils/metaData';
 import {languageMap} from '../utils/languageMap';
 import ClubListDetail from '../components/club/ClubListDetail';
 import {langList} from '../utils/utils';
-import {Dimensions} from 'react-native';
 import {height, width} from '../global';
 
-const categoriesImg = require('../../assets/images/category01.png');
 const bannerUrl = `${apiServer}/api/v1/banner`;
-const popularUrl = `${apiServer}/api/v1/club/popular`;
 const url = `${apiServer}/api/v1/club/info/detail/1`;
 
 export function Home({navigation}: any) {
@@ -130,11 +126,11 @@ export function Home({navigation}: any) {
   };
 
   const [popularGroupImages, setPopularGroupImages] = useState([
-    {image: categoriesImg, isLiked: false},
-    {image: categoriesImg, isLiked: false},
-    {image: categoriesImg, isLiked: false},
-    {image: categoriesImg, isLiked: false},
-    {image: categoriesImg, isLiked: false},
+    {image: popularGroupImages, isLiked: false},
+    {image: popularGroupImages, isLiked: false},
+    {image: popularGroupImages, isLiked: false},
+    {image: popularGroupImages, isLiked: false},
+    {image: popularGroupImages, isLiked: false},
   ]);
 
   const togglePopularClubLike = (clubId: number) => {
@@ -148,20 +144,20 @@ export function Home({navigation}: any) {
     navigation.navigate('ClubDetail', {clubId: clubId});
   };
 
-  const renderLanguages = languages => {
-    return (
-      <View style={styles.overlayContainer}>
-        {languages.map((language, index) => {
-          const languageUtil = langList.find(item => item.key === language);
-          return (
-            <Text key={index} style={styles.overlayText}>
-              {languageUtil ? languageUtil.text : 'Unknown'}
-            </Text>
-          );
-        })}
-      </View>
-    );
-  };
+  // const renderLanguages = languages => {
+  //   return (
+  //     <View style={styles.overlayContainer}>
+  //       {languages.map((language, index) => {
+  //         const languageUtil = langList.find(item => item.key === language);
+  //         return (
+  //           <Text key={index} style={styles.overlayText}>
+  //             {languageUtil ? languageUtil.text : 'Unknown'}
+  //           </Text>
+  //         );
+  //       })}
+  //     </View>
+  //   );
+  // };
 
   renderClubLanguages = languages => {
     return (
@@ -202,12 +198,11 @@ export function Home({navigation}: any) {
 
     return (
       <TouchableOpacity onPress={() => navigateToClubDetail(clubId)}>
-        <View style={styles.recommendedGroupsContainer}>
-          <View style={styles.roundedRectangle}>
+        <View style={styles.RecGroupsContainer}>
             <View style={styles.groupContent}>
               <Image source={image} style={styles.groupImage} />
               <View style={styles.textContent}>
-                <View style={styles.infoContainer}>
+                <View style={styles.infoContainer1}>
                   <Text style={styles.groupTitle}>{title}</Text>
                 </View>
                 <View style={styles.infoContainer}>
@@ -249,7 +244,6 @@ export function Home({navigation}: any) {
               </TouchableOpacity>
             </View>
           </View>
-        </View>
       </TouchableOpacity>
     );
   };
@@ -319,7 +313,7 @@ export function Home({navigation}: any) {
                   />
                   <View style={styles.titleContainer}>
                     <Image
-                      source={require('../../assets/images/basicProfileImage.png')}
+                      source={{uri: club.hostProfileImg}}
                       style={styles.titleImage}
                     />
                     <View style={styles.titleTextContainer}>
@@ -346,6 +340,14 @@ export function Home({navigation}: any) {
                         {club.languages.length > 1 &&
                           `, ${languageMap[club.languages[1]]}`}
                       </Text>
+                    </View>
+                    <View style={styles.overlayMaxInfo}>
+                    <View style={[styles.overlayCommonItem1, styles.overlayItem4]}>
+                      <Text style={styles.overlayItemText2}>
+                      <Icon name="person-outline" size={12} />{' '}
+                      {club.current_max}
+                      </Text>
+                      </View>
                     </View>
                   </View>
                   {/* <View style={styles.overlayContainer}>
@@ -418,11 +420,7 @@ export function Home({navigation}: any) {
               </View>
             ))}
           </Swiper>
-          <View style={[styles.paginationInfo, {marginBottom: 40}]}>
-            <Text style={styles.paginationText}>
-              Page {currentPage + 1} of {RecommendedGroup.length}
-            </Text>
-          </View>
+          <View style={[styles.paginationInfo, {marginBottom: 40}]}/>
         </View>
       </View>
     </ScrollView>
@@ -542,14 +540,12 @@ const styles = StyleSheet.create({
   paginationRectActive: {
     backgroundColor: '#9BD23C',
   },
-  recommendedGroupsContainer: {
-    marginTop: 10,
-    paddingHorizontal: 20,
-  },
-  roundedRectangle: {
-    width: '100%',
+  RecGroupsContainer: {
+    justifyContent: 'center',
+    alignSelf: 'center',
+    width: width * 330,
     height: 130,
-    marginTop: 10,
+    marginTop: 20,
     marginBottom: 50,
     backgroundColor: 'rgba(255, 253, 141, 0.3)',
     borderRadius: 30,
@@ -561,14 +557,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   groupImage: {
-    borderRadius: 10,
-    width: 150,
-    height: 100,
-    marginLeft: 10,
-    marginBottom: -7,
+    borderRadius: 20,
+    width: width * 130,
+    height: height * 90,
+    marginLeft: 20,
   },
   textContent: {
-    marginLeft: 10,
+    marginLeft: 20,
   },
   groupTitle: {
     color: '#303030',
@@ -580,7 +575,7 @@ const styles = StyleSheet.create({
     color: '#303030',
     fontSize: 12,
     left: 10,
-    bottom: -20,
+    bottom: -10,
   },
   flatListContainer: {
     justifyContent: 'center',
@@ -612,6 +607,7 @@ const styles = StyleSheet.create({
   titleImage: {
     width: 50,
     height: 50,
+    borderRadius: 50,
   },
   titleTextContainer: {
     flex: 1,
@@ -635,11 +631,24 @@ const styles = StyleSheet.create({
     bottom: 70,
     left: 15,
   },
+  overlayMaxInfo: {
+    position: 'absolute',
+    flex: 1,
+    top: height * 65,
+    width: width * 78,
+    left: width * 207,
+  },
   overlayCommonItem: {
     alignSelf: 'flex-start',
     paddingHorizontal: width * 10,
     paddingVertical: height * 3,
     marginVertical: height * 3,
+    borderRadius: 30,
+  },
+  overlayCommonItem1: {
+    paddingVertical: height * 2,
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 30,
   },
   overlayItem1: {
@@ -651,9 +660,21 @@ const styles = StyleSheet.create({
   overlayItem3: {
     backgroundColor: '#B4DD6D',
   },
+  overlayItem4: {
+    backgroundColor: '#00000080',
+  },
+  overlayLanguage: {
+    flexDirection: 'row',
+  },
   overlayItemText: {
     color: '#303030',
     fontSize: height * 12,
+  },
+  overlayItemText2: {
+    textAlign: 'center',
+    color: '#FFFFFF',
+    fontSize: height * 15,
+    marginVertical: height * 1,
   },
   overlayContainer: {
     position: 'absolute',
@@ -677,25 +698,22 @@ const styles = StyleSheet.create({
     width: 65,
     textAlign: 'center',
     color: '#303030',
-    fontSize: 13,
     borderRadius: 30,
     backgroundColor: '#FFFFD8',
   },
-  overlayText1: {
-    width: 300,
-    top: -220,
-    left: 170,
-    textAlign: 'left',
-    color: 'white',
-    fontSize: 16,
+  infoContainer1: {
+    top: -26,
+    left: 10,
   },
   infoContainer: {
-    top: -20,
-    left: 20,
+    top: -11,
+    left: 10,
+    marginVertical: 7,
+    flexDirection: 'row',
   },
   icon: {
-    top: 35,
-    left: -15,
+    top: 12,
+    left: -10,
   },
 });
 
