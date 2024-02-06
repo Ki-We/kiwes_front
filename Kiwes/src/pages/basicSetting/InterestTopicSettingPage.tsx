@@ -115,7 +115,10 @@ const InterestTopicSettingPage = ({route, navigation}) => {
       .run()
       .then(({data}) => {
         console.log(data);
-        navigation.navigate('BottomTab');
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'BottomTab'}],
+        });
       })
       .catch(err => {
         console.log(err);

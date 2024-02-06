@@ -66,9 +66,9 @@ export function ChatMain({navigation}: any) {
           <Text style={styles.chatroomContainerText}>채팅 내역이 없습니다</Text>
         </View>
       )}
-      {roomList.map((club: ClubInfo) => {
+      {roomList.map((club: ClubInfo, index) => {
         return (
-          <View style={styles.chatList}>
+          <View key={index} style={styles.chatList}>
             <TouchableOpacity
               style={styles.title}
               onPress={() => {
