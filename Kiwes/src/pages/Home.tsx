@@ -15,6 +15,7 @@ import LangClubDetail from '../components/post/LangClubDetail';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {RESTAPIBuilder} from '../utils/restapiBuilder';
 import {apiServer} from '../utils/metaData';
+import {languageMap} from '../utils/languageMap';
 import ClubListDetail from '../components/club/ClubListDetail';
 import {langList} from '../utils/utils';
 import {Dimensions} from 'react-native';
@@ -341,10 +342,9 @@ export function Home({navigation}: any) {
                     <View
                       style={[styles.overlayCommonItem, styles.overlayItem3]}>
                       <Text style={styles.overlayItemText}>
-                        {club.languages.slice(0, 1).map(l => {
-                          const lang = langList.find(item => item.key === l);
-                          return lang ? lang.text : 'UNDEFINED';
-                        })}
+                        {languageMap[club.languages[0]]}
+                        {club.languages.length > 1 &&
+                          `, ${languageMap[club.languages[1]]}`}
                       </Text>
                     </View>
                   </View>
@@ -632,16 +632,14 @@ const styles = StyleSheet.create({
   },
   overlayAddInfo: {
     position: 'absolute',
-    flex: 1,
     bottom: 70,
     left: 15,
   },
   overlayCommonItem: {
+    alignSelf: 'flex-start',
     paddingHorizontal: width * 10,
     paddingVertical: height * 3,
     marginVertical: height * 3,
-    justifyContent: 'center',
-    alignItems: 'center',
     borderRadius: 30,
   },
   overlayItem1: {
@@ -650,14 +648,10 @@ const styles = StyleSheet.create({
   overlayItem2: {
     backgroundColor: '#FFFFD8',
   },
-  overlayLanguage: {
-    flexDirection: 'row',
-  },
   overlayItem3: {
     backgroundColor: '#B4DD6D',
   },
   overlayItemText: {
-    textAlign: 'center',
     color: '#303030',
     fontSize: height * 12,
   },
