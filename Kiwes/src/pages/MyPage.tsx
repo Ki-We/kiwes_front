@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   TouchableOpacity,
   SafeAreaView,
@@ -14,16 +14,11 @@ import ReviewBubble from './ReviewBubble';
 import {apiServer} from '../utils/metaData';
 import {RESTAPIBuilder} from '../utils/restapiBuilder';
 import {useFocusEffect} from '@react-navigation/native';
-import {
-  ParticipatedClubInfo,
-  OwnClubInfo,
-  ReviewList,
-} from '../utils/commonInterface';
+import {ParticipatedClubInfo, ReviewList} from '../utils/commonInterface';
 import {width, height, DeviceWidth} from '../global';
 import ProfileSettingIcon from 'react-native-vector-icons/SimpleLineIcons';
 import SettingIcon from 'react-native-vector-icons/SimpleLineIcons';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
-const myIcon = <Icon name="rocket" size={30} color="#900" />;
 
 export function MyPage({navigation}: any) {
   const [myPageInfo, setMyPageInfo] = useState([]);
@@ -36,15 +31,12 @@ export function MyPage({navigation}: any) {
     useCallback(() => {
       const fetchData = async () => {
         await initialize();
-        await getParticipatedClubInfo();
-        await getReview();
       };
-
       fetchData();
     }, []),
   );
 
-  const urlOwn = `${apiServer}/api/v1/club/approval/host-club-detail?cursor=0`;
+  const urlOwn = `${apiServer}/api/v1/club/approval/host-club-detail/${myPageInfo.id}?cursor=`;
   const Nothing = ({text}: {text: string}) => {
     return <NothingShow title={text} styleKiwe={styleKiwe} />;
   };
@@ -70,36 +62,24 @@ export function MyPage({navigation}: any) {
       .build()
       .run()
       .catch(err => console.log(err));
-
-    if (data) {
-      setMyPageInfo(data);
-      console.log('Mypage : ', data);
-    }
+    getParticipatedClubInfo(data.id);
+    getReview(data.id);
+    setMyPageInfo(data);
   };
-  const getParticipatedClubInfo = async () => {
-    const url = `${apiServer}/api/v1/club/approval/my-club-image`;
+  const getParticipatedClubInfo = async (id: number) => {
+    console.log('Mypage : ', myPageInfo);
+    const url = `${apiServer}/api/v1/club/approval/my-club-image/${id}`;
     const {data} = await new RESTAPIBuilder(url, 'GET')
       .setNeedToken(true)
       .build()
       .run()
       .catch(err => console.log(err));
-
-    // console.log('participate : ', data);
+    console.log('participate : ', data);
     setParticipatedClub(data);
   };
-  // const getOwnClub = async () => {
-  //   const url = `${apiServer}/api/v1/club/approval/my-own-club?cursor=0`;
-  //   const {data} = await new RESTAPIBuilder(url, 'GET')
-  //     .setNeedToken(true)
-  //     .build()
-  //     .run()
-  //     .catch(err => console.log(err));
 
-  //   console.log('own : ', data);
-  //   setMyOwnClub(data);
-  // };
-  const getReview = async () => {
-    const url = `${apiServer}/api/v1/review/`;
+  const getReview = async (id: number) => {
+    const url = `${apiServer}/api/v1/review/${id}`;
     const {data} = await new RESTAPIBuilder(url, 'GET')
       .setNeedToken(true)
       .build()
@@ -303,7 +283,7 @@ export function MyPage({navigation}: any) {
         </ScrollView>
       ) : selectedOption === '개설 모임' ? (
         <View>
-          <View style={{height: height * 350}}>
+          <View style={{height: height * 320}}>
             <BoardList
               url={urlOwn}
               navigateToClub={navigateToClub}
