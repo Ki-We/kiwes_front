@@ -342,10 +342,14 @@ export function Home({navigation}: any) {
                       </Text>
                     </View>
                     <View style={styles.overlayMaxInfo}>
-                      <View style={[styles.overlayCommonItem1, styles.overlayItem4]}>
+                      <View
+                        style={[
+                          styles.overlayCommonItem1,
+                          styles.overlayItem4,
+                        ]}>
                         <Text style={styles.overlayItemText2}>
-                        <Icon name="person-outline" size={height * 12} />{' '}
-                        {club.current_max}
+                          <Icon name="person-outline" size={height * 12} />{' '}
+                          {club.current_max}
                         </Text>
                       </View>
                     </View>
@@ -407,7 +411,7 @@ export function Home({navigation}: any) {
               </View>
             ))}
           </Swiper>
-          <View style={[styles.paginationInfo, {marginBottom: height * 40}]}/>
+          <View style={[styles.paginationInfo, {marginBottom: height * 40}]} />
         </View>
       </View>
     </ScrollView>
@@ -454,9 +458,9 @@ const styles = StyleSheet.create({
   sectionTitle: {
     marginTop: height * 40,
     left: width * 35,
-    fontSize: 15,
+    fontSize: height * 16,
     color: '#303030',
-    fontWeight: 'bold',
+    fontWeight: 600,
     textAlign: 'left',
     alignSelf: 'flex-start',
   },
