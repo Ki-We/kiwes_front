@@ -14,24 +14,21 @@ import ReviewBubble from './ReviewBubble';
 import {apiServer} from '../utils/metaData';
 import {RESTAPIBuilder} from '../utils/restapiBuilder';
 import {useFocusEffect} from '@react-navigation/native';
-import {
-  ParticipatedClubInfo,
-  OwnClubInfo,
-  ReviewList,
-} from '../utils/commonInterface';
+import {ParticipatedClubInfo, ReviewList} from '../utils/commonInterface';
 import {width, height, DeviceWidth} from '../global';
 import ProfileSettingIcon from 'react-native-vector-icons/SimpleLineIcons';
 import SettingIcon from 'react-native-vector-icons/SimpleLineIcons';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
-const myIcon = <Icon name="rocket" size={30} color="#900" />;
+import backIcon from 'react-native-vector-icons/Ionicons';
 
-export function MyPage({navigation}: any) {
+export function OtherUserPage({route, navigation}: any) {
   const [myPageInfo, setMyPageInfo] = useState([]);
   const [participatedClub, setParticipatedClub] = useState<
     ParticipatedClubInfo[]
   >([]);
   // const [myOwnClub, setMyOwnClub] = useState<OwnClubInfo[]>([]);
   const [reviewList, setReviewList] = useState<ReviewList[]>([]);
+  const {memberId} = route.params;
   useFocusEffect(
     useCallback(() => {
       const fetchData = async () => {
@@ -39,12 +36,11 @@ export function MyPage({navigation}: any) {
         await getParticipatedClubInfo();
         await getReview();
       };
-
       fetchData();
     }, []),
   );
 
-  const urlOwn = `${apiServer}/api/v1/club/approval/host-club-detail?cursor=0`;
+  const urlOwn = `${apiServer}/api/v1/club/approval/host-club-detail/${memberId}?cursor=`;
   const Nothing = ({text}: {text: string}) => {
     return <NothingShow title={text} styleKiwe={styleKiwe} />;
   };
@@ -64,42 +60,30 @@ export function MyPage({navigation}: any) {
     navigation.navigate('ClubDetail', {clubId: clubId});
   };
   const initialize = async () => {
-    const url = `${apiServer}/mypage`;
+    const url = `${apiServer}/mypage/${memberId}`;
     const {data} = await new RESTAPIBuilder(url, 'GET')
       .setNeedToken(true)
       .build()
       .run()
       .catch(err => console.log(err));
 
-    if (data) {
-      setMyPageInfo(data);
-      console.log('Mypage : ', data);
-    }
+    setMyPageInfo(data);
+    console.log('Mypage : ', data);
+    console.log('MemberId : ', memberId);
   };
   const getParticipatedClubInfo = async () => {
-    const url = `${apiServer}/api/v1/club/approval/my-club-image`;
+    const url = `${apiServer}/api/v1/club/approval/my-club-image/${memberId}`;
     const {data} = await new RESTAPIBuilder(url, 'GET')
       .setNeedToken(true)
       .build()
       .run()
       .catch(err => console.log(err));
-
-    // console.log('participate : ', data);
+    console.log('participate : ', data);
     setParticipatedClub(data);
   };
-  // const getOwnClub = async () => {
-  //   const url = `${apiServer}/api/v1/club/approval/my-own-club?cursor=0`;
-  //   const {data} = await new RESTAPIBuilder(url, 'GET')
-  //     .setNeedToken(true)
-  //     .build()
-  //     .run()
-  //     .catch(err => console.log(err));
 
-  //   console.log('own : ', data);
-  //   setMyOwnClub(data);
-  // };
   const getReview = async () => {
-    const url = `${apiServer}/api/v1/review/`;
+    const url = `${apiServer}/api/v1/review/${memberId}`;
     const {data} = await new RESTAPIBuilder(url, 'GET')
       .setNeedToken(true)
       .build()
@@ -166,49 +150,14 @@ export function MyPage({navigation}: any) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('ProfileImageSettingPage');
-          }}>
-          <Text>프로필 설정 </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('NationSettingPage');
-          }}>
-          <Text> 기본 설정</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('ChatTest');
-          }}>
-          <Text> 채팅 설정</Text>
-        </TouchableOpacity>
-        <ProfileSettingIcon.Button
+        <backIcon.Button
           backgroundColor="#FFFFFF"
-          iconStyle={{marginRight: 0, padding: 0}}
+          iconStyle={{marginRight: 0, padding: 5}}
           borderRadius={3}
-          name="pencil"
+          name="arrow-back"
           color="#303030"
           size={25}
-          onPress={() => {
-            navigation.navigate('ProfileSettingPage', {
-              thumbnailImage: myPageInfo.profileImage + '?' + new Date(),
-              myIntroduction: myPageInfo.introduction,
-            });
-            console.log(myPageInfo.profileImage);
-          }}
-        />
-        <SettingIcon.Button
-          backgroundColor="#FFFFFF"
-          iconStyle={{marginRight: 5, padding: 0}}
-          borderRadius={3}
-          name="settings"
-          color="#303030"
-          size={25}
-          onPress={() => {
-            navigation.navigate('SettingPage');
-          }}
+          onPress={() => navigation.pop()}
         />
       </View>
       <View style={styles.myInfoContainer}>
@@ -303,7 +252,7 @@ export function MyPage({navigation}: any) {
         </ScrollView>
       ) : selectedOption === '개설 모임' ? (
         <View>
-          <View style={{height: height * 350}}>
+          <View style={{height: height * 420}}>
             <BoardList
               url={urlOwn}
               navigateToClub={navigateToClub}
@@ -337,7 +286,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-start',
     paddingTop: height * 5,
     marginBottom: height * 30,
   },
@@ -400,4 +349,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MyPage;
+export default OtherUserPage;
