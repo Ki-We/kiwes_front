@@ -420,7 +420,7 @@ export function Home({navigation}: any) {
               </View>
             ))}
           </Swiper>
-          <View style={[styles.paginationInfo, {marginBottom: 40}]}/>
+          <View style={[styles.paginationInfo, {marginBottom: height * 40}]}/>
         </View>
       </View>
     </ScrollView>
@@ -436,16 +436,16 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   wrapper: {
-    height: 180,
+    height: height * 180,
   },
   wrapper1: {
-    height: 350,
+    height: height * 350,
     alignSelf: 'center',
-    marginTop: 10,
+    marginTop: height * 10,
   },
   wrapper2: {
-    height: 180,
-    marginBottom: -20,
+    height: height * 180,
+    marginBottom: height * -20,
   },
   popularGroupSlide: {
     justifyContent: 'center',
@@ -464,8 +464,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   sectionTitle: {
-    marginTop: 40,
-    left: 35,
+    marginTop: height * 40,
+    left: width * 35,
     fontSize: 15,
     color: '#303030',
     fontWeight: 'bold',
@@ -473,16 +473,16 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   popularGroupsImage: {
-    width: 350,
-    height: 350,
+    width: width * 340,
+    height: height * 340,
     borderRadius: 25,
     resizeMode: 'contain',
     opacity: 0.65,
   },
   categoryList: {
-    marginTop: 15,
+    marginTop: height * 15,
     width: '100%',
-    paddingHorizontal: 10,
+    paddingHorizontal: height * 10,
   },
   categoryColumnWrapper: {
     justifyContent: 'space-between',
@@ -495,7 +495,7 @@ const styles = StyleSheet.create({
     borderColor: '#9BD23C',
     justifyContent: 'center',
     alignItems: 'center',
-    marginHorizontal: 3,
+    marginHorizontal: height * 3,
   },
   categoryText: {
     fontSize: 12,
@@ -503,7 +503,7 @@ const styles = StyleSheet.create({
   },
   paginationContainer: {
     position: 'absolute',
-    bottom: 10,
+    bottom: height * 10,
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
@@ -514,12 +514,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   paginationDot: {
-    width: 8,
-    height: 8,
+    width: width * 8,
+    height: height * 8,
     borderRadius: 4,
     backgroundColor: '#DADADA',
-    marginHorizontal: 5,
-    bottom: -35,
+    marginHorizontal: height * 5,
+    bottom: height * -35,
   },
   paginationDotActive: {
     backgroundColor: '#9BD23C',
@@ -530,12 +530,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   paginationRectItem: {
-    width: 20,
-    height: 5,
+    width: width * 20,
+    height: height * 5,
     backgroundColor: '#DADADA',
-    marginHorizontal: -1,
+    marginHorizontal: height * -1,
     borderRadius: 5,
-    top: 15,
+    top: height * 15,
   },
   paginationRectActive: {
     backgroundColor: '#9BD23C',
@@ -544,9 +544,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignSelf: 'center',
     width: width * 330,
-    height: 130,
-    marginTop: 20,
-    marginBottom: 50,
+    height: height * 130,
+    marginTop: height * 20,
+    marginBottom: height * 50,
     backgroundColor: 'rgba(255, 253, 141, 0.3)',
     borderRadius: 30,
     borderColor: '#DADADA',
@@ -560,27 +560,27 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     width: width * 130,
     height: height * 90,
-    marginLeft: 20,
+    marginLeft: width * 20,
   },
   textContent: {
-    marginLeft: 20,
+    marginLeft: width * 20,
   },
   groupTitle: {
     color: '#303030',
     fontSize: 16,
-    right: 10,
-    bottom: -25,
+    right: width * 10,
+    bottom: height * -25,
   },
   groupDetail: {
     color: '#303030',
     fontSize: 12,
-    left: 10,
-    bottom: -10,
+    left: width * 10,
+    bottom: height * -10,
   },
   flatListContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    left: 15,
+    left: width * 15,
   },
   imageContainer: {
     position: 'relative',
@@ -588,25 +588,25 @@ const styles = StyleSheet.create({
   },
   PHeartContainer: {
     position: 'absolute',
-    top: 15,
-    right: 10,
+    top: height * 15,
+    right: width * 10,
   },
   RHeartContainer: {
     position: 'absolute',
-    bottom: 10,
-    right: 10,
+    bottom: height * 5,
+    right: width * 10,
   },
   titleContainer: {
     flexDirection: 'row',
-    top: -340,
-    left: 10,
+    top: height * -325,
+    left: width * 10,
     alignContent: 'center',
     textAlign: 'center',
     textAlignVertical: 'center',
   },
   titleImage: {
-    width: 50,
-    height: 50,
+    width: width * 50,
+    height: width * 50,
     borderRadius: 50,
   },
   titleTextContainer: {
@@ -624,12 +624,12 @@ const styles = StyleSheet.create({
     textShadowRadius: 10,
   },
   overlayTextContainer2: {
-    marginVertical: 5,
+    marginVertical: height * 5,
   },
   overlayAddInfo: {
     position: 'absolute',
-    bottom: 70,
-    left: 15,
+    bottom: height * 70,
+    left: width * 15,
   },
   overlayMaxInfo: {
     position: 'absolute',
@@ -678,16 +678,14 @@ const styles = StyleSheet.create({
   },
   overlayContainer: {
     position: 'absolute',
-    top: 180,
-    left: -260,
-    right: 0,
-    bottom: 0,
+    top: height * 180,
+    left: width * -260,
     justifyContent: 'center',
     alignItems: 'center',
     marginVertical: height * 10,
   },
   overlayText: {
-    width: 65,
+    width: width * 65,
     textAlign: 'center',
     color: '#303030',
     fontSize: 13,
@@ -695,25 +693,25 @@ const styles = StyleSheet.create({
     backgroundColor: '#B4DD6D',
   },
   overlayText2: {
-    width: 65,
+    width: width * 65,
     textAlign: 'center',
     color: '#303030',
     borderRadius: 30,
     backgroundColor: '#FFFFD8',
   },
   infoContainer1: {
-    top: -26,
-    left: 10,
+    top: height * -26,
+    left: width * 10,
   },
   infoContainer: {
-    top: -11,
-    left: 10,
-    marginVertical: 7,
+    top: height * -11,
+    left: width * 10,
+    marginVertical: height * 7,
     flexDirection: 'row',
   },
   icon: {
-    top: 12,
-    left: -10,
+    top: height * 12,
+    left: width * -9,
   },
 });
 
