@@ -10,14 +10,19 @@ import {width, height} from '../../global';
 import backIcon from 'react-native-vector-icons/Ionicons';
 import DatePicker from 'react-native-date-picker';
 
-const BirthdaySettingPage = ({navigation}) => {
+const BirthdaySettingPage = ({route, navigation}) => {
+  const {nickname, gender} = route.params;
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
   const [checkStatus, setCheckStatus] = useState(false);
   const [birthday, setBirthday] = useState('');
 
   const handleNext = () => {
-    navigation.navigate('IntroduceSettingPage');
+    navigation.navigate('IntroduceSettingPage', {
+      nickname: nickname,
+      gender: gender,
+      birthday: birthday,
+    });
   };
 
   return (

@@ -5,6 +5,9 @@ import ReviewList from '../components/clubdetail/ReviewList';
 
 const ReviewPage = ({route, navigation}) => {
   const {clubId} = route.params;
+  const navigateToProile = (memberId: any) => {
+    navigation.navigate('MyPage', {memberId: memberId});
+  };
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -13,7 +16,7 @@ const ReviewPage = ({route, navigation}) => {
         </TouchableOpacity>
         <Text style={styles.headerText}>후기</Text>
       </View>
-      <ReviewList clubId={clubId} />
+      <ReviewList clubId={clubId} navigateToProile={navigateToProile} />
     </View>
   );
 };

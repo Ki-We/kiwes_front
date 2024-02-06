@@ -9,8 +9,10 @@ import {
 import {width, height} from '../../global';
 import backIcon from 'react-native-vector-icons/Ionicons';
 
-const InterestLanguageSettingPage = ({navigation}) => {
+const InterestLanguageSettingPage = ({route, navigation}) => {
+  const {nickname, gender, birthday, introduction, nation} = route.params;
   const [checkedBoxes, setCheckedBoxes] = useState([]);
+  const [selectedLanguages, setSelectedLanguages] = useState([]);
   const checkBoxValues = [
     '한국어',
     'English',
@@ -24,17 +26,48 @@ const InterestLanguageSettingPage = ({navigation}) => {
     'Tiếng Việt',
     '기타',
   ];
+  const languageCodeMap = {
+    한국어: 'KO',
+    English: 'EN',
+    日本語: 'JP',
+    '中文(简体)': 'CH1',
+    '中文(繁體)': 'CH2',
+    Français: 'FR',
+    Español: 'ES',
+    Deutsch: 'DE',
+    Pусский: 'RU',
+    'Tiếng Việt': 'VN',
+    기타: 'OTHER',
+  };
+  const valueToCodeMap = value => {
+    const selectedLanguageCode = languageCodeMap[value];
+    return selectedLanguageCode;
+  };
+
   const toggleCheckbox = value => {
-    const isChecked = checkedBoxes.includes(value);
+    const isChecked =
+      checkedBoxes.includes(value) &&
+      selectedLanguages.includes(valueToCodeMap(value));
     if (isChecked) {
       setCheckedBoxes(checkedBoxes.filter(box => box !== value));
+      setSelectedLanguages(
+        selectedLanguages.filter(box => box !== valueToCodeMap(value)),
+      );
     } else {
       setCheckedBoxes([...checkedBoxes, value]);
+      setSelectedLanguages([...selectedLanguages, valueToCodeMap(value)]);
     }
   };
 
   const handleNext = () => {
-    navigation.navigate('InterestTopicSettingPage');
+    navigation.navigate('InterestTopicSettingPage', {
+      nickname: nickname,
+      gender: gender,
+      birthday: birthday,
+      introduction: introduction,
+      nation: nation,
+      interestLanguages: selectedLanguages,
+    });
   };
 
   return (
@@ -91,6 +124,7 @@ const InterestLanguageSettingPage = ({navigation}) => {
             </Text>
           </TouchableOpacity>
         ))}
+        {/* <Text>{selectedLanguageCodes}</Text>   */}
       </View>
       {checkedBoxes.length > 0 ? (
         <TouchableOpacity style={styles.nextButton1} onPress={handleNext}>

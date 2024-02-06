@@ -17,38 +17,18 @@ const messageLongpressModal = ({
   bubbleHeight,
   setBubbleData,
 }) => {
-  const [selectedLanguages, setLanguages] = useState({
-    sourceLanguage: 'en',
-    targetLanguage: 'ko',
-  });
-
-  const setAndTranslate = ({
-    sourceLanguage: source,
-    targetLanguage: target,
-  }) => {
-    setLanguages({
-      sourceLanguage: source,
-      targetLanguage: target,
-    });
-    translate();
-  };
-
   const [isTranslateModalVisible, setTranslateModalVisible] = useState(false);
   const toggleTranslateModal = () => {
     setTranslateModalVisible(!isTranslateModalVisible);
   };
 
-  const translate = () => {
+  const translate = ({source, target}) => {
     const url = `${apiServer}/translate`;
     const data = {
-      source: selectedLanguages.sourceLanguage,
-      target: selectedLanguages.targetLanguage,
+      source: source,
+      target: target,
       text: chatBubbleData,
     };
-    console.log(
-      selectedLanguages.sourceLanguage,
-      selectedLanguages.targetLanguage,
-    );
     new RESTAPIBuilder(url, 'POST')
       .setNeedToken(true)
       .setBody(data)
@@ -143,8 +123,7 @@ const messageLongpressModal = ({
       <TranslateModal
         isVisible={isTranslateModalVisible}
         onClose={toggleTranslateModal}
-        setLanguages={setLanguages}
-        setAndTranslate={setAndTranslate}
+        translate={translate}
       />
     </>
   );
@@ -167,7 +146,7 @@ const styles = StyleSheet.create({
     color: '#303030',
     fontFamily: 'Pretendard',
     fontWeight: '700',
-    fontSize: height * 16,
+    fontSize: height * 14,
   },
   modalButtonGroup: {
     flex: 1,

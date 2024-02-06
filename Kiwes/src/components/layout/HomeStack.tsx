@@ -16,7 +16,6 @@ const HomeStack = ({ navigation }) => {
   useEffect(() => {
     checkLoginState();
   }, []);
-
   const checkLoginState = async () => {
     const userData = await AsyncStorage.getItem('userdata');
     console.log(userData);
@@ -81,12 +80,12 @@ const HomeStack = ({ navigation }) => {
       <Stack.Screen
         name="ReviewPage"
         component={ReviewPage}
-        options={{ headerShown: false }}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="ChatRoom"
         component={ChatRoom}
-        options={{ headerShown: false }}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="Event"

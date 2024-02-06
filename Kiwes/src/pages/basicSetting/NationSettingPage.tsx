@@ -9,12 +9,12 @@ import {
 } from 'react-native';
 import {width, height} from '../../global';
 import backIcon from 'react-native-vector-icons/Ionicons';
-import NationDetailSettingPage from './NationDetailSettingPage';
 
 let imagePath =
   'https://s3-alpha-sig.figma.com/img/161f/dbd1/aedd1353d96cbd26574287bdd0db2010?Expires=1706486400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=SZCzPpIGMhNuMSRnKI68DH2hhzpCBjIpWi-Pp4Jr7rLj4PTATKOXhY64GItdIhYCBe2Hl1TR8Jx-VHYC72nPd69-Cy8whFRLXMfxL4iSvp9b7uVkFyz6nH~LABvuSPPgYApIG6E6YseZ5bt74UcqysYJgf2uc55mSwDWRo9Em2rpDCne53Cq-JkfWFX6WA6CIk5sxnDmB3~ij4HNJ-UVFFwW-eCuVhmxE6QSAimj5NhImpsBRfUHoXDVjzmR7SHnH-N-1-y7~6WuhP9oNBWfeI4mOdShTOvxwiW-lO85WiYOI6f5xZ8lV6v4AEA-T3yJQ2e0RhLY8Q2P1SFbMUVWFQ__';
 
-const NationSettingPage = ({navigation}) => {
+const NationSettingPage = ({route, navigation}) => {
+  const {nickname, gender, birthday, introduction} = route.params;
   const [selectedNation, setNation] = useState('');
 
   const handleNationSelection = nation => {
@@ -35,7 +35,7 @@ const NationSettingPage = ({navigation}) => {
               fontSize: width * 18,
               fontWeight: '600',
             }}>
-            {nation}
+            한국인
           </Text>
         </TouchableOpacity>
       ) : (
@@ -49,7 +49,7 @@ const NationSettingPage = ({navigation}) => {
               fontSize: width * 18,
               fontWeight: '600',
             }}>
-            {nation}
+            한국인
           </Text>
         </TouchableOpacity>
       )}
@@ -57,7 +57,13 @@ const NationSettingPage = ({navigation}) => {
   );
 
   const handleNext = () => {
-    navigation.navigate('InterestLanguageSettingPage');
+    navigation.navigate('InterestLanguageSettingPage', {
+      nickname: nickname,
+      gender: gender,
+      birthday: birthday,
+      introduction: introduction,
+      nation: selectedNation,
+    });
   };
 
   return (
@@ -94,10 +100,17 @@ const NationSettingPage = ({navigation}) => {
       </View>
       <View>
         <View style={styles.mainContainer}>
-          {renderRadioButton('한국인')}
+          {renderRadioButton('KOREA')}
           <TouchableOpacity
             style={styles.radioButtonCircle}
-            onPress={() => navigation.navigate(NationDetailSettingPage)}>
+            onPress={() =>
+              navigation.navigate('NationDetailSettingPage', {
+                nickname: nickname,
+                gender: gender,
+                birthday: birthday,
+                introduction: introduction,
+              })
+            }>
             <Text
               style={{
                 color: '#000',
@@ -111,7 +124,7 @@ const NationSettingPage = ({navigation}) => {
         </View>
       </View>
       <View style={styles.imageContainer}>
-        {selectedNation === '한국인' ? (
+        {selectedNation === 'KOREA' ? (
           <Image
             source={{uri: imagePath}}
             style={styles.image}

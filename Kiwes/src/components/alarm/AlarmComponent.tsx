@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
 import {height, width} from '../../global';
 
-const AlarmComponent = ({item, navigateTo}: any) => {
+const AlarmComponent = ({item, navigateTo, navigateToProile}: any) => {
   return (
     <>
       <View style={styles.container}>
@@ -10,7 +10,9 @@ const AlarmComponent = ({item, navigateTo}: any) => {
           <View>
             <TouchableOpacity onPress={navigateTo}>
               <View style={styles.textContainer}>
-                <Image source={{uri: item.imageUrl}} style={styles.image} />
+                <TouchableOpacity onPress={navigateToProile}>
+                  <Image source={{uri: item.imageUrl}} style={styles.image} />
+                </TouchableOpacity>
                 <Text style={styles.text}>{item.content}</Text>
               </View>
             </TouchableOpacity>

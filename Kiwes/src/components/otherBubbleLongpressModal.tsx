@@ -17,38 +17,18 @@ const messageLongpressModal = ({
   bubbleHeight,
   setBubbleData,
 }) => {
-  const [selectedLanguages, setLanguages] = useState({
-    sourceLanguage: 'en',
-    targetLanguage: 'ko',
-  });
-
-  const setAndTranslate = ({
-    sourceLanguage: source,
-    targetLanguage: target,
-  }) => {
-    setLanguages({
-      sourceLanguage: source,
-      targetLanguage: target,
-    });
-    translate();
-  };
-
   const [isTranslateModalVisible, setTranslateModalVisible] = useState(false);
   const toggleTranslateModal = () => {
     setTranslateModalVisible(!isTranslateModalVisible);
   };
 
-  const translate = () => {
+  const translate = ({source, target}) => {
     const url = `${apiServer}/translate`;
     const data = {
-      source: selectedLanguages.sourceLanguage,
-      target: selectedLanguages.targetLanguage,
+      source: source,
+      target: target,
       text: chatBubbleData,
     };
-    console.log(
-      selectedLanguages.sourceLanguage,
-      selectedLanguages.targetLanguage,
-    );
     new RESTAPIBuilder(url, 'POST')
       .setNeedToken(true)
       .setBody(data)
@@ -98,12 +78,12 @@ const messageLongpressModal = ({
                 position: 'absolute',
                 top:
                   backgroundPosition.y +
-                  (bubbleHeight - inBubblePosition.y - 10),
+                  (bubbleHeight - inBubblePosition.y - 15),
                 left: 20,
               }
             : {
                 position: 'absolute',
-                top: backgroundPosition.y - (inBubblePosition.y + 110),
+                top: backgroundPosition.y - (inBubblePosition.y + height * 90),
                 left: 20,
               }
         }
@@ -120,7 +100,7 @@ const messageLongpressModal = ({
               style={{
                 flex: 1,
                 justifyContent: 'center',
-                borderBottomColor: 'black',
+                borderBottomColor: '#8A8A8A',
                 borderBottomWidth: 1,
               }}
               onPress={() => {
@@ -143,8 +123,7 @@ const messageLongpressModal = ({
       <TranslateModal
         isVisible={isTranslateModalVisible}
         onClose={toggleTranslateModal}
-        setLanguages={setLanguages}
-        setAndTranslate={setAndTranslate}
+        translate={translate}
       />
     </>
   );
@@ -155,8 +134,8 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
     flex: 1,
     alignItems: 'center',
-    width: width * 150,
-    height: height * 80,
+    width: width * 130,
+    height: height * 60,
     backgroundColor: '#EDEDED',
     borderRadius: 20,
     borderColor: 'black',
@@ -167,13 +146,13 @@ const styles = StyleSheet.create({
     color: '#303030',
     fontFamily: 'Pretendard',
     fontWeight: '700',
-    fontSize: height * 16,
+    fontSize: height * 14,
   },
   modalButtonGroup: {
     flex: 1,
     justifyContent: 'space-evenly',
-    width: width * 150,
-    height: height * 80,
+    width: width * 130,
+    height: height * 60,
   },
 });
 

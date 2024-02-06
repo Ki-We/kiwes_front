@@ -59,6 +59,7 @@ export interface Alarm {
   createAfterHour: string;
   createAfterDay: string;
   memberId: string;
+  senderId: string;
   imageUrl: string;
   noticeId: string;
 }
@@ -74,6 +75,11 @@ export interface Banner {
   imageUrl: string;
   url: string;
   id: number;
+}
+
+export interface ParticipatedClubInfo {
+  clubId: number;
+  thumbnailImage: string;
 }
 export interface ReviewDetail {
   reviewId: string;
@@ -129,24 +135,24 @@ export interface ClubMemberApprovalRequestEach {
   profileImg: string;
   memberId: string;
 }
+export interface MypageInfo {
+  age: number;
+  gender: string;
+  introduction: string;
+  nationality: string;
+  nickname: string;
+  profileImage: string;
+}
 export interface OwnClubInfo {
   clubId: number;
   title: string;
   currentPeople: number;
 }
 export interface ReviewList {
-  isHost: boolean;
-  ReviewDetailDto: {
-    reviewerProfileImg: string;
-    reviewerNickname: string;
-    reviewContent: string;
-    reviewDate: string;
-    respondentProfileImg: string;
-    respondentNickname: string;
-    replyContent: string;
-    replyDate: string;
-    isAuthorOfReview: boolean;
-    isAuthorOfReply: boolean;
-    isModified: boolean;
-  };
+  clubId: number;
+  clubTitle: string;
+  mine: boolean;
+  reviewContent: string;
+  reviewDate: string;
+  reviewId: number;
 }
