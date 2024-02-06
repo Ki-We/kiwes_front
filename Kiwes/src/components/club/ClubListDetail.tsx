@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    margin: width * 20,
+    margin: width * 12,
   },
   swiper: {
     height: 170,

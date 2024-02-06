@@ -36,6 +36,7 @@ const ClubDetail = ({ route, navigation, type }) => {
   const [isRecruitmentComplete, setIsRecruitmentComplete] = useState(false);
 
   const [clubInfo, setClubInfo] = useState(null);
+  const [NickName, setNickNameInfo] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const allList = type == 'category' ? categoryList : langList;
@@ -69,6 +70,23 @@ const ClubDetail = ({ route, navigation, type }) => {
   useEffect(() => {
     fetchClubDetail(clubId);
   }, [clubId]);
+
+  // const fetchNickName = async () => {
+  //   try {
+  //     const response = await new RESTAPIBuilder(`${apiServer}/api/v1/mynick`, 'GET')
+  //       .setNeedToken(true)
+  //       .build()
+  //       .run();
+  //       //(response.data);
+  //       //console.log("닉네임:", response.data);
+  //   } catch (error) {
+  //     console.error('Error 닉네임:', error);
+  //   }
+  // };
+  
+  useEffect(() => {
+    fetchNickName();
+  }, []);
 
   const toggleJoin = () => {
     if (currentParticipants < maxParticipants && !isRecruitmentComplete) {
@@ -173,6 +191,7 @@ const ClubDetail = ({ route, navigation, type }) => {
       return null;
     }
     const memberInfo = clubInfo.memberInfo;
+    
     return (
       <View style={styles.hostContainer}>
         <Text style={styles.hostTitle}>호스트 정보</Text>

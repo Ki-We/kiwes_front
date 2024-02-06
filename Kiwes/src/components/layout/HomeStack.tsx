@@ -1,6 +1,6 @@
-import React, {useEffect} from 'react';
-import {Dimensions, Image} from 'react-native';
-import {createStackNavigator} from '@react-navigation/stack';
+import React, { useEffect } from 'react';
+import { Dimensions, Image, TouchableOpacity, View } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ChatRoom from '../../pages/ChatRoom';
 import Home from '../../pages/Home';
@@ -9,19 +9,13 @@ import ClubCategory from '../../pages/ClubCategory';
 import ClubLanguage from '../../pages/ClubLanguage';
 import ReviewPage from '../../pages/ReviewPage';
 import Event from '../../pages/Event';
+import Icon from 'react-native-vector-icons/Ionicons';
 
-const HomeStack = () => {
+const HomeStack = ({ navigation }) => {
   console.log(Dimensions.get('screen').height);
   useEffect(() => {
     checkLoginState();
   }, []);
-
-  const CustomHeader = () => (
-  <Image
-    source={require('../../../assets/images/logo.png')}
-    style={{width: 130, height: 60}}
-  />
-  );
 
   const checkLoginState = async () => {
     const userData = await AsyncStorage.getItem('userdata');
@@ -29,6 +23,13 @@ const HomeStack = () => {
   };
 
   const Stack = createStackNavigator();
+
+  const CustomHeader = () => (
+    <Image
+      source={require('../../../assets/images/logo.png')}
+      style={{ width: 130, height: 60 }}
+    />
+  );
 
   return (
     <Stack.Navigator initialRouteName="Home">
@@ -38,12 +39,26 @@ const HomeStack = () => {
         options={{
           headerShown: true,
           headerTitle: props => <CustomHeader {...props} />,
+          headerRight: () => (
+            <View style={{ flexDirection: 'row' }}>
+              <TouchableOpacity
+                style={{ marginRight: 17 }}
+                onPress={() => navigation.navigate('Search')}>
+                <Icon name="search-outline" size={30} style={{ color: 'black' }} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{ marginRight: 17 }}
+                onPress={() => navigation.navigate('AlarmPage')}>
+                <Icon name="notifications-outline" size={30} style={{ color: 'black' }} />
+              </TouchableOpacity>
+            </View>
+          ),
         }}
       />
       <Stack.Screen
         name="ClubDetail"
         component={ClubDetail}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="ClubCategory"
