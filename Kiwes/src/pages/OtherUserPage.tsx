@@ -252,7 +252,7 @@ export function OtherUserPage({route, navigation}: any) {
         </ScrollView>
       ) : selectedOption === '개설 모임' ? (
         <View>
-          <View style={{height: height * 420}}>
+          <View style={{height: height * 370}}>
             <BoardList
               url={urlOwn}
               navigateToClub={navigateToClub}

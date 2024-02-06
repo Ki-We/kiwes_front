@@ -581,10 +581,14 @@ const ChatScreen = ({navigation, route}) => {
                 colorMap[member.id] = colorList[num];
               }
               return (
-                <View
+                <TouchableOpacity
                   style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',
+                  }}
+                  onPress={() => {
+                    toggleModal();
+                    navigation.navigate('OtherUserPage', {memberId: member.id});
                   }}>
                   <View
                     key={`member_${member.id}_${i}`}
@@ -613,7 +617,7 @@ const ChatScreen = ({navigation, route}) => {
                   ) : (
                     <View />
                   )}
-                </View>
+                </TouchableOpacity>
               );
             })}
           </ScrollView>
