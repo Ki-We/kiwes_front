@@ -208,7 +208,7 @@ export function Home({navigation}: any) {
                 <View style={styles.infoContainer}>
                   <Icon
                     name="calendar-outline"
-                    size={14}
+                    size={height * 14}
                     color={'rgba(0, 0, 0, 0.7)'}
                     style={styles.icon}
                   />
@@ -217,7 +217,7 @@ export function Home({navigation}: any) {
                 <View style={styles.infoContainer}>
                   <Icon
                     name="location-outline"
-                    size={14}
+                    size={height * 14}
                     color={'rgba(0, 0, 0, 0.7)'}
                     style={styles.icon}
                   />
@@ -226,7 +226,7 @@ export function Home({navigation}: any) {
                 <View style={styles.infoContainer}>
                   <Icon
                     name="globe"
-                    size={14}
+                    size={height * 14}
                     color={'rgba(0, 0, 0, 0.7)'}
                     style={styles.icon}
                   />
@@ -238,7 +238,7 @@ export function Home({navigation}: any) {
                 onPress={toggleLike}>
                 <Icon
                   name={isLiked ? 'heart' : 'heart-outline'}
-                  size={24}
+                  size={height * 26}
                   color={isLiked ? 'green' : '#58C047'}
                 />
               </TouchableOpacity>
@@ -344,25 +344,12 @@ export function Home({navigation}: any) {
                     <View style={styles.overlayMaxInfo}>
                     <View style={[styles.overlayCommonItem1, styles.overlayItem4]}>
                       <Text style={styles.overlayItemText2}>
-                      <Icon name="person-outline" size={12} />{' '}
+                      <Icon name="person-outline" size={height * 12} />{' '}
                       {club.current_max}
                       </Text>
                       </View>
                     </View>
                   </View>
-                  {/* <View style={styles.overlayContainer}>
-                    <View>
-                      <Text style={styles.overlayText}>
-                        {convertDate(club.date)}
-                      </Text>
-                      <View style={styles.overlayTextContainer2}>
-                        <Text style={styles.overlayText2}>
-                          {club.locationKeyword}
-                        </Text>
-                      </View>
-                      <Text>{renderLanguages(club.languages)}</Text>
-                    </View>
-                  </View> */}
                   <TouchableOpacity
                     style={styles.PHeartContainer}
                     onPress={() => togglePopularClubLike(club.clubId)}>
@@ -372,7 +359,7 @@ export function Home({navigation}: any) {
                           ? 'heart'
                           : 'heart-outline'
                       }
-                      size={24}
+                      size={height * 26}
                       color={
                         popularClubLikes[club.clubId] ? 'green' : '#58C047'
                       }
@@ -636,7 +623,7 @@ const styles = StyleSheet.create({
     flex: 1,
     top: height * 65,
     width: width * 78,
-    left: width * 207,
+    left: width * 232,
   },
   overlayCommonItem: {
     alignSelf: 'flex-start',
