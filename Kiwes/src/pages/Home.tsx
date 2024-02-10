@@ -48,7 +48,6 @@ export function Home({navigation}: any) {
         .build()
         .run();
       setPopularClubs(response.data);
-      console.log('popular API Response:', response.data);
     } catch (error) {
       console.error('Error fetching popular clubs:', error);
     }
@@ -66,7 +65,6 @@ export function Home({navigation}: any) {
         .setNeedToken(true)
         .build()
         .run();
-      console.log(response);
       return response.data;
     } catch (err) {
       console.log(err);
@@ -80,7 +78,6 @@ export function Home({navigation}: any) {
         .setNeedToken(true)
         .build()
         .run();
-      console.log('Banner API Response:', response.data);
       setBanners(response.data);
     } catch (err) {
       console.error(err);
@@ -96,11 +93,8 @@ export function Home({navigation}: any) {
   const fetchAndSetData = async () => {
     try {
       const newData = await fetchData();
-      console.log(newData);
       if (newData && newData.baseInfo) {
         setData(newData);
-        console.log(newData.baseInfo);
-        console.log(newData.baseInfo.title);
       } else {
         console.error('Data or baseInfo is undefined in the response.');
       }
@@ -143,31 +137,18 @@ export function Home({navigation}: any) {
   const navigateToClubDetail = (clubId): any => {
     navigation.navigate('ClubDetail', {clubId: clubId});
   };
-
-  // const renderLanguages = languages => {
-  //   return (
-  //     <View style={styles.overlayContainer}>
-  //       {languages.map((language, index) => {
-  //         const languageUtil = langList.find(item => item.key === language);
-  //         return (
-  //           <Text key={index} style={styles.overlayText}>
-  //             {languageUtil ? languageUtil.text : 'Unknown'}
-  //           </Text>
-  //         );
-  //       })}
-  //     </View>
-  //   );
-  // };
-
   renderClubLanguages = languages => {
     return (
       <View style={styles.infoContainer}>
         {languages.map((language, index) => {
           const languageUtil = langList.find(item => item.key === language);
           return (
-            <Text key={index} style={styles.groupDetail}>
-              {languageUtil ? languageUtil.text : 'Unknown'}
-            </Text>
+            <React.Fragment key={index}>
+              <Text style={styles.groupDetail}>
+                {languageUtil ? languageUtil.text : 'Unknown'}
+              {index < languages.length - 1 && <Text>, </Text>}
+              </Text>
+            </React.Fragment>
           );
         })}
       </View>
@@ -268,8 +249,9 @@ export function Home({navigation}: any) {
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContainer}>
       <View style={styles.container}>
-        <TouchableOpacity onPress={handleBannerPress}>
-          <Swiper
+        <View style={styles.banner}>
+          <TouchableOpacity onPress={handleBannerPress}>
+            <Swiper
             style={styles.wrapper}
             loop={false}
             autoplay={false}
@@ -290,6 +272,7 @@ export function Home({navigation}: any) {
             ))}
           </Swiper>
         </TouchableOpacity>
+        </View>
         <Text style={styles.sectionTitle}>인기 모임</Text>
         <Swiper
           style={styles.wrapper1}
@@ -411,7 +394,7 @@ export function Home({navigation}: any) {
               </View>
             ))}
           </Swiper>
-          <View style={[styles.paginationInfo, {marginBottom: height * 40}]} />
+          <View style={[styles.paginationInfo, {marginBottom: height * 60}]} />
         </View>
       </View>
     </ScrollView>
@@ -428,6 +411,7 @@ const styles = StyleSheet.create({
   },
   wrapper: {
     height: height * 180,
+    width: '100%',
   },
   wrapper1: {
     height: height * 350,
@@ -457,7 +441,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     marginTop: height * 40,
-    left: width * 35,
+    left: width * 15,
     fontSize: height * 16,
     color: '#303030',
     fontWeight: 600,
@@ -488,10 +472,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginHorizontal: height * 3,
-  },
-  categoryText: {
-    fontSize: height * 12,
-    color: '#303030',
   },
   paginationContainer: {
     position: 'absolute',
@@ -535,10 +515,9 @@ const styles = StyleSheet.create({
   RecGroupsContainer: {
     justifyContent: 'center',
     alignSelf: 'center',
-    width: width * 330,
+    width: width * 340,
     height: height * 130,
     marginTop: height * 20,
-    marginBottom: height * 50,
     backgroundColor: 'rgba(255, 253, 141, 0.3)',
     borderRadius: 30,
     borderColor: '#DADADA',
@@ -552,7 +531,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     width: width * 130,
     height: height * 90,
-    marginLeft: width * 20,
+    marginLeft: width * 15,
   },
   textContent: {
     marginLeft: width * 20,
@@ -560,13 +539,14 @@ const styles = StyleSheet.create({
   groupTitle: {
     color: '#303030',
     fontSize: height * 14,
-    fontWeight: 'bold',
+    fontWeight: 500,
     right: width * 10,
     bottom: height * -25,
   },
   groupDetail: {
     color: '#303030',
     fontSize: height * 12,
+    fontWeight: 400,
     left: width * 2,
     bottom: height * -11,
   },
@@ -586,7 +566,7 @@ const styles = StyleSheet.create({
   },
   RHeartContainer: {
     position: 'absolute',
-    bottom: height * 5,
+    bottom: height * 1,
     right: width * 10,
   },
   titleContainer: {
@@ -612,6 +592,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     color: 'white',
     fontSize: height * 16,
+    fontWeight: 600,
     textShadowColor: 'rgba(0, 0, 0, 0.75)',
     textShadowOffset: {width: -1, height: 1},
     textShadowRadius: 10,
@@ -662,11 +643,13 @@ const styles = StyleSheet.create({
   overlayItemText: {
     color: '#303030',
     fontSize: height * 12,
+    fontWeight: 500,
   },
   overlayItemText2: {
     textAlign: 'center',
     color: '#FFFFFF',
     fontSize: height * 15,
+    fontWeight: 600,
     marginVertical: height * 1,
   },
   overlayContainer: {
@@ -676,14 +659,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginVertical: height * 10,
-  },
-  overlayText: {
-    width: width * 65,
-    textAlign: 'center',
-    color: '#303030',
-    fontSize: height * 13,
-    borderRadius: 30,
-    backgroundColor: '#B4DD6D',
   },
   overlayText2: {
     width: width * 65,
@@ -697,6 +672,7 @@ const styles = StyleSheet.create({
     left: width * 10,
   },
   infoContainer: {
+    zIndex: 1,
     top: height * -11,
     left: width * 10,
     marginVertical: height * 7,
@@ -705,6 +681,9 @@ const styles = StyleSheet.create({
   icon: {
     top: height * 13,
     left: width * -9,
+  },
+  banner: {
+    width: '100%',
   },
 });
 
