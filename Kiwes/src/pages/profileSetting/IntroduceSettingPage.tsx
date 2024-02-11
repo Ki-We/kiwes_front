@@ -112,8 +112,8 @@ const IntroduceSettingPage = ({route, navigation}) => {
               style={{
                 color: '#FFFFFF',
                 fontFamily: 'Pretendard',
-                fontSize: width * 18,
-                fontWeight: '700',
+                fontSize: height * 18,
+                fontWeight: '600',
               }}>
               다음
             </Text>
@@ -142,8 +142,8 @@ const styles = StyleSheet.create({
   headerText: {
     color: '#303030',
     fontFamily: 'Pretendard',
-    fontSize: width * 20,
-    fontWeight: '900',
+    fontSize: height * 20,
+    fontWeight: '600',
   },
   nextButton: {
     alignSelf: 'center',
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
   mainText: {
     color: '#303030',
     fontFamily: 'Pretendard',
-    fontSize: width * 15,
+    fontSize: height * 15,
     fontWeight: '600',
   },
   inputContainer: {
@@ -171,7 +171,9 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: '#F8F8F8',
     padding: 10,
-    fontSize: width * 14,
+    fontFamily: 'Pretendard',
+    fontSize: height * 15,
+    fontWeight: '500',
     width: '100%',
     height: height * 220,
     textAlignVertical: 'top',
@@ -186,18 +188,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  checkText: {
-    color: '#303030',
-    fontFamily: 'Pretendard',
-    fontSize: width * 12,
-    fontWeight: '600',
-  },
-  errorText: {
-    color: 'red',
-    fontFamily: 'Pretendard',
-    fontSize: width * 12,
-    fontWeight: '500',
   },
 });
 

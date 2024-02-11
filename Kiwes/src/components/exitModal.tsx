@@ -20,7 +20,16 @@ const ExitModal = ({isVisible, onClose, name, exitClub}) => {
         </View>
         <View style={styles.modalButtonGroup}>
           <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
-            <Text>취소</Text>
+            <Text
+              style={{
+                textAlign: 'center',
+                color: '#8A8A8A',
+                fontFamily: 'Pretendard',
+                fontWeight: '600',
+                fontSize: height * 16,
+              }}>
+              취소
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.acceptButton}
@@ -28,7 +37,16 @@ const ExitModal = ({isVisible, onClose, name, exitClub}) => {
               exitClub();
               onClose();
             }}>
-            <Text>확인</Text>
+            <Text
+              style={{
+                textAlign: 'center',
+                color: '#8A8A8A',
+                fontFamily: 'Pretendard',
+                fontWeight: '600',
+                fontSize: height * 16,
+              }}>
+              확인
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -63,14 +81,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#3DBE14',
     fontFamily: 'Pretendard',
-    fontWeight: '500',
+    fontWeight: '600',
     fontSize: height * 16,
   },
   modalText: {
     textAlign: 'center',
     color: '#303030',
     fontFamily: 'Pretendard',
-    fontWeight: '500',
+    fontWeight: '600',
     fontSize: height * 16,
   },
   modalButtonGroup: {

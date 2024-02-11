@@ -16,6 +16,8 @@ const messageLongpressModal = ({
   inBubblePosition,
   bubbleHeight,
   setBubbleData,
+  isHost,
+  setNotification,
 }) => {
   const [isTranslateModalVisible, setTranslateModalVisible] = useState(false);
   const toggleTranslateModal = () => {
@@ -94,7 +96,11 @@ const messageLongpressModal = ({
         animationIn={getAnimationIn()}
         animationOut={getAnimationOut()}
         onBackdropPress={onClose}>
-        <View style={styles.modalContainer}>
+        <View
+          style={{
+            ...styles.modalContainer,
+            height: isHost ? height * 90 : height * 60,
+          }}>
           <View style={styles.modalButtonGroup}>
             <TouchableOpacity
               style={{
@@ -110,13 +116,28 @@ const messageLongpressModal = ({
               <Text style={styles.modalText}>복사하기</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={{flex: 1, justifyContent: 'center'}}
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                borderBottomColor: '#8A8A8A',
+                borderBottomWidth: 1,
+              }}
               onPress={() => {
                 selectLanguages();
                 onClose();
               }}>
               <Text style={styles.modalText}>번역하기</Text>
             </TouchableOpacity>
+            {isHost && (
+              <TouchableOpacity
+                style={{flex: 1, justifyContent: 'center'}}
+                onPress={() => {
+                  setNotification(chatBubbleData);
+                  onClose();
+                }}>
+                <Text style={styles.modalText}>공지</Text>
+              </TouchableOpacity>
+            )}
           </View>
         </View>
       </Modal>
@@ -135,18 +156,18 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     width: width * 150,
-    height: height * 80,
-    backgroundColor: '#EDEDED',
+    height: height * 90,
+    backgroundColor: '#FFFFFF',
     borderRadius: 20,
-    borderColor: 'black',
+    borderColor: '#5F5F5F',
     borderWidth: 1.5,
   },
   modalText: {
     textAlign: 'center',
     color: '#303030',
     fontFamily: 'Pretendard',
-    fontWeight: '700',
-    fontSize: height * 14,
+    fontWeight: '600',
+    fontSize: height * 12,
   },
   modalButtonGroup: {
     flex: 1,

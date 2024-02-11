@@ -128,8 +128,8 @@ const ProfilePictureSettingPage = ({navigation}) => {
           style={{
             color: '#FFFFFF',
             fontFamily: 'Pretendard',
-            fontSize: width * 18,
-            fontWeight: '700',
+            fontSize: height * 18,
+            fontWeight: '600',
           }}>
           다음
         </Text>
@@ -162,13 +162,13 @@ const styles = StyleSheet.create({
   headerText: {
     color: '#303030',
     fontFamily: 'Pretendard',
-    fontSize: width * 20,
-    fontWeight: '900',
+    fontSize: height * 20,
+    fontWeight: '600',
   },
   mainText: {
     color: '#303030',
     fontFamily: 'Pretendard',
-    fontSize: width * 15,
+    fontSize: height * 15,
     fontWeight: '600',
   },
   imageContainer: {

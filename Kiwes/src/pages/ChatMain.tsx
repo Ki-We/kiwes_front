@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
   headerText: {
     color: '#303030',
     fontFamily: 'Pretendard-Bold',
-    fontSize: width * 24,
+    fontSize: height * 24,
     // font-style: normal,
     fontWeight: '600',
   },
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
     marginTop: height * 16,
     marginBottom: height * 16,
     paddingTop: height * 6,
-    paddingLeft: width * 15,
+    paddingLeft: width * 5,
     height: height * 40,
     borderTopColor: '#C0C0C0',
     borderBottomColor: '#C0C0C0',
@@ -147,18 +147,19 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   alert: {
-    marginRight: width * 6,
+    marginLeft: 0,
+    marginRight: width * 4,
     color: '#58C047',
-    fontFamily: 'Pretendard-bold',
-    fontSize: width * 17,
-    fontWeight: '900',
+    fontFamily: 'Pretendard',
+    fontSize: height * 17,
+    fontWeight: 'bold',
   },
   notification: {
     color: '#58C047',
     fontFamily: 'Pretendard',
-    fontSize: width * 13,
+    fontSize: height * 14,
     // font-style: normal,
-    fontWeight: '700',
+    fontWeight: '600',
   },
   image: {
     width: width * 133,
@@ -167,9 +168,9 @@ const styles = StyleSheet.create({
   chatroomContainerText: {
     color: '#303030',
     fontFamily: 'Pretendard-Bold',
-    fontSize: width * 16,
+    fontSize: height * 16,
     // font-style: normal,
-    fontWeight: '700',
+    fontWeight: '600',
   },
   chatList: {
     padding: 20,
@@ -181,8 +182,8 @@ const styles = StyleSheet.create({
   chatListText: {
     marginRight: width * 6,
     color: '#303030',
-    fontFamily: 'Pretendard-bold',
-    fontSize: width * 16,
+    fontFamily: 'Pretendard',
+    fontSize: height * 16,
     fontWeight: '600',
   },
   peopleCount: {
@@ -191,9 +192,9 @@ const styles = StyleSheet.create({
   peopleCountText: {
     marginLeft: 15,
     color: '#3DBE14',
-    fontFamily: 'Pretendard-bold',
-    fontSize: width * 16,
-    fontWeight: '900',
+    fontFamily: 'Pretendard',
+    fontSize: height * 16,
+    fontWeight: '600',
   },
   bottomNavigate: {
     flexDirection: 'row',
@@ -225,11 +226,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-  },
-  tabButtonText: {
-    color: 'white',
-    fontSize: 11,
-    fontWeight: 'bold',
   },
 });
 

@@ -2,11 +2,24 @@ import React, {useState} from 'react';
 import {View, Text, StyleSheet, TouchableHighlight} from 'react-native';
 import {Chat} from '../utils/commonInterface';
 import MyBubbleLongpressModal from '../components/myBubbleLongpressModal';
+import {height} from '../global';
 
-export default function ChatBubbleMine({chat}: {chat: Chat}) {
+export default function ChatBubbleMine({
+  chat,
+  isHost,
+  noticeChat,
+}: {
+  chat: Chat;
+  isHost: boolean;
+  noticeChat: (notice: string) => void;
+}) {
   const [chatBubbleData, setchatMsg] = useState(chat.msg);
   const setChatBubbleData = translatedText => {
     setchatMsg(translatedText);
+  };
+
+  const setNotification = () => {
+    noticeChat(chatBubbleData);
   };
 
   const [isMyBubbleLongpressModal, setMyBubbleLongpressModal] = useState(false);
@@ -61,6 +74,8 @@ export default function ChatBubbleMine({chat}: {chat: Chat}) {
         inBubblePosition={inBubblePosition}
         bubbleHeight={componentHeight}
         setBubbleData={setChatBubbleData}
+        isHost={isHost}
+        setNotification={setNotification}
       />
     </View>
   );
@@ -86,15 +101,15 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   text: {
-    color: 'white',
-    fontFamily: 'Pretendard-bold',
-    fontSize: 13,
+    color: '#FFFFFF',
+    fontFamily: 'Pretendard',
+    fontSize: height * 13,
     fontWeight: '400',
   },
   timeText: {
-    color: 'black',
-    fontFamily: 'Pretendard-bold',
-    fontSize: 10,
+    color: '#303030',
+    fontFamily: 'Pretendard',
+    fontSize: height * 10,
     fontWeight: '600',
   },
 });
