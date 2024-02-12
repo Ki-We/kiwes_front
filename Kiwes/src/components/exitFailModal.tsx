@@ -47,9 +47,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'Pretendard',
     fontWeight: '600',
-    fontSize: height * 18,
+    fontSize: height * 16,
     marginTop: height * 15,
-    color: 'black',
+    color: '#303030',
   },
 });
 

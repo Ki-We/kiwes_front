@@ -32,9 +32,8 @@ const KickModal = ({kickedData, onClose, kickUser, clubId}) => {
       }}>
       <View style={styles.modalContainer}>
         <View style={styles.TextContainer}>
-          <Text style={styles.modalTitle}>
-            {kickedData.name} 님을{'\n'}
-          </Text>
+          <Text style={styles.modalNotion}>!무분별한 퇴장을 삼가주세요!</Text>
+          <Text style={styles.modalTitle}>{kickedData.name} 님을</Text>
           <Text style={styles.modalText}>퇴장 하시겠습니까?</Text>
         </View>
         <View style={styles.modalButtonGroup}>
@@ -43,10 +42,28 @@ const KickModal = ({kickedData, onClose, kickUser, clubId}) => {
             onPress={() => {
               onClose(0);
             }}>
-            <Text>취소</Text>
+            <Text
+              style={{
+                textAlign: 'center',
+                color: '#8A8A8A',
+                fontFamily: 'Pretendard',
+                fontWeight: '600',
+                fontSize: height * 16,
+              }}>
+              취소
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.acceptButton} onPress={doKickUser}>
-            <Text>확인</Text>
+            <Text
+              style={{
+                textAlign: 'center',
+                color: '#8A8A8A',
+                fontFamily: 'Pretendard',
+                fontWeight: '600',
+                fontSize: height * 16,
+              }}>
+              확인
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -77,18 +94,27 @@ const styles = StyleSheet.create({
     height: height * 126,
     width: width * 265,
   },
+  modalNotion: {
+    textAlign: 'center',
+    color: '#F00',
+    fontFamily: 'Pretendard',
+    fontWeight: '600',
+    fontSize: height * 18,
+    marginBottom: height * 15,
+  },
   modalTitle: {
     textAlign: 'center',
     color: '#3DBE14',
     fontFamily: 'Pretendard',
-    fontWeight: '500',
+    fontWeight: '600',
     fontSize: height * 16,
+    marginBottom: height * 15,
   },
   modalText: {
     textAlign: 'center',
     color: '#303030',
     fontFamily: 'Pretendard',
-    fontWeight: '500',
+    fontWeight: '600',
     fontSize: height * 16,
   },
   modalButtonGroup: {

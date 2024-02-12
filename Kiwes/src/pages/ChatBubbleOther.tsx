@@ -5,20 +5,29 @@ import {Chat} from '../utils/commonInterface';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faUser} from '@fortawesome/free-solid-svg-icons';
 import OtherBubbleLongpressModal from '../components/otherBubbleLongpressModal';
+import {height} from '../global';
 
 export default function ChatBubbleOther({
   writer,
   chat,
   color,
+  isHost,
+  noticeChat,
 }: {
   writer: string;
   chat: Chat;
   color: string;
+  isHost: boolean;
+  noticeChat: (notice: string) => void;
 }) {
   // const [chatBubblePosition, setChatBubblePosition] = useState({x: 0, y: 0});
   const [chatBubbleData, setchatMsg] = useState(chat.msg);
   const setChatBubbleData = translatedText => {
     setchatMsg(translatedText);
+  };
+
+  const setNotification = () => {
+    noticeChat(chatBubbleData);
   };
 
   const [isOtherBubbleLongpressModal, setOtherBubbleLongpressModal] =
@@ -89,6 +98,8 @@ export default function ChatBubbleOther({
           inBubblePosition={inBubblePosition}
           bubbleHeight={componentHeight}
           setBubbleData={setChatBubbleData}
+          isHost={isHost}
+          setNotification={setNotification}
         />
       </View>
     </>
@@ -128,15 +139,15 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   text: {
-    color: 'black',
-    fontFamily: 'Pretendard-bold',
-    fontSize: 13,
+    color: '#303030',
+    fontFamily: 'Pretendard',
+    fontSize: height * 13,
     fontWeight: '400',
   },
   timeText: {
-    color: 'black',
-    fontFamily: 'Pretendard-bold',
-    fontSize: 10,
+    color: '#303030',
+    fontFamily: 'Pretendard',
+    fontSize: height * 10,
     fontWeight: '600',
   },
 });

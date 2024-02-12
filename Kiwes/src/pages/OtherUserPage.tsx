@@ -116,8 +116,8 @@ export function OtherUserPage({route, navigation}: any) {
             style={{
               color: '#303030',
               fontFamily: 'Pretendard',
-              fontSize: width * 14,
-              fontWeight: '800',
+              fontSize: height * 15,
+              fontWeight: '600',
             }}>
             {option}
           </Text>
@@ -136,7 +136,7 @@ export function OtherUserPage({route, navigation}: any) {
             style={{
               color: '#8A8A8A',
               fontFamily: 'Pretendard',
-              fontSize: width * 14,
+              fontSize: height * 15,
               fontWeight: '600',
             }}>
             {option}
@@ -311,15 +311,22 @@ const styles = StyleSheet.create({
   nickNameText: {
     color: '#303030',
     fontFamily: 'Pretendard',
-    fontSize: width * 13,
-    fontWeight: '700',
+    fontSize: height * 14,
+    fontWeight: '600',
     textAlign: 'center',
   },
   profileText: {
     color: '#303030',
     fontFamily: 'Pretendard',
-    fontSize: width * 12,
-    fontWeight: '500',
+    fontSize: height * 14,
+    fontWeight: '400',
+    textAlign: 'center',
+  },
+  introductionText: {
+    color: '#303030',
+    fontFamily: 'Pretendard',
+    fontSize: height * 13,
+    fontWeight: '400',
     textAlign: 'center',
   },
   optionGroup: {

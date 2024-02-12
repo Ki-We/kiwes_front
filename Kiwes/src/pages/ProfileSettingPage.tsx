@@ -236,8 +236,8 @@ const ProfileSettingPage = ({route, navigation}) => {
                   style={{
                     color: '#FFFFFF',
                     fontFamily: 'Pretendard',
-                    fontSize: width * 18,
-                    fontWeight: '700',
+                    fontSize: height * 18,
+                    fontWeight: '600',
                   }}>
                   설정 완료
                 </Text>
@@ -274,14 +274,14 @@ const styles = StyleSheet.create({
   headerText: {
     color: '#303030',
     fontFamily: 'Pretendard',
-    fontSize: width * 20,
-    fontWeight: '900',
+    fontSize: height * 20,
+    fontWeight: '600',
   },
   mainText: {
     color: '#303030',
     fontFamily: 'Pretendard',
-    fontSize: width * 15,
-    fontWeight: '700',
+    fontSize: height * 15,
+    fontWeight: '600',
   },
   imageContainer: {
     marginTop: height * 20,
@@ -309,32 +309,17 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: '#F8F8F8',
     padding: 10,
-    fontSize: width * 14,
+    fontSize: height * 15,
+    fontWeight: '500',
     width: '100%',
     height: height * 220,
     textAlignVertical: 'top',
     textAlign: 'auto',
   },
-  checkButton: {
-    height: height * 50,
-    width: width * 76,
-    borderRadius: 5,
-    backgroundColor: '#C0C0C0',
-    padding: 10,
-    marginTop: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   checkText: {
     color: '#303030',
     fontFamily: 'Pretendard',
-    fontSize: width * 12,
-    fontWeight: '600',
-  },
-  errorText: {
-    color: 'red',
-    fontFamily: 'Pretendard',
-    fontSize: width * 12,
+    fontSize: height * 12,
     fontWeight: '500',
   },
   completeButton: {
