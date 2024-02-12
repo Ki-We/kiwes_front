@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import LogoutModal from '../components/LogoutModal';
 import {RESTAPIBuilder} from '../utils/restapiBuilder';
 import {apiServer} from '../utils/metaData';
+import UploadImageTest from '../components/UploadImageTest';
 const url = `${apiServer}/auth/quit`;
 const Terms =
   'https://drive.google.com/file/d/1zIPn45nR6PTI5tkjW80rbFqEx3wmFScS/view?usp=sharing';
@@ -81,6 +82,7 @@ const SettingPage = ({navigation}: any) => {
         <TouchableOpacity onPress={() => handleOpenSecessionModal()}>
           <Text style={styles.text}>탈퇴하기</Text>
         </TouchableOpacity>
+        <UploadImageTest />
       </View>
       <LogoutModal
         isVisible={modalVisible}

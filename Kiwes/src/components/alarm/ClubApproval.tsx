@@ -9,9 +9,11 @@ import {FlatList} from 'react-native-gesture-handler';
 import ApprovalModal from './ApprovalModal';
 import NothingShow from '../NothingShow';
 
-const ClubApproval = ({route}: any) => {
+const ClubApproval = ({route, navigation}: any) => {
   const {clubId} = route.params;
-
+  const navigateToProile = (item: any) => {
+    navigation.navigate('MyPage', {memberId: item.memberId});
+  };
   const [members, setMembers] = useState<ClubMemberApprovalRequestEach[]>([]);
   const [member, setMember] = useState<ClubMemberApprovalRequestEach>();
   const [modalVisible, setModalVisible] = useState(false);
@@ -109,10 +111,21 @@ const ClubApproval = ({route}: any) => {
               <View style={styles.memberContainer}>
                 <View>
                   <TouchableOpacity style={styles.profilContainer}>
-                    <Image
-                      source={{uri: item.profileImg}}
-                      style={styles.image}
-                    />
+                    <TouchableOpacity
+                      onPress={() => {
+                        navigateToProile({item});
+                      }}>
+                      <Image
+                        source={{
+                          uri:
+                            'https://kiwes2-bucket.s3.ap-northeast-2.amazonaws.com/profileimg/' +
+                            item.profileImg +
+                            '.jpg',
+                        }}
+                        style={styles.image}
+                      />
+                    </TouchableOpacity>
+
                     <View>
                       <Text style={styles.text}>{item.nickname}</Text>
                     </View>

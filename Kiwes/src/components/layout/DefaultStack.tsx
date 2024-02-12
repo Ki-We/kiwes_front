@@ -7,7 +7,6 @@ import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
 import AlarmPage from '../../pages/AlarmPage';
 import Search from '../../pages/Search';
 import WishPage from '../../pages/WishPage';
-import ProfilePage from '../../pages/ProfilePage';
 import AlarmList from '../alarm/AlarmList';
 import SettingPage from '../../pages/SettingPage';
 import ClubDetail from '../../pages/ClubDetail';
@@ -88,7 +87,6 @@ const LoginStack = () => {
         <Stack.Screen name="WishPage" component={WishPage} />
         <Stack.Screen name="ClubDetail" component={ClubDetail} />
         <Stack.Screen name="AlarmPage" component={AlarmPage} />
-        <Stack.Screen name="ProfilePage" component={ProfilePage} />
         <Stack.Screen name="AlarmList" component={AlarmList} />
         <Stack.Screen name="SettingPage" component={SettingPage} />
         <Stack.Screen
