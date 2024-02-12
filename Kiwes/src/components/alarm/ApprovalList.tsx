@@ -74,11 +74,11 @@ const styles = StyleSheet.create({
   },
   title: {
     color: 'rgba(0, 0, 0, 1)',
-    fontFamily: 'Pretendard-Bold',
-    fontSize: width * 18,
+    fontSize: width * 16,
+    fontWeight: '600',
     flex: 0.06,
-    marginLeft: 20,
-    marginTop: 15,
+    marginLeft: width * 20,
+    marginTop: height * 15,
   },
   ListContainer: {
     flex: 0.34,
@@ -86,13 +86,13 @@ const styles = StyleSheet.create({
   retriveContainer: {
     flexDirection: 'row',
     flex: 0.1,
-    marginLeft: 20,
-    marginTop: 20,
+    marginLeft: width * 20,
+    marginTop: height * 20,
   },
   retrive: {
     color: 'rgba(0, 0, 0, 1)',
-    fontFamily: 'Pretendard-Bold',
-    fontSize: width * 14,
+    fontSize: width * 12,
+    fontWeight: '600',
   },
 });
 

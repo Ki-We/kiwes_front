@@ -221,12 +221,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 10,
     borderBottomWidth: 1,
-    borderColor: 'rgba(0, 0, 0, 0.2)',
-    marginLeft: 10,
-    marginRight: 10,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+    marginLeft: height * 14,
+    marginRight: height * 10,
   },
   imageContainer: {
-    width: width * 120,
+    width: width * 122,
     height: height * 94,
     borderRadius: 20,
   },
@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: height * 16,
-    fontWeight: 'bold',
+    fontWeight: '500',
     color: 'rgba(0, 0, 0, 1)',
     marginBottom: height * 5,
   },
@@ -254,6 +254,7 @@ const styles = StyleSheet.create({
   info: {
     fontSize: height * 11,
     color: 'rgba(0, 0, 0, 0.8)',
+    fontWeight: '400',
     marginLeft: width * 10,
   },
 });

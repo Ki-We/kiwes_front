@@ -7,6 +7,7 @@ import LogoutModal from '../components/LogoutModal';
 import {RESTAPIBuilder} from '../utils/restapiBuilder';
 import {apiServer} from '../utils/metaData';
 import UploadImageTest from '../components/UploadImageTest';
+import {height, width} from '../global';
 const url = `${apiServer}/auth/quit`;
 const Terms =
   'https://drive.google.com/file/d/1zIPn45nR6PTI5tkjW80rbFqEx3wmFScS/view?usp=sharing';
@@ -64,9 +65,9 @@ const SettingPage = ({navigation}: any) => {
     <>
       <Header navigatePop={navigatePop} title={'설정'} />
       <View style={styles.container}>
-        <TouchableOpacity>
+        {/* <TouchableOpacity>
           <Text style={styles.text}>언어 설정</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity onPress={() => openPDF(Terms)}>
           <Text style={styles.text}>이용 약관</Text>
         </TouchableOpacity>
@@ -82,7 +83,6 @@ const SettingPage = ({navigation}: any) => {
         <TouchableOpacity onPress={() => handleOpenSecessionModal()}>
           <Text style={styles.text}>탈퇴하기</Text>
         </TouchableOpacity>
-        <UploadImageTest />
       </View>
       <LogoutModal
         isVisible={modalVisible}
@@ -99,25 +99,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderTopWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.4)',
-  },
-  headdrContainer: {
-    flexDirection: 'row',
-    marginBottom: 5,
-  },
-  textContainer: {
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    alignItems: 'center',
-    margin: 10,
-    flex: 1,
+    paddingTop: height * 30,
   },
   text: {
-    fontSize: 14,
+    fontSize: height * 15,
     color: 'rgba(0, 0, 0, 1)',
-    fontWeight: '600',
-    margin: 15,
-    paddingTop: 10,
-    paddingLeft: 10,
+    fontWeight: '400',
+    margin: width * 14,
+    paddingBottom: height * 10,
+    paddingLeft: width * 10,
   },
 });
 export default SettingPage;

@@ -16,8 +16,6 @@ import {RESTAPIBuilder} from '../utils/restapiBuilder';
 import {useFocusEffect} from '@react-navigation/native';
 import {ParticipatedClubInfo, ReviewList} from '../utils/commonInterface';
 import {width, height, DeviceWidth} from '../global';
-import ProfileSettingIcon from 'react-native-vector-icons/SimpleLineIcons';
-import SettingIcon from 'react-native-vector-icons/SimpleLineIcons';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import backIcon from 'react-native-vector-icons/Ionicons';
 
@@ -60,6 +58,7 @@ export function OtherUserPage({route, navigation}: any) {
     navigation.navigate('ClubDetail', {clubId: clubId});
   };
   const initialize = async () => {
+    console.log('MemberId : ', memberId);
     const url = `${apiServer}/mypage/${memberId}`;
     const {data} = await new RESTAPIBuilder(url, 'GET')
       .setNeedToken(true)
@@ -69,7 +68,7 @@ export function OtherUserPage({route, navigation}: any) {
 
     setMyPageInfo(data);
     console.log('Mypage : ', data);
-    console.log('MemberId : ', memberId);
+   
   };
   const getParticipatedClubInfo = async () => {
     const url = `${apiServer}/api/v1/club/approval/my-club-image/${memberId}`;
@@ -169,14 +168,6 @@ export function OtherUserPage({route, navigation}: any) {
             style={styles.image}
             resizeMode="cover"
           />
-          {/* /////////////////////////////////////////////////////////////////////////////////////////////////////////// */}
-          {/* <TouchableOpacity
-            onPress={() => {
-              console.log(myPageInfo.profileImage);
-            }}>
-            <Text>dfdf</Text>
-          </TouchableOpacity> */}
-          {/* ////////////////////////////////////////////////////////////////////////////////////////////// */}
         </View>
         <View style={{marginTop: height * 15}}>
           <Text style={styles.nickNameText}>{myPageInfo.nickname}</Text>

@@ -29,7 +29,7 @@ const AlarmList = ({navigation}: any) => {
     }
   };
   const navigateToProile = (item: any) => {
-    navigation.navigate('MyPage', {memberId: item.senderId});
+    navigation.navigate('OtherUserPage', {memberId: item.senderId});
   };
   const fetchData = async () => {
     try {
@@ -93,27 +93,20 @@ const styles = StyleSheet.create({
   },
   alarmContainer: {
     justifyContent: 'space-between',
-    padding: 5,
+    padding: width * 5,
     borderBottomWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.2)',
-    marginHorizontal: 5,
-    paddingBottom: 10,
-    marginBottom: 5,
+    marginHorizontal: width * 5,
+    paddingBottom: width * 10,
   },
   profilContainer: {
     flexDirection: 'row',
   },
-  image: {
-    width: width * 35,
-    height: height * 35,
-    borderRadius: 20,
-  },
   title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#58C047',
-    marginBottom: 10,
-    margin: 5,
+    fontSize: width * 15,
+    fontWeight: '600',
+    color: '#58C024',
+    margin: width * 10,
   },
 });
 const Nothing = ({text}: {text: string}) => {
@@ -125,10 +118,10 @@ const styleKiwe = StyleSheet.create({
     height: height * 170,
   },
   text: {
-    fontSize: height * 15,
-    fontWeight: 'bold',
+    fontSize: height * 16,
+    fontWeight: '600',
     color: 'rgba(0, 0, 0, 1)',
-    marginBottom: 3,
+    marginBottom: height * 3,
   },
 });
 export default AlarmList;

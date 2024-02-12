@@ -11,8 +11,8 @@ import NothingShow from '../NothingShow';
 
 const ClubApproval = ({route, navigation}: any) => {
   const {clubId} = route.params;
-  const navigateToProile = (item: any) => {
-    navigation.navigate('MyPage', {memberId: item.memberId});
+  const navigateToProile = (memberId: any) => {
+    navigation.navigate('OtherUserPage', {memberId: memberId});
   };
   const [members, setMembers] = useState<ClubMemberApprovalRequestEach[]>([]);
   const [member, setMember] = useState<ClubMemberApprovalRequestEach>();
@@ -113,7 +113,7 @@ const ClubApproval = ({route, navigation}: any) => {
                   <TouchableOpacity style={styles.profilContainer}>
                     <TouchableOpacity
                       onPress={() => {
-                        navigateToProile({item});
+                        navigateToProile(item.memberId);
                       }}>
                       <Image
                         source={{
@@ -175,12 +175,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 10,
-    borderBottomWidth: 1,
-    borderColor: 'rgba(0, 0, 0, 0.2)',
-    marginLeft: 10,
-    marginRight: 10,
-    marginBottom: 10,
+    paddingVertical: width * 8,
+    marginHorizontal: width * 10,
   },
   profilContainer: {
     flexDirection: 'row',
@@ -191,32 +187,35 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   title: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: width * 16,
+    fontWeight: '600',
     color: 'rgba(0, 0, 0, 1)',
-    marginBottom: 3,
-    margin: 10,
+    marginBottom: height * 5,
+    marginLeft: width * 20,
+    marginTop: height * 15,
   },
   text: {
     color: 'rgba(0, 0, 0, 0.8)',
-    fontSize: width * 16,
-    margin: 10,
+    fontSize: width * 15,
+    fontWeight: '500',
+    margin: width * 5,
   },
   buttonContainer: {
     flexDirection: 'row',
-    color: 'rgba(0, 0, 0, 0.8)',
     fontSize: width * 16,
-    margin: 10,
+    margin: width * 5,
   },
   button: {
-    color: '#58C047',
-    borderColor: '#58C047',
+    color: '#9BD23C',
+    borderColor: '#9BD23C',
     borderWidth: 1,
     borderRadius: 15,
-    padding: 4,
-    paddingHorizontal: 7,
-    marginBottom: 5,
-    marginHorizontal: 3,
+    fontSize: width * 13,
+    fontWeight: '500',
+    padding: width * 4,
+    paddingHorizontal: width * 7,
+    marginBottom: height * 5,
+    marginHorizontal: width * 3,
   },
 });
 const Nothing = ({text}: {text: string}, {title}: {title: string}) => {
@@ -229,14 +228,14 @@ const Nothing = ({text}: {text: string}, {title}: {title: string}) => {
 };
 const styleKiwe = StyleSheet.create({
   image: {
-    margin: 10,
+    margin: width * 10,
     height: height * 300,
   },
   text: {
-    fontSize: height * 20,
-    fontWeight: 'bold',
+    fontSize: height * 16,
+    fontWeight: '600',
     color: 'rgba(0, 0, 0, 1)',
-    marginBottom: 3,
+    marginBottom: height * 3,
   },
 });
 export default ClubApproval;

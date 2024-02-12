@@ -40,17 +40,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: 'white',
     alignItems: 'center',
+    paddingBottom: height * 20,
   },
   alarmContainer: {
     flex: 1,
     flexDirection: 'row',
-    marginBottom: 5,
   },
   image: {
-    width: width * 35,
-    height: height * 35,
+    width: width * 25,
+    height: height * 25,
     borderRadius: 20,
-    marginRight: 10,
+    marginRight: width * 15,
   },
   textContainer: {
     justifyContent: 'space-between',
@@ -61,15 +61,17 @@ const styles = StyleSheet.create({
   },
   text: {
     color: 'rgba(0, 0, 0, 1)',
-    fontSize: width * 12,
+    fontSize: width * 13,
+    fontWeight: '400',
     flexShrink: 1,
   },
   timeContainer: {
     marginLeft: 40,
   },
   time: {
-    color: 'rgba(0, 0, 0, 0.5)',
-    fontSize: width * 12,
+    color: 'rgba(0, 0, 0, 0.4)',
+    fontSize: width * 13,
+    fontWeight: '600',
   },
 });
 export default AlarmComponent;

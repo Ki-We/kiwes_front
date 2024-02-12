@@ -13,7 +13,9 @@ const ApprovalModal = ({isVisible, onClose, member, exitClub, modaltype}) => {
       onBackdropPress={onClose}>
       <View style={styles.modalContainer}>
         <View style={styles.TextContainer}>
-          <Text style={styles.modalTitle}>{member?.nickname} 님</Text>
+          <Text style={styles.modalTitle}>
+            {member?.nickname}님<Text style={styles.modalText}>을</Text>
+          </Text>
           <Text style={styles.modalText}>{modaltype}하시겠습니까?</Text>
         </View>
         <View style={styles.modalButtonGroup}>
@@ -57,14 +59,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#3DBE14',
     fontFamily: 'Pretendard',
-    fontWeight: '500',
+    fontWeight: '600',
     fontSize: height * 16,
   },
   modalText: {
     textAlign: 'center',
     color: '#303030',
     fontFamily: 'Pretendard',
-    fontWeight: '500',
+    fontWeight: '600',
     fontSize: height * 16,
   },
   modalButtonGroup: {
@@ -79,13 +81,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: width * 135,
+    color: '#303030',
+    fontFamily: 'Pretendard',
+    fontWeight: '600',
+    fontSize: height * 16,
     borderRightColor: '#8A8A8A',
     borderRightWidth: 1,
   },
   acceptButton: {
     alignItems: 'center',
     justifyContent: 'center',
-    height: height * 40,
+    color: '#303030',
+    fontFamily: 'Pretendard',
+    fontWeight: '600',
+    fontSize: height * 16,
     width: width * 135,
   },
 });

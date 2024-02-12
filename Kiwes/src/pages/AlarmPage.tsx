@@ -87,7 +87,8 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0, 0, 0, 0.8)',
     alignItems: 'center',
     flex: 0.5,
-    borderBottomWidth: 1,
+    borderBottomWidth: 3,
+    paddingBottom: height * 7,
   },
   tapText: {
     color: 'rgba(0, 0, 0, 1)',
@@ -96,6 +97,8 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   tapUnSelected: {
+    marginBottom: height * 1,
+    borderBottomWidth: 2,
     borderColor: 'rgba(0, 0, 0, 0.2)',
   },
   tapUnSelectedText: {
