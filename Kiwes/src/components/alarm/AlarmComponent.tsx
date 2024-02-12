@@ -11,7 +11,15 @@ const AlarmComponent = ({item, navigateTo, navigateToProile}: any) => {
             <TouchableOpacity onPress={navigateTo}>
               <View style={styles.textContainer}>
                 <TouchableOpacity onPress={navigateToProile}>
-                  <Image source={{uri: item.imageUrl}} style={styles.image} />
+                  <Image
+                    source={{
+                      uri:
+                        'https://kiwes2-bucket.s3.ap-northeast-2.amazonaws.com/profileimg/' +
+                        item.imageUrl +
+                        '.jpg',
+                    }}
+                    style={styles.image}
+                  />
                 </TouchableOpacity>
                 <Text style={styles.text}>{item.content}</Text>
               </View>
@@ -32,17 +40,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: 'white',
     alignItems: 'center',
+    paddingBottom: height * 20,
   },
   alarmContainer: {
     flex: 1,
     flexDirection: 'row',
-    marginBottom: 5,
   },
   image: {
-    width: width * 35,
-    height: height * 35,
+    width: width * 25,
+    height: height * 25,
     borderRadius: 20,
-    marginRight: 10,
+    marginRight: width * 15,
   },
   textContainer: {
     justifyContent: 'space-between',
@@ -53,15 +61,17 @@ const styles = StyleSheet.create({
   },
   text: {
     color: 'rgba(0, 0, 0, 1)',
-    fontSize: width * 12,
+    fontSize: width * 13,
+    fontWeight: '400',
     flexShrink: 1,
   },
   timeContainer: {
     marginLeft: 40,
   },
   time: {
-    color: 'rgba(0, 0, 0, 0.5)',
-    fontSize: width * 12,
+    color: 'rgba(0, 0, 0, 0.4)',
+    fontSize: width * 13,
+    fontWeight: '600',
   },
 });
 export default AlarmComponent;

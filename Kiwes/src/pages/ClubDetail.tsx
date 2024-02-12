@@ -136,6 +136,10 @@ const renderNickDetail = () => {
   const navigateToQnAPage = () => {
     navigation.navigate('QnAPage', { clubId: clubId });
   };
+  const navigateToProile = (memberId: any) => {
+    console.log(memberId);
+    navigation.navigate('OtherUserPage', {memberId: memberId});
+  };
   const toggleLike = () => {
     setIsLiked((prev) => !prev);
     setLikeCount((prevCount) => (isLiked ? prevCount - 1 : prevCount + 1));
@@ -211,7 +215,11 @@ const renderNickDetail = () => {
       <View style={styles.hostContainer}>
         <Text style={styles.hostTitle}>호스트 정보</Text>
         <View style={styles.profileContainer}>
+          <TouchableOpacity onPress={()=>{
+          console.log(clubInfo.memberInfo);
+            navigateToProile(clubInfo.memberInfo.hostId);}}>
           <Image source={{ uri: clubInfo.memberInfo.hostThumbnailImage }} style={styles.profileImage} />
+          </TouchableOpacity>
           <Text style={styles.profileText}>{memberInfo.hostNickname}</Text>
           <View style={styles.participantContainer}>
             <View style={styles.participantItem}>
@@ -325,7 +333,9 @@ const renderBtn = (tags: string[]) => {
     }
     return clubInfo.qnas.map((qna, index) => (
       <View key={index} style={styles.qaItem}>
-        <Image source={{ uri: qna.questionerImageUrl }} style={styles.qaProfileImage} />
+        <TouchableOpacity onPress={()=>navigateToProile(qna.questionerId)}>
+          <Image source={{ uri: qna.questionerImageUrl }} style={styles.qaProfileImage} />
+        </TouchableOpacity>
         <View style={styles.qaContent}>
           <Text style={styles.qaNickname}>{qna.questionerNickname}</Text>
           <Text style={styles.qaText}>{qna.questionContent}</Text>
@@ -340,7 +350,9 @@ const renderBtn = (tags: string[]) => {
     }
     return clubInfo.reviews.map((review, index) => (
       <View key={index} style={styles.qaItem}>
+        <TouchableOpacity onPress={()=>navigateToProile(review.reviewerId)}>
         <Image source={{ uri: review.reviewerImageUrl }} style={styles.qaProfileImage} />
+        </TouchableOpacity>
         <View style={styles.qaContent}>
           <Text style={styles.qaNickname}>{review.reviewerNickname}</Text>
           <Text style={styles.qaText}>{review.reviewContent}</Text>

@@ -36,10 +36,11 @@ const styles = StyleSheet.create({
   title: {
     color: 'rgba(0, 0, 0, 1)',
     fontFamily: 'Pretendard-Bold',
-    fontSize: width * 18,
+    fontSize: width * 16,
+    fontWeight: '600',
     flex: 0.06,
-    marginLeft: 20,
-    marginTop: 15,
+    marginLeft: width * 20,
+    marginTop: height * 15,
   },
 });
 const Nothing = ({text}: {text: string}) => {
