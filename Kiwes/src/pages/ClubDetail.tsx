@@ -520,7 +520,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     color: '#303030',
     fontSize: height * 12,
-    fontWeight: 600,
+    fontWeight: '600',
     marginTop: height * 10,
   },
   sectionText: {
@@ -531,7 +531,7 @@ const styles = StyleSheet.create({
   },
   likeCount: {
     fontSize: height * 15,
-    fontWeight: 600,
+    fontWeight: '600',
     marginLeft: width * 30,
     marginTop: height * -24,
     color: '#303030',
@@ -550,7 +550,7 @@ const styles = StyleSheet.create({
   hostTitle: {
     color: '#303030',
     fontSize: height * 12,
-    fontWeight: 600,
+    fontWeight: '600',
     marginTop: height * 5,
   },
   profileContainer: {
@@ -572,14 +572,14 @@ const styles = StyleSheet.create({
     fontSize: height * 16,
     color: '#808080',
     marginLeft: width * 9,
-    fontWeight: 600,
+    fontWeight: '600',
   },
   participantText1: {
     fontSize: height * 16,
     color: '#808080',
     marginLeft: width * -6,
     alignItems: 'flex-end',
-    fontWeight: 600,
+    fontWeight: '600',
   },
   profileText: {
     fontSize: height * 14,
@@ -587,7 +587,7 @@ const styles = StyleSheet.create({
     marginLeft: width * 15,
     marginTop: height * -7,
     marginRight: width * 90,
-    fontWeight: 500,
+    fontWeight: '500',
     width: width * 120,
   },
   participantContainer: {
@@ -600,14 +600,14 @@ const styles = StyleSheet.create({
     position: 'absolute',
     color: '#303030',
     fontSize: height * 12,
-    fontWeight: 600,
+    fontWeight: '600',
     top: height * -25,
     left: height * -10,
   },
   limitText: {
     color: '#303030',
     fontSize: height * 12,
-    fontWeight: 600,
+    fontWeight: '600',
     marginLeft: width * -35,
   },
   participantInfo: {
@@ -626,13 +626,13 @@ const styles = StyleSheet.create({
   clubInfoTitle: {
     color: '#303030',
     fontSize: height * 12,
-    fontWeight: 600,
+    fontWeight: '600',
     marginBottom: height * 10,
   },
   clubInfoText: {
     color: '#303030',
     fontSize: height * 13,
-    fontWeight: 500,
+    fontWeight: '500',
     backgroundColor: '#F8F8F8',
     borderRadius: 30,
     padding: height * 13,
@@ -685,18 +685,18 @@ const styles = StyleSheet.create({
   },
   qaDateTime: {
     fontSize: height * 10,
-    fontWeight: 400,
+    fontWeight: '400',
     color: '#888888',
   },
   qaNickname: {
     fontSize: height * 14,
     color: '#303030',
-    fontWeight: 500,
+    fontWeight: '500',
     marginBottom: height * 3,
   },
   seeAllButton: {
     fontSize: height * 12,
-    fontWeight: 600,
+    fontWeight: '600',
     color: '#303030',
     marginBottom: height * 15,
   },
@@ -724,7 +724,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     fontSize: height * 20,
-    fontWeight: 600,
+    fontWeight: '600',
   },
   joinContainer: {
     alignItems: 'center',
@@ -805,7 +805,7 @@ const styles = StyleSheet.create({
   },
   locationText: {
     fontSize: height * 13,
-    fontWeight: 500,
+    fontWeight: '500',
     color: '#8A8A8A',
   },
   mapContainer: {
