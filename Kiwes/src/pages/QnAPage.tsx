@@ -2,11 +2,12 @@ import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import QnAList from '../components/clubdetail/QnAList';
+import { width } from '../global';
 
 const QnAPage = ({route, navigation}) => {
   const {clubId} = route.params;
   const navigateToProile = (memberId: any) => {
-    navigation.navigate('MyPage', {memberId: memberId});
+    navigation.navigate('OtherUserPage', {memberId: memberId});
   };
   return (
     <View style={styles.container}>
@@ -29,19 +30,19 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 10,
+    padding: width * 10,
     borderBottomWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.2)',
   },
   backArrow: {
-    fontSize: 20,
-    marginRight: 10,
+    marginRight: width * 10,
   },
   headerText: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: width * 20,
+    fontWeight: '600',
     color: '#303030',
-    marginLeft: 150,
+    alignItems: 'center',
+    marginHorizontal: width * 125,
   },
 });
 export default QnAPage;
