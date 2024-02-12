@@ -48,7 +48,6 @@ export function Home({navigation}: any) {
         .build()
         .run();
       setPopularClubs(response.data);
-      console.log('popular API Response:', response.data);
     } catch (error) {
       console.error('Error fetching popular clubs:', error);
     }
@@ -66,7 +65,6 @@ export function Home({navigation}: any) {
         .setNeedToken(true)
         .build()
         .run();
-      console.log(response);
       return response.data;
     } catch (err) {
       console.log(err);
@@ -80,7 +78,6 @@ export function Home({navigation}: any) {
         .setNeedToken(true)
         .build()
         .run();
-      console.log('Banner API Response:', response.data);
       setBanners(response.data);
     } catch (err) {
       console.error(err);
@@ -96,11 +93,8 @@ export function Home({navigation}: any) {
   const fetchAndSetData = async () => {
     try {
       const newData = await fetchData();
-      console.log(newData);
       if (newData && newData.baseInfo) {
         setData(newData);
-        console.log(newData.baseInfo);
-        console.log(newData.baseInfo.title);
       } else {
         console.error('Data or baseInfo is undefined in the response.');
       }
@@ -143,31 +137,18 @@ export function Home({navigation}: any) {
   const navigateToClubDetail = (clubId): any => {
     navigation.navigate('ClubDetail', {clubId: clubId});
   };
-
-  // const renderLanguages = languages => {
-  //   return (
-  //     <View style={styles.overlayContainer}>
-  //       {languages.map((language, index) => {
-  //         const languageUtil = langList.find(item => item.key === language);
-  //         return (
-  //           <Text key={index} style={styles.overlayText}>
-  //             {languageUtil ? languageUtil.text : 'Unknown'}
-  //           </Text>
-  //         );
-  //       })}
-  //     </View>
-  //   );
-  // };
-
   renderClubLanguages = languages => {
     return (
       <View style={styles.infoContainer}>
         {languages.map((language, index) => {
           const languageUtil = langList.find(item => item.key === language);
           return (
-            <Text key={index} style={styles.groupDetail}>
-              {languageUtil ? languageUtil.text : 'Unknown'}
-            </Text>
+            <React.Fragment key={index}>
+              <Text style={styles.groupDetail}>
+                {languageUtil ? languageUtil.text : 'Unknown'}
+              {index < languages.length - 1 && <Text>, </Text>}
+              </Text>
+            </React.Fragment>
           );
         })}
       </View>
@@ -199,51 +180,51 @@ export function Home({navigation}: any) {
     return (
       <TouchableOpacity onPress={() => navigateToClubDetail(clubId)}>
         <View style={styles.RecGroupsContainer}>
-            <View style={styles.groupContent}>
-              <Image source={image} style={styles.groupImage} />
-              <View style={styles.textContent}>
-                <View style={styles.infoContainer1}>
-                  <Text style={styles.groupTitle}>{title}</Text>
-                </View>
-                <View style={styles.infoContainer}>
-                  <Icon
-                    name="calendar-outline"
-                    size={14}
-                    color={'rgba(0, 0, 0, 0.7)'}
-                    style={styles.icon}
-                  />
-                  <Text style={styles.groupDetail}>{date}</Text>
-                </View>
-                <View style={styles.infoContainer}>
-                  <Icon
-                    name="location-outline"
-                    size={14}
-                    color={'rgba(0, 0, 0, 0.7)'}
-                    style={styles.icon}
-                  />
-                  <Text style={styles.groupDetail}>{locationKeyword}</Text>
-                </View>
-                <View style={styles.infoContainer}>
-                  <Icon
-                    name="globe"
-                    size={14}
-                    color={'rgba(0, 0, 0, 0.7)'}
-                    style={styles.icon}
-                  />
-                  <Text>{languages}</Text>
-                </View>
+          <View style={styles.groupContent}>
+            <Image source={image} style={styles.groupImage} />
+            <View style={styles.textContent}>
+              <View style={styles.infoContainer1}>
+                <Text style={styles.groupTitle}>{title}</Text>
               </View>
-              <TouchableOpacity
-                style={styles.RHeartContainer}
-                onPress={toggleLike}>
+              <View style={styles.infoContainer}>
                 <Icon
-                  name={isLiked ? 'heart' : 'heart-outline'}
-                  size={24}
-                  color={isLiked ? 'green' : '#58C047'}
+                  name="calendar-outline"
+                  size={height * 14}
+                  color={'rgba(0, 0, 0, 0.7)'}
+                  style={styles.icon}
                 />
-              </TouchableOpacity>
+                <Text style={styles.groupDetail}>{date}</Text>
+              </View>
+              <View style={[styles.infoContainer, { marginTop: height * -2 }]}>
+                <Icon
+                  name="location-outline"
+                  size={height * 14}
+                  color={'rgba(0, 0, 0, 0.7)'}
+                  style={styles.icon}
+                />
+                <Text style={styles.groupDetail}>{locationKeyword}</Text>
+              </View>
+              <View style={[styles.infoContainer, { marginTop: height * -2 }]}>
+                <Icon
+                  name="globe"
+                  size={height * 14}
+                  color={'rgba(0, 0, 0, 0.7)'}
+                  style={styles.icon}
+                />
+                <Text>{languages}</Text>
+              </View>
             </View>
+            <TouchableOpacity
+              style={styles.RHeartContainer}
+              onPress={toggleLike}>
+              <Icon
+                name={isLiked ? 'heart' : 'heart-outline'}
+                size={height * 26}
+                color={isLiked ? 'green' : '#58C047'}
+              />
+            </TouchableOpacity>
           </View>
+        </View>
       </TouchableOpacity>
     );
   };
@@ -268,8 +249,9 @@ export function Home({navigation}: any) {
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContainer}>
       <View style={styles.container}>
-        <TouchableOpacity onPress={handleBannerPress}>
-          <Swiper
+        <View style={styles.banner}>
+          <TouchableOpacity onPress={handleBannerPress}>
+            <Swiper
             style={styles.wrapper}
             loop={false}
             autoplay={false}
@@ -290,6 +272,7 @@ export function Home({navigation}: any) {
             ))}
           </Swiper>
         </TouchableOpacity>
+        </View>
         <Text style={styles.sectionTitle}>인기 모임</Text>
         <Swiper
           style={styles.wrapper1}
@@ -342,27 +325,18 @@ export function Home({navigation}: any) {
                       </Text>
                     </View>
                     <View style={styles.overlayMaxInfo}>
-                    <View style={[styles.overlayCommonItem1, styles.overlayItem4]}>
-                      <Text style={styles.overlayItemText2}>
-                      <Icon name="person-outline" size={12} />{' '}
-                      {club.current_max}
-                      </Text>
+                      <View
+                        style={[
+                          styles.overlayCommonItem1,
+                          styles.overlayItem4,
+                        ]}>
+                        <Text style={styles.overlayItemText2}>
+                          <Icon name="person-outline" size={height * 12} />{' '}
+                          {club.current_max}
+                        </Text>
                       </View>
                     </View>
                   </View>
-                  {/* <View style={styles.overlayContainer}>
-                    <View>
-                      <Text style={styles.overlayText}>
-                        {convertDate(club.date)}
-                      </Text>
-                      <View style={styles.overlayTextContainer2}>
-                        <Text style={styles.overlayText2}>
-                          {club.locationKeyword}
-                        </Text>
-                      </View>
-                      <Text>{renderLanguages(club.languages)}</Text>
-                    </View>
-                  </View> */}
                   <TouchableOpacity
                     style={styles.PHeartContainer}
                     onPress={() => togglePopularClubLike(club.clubId)}>
@@ -372,7 +346,7 @@ export function Home({navigation}: any) {
                           ? 'heart'
                           : 'heart-outline'
                       }
-                      size={24}
+                      size={height * 26}
                       color={
                         popularClubLikes[club.clubId] ? 'green' : '#58C047'
                       }
@@ -407,7 +381,7 @@ export function Home({navigation}: any) {
             onIndexChanged={index => setCurrentPage(index)}
             ref={popularGroupsRef}>
             {popularClubs.map((club: any, index: number) => (
-              <View key={index}>
+              <View key={index} style={[styles.paginationInfo, {marginBottom: height * 40}]}>
                 <RecommendedGroup
                   image={{uri: club.thumbnailImage}}
                   title={club.title}
@@ -420,7 +394,7 @@ export function Home({navigation}: any) {
               </View>
             ))}
           </Swiper>
-          <View style={[styles.paginationInfo, {marginBottom: 40}]}/>
+          <View style={[styles.paginationInfo, {marginBottom: height * 60}]} />
         </View>
       </View>
     </ScrollView>
@@ -436,16 +410,17 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   wrapper: {
-    height: 180,
+    height: height * 180,
+    width: '100%',
   },
   wrapper1: {
-    height: 350,
+    height: height * 350,
     alignSelf: 'center',
-    marginTop: 10,
+    marginVertical: height * 10,
   },
   wrapper2: {
-    height: 180,
-    marginBottom: -20,
+    height: height * 180,
+    marginBottom: height * -20,
   },
   popularGroupSlide: {
     justifyContent: 'center',
@@ -458,31 +433,32 @@ const styles = StyleSheet.create({
   },
   sectionContainer: {
     alignItems: 'center',
+    marginTop: height * 20,
   },
   sectionContent: {
     width: '100%',
-    alignItems: 'center',
+    justifyContent: 'center',
   },
   sectionTitle: {
-    marginTop: 40,
-    left: 35,
-    fontSize: 15,
+    marginTop: height * 40,
+    left: width * 15,
+    fontSize: height * 16,
     color: '#303030',
-    fontWeight: 'bold',
+    fontWeight: 600,
     textAlign: 'left',
     alignSelf: 'flex-start',
   },
   popularGroupsImage: {
-    width: 350,
-    height: 350,
+    width: width * 340,
+    height: height * 340,
     borderRadius: 25,
     resizeMode: 'contain',
     opacity: 0.65,
   },
   categoryList: {
-    marginTop: 15,
+    marginTop: height * 15,
     width: '100%',
-    paddingHorizontal: 10,
+    paddingHorizontal: height * 10,
   },
   categoryColumnWrapper: {
     justifyContent: 'space-between',
@@ -495,15 +471,11 @@ const styles = StyleSheet.create({
     borderColor: '#9BD23C',
     justifyContent: 'center',
     alignItems: 'center',
-    marginHorizontal: 3,
-  },
-  categoryText: {
-    fontSize: 12,
-    color: '#303030',
+    marginHorizontal: height * 3,
   },
   paginationContainer: {
     position: 'absolute',
-    bottom: 10,
+    bottom: height * 10,
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
@@ -514,12 +486,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   paginationDot: {
-    width: 8,
-    height: 8,
+    width: width * 8,
+    height: height * 8,
     borderRadius: 4,
     backgroundColor: '#DADADA',
-    marginHorizontal: 5,
-    bottom: -35,
+    marginHorizontal: height * 5,
+    bottom: height * -35,
   },
   paginationDotActive: {
     backgroundColor: '#9BD23C',
@@ -530,12 +502,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   paginationRectItem: {
-    width: 20,
-    height: 5,
+    width: width * 20,
+    height: height * 5,
     backgroundColor: '#DADADA',
-    marginHorizontal: -1,
+    marginHorizontal: height * -1,
     borderRadius: 5,
-    top: 15,
+    top: height * 15,
   },
   paginationRectActive: {
     backgroundColor: '#9BD23C',
@@ -543,10 +515,9 @@ const styles = StyleSheet.create({
   RecGroupsContainer: {
     justifyContent: 'center',
     alignSelf: 'center',
-    width: width * 330,
-    height: 130,
-    marginTop: 20,
-    marginBottom: 50,
+    width: width * 340,
+    height: height * 130,
+    marginTop: height * 20,
     backgroundColor: 'rgba(255, 253, 141, 0.3)',
     borderRadius: 30,
     borderColor: '#DADADA',
@@ -560,53 +531,55 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     width: width * 130,
     height: height * 90,
-    marginLeft: 20,
+    marginLeft: width * 15,
   },
   textContent: {
-    marginLeft: 20,
+    marginLeft: width * 20,
   },
   groupTitle: {
     color: '#303030',
-    fontSize: 16,
-    right: 10,
-    bottom: -25,
+    fontSize: height * 14,
+    fontWeight: 500,
+    right: width * 10,
+    bottom: height * -25,
   },
   groupDetail: {
     color: '#303030',
-    fontSize: 12,
-    left: 10,
-    bottom: -10,
+    fontSize: height * 12,
+    fontWeight: 400,
+    left: width * 2,
+    bottom: height * -11,
   },
   flatListContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    left: 15,
+    left: width * 15,
   },
   imageContainer: {
     position: 'relative',
-    top: 5,
+    top: height * 5,
   },
   PHeartContainer: {
     position: 'absolute',
-    top: 15,
-    right: 10,
+    top: height * 15,
+    right: width * 10,
   },
   RHeartContainer: {
     position: 'absolute',
-    bottom: 10,
-    right: 10,
+    bottom: height * 1,
+    right: width * 10,
   },
   titleContainer: {
     flexDirection: 'row',
-    top: -340,
-    left: 10,
+    top: height * -325,
+    left: width * 10,
     alignContent: 'center',
     textAlign: 'center',
     textAlignVertical: 'center',
   },
   titleImage: {
-    width: 50,
-    height: 50,
+    width: width * 50,
+    height: width * 50,
     borderRadius: 50,
   },
   titleTextContainer: {
@@ -619,24 +592,25 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     color: 'white',
     fontSize: height * 16,
+    fontWeight: 600,
     textShadowColor: 'rgba(0, 0, 0, 0.75)',
     textShadowOffset: {width: -1, height: 1},
     textShadowRadius: 10,
   },
   overlayTextContainer2: {
-    marginVertical: 5,
+    marginVertical: height * 5,
   },
   overlayAddInfo: {
     position: 'absolute',
-    bottom: 70,
-    left: 15,
+    bottom: height * 70,
+    left: width * 15,
   },
   overlayMaxInfo: {
     position: 'absolute',
     flex: 1,
     top: height * 65,
     width: width * 78,
-    left: width * 207,
+    left: width * 232,
   },
   overlayCommonItem: {
     alignSelf: 'flex-start',
@@ -669,51 +643,47 @@ const styles = StyleSheet.create({
   overlayItemText: {
     color: '#303030',
     fontSize: height * 12,
+    fontWeight: 500,
   },
   overlayItemText2: {
     textAlign: 'center',
     color: '#FFFFFF',
     fontSize: height * 15,
+    fontWeight: 600,
     marginVertical: height * 1,
   },
   overlayContainer: {
     position: 'absolute',
-    top: 180,
-    left: -260,
-    right: 0,
-    bottom: 0,
+    top: height * 180,
+    left: width * -260,
     justifyContent: 'center',
     alignItems: 'center',
     marginVertical: height * 10,
   },
-  overlayText: {
-    width: 65,
-    textAlign: 'center',
-    color: '#303030',
-    fontSize: 13,
-    borderRadius: 30,
-    backgroundColor: '#B4DD6D',
-  },
   overlayText2: {
-    width: 65,
+    width: width * 65,
     textAlign: 'center',
     color: '#303030',
     borderRadius: 30,
     backgroundColor: '#FFFFD8',
   },
   infoContainer1: {
-    top: -26,
-    left: 10,
+    top: height * -26,
+    left: width * 10,
   },
   infoContainer: {
-    top: -11,
-    left: 10,
-    marginVertical: 7,
+    zIndex: 1,
+    top: height * -11,
+    left: width * 10,
+    marginVertical: height * 7,
     flexDirection: 'row',
   },
   icon: {
-    top: 12,
-    left: -10,
+    top: height * 13,
+    left: width * -9,
+  },
+  banner: {
+    width: '100%',
   },
 });
 

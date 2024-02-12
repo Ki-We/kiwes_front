@@ -40,6 +40,7 @@ import {Chat, ClubMember, ClubSimpleData} from '../utils/commonInterface';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faBan, faChessKing, faUser} from '@fortawesome/free-solid-svg-icons';
 import {RESTAPIBuilder} from '../utils/restapiBuilder';
+import {Buffer} from 'buffer';
 
 const initUser = {
   nickName: '',
@@ -64,6 +65,9 @@ const ChatScreen = ({navigation, route}) => {
   const [clubData, setClubData] = useState<ClubSimpleData | null>(null);
   const [clubMembers, setClubMembers] = useState<any>({});
   const [user, setUser] = useState(initUser);
+
+  const [notice, setNotice] = useState('');
+  const buffer = new Buffer(notice, 'utf-8');
 
   const [sendText, setSendText] = useState('');
   const [messages, setMessages] = useState<Chat[]>([
@@ -169,7 +173,7 @@ const ChatScreen = ({navigation, route}) => {
       });
 
     if (dataMyInfo) {
-      console.log(dataMyInfo);
+      console.log('Data My Info : ', dataMyInfo);
       setUser(dataMyInfo);
     }
   };
@@ -179,13 +183,19 @@ const ChatScreen = ({navigation, route}) => {
     initialize();
     socket.current = io(chatServer);
     socket.current.on('connect', () => {
-      console.log('connect');
-
       socket.current?.emit('enter', {roomID: clubId, userId: user.id});
     });
+    //////////////////////////////////////////////////////////////////// 공지
+    // socket.current?.on('notice', data => {
+    //   const notice = data;
+    //   setNotice(data);
+    //   console.log(data);
+    // });
+    ////////////////////////////////////////////////////////////////////
     socket.current?.on('msgList', data => {
       const chat = data.chat;
       setMessages(chat.reverse()); //채팅반대로
+      console.log(chat);
     });
     socket.current?.on('sendMSG', data => {
       messages.unshift(data);
@@ -331,7 +341,11 @@ const ChatScreen = ({navigation, route}) => {
     } else if (message.userId === user.id) {
       return (
         <View style={styles.chatBubble}>
-          <ChatBubbleMine chat={message} />
+          <ChatBubbleMine
+            chat={message}
+            isHost={user.id === clubData?.hostId ? true : false}
+            noticeChat={(notice: string) => setNotification(notice)}
+          />
         </View>
       );
     } else {
@@ -351,14 +365,31 @@ const ChatScreen = ({navigation, route}) => {
             writer={writer}
             chat={message}
             color={colorMap[message.userId]}
+            isHost={user.id === clubData?.hostId ? true : false}
+            noticeChat={(notice: string) => setNotification(notice)}
           />
         </View>
       );
     }
   };
+
+  /////////////////////////////////////////////////////////////// 공지
+  const setNotification = (notice: string) => {
+    // 수정
+    setNotice(notice);
+    console.log(notice);
+  };
+  ///////////////////////////////////////////////////////////////
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
+        <TouchableOpacity
+          style={{backgroundColor: 'black', width: 30, height: 30}}
+          onPress={() => {
+            console.log(messages);
+          }}
+        />
         <backIcon.Button
           backgroundColor="#FFFFFF"
           iconStyle={{marginRight: 0, padding: 5}}
@@ -380,7 +411,33 @@ const ChatScreen = ({navigation, route}) => {
         />
       </View>
       <View style={styles.separator} />
-
+      {/* ///////////////////////////////////////////////////////// 공지 */}
+      <View>
+        <TouchableOpacity style={styles.notice}>
+          <Text
+            style={{
+              color: '#8A8A8A',
+              fontFamily: 'Pretendard',
+              fontSize: height * 18,
+              fontWeight: '600',
+            }}>
+            공지
+          </Text>
+          <Text
+            style={{
+              color: '#303030',
+              fontFamily: 'Pretendard',
+              fontSize: height * 16,
+              fontWeight: '600',
+            }}>
+            &nbsp;&nbsp;
+            {buffer.length > 46 ? notice.slice(0, 23) + '...' : notice}
+            {/* {buffer.length} */}
+          </Text>
+        </TouchableOpacity>
+      </View>
+      {/* ///////////////////////////////////////////////////////////// */}
+      <View style={styles.separator} />
       <TouchableWithoutFeedback>
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -581,14 +638,17 @@ const ChatScreen = ({navigation, route}) => {
                 colorMap[member.id] = colorList[num];
               }
               return (
-                <View
+                <TouchableOpacity
+                  key={`member_${member.id}_${i}`}
                   style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',
+                  }}
+                  onPress={() => {
+                    toggleModal();
+                    navigation.navigate('OtherUserPage', {memberId: member.id});
                   }}>
-                  <View
-                    key={`member_${member.id}_${i}`}
-                    style={styles.memberList}>
+                  <View style={styles.memberList}>
                     <FontAwesomeIcon
                       style={styles.icon}
                       icon={faUser}
@@ -613,7 +673,7 @@ const ChatScreen = ({navigation, route}) => {
                   ) : (
                     <View />
                   )}
-                </View>
+                </TouchableOpacity>
               );
             })}
           </ScrollView>
@@ -683,7 +743,9 @@ const chatInputStyle = StyleSheet.create({
     backgroundColor: '#EDEDED',
     padding: 5,
     paddingLeft: 10,
-    fontSize: 13,
+    fontFamily: 'Pretendard',
+    fontSize: height * 13,
+    fontWeight: '400',
     marginTop: 5,
     height: height * 35,
   },
@@ -729,7 +791,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   separator: {
-    height: height * 25,
+    height: height * 5,
     borderBottomColor: '#EDEDED',
     borderBottomWidth: 1.5,
     marginBottom: height * 10,
@@ -740,12 +802,22 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingRight: width * 10,
     height: height * 66,
+    marginBottom: height * 20,
   },
   headerText: {
     color: '#303030',
     fontFamily: 'Pretendard',
-    fontSize: width * 20,
+    fontSize: height * 20,
     fontWeight: '600',
+  },
+  notice: {
+    paddingLeft: 5,
+    // width: '90%',
+    // paddingRight: 30,
+    // justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: height * 5,
+    flexDirection: 'row',
   },
   modal: {
     alignSelf: 'flex-end',
@@ -766,7 +838,7 @@ const styles = StyleSheet.create({
   modalHeaderText: {
     color: '#5F5F5F',
     fontFamily: 'Pretendard',
-    fontSize: width * 20,
+    fontSize: height * 20,
     fontWeight: '600',
   },
   userListContainer: {

@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     justifyContent: 'center', // 세로 중앙 정렬
     alignItems: 'center', // 가로 중앙 정렬
-    marginBottom: height * 20,
+    marginVertical: height * 10,
     paddingLeft: width * 10,
     paddingRight: width * 10,
   },

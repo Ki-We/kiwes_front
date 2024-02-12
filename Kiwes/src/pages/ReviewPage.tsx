@@ -6,7 +6,7 @@ import ReviewList from '../components/clubdetail/ReviewList';
 const ReviewPage = ({route, navigation}) => {
   const {clubId} = route.params;
   const navigateToProile = (memberId: any) => {
-    navigation.navigate('MyPage', {memberId: memberId});
+    navigation.navigate('OtherUserPage', {memberId: memberId});
   };
   return (
     <View style={styles.container}>

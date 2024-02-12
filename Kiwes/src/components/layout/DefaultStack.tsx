@@ -26,6 +26,7 @@ import ProfileSettingPage from '../../pages/ProfileSettingPage';
 import ChatTest from '../../pages/ChatTest';
 import ChatRoom from '../../pages/ChatRoom';
 import UploadImageTest from '../UploadImageTest';
+import OtherUserPage from '../../pages/OtherUserPage';
 
 const LoginStack = () => {
   useEffect(() => {
@@ -34,7 +35,7 @@ const LoginStack = () => {
 
   const checkLoginState = async () => {
     const userData = await AsyncStorage.getItem('userdata');
-    console.log(userData);
+    console.log('UserData : ', userData);
   };
   const Stack = createStackNavigator();
   return (
@@ -99,6 +100,7 @@ const LoginStack = () => {
         <Stack.Screen name="ChatTest" component={ChatTest} />
         <Stack.Screen name="ChatRoom" component={ChatRoom} />
         <Stack.Screen name="UploadImageTest" component={UploadImageTest} />
+        <Stack.Screen name="OtherUserPage" component={OtherUserPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );

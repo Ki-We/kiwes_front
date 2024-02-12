@@ -67,11 +67,25 @@ const GenderSettingPage = ({route, navigation}) => {
       <View style={styles.mainContainer}>
         <View style={styles.radioButtonContainer}>
           {renderRadioButton('MALE')}
-          <Text>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;남</Text>
+          <Text
+            style={{
+              fontFamily: 'Pretendard',
+              fontSize: height * 18,
+              fontWeight: '500',
+            }}>
+            &nbsp;&nbsp;&nbsp;&nbsp;남
+          </Text>
         </View>
         <View style={styles.radioButtonContainer}>
           {renderRadioButton('FEMALE')}
-          <Text>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;여</Text>
+          <Text
+            style={{
+              fontFamily: 'Pretendard',
+              fontSize: height * 18,
+              fontWeight: '500',
+            }}>
+            &nbsp;&nbsp;&nbsp;&nbsp;여
+          </Text>
         </View>
       </View>
       {selectedGender != null ? (
@@ -80,8 +94,8 @@ const GenderSettingPage = ({route, navigation}) => {
             style={{
               color: '#FFFFFF',
               fontFamily: 'Pretendard',
-              fontSize: width * 18,
-              fontWeight: '700',
+              fontSize: height * 18,
+              fontWeight: '600',
             }}>
             다음
           </Text>
@@ -92,8 +106,8 @@ const GenderSettingPage = ({route, navigation}) => {
             style={{
               color: '#DADADA',
               fontFamily: 'Pretendard',
-              fontSize: width * 18,
-              fontWeight: '700',
+              fontSize: height * 18,
+              fontWeight: '600',
             }}>
             다음
           </Text>
@@ -121,13 +135,13 @@ const styles = StyleSheet.create({
   headerText: {
     color: '#303030',
     fontFamily: 'Pretendard',
-    fontSize: width * 20,
-    fontWeight: '900',
+    fontSize: height * 20,
+    fontWeight: '600',
   },
   mainText: {
     color: '#303030',
     fontFamily: 'Pretendard',
-    fontSize: width * 15,
+    fontSize: height * 15,
     fontWeight: '600',
   },
   mainContainer: {
@@ -141,6 +155,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   radioButtonCircle: {
+    marginTop: height * 3,
     borderColor: '#58C047',
     borderWidth: 2,
     padding: 2,

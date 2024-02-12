@@ -132,8 +132,8 @@ const InterestLanguageSettingPage = ({route, navigation}) => {
             style={{
               color: '#FFFFFF',
               fontFamily: 'Pretendard',
-              fontSize: width * 18,
-              fontWeight: '700',
+              fontSize: height * 18,
+              fontWeight: '600',
             }}>
             다음
           </Text>
@@ -144,8 +144,8 @@ const InterestLanguageSettingPage = ({route, navigation}) => {
             style={{
               color: '#DADADA',
               fontFamily: 'Pretendard',
-              fontSize: width * 18,
-              fontWeight: '700',
+              fontSize: height * 18,
+              fontWeight: '600',
             }}>
             다음
           </Text>
@@ -173,13 +173,13 @@ const styles = StyleSheet.create({
   headerText: {
     color: '#303030',
     fontFamily: 'Pretendard',
-    fontSize: width * 20,
-    fontWeight: '900',
+    fontSize: height * 20,
+    fontWeight: '600',
   },
   mainText: {
     color: '#303030',
     fontFamily: 'Pretendard',
-    fontSize: width * 26,
+    fontSize: height * 28,
     fontWeight: '600',
   },
   mainContainer: {
@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    marginHorizontal: width * 5,
+    marginHorizontal: width * 2,
     marginBottom: height * 30,
   },
   selected: {
@@ -211,14 +211,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    marginHorizontal: width * 5,
+    marginHorizontal: width * 2,
     marginBottom: height * 30,
   },
   buttonText: {
     color: '#303030',
     fontFamily: 'Pretendard',
-    fontSize: width * 18,
-    fontWeight: '600',
+    fontSize: height * 20,
+    fontWeight: '500',
   },
   nextButton1: {
     alignSelf: 'center',

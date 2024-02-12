@@ -61,7 +61,6 @@ const ClubDetail = ({ route, navigation, type }) => {
         .build()
         .run();
         setClubInfo(response.data);
-        console.log("글 상세 API Response:", response.data);
     } catch (error) {
       console.error('Error fetching club detail:', error);
     }
@@ -71,22 +70,29 @@ const ClubDetail = ({ route, navigation, type }) => {
     fetchClubDetail(clubId);
   }, [clubId]);
 
-  // const fetchNickName = async () => {
-  //   try {
-  //     const response = await new RESTAPIBuilder(`${apiServer}/api/v1/mynick`, 'GET')
-  //       .setNeedToken(true)
-  //       .build()
-  //       .run();
-  //       //(response.data);
-  //       //console.log("닉네임:", response.data);
-  //   } catch (error) {
-  //     console.error('Error 닉네임:', error);
-  //   }
-  // };
+  useEffect(() => {
+    if (NickName && clubInfo && NickName.nickName === clubInfo.memberInfo.hostNickname) {
+      setIsAdminMode(true);
+    } else {
+      setIsAdminMode(false);
+    }
+  }, [NickName, clubInfo]);
+
+  const fetchNickName = async () => {
+    try {
+      const response = await new RESTAPIBuilder(`${apiServer}/mynick`, 'GET')
+        .setNeedToken(true)
+        .build()
+        .run();
+        setNickNameInfo(response.data);
+    } catch (error) {
+      console.error('Error 닉네임:', error);
+    }
+  };
   
   useEffect(() => {
-    // fetchNickName();
-  }, []);
+    fetchNickName(NickName);
+  }, [NickName]);
 
   const toggleJoin = () => {
     if (currentParticipants < maxParticipants && !isRecruitmentComplete) {
@@ -109,9 +115,18 @@ const ClubDetail = ({ route, navigation, type }) => {
       }
     }
   };
-  const toggleMode = () => {
-    setIsAdminMode((prev) => !prev);
-  };
+
+const renderNickDetail = () => {
+  if (!NickName) {
+    return null;
+  }
+  return (
+    <View>
+      <Text style={styles.titleText}>{NickName.nickName}</Text>
+      </View>
+  );
+};
+  
   const toggleMoreModal = () => {
     setIsMoreModalVisible((prev) => !prev);
   };
@@ -219,15 +234,33 @@ const ClubDetail = ({ route, navigation, type }) => {
             </View>
             <View style={styles.limitItem}>
               <Text style={styles.limitText}>모집 인원</Text>
-              <Text style={styles.participantText}>{memberInfo.maxPeople}</Text>
+              <Text style={styles.participantText1}>{memberInfo.maxPeople}</Text>
             </View>
           </View>
         </View>
       </View>
     );
   };
+  const isRecruitmentClosed = (dueTo) => {
+    const currentDate = new Date();
+    const dueToDate = new Date(dueTo);
+    return currentDate > dueToDate;
+  };
+
+  const checkRecruitmentStatus = (dueTo) => {
+    const recruitmentClosed = isRecruitmentClosed(dueTo);
+    setIsRecruitmentComplete(recruitmentClosed);
+  };
+  
+  useEffect(() => {
+    if (clubInfo) {
+      checkRecruitmentStatus(clubInfo.baseInfo.dueTo);
+    }
+  }, [clubInfo]);
+
   const renderJoinButton = () => {
     let buttonStyle, buttonText, onPressFunction;
+  
     if (isRecruitmentComplete) {
       buttonStyle = styles.cancelButton;
       buttonText = '모집 마감';
@@ -245,6 +278,7 @@ const ClubDetail = ({ route, navigation, type }) => {
       buttonText = '이미 참여 인원이 모두 찼습니다.';
       onPressFunction = null;
     }
+  
     return (
       <TouchableOpacity style={buttonStyle} onPress={onPressFunction}>
         <Text style={styles.buttonText}>{buttonText}</Text>
@@ -350,24 +384,19 @@ const renderBtn = (tags: string[]) => {
     <ScrollView style={styles.container}>
       <View style={styles.header}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Icon name="arrow-back" size={30} color="#303030" />
+          <Icon name="arrow-back" size={height * 30} color="#303030" />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => { copyToClipboard(); }}>
-          <Image source={image.share} style={styles.share} />
+          <TouchableOpacity onPress={() => { copyToClipboard(); }} style={styles.shareContainer}>
+          <Image source={image.share} />
           </TouchableOpacity>
           {isAdminMode && (
-            <TouchableOpacity onPress={toggleMoreModal} style={styles.moreContainer}>
-              <Image source={image.more} style={styles.more} />
-            </TouchableOpacity>
-          )}
+          <TouchableOpacity onPress={() => setIsMoreModalVisible(true)} style={styles.moreContainer}>
+            <Image source={image.more} style={styles.more} />
+          </TouchableOpacity>
+        )}
       </View>
       {renderMoreModal()}
       <View style={styles.imageContent}>
-      <TouchableOpacity onPress={toggleMode} style={styles.toggleButtonContainer}>
-            <Text style={styles.toggleButton}>
-              {isAdminMode ? 'User Mode' : 'Admin Mode'}
-            </Text>
-          </TouchableOpacity>
         {clubInfo && (
           <Image source={{ uri: clubInfo.baseInfo.thumbnailImageUrl }} style={styles.clubImage} />
         )}
@@ -397,19 +426,19 @@ const renderBtn = (tags: string[]) => {
           {renderLocationDetail()}
         </View>
         <View style={styles.qnaContainer}>
-  <Text style={styles.clubInfoTitle}>Q&A</Text>
-  {renderQaItem()}
-  <TouchableOpacity onPress={navigateToQnAPage}>
-    <Text style={styles.seeAllButton}>Q&A 모두 보기 ></Text>
-  </TouchableOpacity>
-</View>
-<View style={styles.reviewContainer}>
-  <Text style={styles.clubInfoTitle}>후기</Text>
-  {renderReviewItem()}
-  <TouchableOpacity onPress={navigateToReviewPage}>
-    <Text style={styles.seeAllButton}>후기 모두 보기 ></Text>
-  </TouchableOpacity>
-</View>
+        <Text style={styles.clubInfoTitle}>Q&A</Text>
+        {renderQaItem()}
+        <TouchableOpacity onPress={navigateToQnAPage}>
+          <Text style={styles.seeAllButton}>Q&A 모두 보기 ></Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.reviewContainer}>
+        <Text style={styles.clubInfoTitle}>후기</Text>
+        {renderReviewItem()}
+        <TouchableOpacity onPress={navigateToReviewPage}>
+          <Text style={styles.seeAllButton}>후기 모두 보기 ></Text>
+        </TouchableOpacity>
+      </View>
         <View style={styles.joinContainer}>
         {renderJoinButton()}
       </View>
@@ -435,266 +464,269 @@ const styles = StyleSheet.create({
   },
   clubImage: {
     width: '100%',
-    height: 180,
+    height: height * 170,
     resizeMode: 'cover',
   },
-  share: {
-    marginLeft: 300,
-    marginTop: -10,
-  },
-  more: {
-    marginLeft: 380,
-    marginTop: -25,
+  shareContainer: {
+    width: 20,
+    marginLeft: width * 270,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 10,
+    padding: height * 10,
     position: 'absolute',
   },
   imageContent: {
-    top: 50,
+    top: height * 50,
   },
   content: {
     zIndex: 1,
     position: 'absolute',
-    marginTop: 280,
-    padding: 13,
+    marginTop: height * 265,
+    padding: height * 15,
   },
   titleText: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: height * 20,
+    fontWeight: '600',
     color: '#303030',
-    marginTop: 30,
-    marginBottom: 50,
-    padding: 8,
+    marginTop: height * 30,
+    marginBottom: height * 50,
+    padding: height * 8,
   },
   sectionContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    padding: 8,
+    padding: height * 8,
   },
   section: {
-    width: '48%',
+    width: '47%',
     alignItems: 'flex-start',
-    marginBottom: 5,
+    marginBottom: height * 5,
   },
   roundedBox: {
     backgroundColor: '#F0F0F0',
-    width: 70,
-    height: 30,
+    width: width * 70,
+    height: height * 30,
     alignItems: 'center',
     borderRadius: 20,
-    marginTop: -25,
+    marginTop: height * -25,
     flexWrap: 'nowrap',
-    marginLeft: 100,
+    marginLeft: width * 90,
   },
   sectionTitle: {
     color: '#303030',
-    fontSize: 14,
-    fontWeight: 'bold',
-    marginTop: 10,
+    fontSize: height * 12,
+    fontWeight: 600,
+    marginTop: height * 10,
   },
   sectionText: {
-    fontSize: 11,
+    fontSize: height * 11,
+    fontWeight: 400,
     color: '#303030',
-    marginTop: 7,
+    marginTop: height * 7,
   },
   likeCount: {
-    fontSize: 16,
-    marginLeft: 30,
-    marginTop: -25,
+    fontSize: height * 15,
+    fontWeight: 600,
+    marginLeft: width * 30,
+    marginTop: height * -24,
     color: '#303030',
   },
   titleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 40,
+    marginTop: height * 40,
   },
   hostContainer: {
     borderTopWidth: 1,
     borderBottomWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.2)',
-    padding: 15,
+    padding: height * 13,
   },
   hostTitle: {
     color: '#303030',
-    fontSize: 14,
-    fontWeight: 'bold',
-    marginTop: 5,
-    marginBottom: 10,
+    fontSize: height * 12,
+    fontWeight: 600,
+    marginTop: height * 5,
   },
   profileContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   profileImage: {
-    width: 50,
-    height: 50,
+    width: width * 50,
+    height: height * 50,
+    marginLeft: width * 3,
     borderRadius: 50,
-    marginLeft: 10,
   },
   participantItem: {
     flexDirection: 'row',
-    alignItems: 'center',
-    marginLeft: 20,
+    alignItems: 'flex-end',
+    marginLeft: width * 24,
   },
   participantText: {
-    fontSize: 14,
-    color: '#303030',
-    marginLeft: 7,
-    fontWeight: 'bold',
+    fontSize: height * 16,
+    color: '#808080',
+    marginLeft: width * 9,
+    fontWeight: 600,
+  },
+  participantText1: {
+    fontSize: height * 16,
+    color: '#808080',
+    marginLeft: width * -6,
+    alignItems: 'flex-end',
+    fontWeight: 600,
   },
   profileText: {
-    fontSize: 14,
+    fontSize: height * 14,
     color: '#303030',
-    marginLeft: 20,
-    marginTop: -7,
-    marginRight: 90,
-    fontWeight: 'bold',
-    width: 130,
+    marginLeft: width * 15,
+    marginTop: height * -7,
+    marginRight: width * 90,
+    fontWeight: 500,
+    width: width * 120,
   },
   participantContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: -50,
-    marginLeft: -60,
+    marginTop: height * -50,
+    marginLeft: width * -70,
   },
   hostText: {
     position: 'absolute',
     color: '#303030',
-    fontSize: 14,
-    top: -25,
-    left: -10,
+    fontSize: height * 12,
+    fontWeight: 600,
+    top: height * -25,
+    left: height * -10,
   },
   limitText: {
     color: '#303030',
-    fontSize: 14,
-    marginLeft: -37,
+    fontSize: height * 12,
+    fontWeight: 600,
+    marginLeft: width * -35,
   },
   participantInfo: {
     flexDirection: 'row',
     marginLeft: 'auto',
-    alignItems: 'center',
+    alignItems: 'flex-end',
   },
   limitItem: {
-    marginLeft: -17,
-    marginTop: 100,
+    marginLeft: width * -17,
+    marginTop: height * 100,
     color: '#303030',
   },
   clubInfoContainer: {
-    padding: 15,
+    padding: height * 13,
   },
   clubInfoTitle: {
     color: '#303030',
-    fontSize: 14,
-    fontWeight: 'bold',
-    marginBottom: 10,
+    fontSize: height * 12,
+    fontWeight: 600,
+    marginBottom: height * 10,
   },
   clubInfoText: {
     color: '#303030',
-    fontSize: 14,
+    fontSize: height * 13,
+    fontWeight: 500,
     backgroundColor: '#F8F8F8',
     borderRadius: 30,
-    padding: 15,
+    padding: height * 13,
   },
   locationContainer: {
-    paddingTop: 20,
-    padding: 8,
+    paddingTop: height * 18,
+    padding: height * 7,
     borderTopWidth: 1,
     borderBottomWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.2)',
     marginTop: 15,
-    padding: 15,
+    padding: height * 13,
   },
   clubLocationText: {
     color: '#303030',
-    fontSize: 16,
+    fontSize: height * 16,
     fontWeight: 'bold',
-    width: 326,
-    marginBottom: 20,
-    marginLeft: 28,
-  },
-  detailLocationText: {
-    color: '#8A8A8A',
-    fontSize: 14,
-    width: 326,
-    marginBottom: 18,
-    marginLeft: 28,
-    marginTop: -15,
+    width: width * 326,
+    marginBottom: height * 20,
+    marginLeft: width * 28,
   },
   locationImage: {
-    marginLeft: 30,
-    marginBottom: 20,
+    marginLeft: width * 30,
+    marginBottom: height * 20,
   },
   qnaContainer: {
     borderBottomWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.2)',
-    padding: 15,
+    padding: height * 13,
   },
   qaItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: height * 10,
   },
   qaProfileImage: {
-    width: 40,
-    height: 40,
+    width: width * 40,
+    height: height * 40,
     borderRadius: 20,
-    marginRight: 10,
-    marginTop: -15,
+    marginRight: width * 10,
+    marginTop: height * -15,
   },
   qaContent: {
     flex: 1,
   },
   qaText: {
-    fontSize: 13,
+    fontSize: height * 13,
     color: '#303030',
     marginBottom: 5,
   },
   qaDateTime: {
-    fontSize: 12,
+    fontSize: height * 10,
+    fontWeight: 400,
     color: '#888888',
   },
   qaNickname: {
-    fontSize: 14,
+    fontSize: height * 14,
     color: '#303030',
-    fontWeight: 'bold',
-    marginBottom: 3,
+    fontWeight: 500,
+    marginBottom: height * 3,
   },
   seeAllButton: {
-    fontSize: 14,
+    fontSize: height * 12,
+    fontWeight: 600,
     color: '#303030',
-    marginBottom: 15,
+    marginBottom: height * 15,
   },
   reviewContainer:{
-    padding: 15,
+    padding: height * 13,
   },
   joinButton: {
-    width: 110,
-    height: 50,
+    width: width * 110,
+    height: height * 50,
     backgroundColor: '#58C047',
     borderRadius: 25,
     alignItems: 'center',
     justifyContent: 'center',
+    marginBottom: height * 10,
   },
   cancelButton: {
-    width: 110,
-    height: 50,
+    width: width * 110,
+    height: height * 50,
     backgroundColor: '#AFAFAF',
     borderRadius: 25,
     alignItems: 'center',
     justifyContent: 'center',
+    marginBottom: height * 10,
   },
   buttonText: {
     color: 'white',
-    fontSize: 14,
-    fontWeight: 'bold',
+    fontSize: height * 20,
+    fontWeight: 600,
   },
   joinContainer: {
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: height * 10,
   },
   modalContainer: {
     flex: 1,
@@ -705,56 +737,42 @@ const styles = StyleSheet.create({
   modalContent: {
     backgroundColor: 'white',
     borderRadius: 20,
-    width: 300,
-    padding: 50,
+    width: width * 300,
+    padding: height * 40,
     alignItems: 'center',
   },
   modalText: {
-    fontSize: 16,
+    fontSize: height * 16,
     fontWeight: 'bold',
     color: '#303030',
   },
   greenBtn: {
-    fontSize: 16,
+    fontSize: height * 16,
     fontWeight: 'bold',
     color: '#58C047',
   },
-  toggleButtonContainer: {
-    zIndex: 1,
-    position: 'absolute',
-    width: 100,
-    height: 30,
-    alignItems: 'center',
-    marginTop: 20,
-    marginLeft: 20,
-    borderRadius: 20,
-    backgroundColor: 'black',
-  },
   moreContainer: {
-    marginLeft: 20,
-    width: 100,
-  },
-  more: {
-    marginTop: -10,
+    marginLeft: width * 20,
+    width: width * 100,
   },
   moreModalContent: {
     backgroundColor: 'white',
     borderRadius: 20,
-    width: 100,
-    padding: 10,
+    width: width * 100,
+    padding: height * 10,
     alignItems: 'center',
-    marginTop: -530,
+    marginTop: height * -530,
     marginLeft: 'auto',
     marginRight: 10,
   },
   moreModalText: {
-    fontSize: 16,
+    fontSize: height * 16,
     fontWeight: 'bold',
     color: '#303030',
     marginVertical: 10,
   },
   tagWrapper: {
-    marginRight: 5,
+    marginRight: width * 5,
   },
   tagContainer2: {
     marginLeft: width * 5,
@@ -767,28 +785,29 @@ const styles = StyleSheet.create({
     borderColor: '#9BD23C',
     borderWidth: 1,
     borderRadius: 30,
-    justifyContent: 'center', // 세로 중앙 정렬
-    alignItems: 'center', // 가로 중앙 정렬
+    justifyContent: 'center',
+    alignItems: 'center',
     marginBottom: height * 20,
     paddingHorizontal: width * 8,
     marginRight: width * 10
   },
   tagText: {
     color: '#303030',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
+    paddingHorizontal: width * 10,
+    paddingVertical: height * 5,
   },
   locationTitleText: {
-    fontSize: 16,
+    fontSize: height * 16,
     fontWeight: 'bold',
     color: '#303030',
   },
   locationText: {
-    fontSize: 14,
+    fontSize: height * 13,
+    fontWeight: 500,
     color: '#8A8A8A',
   },
   mapContainer: {
-    marginTop: 10,
+    marginTop: height * 10,
   },
   image: {
     marginRight: width * 3,

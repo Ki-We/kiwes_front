@@ -1,12 +1,13 @@
 import React from 'react';
 import RoundCategory from '../atoms/roundCategory';
 import {StyleSheet, View} from 'react-native';
-import {width} from '../../global';
 import {categoryList, langList} from '../../utils/utils';
 import Swiper from 'react-native-swiper';
 import RoundBtn from '../atoms/roundBtn';
+import {height, width} from '../../global';
 
 export default function ClubListDetail({type, navigation}: any) {
+  const swiperHeight = type == 'category' && width < 0.97 ? 200 : 150;
   const allList = type == 'category' ? categoryList : langList;
   const splitIndex = Math.ceil(allList.length / 2);
   const secondRowCategoryList = allList.slice(splitIndex);
@@ -57,20 +58,24 @@ export default function ClubListDetail({type, navigation}: any) {
       />
     );
   };
+  let style = styles.container2;
+  if (type == 'category') {
+    style = width < 0.97 ? styles.container_small : styles.container;
+  }
   return (
     <>
       <Swiper
         loop={false}
         showsPagination={true}
         index={0}
-        style={styles.swiper}
+        style={{height: swiperHeight}}
         renderPagination={renderPaginationRect}>
-        <View style={styles.container}>
+        <View style={style}>
           {firstRowCategoryList.map(({key, text}, i) => (
             <View key={`first_${i}`}>{renderBtn(key, text)}</View>
           ))}
         </View>
-        <View style={styles.container}>
+        <View style={style}>
           {secondRowCategoryList.map(({key, text}, i) => (
             <View key={`second${i}`}>{renderBtn(key, text)}</View>
           ))}
@@ -81,19 +86,34 @@ export default function ClubListDetail({type, navigation}: any) {
 }
 
 const styles = StyleSheet.create({
+  container_small: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    gap: 3,
+    marginTop: 10,
+    paddingHorizontal: 30,
+  },
   container: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    margin: width * 12,
+  },
+  container2: {
+    alignItems: 'center',
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
     margin: width * 12,
   },
   swiper: {
-    height: 170,
+    height: 150,
   },
   paginationContainer: {
-    position: 'absolute',
-    bottom: 20,
-    width: '100%',
+    marginTop: height * -20,
     justifyContent: 'center',
     alignItems: 'center',
   },

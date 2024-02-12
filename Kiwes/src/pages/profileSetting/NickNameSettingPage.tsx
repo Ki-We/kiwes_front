@@ -136,7 +136,13 @@ const NickNameSettingPage = ({navigation}) => {
                     Keyboard.dismiss();
                   }}
                   style={styles.checkButton}>
-                  <Text style={{color: '#FFF', fontSize: width * 15}}>
+                  <Text
+                    style={{
+                      color: '#FFF',
+                      fontFamily: 'Pretendard',
+                      fontSize: height * 15,
+                      fontWeight: 600,
+                    }}>
                     중복확인
                   </Text>
                 </TouchableOpacity>
@@ -164,7 +170,7 @@ const NickNameSettingPage = ({navigation}) => {
                   color: '#FFFFFF',
                   fontFamily: 'Pretendard',
                   fontSize: width * 18,
-                  fontWeight: '700',
+                  fontWeight: '600',
                 }}>
                 다음
               </Text>
@@ -175,8 +181,8 @@ const NickNameSettingPage = ({navigation}) => {
                 style={{
                   color: '#DADADA',
                   fontFamily: 'Pretendard',
-                  fontSize: width * 18,
-                  fontWeight: '700',
+                  fontSize: height * 18,
+                  fontWeight: '600',
                 }}>
                 다음
               </Text>
@@ -206,8 +212,8 @@ const styles = StyleSheet.create({
   headerText: {
     color: '#303030',
     fontFamily: 'Pretendard',
-    fontSize: width * 20,
-    fontWeight: '900',
+    fontSize: height * 20,
+    fontWeight: '600',
   },
   nextButton1: {
     alignSelf: 'center',
@@ -235,7 +241,7 @@ const styles = StyleSheet.create({
   mainText: {
     color: '#303030',
     fontFamily: 'Pretendard',
-    fontSize: width * 15,
+    fontSize: height * 15,
     fontWeight: '600',
   },
   inputContainer: {
@@ -251,7 +257,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
     paddingBottom: height * 15,
     width: width * 260,
-    fontSize: width * 14,
+    fontSize: height * 15,
+    fontWeight: '500',
     marginTop: 5,
     marginRight: 5,
     height: height * 50,
@@ -269,13 +276,13 @@ const styles = StyleSheet.create({
   checkText: {
     color: '#58C047',
     fontFamily: 'Pretendard',
-    fontSize: width * 12,
+    fontSize: height * 13,
     fontWeight: '500',
   },
   errorText: {
     color: 'red',
     fontFamily: 'Pretendard',
-    fontSize: width * 12,
+    fontSize: height * 13,
     fontWeight: '500',
   },
 });
