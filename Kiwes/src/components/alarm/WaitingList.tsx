@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   title: {
     color: 'rgba(0, 0, 0, 1)',
     fontFamily: 'Pretendard-Bold',
-    fontSize: width * 16,
+    fontSize: height * 16,
     fontWeight: '600',
     flex: 0.06,
     marginLeft: width * 20,

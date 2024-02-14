@@ -372,7 +372,7 @@ const calculateScrollPosition = (offset, contentHeight, viewportHeight) => {
 
 const styles = StyleSheet.create({
   qaContainer: {
-    padding: width * 20,
+    padding: height * 20,
   },
   qaItem: {
     flexDirection: 'row',
@@ -397,25 +397,25 @@ const styles = StyleSheet.create({
     marginRight: width * 5,
   },
   buttonText: {
-    fontSize: width * 10,
+    fontSize: height * 10,
     color: '#303030',
     fontWeight: '600',
     marginBottom: 2,
   },
   qaText: {
     fontWeight: '400',
-    fontSize: width * 12,
+    fontSize: height * 12,
     color: '#303030',
     marginBottom: 5,
   },
   qaDateTime: {
     marginRight: 5,
-    fontSize: width * 10,
+    fontSize: height * 10,
     fontWeight: '400',
     color: '#777788',
   },
   qaNickname: {
-    fontSize: width * 14,
+    fontSize: height * 14,
     color: '#303030',
     fontWeight: '500',
     marginBottom: height * 3,
@@ -443,7 +443,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#EDEDED',
     padding: width * 5,
     paddingLeft: width * 10,
-    fontSize: width * 13,
+    fontSize: height * 13,
     marginTop: height * 5,
     marginBottom: height * 10,
     minHeight: height * 35,
