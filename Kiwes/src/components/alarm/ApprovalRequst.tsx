@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
   },
   title: {
-    fontSize: width * 16,
+    fontSize: height * 16,
     fontWeight: '500',
     color: 'rgba(0, 0, 0, 1)',
     marginBottom: height * 18,
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     marginBottom: height * 8,
   },
   info: {
-    fontSize: width * 16,
+    fontSize: height * 16,
     fontWeight: '600',
     marginLeft: width * 10,
     color: '#58C047',
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
     padding: width * 4,
     paddingHorizontal: width * 12,
     marginBottom: height * 5,
-    fontSize: width * 13,
+    fontSize: height * 13,
     fontWeight: '500',
   },
 });

@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: 'rgba(0, 0, 0, 1)',
-    fontSize: width * 16,
+    fontSize: height * 16,
     fontWeight: '600',
     flex: 0.06,
     marginLeft: width * 20,
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   },
   retrive: {
     color: 'rgba(0, 0, 0, 1)',
-    fontSize: width * 12,
+    fontSize: height * 12,
     fontWeight: '600',
   },
 });

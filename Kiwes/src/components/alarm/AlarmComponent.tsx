@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: 'rgba(0, 0, 0, 1)',
-    fontSize: width * 13,
+    fontSize: height * 13,
     fontWeight: '400',
     flexShrink: 1,
   },
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
   },
   time: {
     color: 'rgba(0, 0, 0, 0.4)',
-    fontSize: width * 13,
+    fontSize: height * 13,
     fontWeight: '600',
   },
 });
