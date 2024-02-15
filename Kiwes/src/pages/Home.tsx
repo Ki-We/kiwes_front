@@ -1,10 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useState, useCallback, useRef, useEffect} from 'react';
 import {useFocusEffect} from '@react-navigation/native';
-
+import Text from '../components/atoms/Text';
 import {
   View,
-  Text,
   Image,
   StyleSheet,
   TouchableOpacity,
@@ -146,7 +145,7 @@ export function Home({navigation}: any) {
             <React.Fragment key={index}>
               <Text style={styles.groupDetail}>
                 {languageUtil ? languageUtil.text : 'Unknown'}
-              {index < languages.length - 1 && <Text>, </Text>}
+                {index < languages.length - 1 && <Text>, </Text>}
               </Text>
             </React.Fragment>
           );
@@ -195,7 +194,7 @@ export function Home({navigation}: any) {
                 />
                 <Text style={styles.groupDetail}>{date}</Text>
               </View>
-              <View style={[styles.infoContainer, { marginTop: height * -2 }]}>
+              <View style={[styles.infoContainer, {marginTop: height * -2}]}>
                 <Icon
                   name="location-outline"
                   size={height * 14}
@@ -204,7 +203,7 @@ export function Home({navigation}: any) {
                 />
                 <Text style={styles.groupDetail}>{locationKeyword}</Text>
               </View>
-              <View style={[styles.infoContainer, { marginTop: height * -2 }]}>
+              <View style={[styles.infoContainer, {marginTop: height * -2}]}>
                 <Icon
                   name="globe"
                   size={height * 14}
@@ -252,26 +251,26 @@ export function Home({navigation}: any) {
         <View style={styles.banner}>
           <TouchableOpacity onPress={handleBannerPress}>
             <Swiper
-            style={styles.wrapper}
-            loop={false}
-            autoplay={false}
-            autoplayTimeout={5}
-            showsPagination={false}
-            ref={bannerRef}>
-            {banners.map((banner, index) => (
-              <TouchableOpacity
-                key={index}
-                onPress={() => handleBannerPress(banner.id, banner.imageUrl)}>
-                <View>
-                  <Image
-                    source={{uri: banner.url}}
-                    style={styles.bannerImage}
-                  />
-                </View>
-              </TouchableOpacity>
-            ))}
-          </Swiper>
-        </TouchableOpacity>
+              style={styles.wrapper}
+              loop={false}
+              autoplay={false}
+              autoplayTimeout={5}
+              showsPagination={false}
+              ref={bannerRef}>
+              {banners.map((banner, index) => (
+                <TouchableOpacity
+                  key={index}
+                  onPress={() => handleBannerPress(banner.id, banner.imageUrl)}>
+                  <View>
+                    <Image
+                      source={{uri: banner.url}}
+                      style={styles.bannerImage}
+                    />
+                  </View>
+                </TouchableOpacity>
+              ))}
+            </Swiper>
+          </TouchableOpacity>
         </View>
         <Text style={styles.sectionTitle}>인기 모임</Text>
         <Swiper
@@ -381,7 +380,9 @@ export function Home({navigation}: any) {
             onIndexChanged={index => setCurrentPage(index)}
             ref={popularGroupsRef}>
             {popularClubs.map((club: any, index: number) => (
-              <View key={index} style={[styles.paginationInfo, {marginBottom: height * 40}]}>
+              <View
+                key={index}
+                style={[styles.paginationInfo, {marginBottom: height * 40}]}>
                 <RecommendedGroup
                   image={{uri: club.thumbnailImage}}
                   title={club.title}
@@ -444,7 +445,7 @@ const styles = StyleSheet.create({
     left: width * 15,
     fontSize: height * 16,
     color: '#303030',
-    fontWeight: 600,
+    fontWeight: '600',
     textAlign: 'left',
     alignSelf: 'flex-start',
   },
@@ -539,14 +540,14 @@ const styles = StyleSheet.create({
   groupTitle: {
     color: '#303030',
     fontSize: height * 14,
-    fontWeight: 500,
+    fontWeight: '500',
     right: width * 10,
     bottom: height * -25,
   },
   groupDetail: {
     color: '#303030',
     fontSize: height * 12,
-    fontWeight: 400,
+    fontWeight: '400',
     left: width * 2,
     bottom: height * -11,
   },
@@ -643,13 +644,13 @@ const styles = StyleSheet.create({
   overlayItemText: {
     color: '#303030',
     fontSize: height * 12,
-    fontWeight: 500,
+    fontWeight: '500',
   },
   overlayItemText2: {
     textAlign: 'center',
     color: '#FFFFFF',
     fontSize: height * 15,
-    fontWeight: 600,
+    fontWeight: '600',
     marginVertical: height * 1,
   },
   overlayContainer: {
