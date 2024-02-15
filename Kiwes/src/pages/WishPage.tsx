@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     flex: 1,
     color: '#303030',
     fontFamily: 'Pretendard-Bold',
-    fontSize: width * 24,
+    fontSize: height * 24,
     fontWeight: '600',
   },
   alarm: {

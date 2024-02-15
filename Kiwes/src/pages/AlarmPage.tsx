@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   tapText: {
     color: 'rgba(0, 0, 0, 1)',
     fontFamily: 'Pretendard-Bold',
-    fontSize: width * 24,
+    fontSize: height * 24,
     fontWeight: '600',
   },
   tapUnSelected: {

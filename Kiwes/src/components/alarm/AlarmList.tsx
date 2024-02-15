@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   title: {
-    fontSize: width * 15,
+    fontSize: height * 15,
     fontWeight: '600',
     color: '#58C024',
     margin: width * 10,

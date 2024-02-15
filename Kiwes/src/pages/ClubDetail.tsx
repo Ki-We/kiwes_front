@@ -15,11 +15,10 @@ import { apiServer } from '../utils/metaData';
 import { Clipboard } from 'react-native';
 import { categoryIcon, categoryList, langList } from '../utils/utils';
 import { GOOGLE_WEB_API_KIEY } from '../utils/googleConfig';
-import RoundCategory from '../components/atoms/roundCategory';
-import RoundBtn from '../components/atoms/roundBtn';
 import { height, width } from '../global';
+import ClubDetailSettingModal from '../components/clubdetail/ClubDetailSettingModal';
 
-const ClubDetail = ({ route, navigation, type }) => {
+const ClubDetail = ({ route, navigation, type }: any) => {
   const { clubId } = route.params;
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
@@ -90,9 +89,9 @@ const ClubDetail = ({ route, navigation, type }) => {
     }
   };
   
-  useEffect(() => {
+  useEffect(() => { //todo
     fetchNickName(NickName);
-  }, [NickName]);
+  }, []);
 
   const toggleJoin = () => {
     if (currentParticipants < maxParticipants && !isRecruitmentComplete) {
@@ -361,27 +360,6 @@ const renderBtn = (tags: string[]) => {
       </View>
     ));
   };
-  
-  const renderMoreModal = () => (
-    <Modal
-      animationType="slide"
-      transparent={true}
-      visible={isMoreModalVisible}>
-      <View style={styles.modalContainer}>
-        <View style={styles.moreModalContent}>
-          <TouchableOpacity onPress={() => null}>
-            <Text style={styles.moreModalText}>수정</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => null}>
-            <Text style={styles.moreModalText}>삭제</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={toggleMoreModal}>
-            <Text style={styles.moreModalText}>X</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </Modal>
-  );
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
@@ -397,7 +375,9 @@ const renderBtn = (tags: string[]) => {
           </TouchableOpacity>
         )}
       </View>
-      {renderMoreModal()}
+      <ClubDetailSettingModal 
+        isVisible={isMoreModalVisible} 
+        onClose={toggleMoreModal}/>
       <View style={styles.imageContent}>
         {clubInfo && (
           <Image source={{ uri: clubInfo.baseInfo.thumbnailImageUrl }} style={styles.clubImage} />
@@ -766,12 +746,6 @@ const styles = StyleSheet.create({
     marginTop: height * -530,
     marginLeft: 'auto',
     marginRight: 10,
-  },
-  moreModalText: {
-    fontSize: height * 16,
-    fontWeight: 'bold',
-    color: '#303030',
-    marginVertical: 10,
   },
   tagWrapper: {
     marginRight: width * 5,

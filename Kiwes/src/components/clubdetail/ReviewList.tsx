@@ -11,7 +11,7 @@ import {
   Platform,
 } from 'react-native';
 import {RESTAPIBuilder} from '../../utils/restapiBuilder';
-import {height} from '../../global';
+import {height, width} from '../../global';
 import {ReviewDetail} from '../../utils/commonInterface';
 import {apiServer} from '../../utils/metaData';
 import sendIcon from 'react-native-vector-icons/Feather';
@@ -371,19 +371,19 @@ const calculateScrollPosition = (offset, contentHeight, viewportHeight) => {
 
 const styles = StyleSheet.create({
   qaContainer: {
-    padding: 20,
+    padding: height * 20,
   },
   qaItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 15,
+    marginBottom: height * 15,
   },
   qaProfileImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    marginRight: 10,
-    marginTop: -15,
+    width: width * 40,
+    height: height * 40,
+    borderRadius: height * 20,
+    marginRight: width * 10,
+    marginTop: height * -15,
   },
   qaContent: {
     flex: 1,
@@ -393,41 +393,44 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   button: {
-    marginRight: 5,
+    marginRight: width * 5,
   },
   buttonText: {
-    fontSize: 12,
+    fontSize: height * 10,
+    fontWeight: '600',
     color: '#303030',
-    marginBottom: 2,
+    marginBottom: height * 2,
   },
   qaText: {
-    fontSize: 13,
+    fontSize: height * 12,
+    fontWeight: '400',
     color: '#303030',
-    marginBottom: 5,
+    marginBottom: height * 5,
   },
   qaDateTime: {
-    marginRight: 5,
-    fontSize: 12,
+    fontWeight: '400',
+    marginRight: width * 5,
+    fontSize: height * 10,
     color: '#777788',
   },
   qaNickname: {
-    fontSize: 14,
+    fontSize: height * 14,
     color: '#303030',
-    fontWeight: 'bold',
-    marginBottom: 3,
+    fontWeight: '500',
+    marginBottom: height * 3,
   },
   replyItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 15,
-    marginLeft: 50,
+    marginBottom: height * 15,
+    marginLeft: width * 50,
   },
   inputContainer: {
     borderTopColor: '#EDEDED',
     borderTopWidth: 2,
-    padding: 20,
-    paddingRight: 5,
-    paddingTop: 10,
+    padding: height * 20,
+    paddingRight: width * 5,
+    paddingTop: height * 10,
     backgroundColor: '#FFFFFF',
     flexDirection: 'row',
     justifyContent: 'center',
@@ -437,11 +440,11 @@ const styles = StyleSheet.create({
     borderColor: '#8A8A8A',
     borderRadius: 20,
     backgroundColor: '#EDEDED',
-    padding: 5,
-    paddingLeft: 10,
-    fontSize: 13,
-    marginTop: 5,
-    marginBottom: 10,
+    padding: height * 5,
+    paddingLeft: width * 10,
+    fontSize: height * 13,
+    marginTop: height * 5,
+    marginBottom: height * 10,
     minHeight: height * 35,
     maxHeight: height * 180,
   },
@@ -453,9 +456,9 @@ const styleKiwe = StyleSheet.create({
   },
   text: {
     fontSize: height * 20,
-    fontWeight: 'bold',
+    fontWeight: '500',
     color: 'rgba(0, 0, 0, 1)',
-    margin: 10,
+    margin: height * 10,
   },
 });
 export default ReviewList;

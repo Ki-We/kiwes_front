@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   title: {
-    fontSize: width * 16,
+    fontSize: height * 16,
     fontWeight: '600',
     color: 'rgba(0, 0, 0, 1)',
     marginBottom: height * 5,
@@ -196,13 +196,13 @@ const styles = StyleSheet.create({
   },
   text: {
     color: 'rgba(0, 0, 0, 0.8)',
-    fontSize: width * 15,
+    fontSize: height * 15,
     fontWeight: '500',
     margin: width * 5,
   },
   buttonContainer: {
     flexDirection: 'row',
-    fontSize: width * 16,
+    fontSize: height * 16,
     margin: width * 5,
   },
   button: {
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
     borderColor: '#9BD23C',
     borderWidth: 1,
     borderRadius: 15,
-    fontSize: width * 13,
+    fontSize: height * 13,
     fontWeight: '500',
     padding: width * 4,
     paddingHorizontal: width * 7,
