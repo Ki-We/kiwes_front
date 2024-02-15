@@ -118,7 +118,6 @@ const styles = StyleSheet.create({
   },
   title: {
     color: '#000000',
-    fontFamily: 'Pretendard',
     fontSize: height * 16,
     fontWeight: '600',
   },

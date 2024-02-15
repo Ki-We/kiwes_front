@@ -9,7 +9,7 @@ export default function GenderBtn({text, isSelect, onPress}: any) {
         styles.button,
         {
           backgroundColor: isSelect ? '#3DBE14' : '#F7F7F7',
-          borderColor: isSelect ? '#3DBE14' : '#8A8A8A',
+          borderColor: isSelect ? '#3DBE14' : '#ffffff',
         },
       ]}
       onPress={onPress}>
@@ -17,7 +17,7 @@ export default function GenderBtn({text, isSelect, onPress}: any) {
         <Text
           style={{
             ...styles.text,
-            color: isSelect ? '#ffffff' : '#303030',
+            color: isSelect ? '#ffffff' : '#7C7C7C',
           }}>
           {text}
         </Text>
@@ -43,7 +43,6 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   text: {
-    fontFamily: 'Pretendard',
     fontWeight: '500',
     fontSize: height * 15,
   },
