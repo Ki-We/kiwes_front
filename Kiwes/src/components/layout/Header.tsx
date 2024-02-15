@@ -46,7 +46,6 @@ const styles = StyleSheet.create({
   },
   headerText: {
     color: '#303030',
-    fontFamily: 'Pretendard',
     fontSize: width * 20,
     fontWeight: '600',
   },

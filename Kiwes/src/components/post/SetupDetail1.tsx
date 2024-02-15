@@ -45,7 +45,7 @@ export default function SetupDetail1({post, setPost}: any) {
       <View style={styles.container}>
         <Text style={styles.text}>모임 날짜</Text>
         <Pressable style={styles.date} onPress={() => setOpen1(true)}>
-          <Text style={styles.dateText}>
+          <Text style={dueTo == '' ? styles.dateText : styles.selectedDate}>
             {date == '' ? '모임의 일정을 입력해주세요.' : date}
           </Text>
           <Text>
@@ -56,6 +56,9 @@ export default function SetupDetail1({post, setPost}: any) {
           mode="date"
           modal
           open={open1}
+          title={'날짜 선택'}
+          confirmText="확인"
+          cancelText="취소"
           date={new Date()}
           onConfirm={date => {
             setOpen1(false);
@@ -75,7 +78,9 @@ export default function SetupDetail1({post, setPost}: any) {
 
         <Text style={styles.text}>모집 마감일</Text>
         <Pressable style={styles.date} onPress={() => setOpen2(true)}>
-          <Text>{dueTo == '' ? '모임 마감일을 입력해주세요.' : dueTo}</Text>
+          <Text style={dueTo == '' ? styles.dateText : styles.selectedDate}>
+            {dueTo == '' ? '모임 마감일을 입력해주세요.' : dueTo}
+          </Text>
           <Text>
             <FontAwesomeIcon icon={faCalendar} />
           </Text>
@@ -84,6 +89,9 @@ export default function SetupDetail1({post, setPost}: any) {
           mode="date"
           modal
           open={open2}
+          title={'날짜 선택'}
+          confirmText="확인"
+          cancelText="취소"
           date={new Date()}
           onConfirm={date => {
             setOpen2(false);
@@ -101,22 +109,12 @@ export default function SetupDetail1({post, setPost}: any) {
         />
 
         <Text style={styles.text}>장소</Text>
-        {/* <MapView
-          provider={PROVIDER_GOOGLE}
-          style={styles.map}
-          initialRegion={{
-            latitude: 37.7749,
-            longitude: -122.4194,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
-        /> */}
 
         <View style={styles.inputContainer}>
           <TextInput
             value={search}
             style={styles.input}
-            placeholderTextColor={'#8A8A8A'}
+            placeholderTextColor={'#C2C2C2'}
             placeholder="모임 장소를 검색해주세요"
             onChangeText={text => {
               setSearch(text);
@@ -188,7 +186,6 @@ const styles = StyleSheet.create({
     margin: width * 20,
   },
   text: {
-    fontFamily: 'Pretendard',
     fontWeight: '600',
     fontSize: height * 13,
     color: '#303030',
@@ -209,6 +206,12 @@ const styles = StyleSheet.create({
   dateText: {
     fontSize: height * 13,
     fontWeight: '500',
+    color: '#C2C2C2',
+  },
+  selectedDate: {
+    fontSize: height * 13,
+    fontWeight: '500',
+    color: '#8A8A8A',
   },
   inputContainer: {
     flexDirection: 'row',
