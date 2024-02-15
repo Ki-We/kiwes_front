@@ -36,7 +36,11 @@ export default function ClubList({navigation, selectedItem, type}: any) {
           lang.key === selected ? styles.selectedCategory : null,
         ]}
         onPress={() => setSelected(lang.key)}>
-        <Text style={[lang.key === selected ? styles.selectedText : null]}>
+        <Text
+          style={[
+            lang.key === selected ? styles.selectedText : null,
+            styles.scrollText,
+          ]}>
           {lang.text}
         </Text>
       </TouchableOpacity>
@@ -49,6 +53,7 @@ export default function ClubList({navigation, selectedItem, type}: any) {
         style={[
           styles.categoryItem,
           category.key === selected ? styles.selectedCategory : null,
+          styles.scrollText,
         ]}
         onPress={() => setSelected(category.key)}>
         {category.key != 'ALL' && (
@@ -234,13 +239,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.4)',
   },
-  headerText: {
-    flex: 1,
-    color: '#303030',
-    fontFamily: 'Pretendard-Bold',
-    fontSize: width * 24,
-    fontWeight: '600',
-  },
   alarm: {
     marginRight: 10,
   },
@@ -282,6 +280,10 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#303030',
   },
+  scrollText: {
+    fontWeight: '300',
+    fontSize: height * 13,
+  },
   selectedCategory: {
     backgroundColor: '#9BD23C',
   },
@@ -303,6 +305,7 @@ const styles = StyleSheet.create({
     paddingVertical: height * 18,
     paddingLeft: width * 30,
     fontSize: height * 17,
+    fontWeight: '500',
     color: '#8A8A8A',
   },
   modalCategorySelectedText: {
@@ -310,7 +313,7 @@ const styles = StyleSheet.create({
   },
   selectionText: {
     marginTop: height * 15,
-    fontSize: width * 13,
+    fontSize: height * 13,
     color: '#000',
   },
   categorySelectionText: {

@@ -252,9 +252,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   info: {
+    fontWeight: '400',
     fontSize: height * 11,
     color: 'rgba(0, 0, 0, 0.8)',
-    fontWeight: '400',
     marginLeft: width * 10,
   },
 });

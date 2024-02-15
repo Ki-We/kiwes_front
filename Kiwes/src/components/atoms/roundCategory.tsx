@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     marginBottom: width * 3,
     fontFamily: 'Pretendard',
     fontWeight: '300',
-    fontSize: width * 13,
+    fontSize: height * 13,
   },
   image: {
     marginRight: width * 3,

@@ -45,7 +45,9 @@ export default function SetupDetail1({post, setPost}: any) {
       <View style={styles.container}>
         <Text style={styles.text}>모임 날짜</Text>
         <Pressable style={styles.date} onPress={() => setOpen1(true)}>
-          <Text>{date == '' ? '모임의 일정을 입력해주세요.' : date}</Text>
+          <Text style={styles.dateText}>
+            {date == '' ? '모임의 일정을 입력해주세요.' : date}
+          </Text>
           <Text>
             <FontAwesomeIcon icon={faCalendar} />
           </Text>
@@ -187,8 +189,8 @@ const styles = StyleSheet.create({
   },
   text: {
     fontFamily: 'Pretendard',
-    fontWeight: '700',
-    fontSize: width * 13,
+    fontWeight: '600',
+    fontSize: height * 13,
     color: '#303030',
   },
   date: {
@@ -198,11 +200,15 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: '#F7F7F7',
     padding: 10,
-    fontSize: 13,
+    fontSize: height * 13,
     color: '#8A8A8A',
     marginTop: height * 20,
     height: height * 48,
     marginBottom: height * 20,
+  },
+  dateText: {
+    fontSize: height * 13,
+    fontWeight: '500',
   },
   inputContainer: {
     flexDirection: 'row',
@@ -217,7 +223,8 @@ const styles = StyleSheet.create({
     paddingRight: 10,
   },
   input: {
-    fontSize: 13,
+    fontSize: height * 13,
+    fontWeight: '500',
     flex: 1,
   },
   iconContainer: {

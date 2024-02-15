@@ -80,8 +80,8 @@ const styles = StyleSheet.create({
   },
   text: {
     fontFamily: 'Pretendard',
-    fontWeight: '700',
-    fontSize: width * 13,
+    fontWeight: '600',
+    fontSize: height * 13,
     color: '#303030',
   },
 
@@ -111,7 +111,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#F7F7F7',
     padding: 5,
     paddingLeft: 10,
-    fontSize: 13,
+    fontSize: height * 13,
+    fontWeight: '500',
     color: '#8A8A8A',
     marginTop: height * 20,
     height: height * 48,

@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontFamily: 'Pretendard',
-    fontWeight: '300',
-    fontSize: width * 13,
+    fontWeight: '500',
+    fontSize: height * 15,
   },
 });

@@ -12,7 +12,7 @@ export default function PostClub({navigation}: any) {
     setStep(s);
   };
   const navigatePop = () => {
-    navigation.navigate('HomePage');
+    navigation.navigate('Home');
   };
   return (
     <>
