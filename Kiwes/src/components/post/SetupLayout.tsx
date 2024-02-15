@@ -59,8 +59,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: 'Pretendard',
-    fontWeight: '700',
-    fontSize: width * 24,
+    fontWeight: '600',
+    fontSize: height * 24,
     color: '#303030',
     whiteSpace: 'pre-line',
   },
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
   prevColor1: {
     fontFamily: 'Pretendard',
     fontWeight: '600',
-    fontSize: width * 16,
+    fontSize: height * 18,
     color: '#E8E8E8',
   },
   prevBtn2: {
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
   prevColor2: {
     fontFamily: 'Pretendard',
     fontWeight: '600',
-    fontSize: width * 16,
+    fontSize: height * 18,
     color: '#303030',
   },
   nextBtn: {
@@ -119,8 +119,8 @@ const styles = StyleSheet.create({
   },
   nextColor: {
     fontFamily: 'Pretendard',
-    fontWeight: '700',
-    fontSize: width * 16,
+    fontWeight: '600',
+    fontSize: height * 18,
     color: '#ffffff',
   },
 });

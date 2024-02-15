@@ -4,6 +4,7 @@ import {languageMap} from '../../utils/languageMap';
 import {apiServer} from '../../utils/metaData';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {RESTAPIBuilder} from '../../utils/restapiBuilder';
+import {height} from '../../global';
 
 export default function ListComponent({
   item,
@@ -70,7 +71,11 @@ export default function ListComponent({
             <Text style={styles.info}>{item.date}</Text>
           </View>
           <View style={styles.infoContainer}>
-            <Icon name="map-outline" size={14} color={'#rgba(0, 0, 0, 0.7)'} />
+            <Icon
+              name="location-outline"
+              size={14}
+              color={'#rgba(0, 0, 0, 0.7)'}
+            />
             <Text style={styles.info}>{item.locationKeyword}</Text>
           </View>
           <View style={styles.infoContainer}>
@@ -122,12 +127,13 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
   },
   title: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: height * 16,
+    fontWeight: '500',
     color: 'rgba(0, 0, 0, 1)',
     marginBottom: 3,
   },
   infoContainer: {
+    paddingBottom: height * 3,
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
@@ -135,5 +141,7 @@ const styles = StyleSheet.create({
   info: {
     color: 'rgba(0, 0, 0, 0.8)',
     marginLeft: 5,
+    fontWeight: '400',
+    fontSize: height * 11,
   },
 });

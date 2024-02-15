@@ -74,8 +74,8 @@ const styles = StyleSheet.create({
   },
   text: {
     fontFamily: 'Pretendard',
-    fontWeight: '700',
-    fontSize: width * 13,
+    fontWeight: '600',
+    fontSize: height * 13,
     color: '#303030',
   },
   inputContainer: {
@@ -91,7 +91,8 @@ const styles = StyleSheet.create({
     paddingRight: 10,
   },
   input: {
-    fontSize: 13,
+    fontSize: height * 13,
+    fontWeight: '500',
     color: '#8A8A8A',
     flex: 1,
   },
