@@ -1,7 +1,8 @@
 import React from 'react';
-import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
+import {Image, Pressable, StyleSheet, View} from 'react-native';
 import {height, width} from '../../global';
 import {categoryIcon, categoryList} from '../../utils/utils';
+import Text from '@components/atoms/Text';
 
 export default function RoundCategory({id, isSelect, onPress}: any) {
   // if (text == '')

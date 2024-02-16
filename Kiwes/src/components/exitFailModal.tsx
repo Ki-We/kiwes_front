@@ -1,9 +1,10 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import Modal from 'react-native-modal';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCircleExclamation} from '@fortawesome/free-solid-svg-icons';
-import {colors, width, height} from '../global';
+import {width, height} from '../global';
+import Text from '@components/atoms/Text';
 
 const ErrorModal = ({isVisible, onClose}) => {
   return (
@@ -45,7 +46,7 @@ const styles = StyleSheet.create({
   },
   modalText: {
     textAlign: 'center',
-    fontFamily: 'Pretendard',
+
     fontWeight: '600',
     fontSize: height * 16,
     marginTop: height * 15,

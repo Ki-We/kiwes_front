@@ -1,14 +1,15 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, Dimensions, ScrollView } from 'react-native';
+import {View, Image, StyleSheet, Dimensions, ScrollView} from 'react-native';
+import Text from '@components/atoms/Text';
 
 const windowWidth = Dimensions.get('window').width;
 
-const Event = ({ route }: any) => {
-  const { eventId, imageUrl } = route.params;
+const Event = ({route}: any) => {
+  const {eventId, imageUrl} = route.params;
 
   return (
     <ScrollView contentContainerStyle={styles.scrollView}>
-      {imageUrl && <Image source={{ uri: imageUrl }} style={styles.eventImage} />}
+      {imageUrl && <Image source={{uri: imageUrl}} style={styles.eventImage} />}
       <Text style={styles.color}>{eventId}</Text>
     </ScrollView>
   );

@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {ReviewList} from '../utils/commonInterface';
 import {height} from '../global';
+import Text from '@components/atoms/Text';
 
 export default function ReviewBubble({
   reviewList,
@@ -77,42 +78,42 @@ const styles = StyleSheet.create({
   },
   myClubTitle: {
     color: '#FFF',
-    fontFamily: 'Pretendard',
+
     fontSize: height * 14,
     fontWeight: '600',
   },
   myReviewContent: {
     marginTop: 5,
     color: '#FFF',
-    fontFamily: 'Pretendard',
+
     fontSize: height * 12,
     fontWeight: '400',
   },
   myReviewDate: {
     marginTop: 5,
     color: '#FFF',
-    fontFamily: 'Pretendard',
+
     fontSize: height * 10,
     fontWeight: '400',
     alignSelf: 'flex-end',
   },
   otherClubTitle: {
     color: '#303030',
-    fontFamily: 'Pretendard',
+
     fontSize: height * 14,
     fontWeight: '600',
   },
   otherReviewContent: {
     marginTop: 5,
     color: '#303030',
-    fontFamily: 'Pretendard',
+
     fontSize: height * 12,
     fontWeight: '400',
   },
   otherReviewDate: {
     marginTop: 5,
     color: '#8A8A8A',
-    fontFamily: 'Pretendard',
+
     fontSize: height * 10,
     fontWeight: '400',
   },

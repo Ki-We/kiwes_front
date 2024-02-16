@@ -1,5 +1,6 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import Text from '@components/atoms/Text';
 import {apiServer} from '../../utils/metaData';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {height, width} from '../../global';

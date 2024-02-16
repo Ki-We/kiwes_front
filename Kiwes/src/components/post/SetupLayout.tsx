@@ -1,5 +1,6 @@
 import React from 'react';
-import {View, Text, StyleSheet, ScrollView, Pressable} from 'react-native';
+import {View, StyleSheet, ScrollView, Pressable} from 'react-native';
+import Text from '@components/atoms/Text';
 import {height, width} from '../../global';
 import {FlatList} from 'react-native-gesture-handler';
 

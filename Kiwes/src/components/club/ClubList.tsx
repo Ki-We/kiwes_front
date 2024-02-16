@@ -1,4 +1,5 @@
-import {Image, View, Text, Modal, StyleSheet, Pressable} from 'react-native';
+import {Image, View, Modal, StyleSheet, Pressable} from 'react-native';
+import Text from '@components/atoms/Text';
 import {height, width} from '../../global';
 import {
   FlatList,

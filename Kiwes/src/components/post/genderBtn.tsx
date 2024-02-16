@@ -1,6 +1,7 @@
 import React from 'react';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {Pressable, StyleSheet, View} from 'react-native';
 import {height, width} from '../../global';
+import Text from '@components/atoms/Text';
 
 export default function GenderBtn({text, isSelect, onPress}: any) {
   return (

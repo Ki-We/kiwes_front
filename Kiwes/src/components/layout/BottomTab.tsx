@@ -14,7 +14,7 @@ import PostClub from '../../pages/PostClub';
 const Tab = createBottomTabNavigator();
 const putterPath = require('../../../assets/images/putter.png');
 
-ClubDetail.navigationOptions = ({ navigation }) => {
+ClubDetail.navigationOptions = ({navigation}) => {
   // Check if the route has the tab bar visible option
   const isTabBarVisible = navigation.getParam('tabBarVisible', true);
 
@@ -23,7 +23,7 @@ ClubDetail.navigationOptions = ({ navigation }) => {
   };
 };
 
-const BottomTab = ({ navigation }: any) => {
+const BottomTab = ({navigation}: any) => {
   const insets = useSafeAreaInsets();
   const onPress = () => navigation.navigate('CreateMeeting');
   return (
@@ -35,9 +35,8 @@ const BottomTab = ({ navigation }: any) => {
           paddingTop: height * 10,
         },
         tabBarLabelStyle: {
-          fontFamily: 'Pretendard-Bold',
-          fontSize: width * 10,
-          fontWeight: '600',
+          fontSize: height * 10,
+          fontWeight: '700',
           paddingBottom: height * 5,
         },
         tabBarActiveTintColor: '#58C047',
@@ -48,7 +47,7 @@ const BottomTab = ({ navigation }: any) => {
         component={HomeStack}
         options={{
           title: 'HomeStack',
-          tabBarIcon: ({ color, size }) => (
+          tabBarIcon: ({color, size}) => (
             <Icon
               name={color === '#58C047' ? 'home' : 'home-outline'}
               color={color}
@@ -63,7 +62,7 @@ const BottomTab = ({ navigation }: any) => {
         component={WishPage}
         options={{
           title: 'WISH',
-          tabBarIcon: ({ color, size }) => (
+          tabBarIcon: ({color, size}) => (
             <Icon
               name={color === '#58C047' ? 'heart' : 'heart-outline'}
               color={color}
@@ -98,7 +97,7 @@ const BottomTab = ({ navigation }: any) => {
         options={{
           headerShown: false,
           title: 'CHAT',
-          tabBarIcon: ({ color, size }) => (
+          tabBarIcon: ({color, size}) => (
             <Icon
               name={
                 color === '#58C047'
@@ -116,7 +115,7 @@ const BottomTab = ({ navigation }: any) => {
         component={MyPage}
         options={{
           title: 'MY',
-          tabBarIcon: ({ color, size }) => (
+          tabBarIcon: ({color, size}) => (
             <Icon
               name={color === '#58C047' ? 'person' : 'person-outline'}
               color={color}

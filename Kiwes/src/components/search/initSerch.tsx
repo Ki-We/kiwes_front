@@ -1,10 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useEffect, useState} from 'react';
-import {StyleSheet, View, Text, Pressable, Keyboard} from 'react-native';
+import {StyleSheet, View, Pressable, Keyboard} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import SearchBtn from './searchBtn';
 import {height, width} from '../../global';
 import {RESTAPIBuilder} from '../../utils/restapiBuilder';
+import Text from '@components/atoms/Text';
 import {apiServer} from '../../utils/metaData';
 
 export default function InitSearch({doSearch}: any) {

@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {FunnelProps, StepProps} from '../../hooks/useFunnel';
 import PostLayout from './PostLayout';
 import SetupLang from './SetupLang';
@@ -31,6 +31,10 @@ const PostClubStep = ({
   Step,
 }: ProfileSetupInterface) => {
   const [post, setPost] = useState(initPost);
+
+  useEffect(() => {
+    console.log(post);
+  }, [post]);
 
   const postClub = async () => {
     const url = `${apiServer}/api/v1/club/article`;

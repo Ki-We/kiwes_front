@@ -1,5 +1,6 @@
 import React, {useCallback, useState} from 'react';
-import {StyleSheet, Text, View, ScrollView} from 'react-native';
+import {StyleSheet, View, ScrollView} from 'react-native';
+import Text from '@components/atoms/Text';
 import {RESTAPIBuilder} from '../../utils/restapiBuilder';
 import {useFocusEffect} from '@react-navigation/native';
 import {apiServer} from '../../utils/metaData';

@@ -8,14 +8,11 @@ import {
   ScrollView,
   Modal,
 } from 'react-native';
-import { WebView } from 'react-native-webview';
 import  Icon  from 'react-native-vector-icons/Ionicons';
 import { RESTAPIBuilder } from '../utils/restapiBuilder';
 import { apiServer } from '../utils/metaData';
 import { Clipboard } from 'react-native';
 import { categoryIcon, categoryList, langList } from '../utils/utils';
-import { GOOGLE_WEB_API_KIEY } from '../utils/googleConfig';
-import MapView, { PROVIDER_GOOGLE} from 'react-native-maps';
 import { height, width } from '../global';
 import ClubDetailSettingModal from '../components/clubdetail/ClubDetailSettingModal';
 import { renderLocationDetail } from '../components/clubdetail/renderLocationDetail';
@@ -68,10 +65,12 @@ const ClubDetail = ({ route, navigation, type }: any) => {
   };
   
   useEffect(() => {
+    console.log('clubId useEffect')
     fetchClubDetail(clubId);
   }, [clubId]);
 
   useEffect(() => {
+    console.log("nickname, clubinfo useeffect")
     if (NickName && clubInfo && NickName.nickName === clubInfo.memberInfo.hostNickname) {
       setIsAdminMode(true);
     } else {
@@ -92,8 +91,8 @@ const ClubDetail = ({ route, navigation, type }: any) => {
     }
   };
   
-  useEffect(() => {
-    fetchNickName();
+  useEffect(() => { //todo
+    fetchNickName(NickName);
   }, []);
 
   const toggleJoin = () => {
@@ -116,19 +115,6 @@ const ClubDetail = ({ route, navigation, type }: any) => {
         }, 0);
       }
     }
-  };
-
-const renderNickDetail = () => {
-  if (!NickName) {
-    return null;
-  }
-  return (
-    <View>
-      <Text style={styles.titleText}>{NickName.nickName}</Text>
-      </View>
-  );
-};
-  const DeleteClub = () => {
   };
   const toggleMoreModal = () => {
     setIsMoreModalVisible((prev) => !prev);
@@ -171,7 +157,6 @@ const renderNickDetail = () => {
       </View>
     );
   };
-  
   const renderClubContent = () => {
     if (!clubInfo) {
       return null;
@@ -233,6 +218,7 @@ const renderNickDetail = () => {
   };
   
   useEffect(() => {
+    console.log('clubinfo useeffect')
     if (clubInfo) {
       checkRecruitmentStatus(clubInfo.baseInfo.dueTo);
     }

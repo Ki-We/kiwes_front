@@ -4,9 +4,9 @@ import {
   FlatList,
   Image,
   StyleSheet,
-  Text,
   TouchableOpacity,
 } from 'react-native';
+import Text from '@components/atoms/Text';
 import {RESTAPIBuilder} from '../utils/restapiBuilder';
 import {apiServer} from '../utils/metaData';
 import {BoardPost} from '../utils/commonInterface';

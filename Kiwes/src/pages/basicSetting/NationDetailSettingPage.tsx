@@ -162,7 +162,7 @@ const NationDetailSettingPage = ({route, navigation}) => {
         <Text
           style={{
             color: '#FFFFFF',
-            fontFamily: 'Pretendard',
+
             fontSize: height * 18,
             fontWeight: '600',
           }}>
@@ -238,13 +238,13 @@ const styles = StyleSheet.create({
   },
   headerText: {
     color: '#303030',
-    fontFamily: 'Pretendard',
+
     fontSize: height * 20,
     fontWeight: '600',
   },
   mainText: {
     color: '#303030',
-    fontFamily: 'Pretendard',
+
     fontSize: height * 28,
     fontWeight: '600',
   },
@@ -299,7 +299,7 @@ const styles = StyleSheet.create({
   modalText: {
     textAlign: 'center',
     color: '#303030',
-    fontFamily: 'Pretendard',
+
     fontWeight: '500',
     fontSize: height * 20,
   },

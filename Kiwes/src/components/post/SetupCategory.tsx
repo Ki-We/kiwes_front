@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import RoundCategory from '../atoms/roundCategory';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {height, width} from '../../global';
+import Text from '@components/atoms/Text';
 import {categoryList} from '../../utils/utils';
 
 export default function SetupCategory({post, setPost}: any) {

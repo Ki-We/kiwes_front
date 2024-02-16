@@ -1,8 +1,9 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, TouchableOpacity, StyleSheet} from 'react-native';
+import Text from '@components/atoms/Text';
 import Icon from 'react-native-vector-icons/Ionicons';
 import QnAList from '../components/clubdetail/QnAList';
-import { width } from '../global';
+import {height, width} from '../global';
 
 const QnAPage = ({route, navigation}) => {
   const {clubId} = route.params;
@@ -38,7 +39,7 @@ const styles = StyleSheet.create({
     marginRight: width * 10,
   },
   headerText: {
-    fontSize: width * 20,
+    fontSize: height * 20,
     fontWeight: '600',
     color: '#303030',
     alignItems: 'center',

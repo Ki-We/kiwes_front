@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { RESTAPIBuilder } from '../../utils/restapiBuilder';
-import { apiServer } from '../../utils/metaData';
+import {RESTAPIBuilder} from '../../utils/restapiBuilder';
+import {apiServer} from '../../utils/metaData';
+import Text from '@components/atoms/Text';
 
-const RecGroupDetail = ({ postId, navigation }: any) => {
+const RecGroupDetail = ({postId, navigation}: any) => {
   const [groupData, setGroupData] = useState<any>({});
   const [isLiked, setIsLiked] = useState(false);
 
@@ -26,7 +27,7 @@ const RecGroupDetail = ({ postId, navigation }: any) => {
   }, [postId]);
 
   const toggleLike = () => {
-    setIsLiked((prev) => !prev);
+    setIsLiked(prev => !prev);
   };
 
   const navigateToClubDetail = () => {
@@ -38,7 +39,10 @@ const RecGroupDetail = ({ postId, navigation }: any) => {
   return (
     <TouchableOpacity onPress={navigateToClubDetail}>
       <View style={styles.container}>
-        <Image source={require('../../assets/images/jejuImg.png')} style={styles.image} />
+        <Image
+          source={require('../../assets/images/jejuImg.png')}
+          style={styles.image}
+        />
         <View style={styles.content}>
           <Text style={styles.title}>{groupData.title}</Text>
           <View style={styles.infoContainer}>
@@ -48,7 +52,11 @@ const RecGroupDetail = ({ postId, navigation }: any) => {
           </View>
         </View>
         <TouchableOpacity style={styles.heartContainer} onPress={toggleLike}>
-          <Icon name={isLiked ? 'heart' : 'heart-outline'} size={24} color={isLiked ? 'green' : '#58C047'} />
+          <Icon
+            name={isLiked ? 'heart' : 'heart-outline'}
+            size={24}
+            color={isLiked ? 'green' : '#58C047'}
+          />
         </TouchableOpacity>
       </View>
     </TouchableOpacity>
