@@ -1,4 +1,5 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, View} from 'react-native';
+import Text from '@components/atoms/Text';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {languageMap} from '../../utils/languageMap';
 import {apiServer} from '../../utils/metaData';

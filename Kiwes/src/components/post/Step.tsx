@@ -1,6 +1,7 @@
 import React from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {height} from '../../global';
+import Text from '@components/atoms/Text';
 
 export default function Step({title, children}: any) {
   return (

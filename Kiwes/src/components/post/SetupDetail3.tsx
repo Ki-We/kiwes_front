@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
-import {Pressable, StyleSheet, Text, View, Image} from 'react-native';
+import {Pressable, StyleSheet, View, Image} from 'react-native';
 import {height, width} from '../../global';
 import {TextInput} from 'react-native-gesture-handler';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import Text from '@components/atoms/Text';
 import {faPlus} from '@fortawesome/free-solid-svg-icons';
 import {launchImageLibrary} from 'react-native-image-picker';
 

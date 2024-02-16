@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, TouchableOpacity, StyleSheet} from 'react-native';
 import {width, height} from '../../global';
 import backIcon from 'react-native-vector-icons/Ionicons';
+import Text from '@components/atoms/Text';
 
 const GenderSettingPage = ({route, navigation}) => {
   const {nickname} = route.params;
@@ -69,7 +70,6 @@ const GenderSettingPage = ({route, navigation}) => {
           {renderRadioButton('MALE')}
           <Text
             style={{
-              fontFamily: 'Pretendard',
               fontSize: height * 18,
               fontWeight: '500',
             }}>
@@ -80,7 +80,6 @@ const GenderSettingPage = ({route, navigation}) => {
           {renderRadioButton('FEMALE')}
           <Text
             style={{
-              fontFamily: 'Pretendard',
               fontSize: height * 18,
               fontWeight: '500',
             }}>
@@ -93,7 +92,7 @@ const GenderSettingPage = ({route, navigation}) => {
           <Text
             style={{
               color: '#FFFFFF',
-              fontFamily: 'Pretendard',
+
               fontSize: height * 18,
               fontWeight: '600',
             }}>
@@ -105,7 +104,7 @@ const GenderSettingPage = ({route, navigation}) => {
           <Text
             style={{
               color: '#DADADA',
-              fontFamily: 'Pretendard',
+
               fontSize: height * 18,
               fontWeight: '600',
             }}>
@@ -134,13 +133,13 @@ const styles = StyleSheet.create({
   },
   headerText: {
     color: '#303030',
-    fontFamily: 'Pretendard',
+
     fontSize: height * 20,
     fontWeight: '600',
   },
   mainText: {
     color: '#303030',
-    fontFamily: 'Pretendard',
+
     fontSize: height * 15,
     fontWeight: '600',
   },

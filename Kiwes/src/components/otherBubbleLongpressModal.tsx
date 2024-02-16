@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, TouchableOpacity, StyleSheet} from 'react-native';
+import Text from '@components/atoms/Text';
 import Modal from 'react-native-modal';
 import {width, height, DeviceHeight} from '../global';
 import {apiServer} from '../utils/metaData';
@@ -165,7 +166,7 @@ const styles = StyleSheet.create({
   modalText: {
     textAlign: 'center',
     color: '#303030',
-    fontFamily: 'Pretendard',
+
     fontWeight: '600',
     fontSize: height * 12,
   },

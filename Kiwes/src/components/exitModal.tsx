@@ -1,7 +1,8 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, TouchableOpacity, StyleSheet} from 'react-native';
 import Modal from 'react-native-modal';
-import {colors, width, height} from '../global';
+import {width, height} from '../global';
+import Text from '@components/atoms/Text';
 
 const ExitModal = ({isVisible, onClose, name, exitClub}) => {
   return (
@@ -24,7 +25,7 @@ const ExitModal = ({isVisible, onClose, name, exitClub}) => {
               style={{
                 textAlign: 'center',
                 color: '#8A8A8A',
-                fontFamily: 'Pretendard',
+
                 fontWeight: '600',
                 fontSize: height * 16,
               }}>
@@ -41,7 +42,7 @@ const ExitModal = ({isVisible, onClose, name, exitClub}) => {
               style={{
                 textAlign: 'center',
                 color: '#8A8A8A',
-                fontFamily: 'Pretendard',
+
                 fontWeight: '600',
                 fontSize: height * 16,
               }}>
@@ -80,14 +81,14 @@ const styles = StyleSheet.create({
   modalTitle: {
     textAlign: 'center',
     color: '#3DBE14',
-    fontFamily: 'Pretendard',
+
     fontWeight: '600',
     fontSize: height * 16,
   },
   modalText: {
     textAlign: 'center',
     color: '#303030',
-    fontFamily: 'Pretendard',
+
     fontWeight: '600',
     fontSize: height * 16,
   },

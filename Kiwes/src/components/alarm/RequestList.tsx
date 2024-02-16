@@ -1,5 +1,6 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
+import Text from '@components/atoms/Text';
 import {apiServer} from '../../utils/metaData';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {height, width} from '../../global';
@@ -49,7 +50,7 @@ const styles = StyleSheet.create({
   },
   retrive: {
     color: 'rgba(0, 0, 0, 1)',
-    fontFamily: 'Pretendard-Bold',
+    fontWeight: '700',
     fontSize: height * 14,
   },
 });

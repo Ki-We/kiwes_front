@@ -68,10 +68,12 @@ const ClubDetail = ({ route, navigation, type }: any) => {
   };
   
   useEffect(() => {
+    console.log('clubId useEffect')
     fetchClubDetail(clubId);
   }, [clubId]);
 
   useEffect(() => {
+    console.log("nickname, clubinfo useeffect")
     if (NickName && clubInfo && NickName.nickName === clubInfo.memberInfo.hostNickname) {
       setIsAdminMode(true);
     } else {
@@ -92,8 +94,8 @@ const ClubDetail = ({ route, navigation, type }: any) => {
     }
   };
   
-  useEffect(() => {
-    fetchNickName();
+  useEffect(() => { //todo
+    fetchNickName(NickName);
   }, []);
 
   const toggleJoin = () => {
@@ -166,7 +168,31 @@ const renderNickDetail = () => {
       </View>
     );
   };
-  
+  const renderLocationDetail = () => {
+    if (!clubInfo) {
+      return null;
+    }  
+    const baseInfo = clubInfo.baseInfo;
+    return (
+      <View style={styles.locationContent}>
+        <Text style={styles.locationTitleText}>{baseInfo.locationKeyword}</Text>
+        <Text style={styles.locationText}>{baseInfo.location}</Text>
+        <View style={styles.mapContainer}>
+        {baseInfo.latitude != 0 && baseInfo.longitude != 0 && 
+          <MapView
+          provider={PROVIDER_GOOGLE}
+          style={{ flex: 1, height: height * 180 }}
+          initialRegion={{
+            latitude: parseFloat(baseInfo.latitude),
+            longitude: parseFloat(baseInfo.longitude),
+            latitudeDelta: 0.000922,
+            longitudeDelta: 0.000421,
+          }}
+        />}
+        </View>
+      </View>
+    );
+  };
   const renderClubContent = () => {
     if (!clubInfo) {
       return null;
@@ -228,6 +254,7 @@ const renderNickDetail = () => {
   };
   
   useEffect(() => {
+    console.log('clubinfo useeffect')
     if (clubInfo) {
       checkRecruitmentStatus(clubInfo.baseInfo.dueTo);
     }

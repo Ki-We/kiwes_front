@@ -1,7 +1,8 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, TouchableOpacity, StyleSheet} from 'react-native';
 import Modal from 'react-native-modal';
 import {width, height} from '../../global';
+import Text from '@components/atoms/Text';
 
 const ReivewErrorModal = ({isVisible, onClose}) => {
   return (
@@ -60,14 +61,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: '600',
     color: '#3DBE14',
-    fontFamily: 'Pretendard',
+
     fontSize: height * 16,
   },
   modalText: {
     textAlign: 'center',
     fontWeight: '600',
     color: '#303030',
-    fontFamily: 'Pretendard',
+
     fontSize: height * 16,
   },
   modalButtonGroup: {

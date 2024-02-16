@@ -1,7 +1,8 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, TouchableOpacity, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ReviewList from '../components/clubdetail/ReviewList';
+import Text from '@components/atoms/Text';
 
 const ReviewPage = ({route, navigation}) => {
   const {clubId} = route.params;

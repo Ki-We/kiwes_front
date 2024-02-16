@@ -2,6 +2,10 @@
   "migIndex": 1,
   "data": [
     {
+      "path": "assets/fonts/ChosunCentennial_ttf.ttf",
+      "sha1": "2376150003d982b53251e71ac46be4efbadd8a7f"
+    },
+    {
       "path": "assets/fonts/Pretendard-Black.ttf",
       "sha1": "129160adf086ffc1fdf54ef801526e137700df1d"
     },

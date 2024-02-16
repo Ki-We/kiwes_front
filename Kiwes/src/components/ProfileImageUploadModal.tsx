@@ -79,9 +79,8 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#303030',
-    fontFamily: 'Pretendard',
-    fontSize: width * 15,
-    fontWeight: '900',
+    fontSize: height * 18,
+    fontWeight: '600',
   },
 });
 

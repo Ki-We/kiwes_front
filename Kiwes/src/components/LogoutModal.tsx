@@ -1,7 +1,8 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, TouchableOpacity, StyleSheet} from 'react-native';
 import Modal from 'react-native-modal';
 import {width, height} from '../global';
+import Text from '@components/atoms/Text';
 
 const LogoutModal = ({isVisible, onClose, exitClub, modaltype}) => {
   const logoutMessage = `${modaltype}하시겠습니까`;
@@ -63,7 +64,7 @@ const styles = StyleSheet.create({
   modalTitle: {
     textAlign: 'center',
     color: '#3DBE14',
-    fontFamily: 'Pretendard',
+
     fontWeight: '800',
     fontSize: height * 18,
     marginBottom: 10,
@@ -71,14 +72,14 @@ const styles = StyleSheet.create({
   logout: {
     textAlign: 'center',
     color: '#303030',
-    fontFamily: 'Pretendard',
+
     fontWeight: '500',
     fontSize: height * 16,
   },
   secession: {
     textAlign: 'center',
     color: '#303030',
-    fontFamily: 'Pretendard',
+
     fontWeight: '500',
     fontSize: height * 14,
   },

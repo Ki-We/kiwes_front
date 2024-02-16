@@ -1,6 +1,7 @@
 import {useFocusEffect} from '@react-navigation/native';
 import React, {useCallback, useState} from 'react';
-import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import Text from '@components/atoms/Text';
 import {RESTAPIBuilder} from '../../utils/restapiBuilder';
 import {apiServer} from '../../utils/metaData';
 import {height, width} from '../../global';

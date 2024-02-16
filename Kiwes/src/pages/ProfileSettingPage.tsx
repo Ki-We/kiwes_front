@@ -235,7 +235,7 @@ const ProfileSettingPage = ({route, navigation}) => {
                 <Text
                   style={{
                     color: '#FFFFFF',
-                    fontFamily: 'Pretendard',
+
                     fontSize: height * 18,
                     fontWeight: '600',
                   }}>
@@ -273,13 +273,13 @@ const styles = StyleSheet.create({
   },
   headerText: {
     color: '#303030',
-    fontFamily: 'Pretendard',
+
     fontSize: height * 20,
     fontWeight: '600',
   },
   mainText: {
     color: '#303030',
-    fontFamily: 'Pretendard',
+
     fontSize: height * 15,
     fontWeight: '600',
   },
@@ -318,7 +318,7 @@ const styles = StyleSheet.create({
   },
   checkText: {
     color: '#303030',
-    fontFamily: 'Pretendard',
+
     fontSize: height * 12,
     fontWeight: '500',
   },
