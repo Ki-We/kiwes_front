@@ -135,11 +135,10 @@ const styles = StyleSheet.create({
   },
   notificationContainer: {
     flexDirection: 'row',
-    marginTop: height * 16,
-    marginBottom: height * 16,
-    paddingTop: height * 6,
-    paddingLeft: width * 5,
-    height: height * 40,
+    marginVertical: height * 16,
+    paddingVertical: height * 5,
+    paddingLeft: width * 10,
+    height: 'auto',
     borderTopColor: '#C0C0C0',
     borderBottomColor: '#C0C0C0',
     borderTopWidth: 1,
@@ -155,9 +154,7 @@ const styles = StyleSheet.create({
   },
   notification: {
     color: '#58C047',
-
     fontSize: height * 14,
-    // font-style: normal,
     fontWeight: '600',
   },
   image: {
@@ -168,7 +165,7 @@ const styles = StyleSheet.create({
     color: '#303030',
     fontSize: height * 16,
     // font-style: normal,
-    fontWeight: '700',
+    fontWeight: '600',
   },
   chatList: {
     padding: 20,

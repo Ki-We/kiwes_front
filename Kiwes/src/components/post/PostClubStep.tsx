@@ -32,11 +32,9 @@ const PostClubStep = ({
 }: ProfileSetupInterface) => {
   const [post, setPost] = useState(initPost);
 
-  useEffect(() => {
-    console.log(post);
-  }, [post]);
-
   const postClub = async () => {
+    if (post.title == '' || post.imageSource == '') return;
+
     const url = `${apiServer}/api/v1/club/article`;
     const {data} = await new RESTAPIBuilder(url, 'POST')
       .setNeedToken(true)
@@ -78,7 +76,6 @@ const PostClubStep = ({
       },
       body: binaryData,
     });
-    console.log(uploadResponse);
     if (!uploadResponse.ok) {
       const errorMessage = await uploadResponse.text();
       console.log('post club err4 : ', errorMessage);
