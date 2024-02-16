@@ -15,8 +15,10 @@ import { apiServer } from '../utils/metaData';
 import { Clipboard } from 'react-native';
 import { categoryIcon, categoryList, langList } from '../utils/utils';
 import { GOOGLE_WEB_API_KIEY } from '../utils/googleConfig';
+import MapView, { PROVIDER_GOOGLE} from 'react-native-maps';
 import { height, width } from '../global';
 import ClubDetailSettingModal from '../components/clubdetail/ClubDetailSettingModal';
+import { renderLocationDetail } from '../components/clubdetail/renderLocationDetail';
 
 const ClubDetail = ({ route, navigation, type }: any) => {
   const { clubId } = route.params;
@@ -84,13 +86,14 @@ const ClubDetail = ({ route, navigation, type }: any) => {
         .build()
         .run();
         setNickNameInfo(response.data);
+        console.log(response.data);
     } catch (error) {
       console.error('Error 닉네임:', error);
     }
   };
   
-  useEffect(() => { //todo
-    fetchNickName(NickName);
+  useEffect(() => {
+    fetchNickName();
   }, []);
 
   const toggleJoin = () => {
@@ -163,36 +166,7 @@ const renderNickDetail = () => {
       </View>
     );
   };
-  const renderLocationDetail = () => {
-    if (!clubInfo) {
-      return null;
-    }  
-    const baseInfo = clubInfo.baseInfo;
-    return (
-      <View style={styles.locationContent}>
-        <Text style={styles.locationTitleText}>{baseInfo.locationKeyword}</Text>
-        <Text style={styles.locationText}>{baseInfo.location}</Text>
-        <View style={styles.mapContainer}>
-        <WebView
-        source={{
-          html: `
-            <div style="display: flex; justify-content: center; padding">
-              <iframe
-                width="920"
-                height="300"
-                frameborder="0"
-                style="border: 4px solid #9BD23C; border-radius: 60px;"
-                src="https://www.google.com/maps/embed/v1/view?key=${GOOGLE_WEB_API_KIEY}&center=${baseInfo.latitude},${baseInfo.longitude}&zoom=15"
-                allowfullscreen
-              ></iframe>
-            </div>
-          `,
-        }}
-        style={{ flex: 1, height: 140 }}/>
-        </View>
-      </View>
-    );
-  };
+  
   const renderClubContent = () => {
     if (!clubInfo) {
       return null;
@@ -405,7 +379,7 @@ const renderBtn = (tags: string[]) => {
         </View>
         <View style={styles.locationContainer}>
           <Text style={styles.clubInfoTitle}>장소</Text>
-          {renderLocationDetail()}
+          {renderLocationDetail(clubInfo)}
         </View>
         <View style={styles.qnaContainer}>
         <Text style={styles.clubInfoTitle}>Q&A</Text>
@@ -784,6 +758,10 @@ const styles = StyleSheet.create({
   },
   mapContainer: {
     marginTop: height * 10,
+    borderWidth: 4, 
+    borderColor: '#9BD23C', 
+    borderRadius: 30, 
+    overflow: 'hidden'
   },
   image: {
     marginRight: width * 3,
