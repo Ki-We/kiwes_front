@@ -1,4 +1,10 @@
-import {StyleSheet, SafeAreaView, Image, Pressable} from 'react-native';
+import {
+  StyleSheet,
+  SafeAreaView,
+  Image,
+  Pressable,
+  Platform,
+} from 'react-native';
 import React, {useCallback} from 'react';
 import * as KakaoLogin from '@react-native-seoul/kakao-login';
 import {apiServer} from '../utils/metaData';
@@ -157,15 +163,17 @@ export default function Login({navigation}: any) {
           resizeMode="contain"
         />
       </Pressable>
-      <Pressable onPress={signInWithApple}>
-        <Image
-          source={{
-            uri: 'https://kiwes2-bucket.s3.ap-northeast-2.amazonaws.com/main/apple_login.png',
-          }}
-          style={styles.oauth}
-          resizeMode="contain"
-        />
-      </Pressable>
+      {Platform.OS === 'ios' && (
+        <Pressable onPress={signInWithApple}>
+          <Image
+            source={{
+              uri: 'https://kiwes2-bucket.s3.ap-northeast-2.amazonaws.com/main/apple_login.png',
+            }}
+            style={styles.oauth}
+            resizeMode="contain"
+          />
+        </Pressable>
+      )}
       <Pressable onPress={signInWithGoogle}>
         <Image
           source={{
@@ -186,8 +194,8 @@ const styles = StyleSheet.create({
   },
   image: {
     aspectRatio: 1,
-    width: '100%',
-    marginBottom: 30,
+    // width: '100%',
+    height: '70%',
   },
   oauth: {
     aspectRatio: 5,

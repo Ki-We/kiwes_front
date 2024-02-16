@@ -7,7 +7,7 @@ export default function SearchBtn({text, onPress}: any) {
   return (
     <Pressable style={styles.button} onPress={onPress}>
       <View style={styles.buttonContent}>
-        <Text style={styles.text}>df{text}</Text>
+        <Text style={styles.text}>{text}</Text>
       </View>
     </Pressable>
   );

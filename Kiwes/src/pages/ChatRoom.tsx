@@ -1,22 +1,18 @@
 import React, {useState, useEffect, useRef, useCallback} from 'react';
 import {
   SafeAreaView,
-  Alert,
   View,
-  Text,
   TextInput,
   Keyboard,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
-  Button,
   StyleSheet,
   FlatList,
   TouchableOpacity,
-  Dimensions,
-  Pressable,
   NativeModules,
   Platform,
 } from 'react-native';
+import Text from '@components/atoms/Text';
 import optionIcon from 'react-native-vector-icons/SimpleLineIcons';
 import backIcon from 'react-native-vector-icons/Ionicons';
 import exitIcon from 'react-native-vector-icons/MaterialIcons';
@@ -38,7 +34,7 @@ import ChatBubbleSystem from './ChatBubbleSystem';
 import {ScrollView} from 'react-native-gesture-handler';
 import {Chat, ClubMember, ClubSimpleData} from '../utils/commonInterface';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faBan, faChessKing, faUser} from '@fortawesome/free-solid-svg-icons';
+import {faChessKing, faUser} from '@fortawesome/free-solid-svg-icons';
 import {RESTAPIBuilder} from '../utils/restapiBuilder';
 import {Buffer} from 'buffer';
 
@@ -77,27 +73,27 @@ const ChatScreen = ({navigation, route}) => {
       time: '오후 4:35',
     },
     {userId: 2, msg: 'hello?', time: '2023-10-13 12:58'},
-    {userId: 8, msg: ':D', time: '2023-10-13 12:58'},
-    {userId: 2, msg: 'oh hi!', time: '2023-10-13 12:58'},
-    {userId: 8, msg: ':(', time: '2023-10-13 12:59'},
-    {userId: 8, msg: ';0', time: '2023-10-13 12:59'},
-    {userId: 2, msg: ' 😁😁😁😁😁', time: '2023-10-13 12:59'},
-    {userId: 8, msg: '😁😁😁', time: '2023-10-13 12:59'},
-    {userId: 2, msg: 'hello everyone', time: '2023-10-13 13:00'},
-    {userId: 2, msg: 'listen carefully', time: '2023-10-13 13:00'},
-    {userId: 8, msg: 'wakwak', time: '2023-10-13 13:00'},
-    {userId: 8, msg: 'did fd', time: '2023-10-13 13:00'},
-    {
-      userId: 3,
-      msg: 'ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ',
-      time: '2023-10-13 13:01',
-    },
-    {userId: 8, msg: '귤이 두 명이면 뀰', time: '2023-10-13 13:01'},
-    {
-      userId: 2,
-      msg: 'ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ',
-      time: '2023-10-13 13:06',
-    },
+    // {userId: 8, msg: ':D', time: '2023-10-13 12:58'},
+    // {userId: 2, msg: 'oh hi!', time: '2023-10-13 12:58'},
+    // {userId: 8, msg: ':(', time: '2023-10-13 12:59'},
+    // {userId: 8, msg: ';0', time: '2023-10-13 12:59'},
+    // {userId: 2, msg: ' 😁😁😁😁😁', time: '2023-10-13 12:59'},
+    // {userId: 8, msg: '😁😁😁', time: '2023-10-13 12:59'},
+    // {userId: 2, msg: 'hello everyone', time: '2023-10-13 13:00'},
+    // {userId: 2, msg: 'listen carefully', time: '2023-10-13 13:00'},
+    // {userId: 8, msg: 'wakwak', time: '2023-10-13 13:00'},
+    // {userId: 8, msg: 'did fd', time: '2023-10-13 13:00'},
+    // {
+    //   userId: 3,
+    //   msg: 'ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ',
+    //   time: '2023-10-13 13:01',
+    // },
+    // {userId: 8, msg: '귤이 두 명이면 뀰', time: '2023-10-13 13:01'},
+    // {
+    //   userId: 2,
+    //   msg: 'ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ',
+    //   time: '2023-10-13 13:06',
+    // },
   ]);
 
   const [isModalVisible, setModalVisible] = useState(false);
@@ -135,6 +131,7 @@ const ChatScreen = ({navigation, route}) => {
   }, []);
 
   const initialize = async () => {
+    console.log('initialize chat');
     const urlClub = `${apiServer}/api/v1/club/info/simple/${clubId}`;
     const {data} = await new RESTAPIBuilder(urlClub, 'GET')
       .setNeedToken(true)
@@ -147,7 +144,6 @@ const ChatScreen = ({navigation, route}) => {
       return;
     }
 
-    console.log(data);
     setClubData(data);
 
     const hostData = {
@@ -193,9 +189,12 @@ const ChatScreen = ({navigation, route}) => {
     // });
     ////////////////////////////////////////////////////////////////////
     socket.current?.on('msgList', data => {
+      console.log('msgList get Data');
       const chat = data.chat;
-      setMessages(chat.reverse()); //채팅반대로
-      console.log(chat);
+      const reverseChat = chat.reverse();
+      setMessages(reverseChat); //채팅반대로
+      setDisplayData(reverseChat.slice(0, DATA_PER_PAGE * 1));
+      // console.log(chat);
     });
     socket.current?.on('sendMSG', data => {
       messages.unshift(data);

@@ -412,7 +412,6 @@ const styles = StyleSheet.create({
   },
   wrapper: {
     height: height * 180,
-    width: '100%',
   },
   wrapper1: {
     height: height * 350,
@@ -430,7 +429,7 @@ const styles = StyleSheet.create({
   bannerImage: {
     width: '100%',
     height: '100%',
-    resizeMode: 'cover',
+    resizeMode: 'contain',
   },
   sectionContainer: {
     alignItems: 'center',
@@ -682,9 +681,6 @@ const styles = StyleSheet.create({
   icon: {
     top: height * 13,
     left: width * -9,
-  },
-  banner: {
-    width: '100%',
   },
 });
 

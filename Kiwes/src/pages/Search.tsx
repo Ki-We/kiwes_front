@@ -22,15 +22,20 @@ export default function Search({navigation}: any) {
     setInit(false);
     let temp = await AsyncStorage.getItem('search');
     const keywords = temp ? JSON.parse(temp) : [];
-    const first = keywords.shift();
-    keywords.unshift(first);
 
-    if (first == search) {
-      return;
+    if (keywords.length > 0) {
+      const first = keywords.shift();
+      keywords.unshift(first);
+
+      if (first == search) {
+        return;
+      }
     }
+
     if (keywords.length > 2) {
       keywords.pop();
     }
+
     await AsyncStorage.setItem('search', JSON.stringify([search, ...keywords]));
   };
   const getRecommand = async () => {
