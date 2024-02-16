@@ -2,7 +2,7 @@ import {StyleSheet, Text, View} from 'react-native';
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 import {height, width} from '../../global';
 
-export const renderLocationDetail = ({clubInfo}: any) => {
+export const renderLocationDetail = (clubInfo: any) => {
   if (!clubInfo) {
     return null;
   }
