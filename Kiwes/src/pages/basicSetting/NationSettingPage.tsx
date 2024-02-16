@@ -31,7 +31,7 @@ const NationSettingPage = ({route, navigation}) => {
           <Text
             style={{
               color: '#FFF',
-              fontFamily: 'Pretendard',
+
               fontSize: height * 20,
               fontWeight: '500',
             }}>
@@ -45,7 +45,7 @@ const NationSettingPage = ({route, navigation}) => {
           <Text
             style={{
               color: '#000',
-              fontFamily: 'Pretendard',
+
               fontSize: height * 20,
               fontWeight: '500',
             }}>
@@ -114,7 +114,7 @@ const NationSettingPage = ({route, navigation}) => {
             <Text
               style={{
                 color: '#000',
-                fontFamily: 'Pretendard',
+
                 fontSize: height * 20,
                 fontWeight: '500',
               }}>
@@ -141,7 +141,7 @@ const NationSettingPage = ({route, navigation}) => {
           <Text
             style={{
               color: '#FFFFFF',
-              fontFamily: 'Pretendard',
+
               fontSize: height * 18,
               fontWeight: '600',
             }}>
@@ -153,7 +153,7 @@ const NationSettingPage = ({route, navigation}) => {
           <Text
             style={{
               color: '#DADADA',
-              fontFamily: 'Pretendard',
+
               fontSize: height * 18,
               fontWeight: '600',
             }}>
@@ -182,13 +182,13 @@ const styles = StyleSheet.create({
   },
   headerText: {
     color: '#303030',
-    fontFamily: 'Pretendard',
+
     fontSize: height * 20,
     fontWeight: '600',
   },
   mainText: {
     color: '#303030',
-    fontFamily: 'Pretendard',
+
     fontSize: height * 28,
     fontWeight: '600',
   },

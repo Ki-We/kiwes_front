@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, TouchableOpacity, StyleSheet} from 'react-native';
 import Modal from 'react-native-modal';
 import {width, height, DeviceHeight} from '../global';
 import {apiServer} from '../utils/metaData';
 import {RESTAPIBuilder} from '../utils/restapiBuilder';
 import Clipboard from '@react-native-clipboard/clipboard';
 import TranslateModal from './translateModal';
+import Text from '@components/atoms/Text';
 // import TranslateModal from './translateModal2';
 
 const messageLongpressModal = ({
@@ -165,7 +166,7 @@ const styles = StyleSheet.create({
   modalText: {
     textAlign: 'center',
     color: '#303030',
-    fontFamily: 'Pretendard',
+
     fontWeight: '600',
     fontSize: height * 12,
   },

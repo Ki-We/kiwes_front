@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
   modalText: {
     textAlign: 'center',
     color: '#303030',
-    fontFamily: 'Pretendard',
+
     fontWeight: '700',
     fontSize: height * 16,
   },

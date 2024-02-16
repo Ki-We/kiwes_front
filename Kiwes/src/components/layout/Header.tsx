@@ -1,7 +1,8 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import backIcon from 'react-native-vector-icons/Ionicons';
 import optionIcon from 'react-native-vector-icons/SimpleLineIcons';
+import Text from '@components/atoms/Text';
 import {width, height} from '../../global';
 
 export default function Header({title, rightBtn, navigatePop}: any) {
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     color: '#303030',
-    fontSize: width * 20,
+    fontSize: height * 20,
     fontWeight: '600',
   },
   separator: {

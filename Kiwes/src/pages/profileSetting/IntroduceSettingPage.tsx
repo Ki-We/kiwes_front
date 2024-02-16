@@ -111,7 +111,7 @@ const IntroduceSettingPage = ({route, navigation}) => {
             <Text
               style={{
                 color: '#FFFFFF',
-                fontFamily: 'Pretendard',
+
                 fontSize: height * 18,
                 fontWeight: '600',
               }}>
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     color: '#303030',
-    fontFamily: 'Pretendard',
+
     fontSize: height * 20,
     fontWeight: '600',
   },
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
   },
   mainText: {
     color: '#303030',
-    fontFamily: 'Pretendard',
+
     fontSize: height * 15,
     fontWeight: '600',
   },
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: '#F8F8F8',
     padding: 10,
-    fontFamily: 'Pretendard',
+
     fontSize: height * 15,
     fontWeight: '500',
     width: '100%',

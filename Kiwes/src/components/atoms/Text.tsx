@@ -29,8 +29,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Pretendard-Medium',
   },
   semibold: {
-    // fontFamily: 'Pretendard-SemiBold',
-    fontFamily: 'ChosunCentennial_ttf',
+    fontFamily: 'Pretendard-SemiBold',
+    // fontFamily: 'ChosunCentennial_ttf',
   },
   bold: {
     fontFamily: 'Pretendard-Bold',

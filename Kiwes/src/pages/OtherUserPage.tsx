@@ -68,7 +68,6 @@ export function OtherUserPage({route, navigation}: any) {
 
     setMyPageInfo(data);
     console.log('Mypage : ', data);
-   
   };
   const getParticipatedClubInfo = async () => {
     const url = `${apiServer}/api/v1/club/approval/my-club-image/${memberId}`;
@@ -114,7 +113,7 @@ export function OtherUserPage({route, navigation}: any) {
           <Text
             style={{
               color: '#303030',
-              fontFamily: 'Pretendard',
+
               fontSize: height * 15,
               fontWeight: '600',
             }}>
@@ -134,7 +133,7 @@ export function OtherUserPage({route, navigation}: any) {
           <Text
             style={{
               color: '#8A8A8A',
-              fontFamily: 'Pretendard',
+
               fontSize: height * 15,
               fontWeight: '600',
             }}>
@@ -301,21 +300,21 @@ const styles = StyleSheet.create({
   },
   nickNameText: {
     color: '#303030',
-    fontFamily: 'Pretendard',
+
     fontSize: height * 14,
     fontWeight: '600',
     textAlign: 'center',
   },
   profileText: {
     color: '#303030',
-    fontFamily: 'Pretendard',
+
     fontSize: height * 14,
     fontWeight: '400',
     textAlign: 'center',
   },
   introductionText: {
     color: '#303030',
-    fontFamily: 'Pretendard',
+
     fontSize: height * 13,
     fontWeight: '400',
     textAlign: 'center',

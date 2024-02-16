@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
 import RoundBtn from '../atoms/roundBtn';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {height, width} from '../../global';
 import {langList} from '../../utils/utils';
 import {FlatList} from 'react-native-gesture-handler';
+import Text from '@components/atoms/Text';
 
 export default function SetupLang({post, setPost}: any) {
   const [selectedLang, setSelectedLang] = useState<String[]>(post.languages);

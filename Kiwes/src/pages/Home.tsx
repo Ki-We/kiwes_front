@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useState, useCallback, useRef, useEffect} from 'react';
 import {useFocusEffect} from '@react-navigation/native';
-import Text from '../components/atoms/Text';
+import Text from '@components/atoms/Text';
 import {
   View,
   Image,

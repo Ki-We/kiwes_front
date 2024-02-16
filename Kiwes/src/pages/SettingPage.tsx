@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, Text, Linking} from 'react-native';
+import {View, StyleSheet, Linking} from 'react-native';
+import Text from '@components/atoms/Text';
 import Header from '../components/layout/Header';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';

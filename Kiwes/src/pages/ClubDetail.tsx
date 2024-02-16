@@ -15,6 +15,7 @@ import { apiServer } from '../utils/metaData';
 import { Clipboard } from 'react-native';
 import { categoryIcon, categoryList, langList } from '../utils/utils';
 import { GOOGLE_WEB_API_KIEY } from '../utils/googleConfig';
+import MapView, { PROVIDER_GOOGLE} from 'react-native-maps';
 import { height, width } from '../global';
 import ClubDetailSettingModal from '../components/clubdetail/ClubDetailSettingModal';
 
@@ -66,10 +67,12 @@ const ClubDetail = ({ route, navigation, type }: any) => {
   };
   
   useEffect(() => {
+    console.log('clubId useEffect')
     fetchClubDetail(clubId);
   }, [clubId]);
 
   useEffect(() => {
+    console.log("nickname, clubinfo useeffect")
     if (NickName && clubInfo && NickName.nickName === clubInfo.memberInfo.hostNickname) {
       setIsAdminMode(true);
     } else {
@@ -90,6 +93,7 @@ const ClubDetail = ({ route, navigation, type }: any) => {
   };
   
   useEffect(() => { //todo
+    console.log("fetchnickname useeffect")
     fetchNickName(NickName);
   }, []);
 
@@ -173,22 +177,17 @@ const renderNickDetail = () => {
         <Text style={styles.locationTitleText}>{baseInfo.locationKeyword}</Text>
         <Text style={styles.locationText}>{baseInfo.location}</Text>
         <View style={styles.mapContainer}>
-        <WebView
-        source={{
-          html: `
-            <div style="display: flex; justify-content: center; padding">
-              <iframe
-                width="920"
-                height="300"
-                frameborder="0"
-                style="border: 4px solid #9BD23C; border-radius: 60px;"
-                src="https://www.google.com/maps/embed/v1/view?key=${GOOGLE_WEB_API_KIEY}&center=${baseInfo.latitude},${baseInfo.longitude}&zoom=15"
-                allowfullscreen
-              ></iframe>
-            </div>
-          `,
-        }}
-        style={{ flex: 1, height: 140 }}/>
+        {baseInfo.latitude != 0 && baseInfo.longitude != 0 && 
+          <MapView
+          provider={PROVIDER_GOOGLE}
+          style={{ flex: 1, height: height * 180 }}
+          initialRegion={{
+            latitude: parseFloat(baseInfo.latitude),
+            longitude: parseFloat(baseInfo.longitude),
+            latitudeDelta: 0.000922,
+            longitudeDelta: 0.000421,
+          }}
+        />}
         </View>
       </View>
     );
@@ -254,6 +253,7 @@ const renderNickDetail = () => {
   };
   
   useEffect(() => {
+    console.log('clubinfo useeffect')
     if (clubInfo) {
       checkRecruitmentStatus(clubInfo.baseInfo.dueTo);
     }

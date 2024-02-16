@@ -139,7 +139,7 @@ const NickNameSettingPage = ({navigation}) => {
                   <Text
                     style={{
                       color: '#FFF',
-                      fontFamily: 'Pretendard',
+
                       fontSize: height * 15,
                       fontWeight: 600,
                     }}>
@@ -168,8 +168,7 @@ const NickNameSettingPage = ({navigation}) => {
               <Text
                 style={{
                   color: '#FFFFFF',
-                  fontFamily: 'Pretendard',
-                  fontSize: width * 18,
+                  fontSize: height * 18,
                   fontWeight: '600',
                 }}>
                 다음
@@ -180,7 +179,7 @@ const NickNameSettingPage = ({navigation}) => {
               <Text
                 style={{
                   color: '#DADADA',
-                  fontFamily: 'Pretendard',
+
                   fontSize: height * 18,
                   fontWeight: '600',
                 }}>
@@ -211,7 +210,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     color: '#303030',
-    fontFamily: 'Pretendard',
+
     fontSize: height * 20,
     fontWeight: '600',
   },
@@ -240,7 +239,7 @@ const styles = StyleSheet.create({
   },
   mainText: {
     color: '#303030',
-    fontFamily: 'Pretendard',
+
     fontSize: height * 15,
     fontWeight: '600',
   },
@@ -275,13 +274,13 @@ const styles = StyleSheet.create({
   },
   checkText: {
     color: '#58C047',
-    fontFamily: 'Pretendard',
+
     fontSize: height * 13,
     fontWeight: '500',
   },
   errorText: {
     color: 'red',
-    fontFamily: 'Pretendard',
+
     fontSize: height * 13,
     fontWeight: '500',
   },

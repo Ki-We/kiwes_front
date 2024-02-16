@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, TouchableOpacity, Text} from 'react-native';
+import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import backIcon from 'react-native-vector-icons/Ionicons';
 import {width, height} from '../global';
 import AlarmStack from '../components/layout/AlarmStack';
 import ApprovalStack from '../components/layout/ApprovalStack';
+import Text from '@components/atoms/Text';
 
 const AlarmPage = ({navigation}: any) => {
   const [selectedTab, setSelectedTab] = useState('알림');
@@ -92,9 +93,8 @@ const styles = StyleSheet.create({
   },
   tapText: {
     color: 'rgba(0, 0, 0, 1)',
-    fontFamily: 'Pretendard-Bold',
     fontSize: height * 24,
-    fontWeight: '600',
+    fontWeight: '700',
   },
   tapUnSelected: {
     marginBottom: height * 1,

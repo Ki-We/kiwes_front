@@ -1,6 +1,7 @@
 // 채팅방 화면에 번역 언어 선택 및 텍스트 보여지는 새로운 모달 보이기
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, TouchableHighlight} from 'react-native';
+import {View, StyleSheet, TouchableHighlight} from 'react-native';
+import Text from '@components/atoms/Text';
 import {Chat} from '../utils/commonInterface';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faUser} from '@fortawesome/free-solid-svg-icons';
@@ -140,13 +141,13 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#303030',
-    fontFamily: 'Pretendard',
+
     fontSize: height * 13,
     fontWeight: '400',
   },
   timeText: {
     color: '#303030',
-    fontFamily: 'Pretendard',
+
     fontSize: height * 10,
     fontWeight: '600',
   },
@@ -155,7 +156,7 @@ const styles = StyleSheet.create({
 // 채팅방 화면에 번역 언어 선택 및 텍스트 보여지는 새로운 모달 보이기
 
 // import React, {useState, useEffect, useRef, useCallback} from 'react';
-// import {View, Text, StyleSheet, TouchableHighlight} from 'react-native';
+// import {View, StyleSheet, TouchableHighlight} from 'react-native';
 // import {Chat} from '../utils/commonInterface';
 // import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 // import {faUser} from '@fortawesome/free-solid-svg-icons';
@@ -280,14 +281,12 @@ const styles = StyleSheet.create({
 //   },
 //   text: {
 //     color: 'black',
-//     fontFamily: 'Pretendard-bold',
 //     fontSize: 13,
-//     fontWeight: '400',
+//     fontWeight: '300',
 //   },
 //   timeText: {
 //     color: 'black',
-//     fontFamily: 'Pretendard-bold',
 //     fontSize: 10,
-//     fontWeight: '600',
+//     fontWeight: '700',
 //   },
 // });

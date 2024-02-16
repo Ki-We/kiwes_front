@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import {View, Text, TextInput, Button} from 'react-native';
+import {View, TextInput, Button} from 'react-native';
+import Text from '@components/atoms/Text';
 
 const TranslateTest = () => {
   const [sourceLanguage, setSourceLanguage] = useState('en');

@@ -56,9 +56,8 @@ const styles = StyleSheet.create({
   headerText: {
     flex: 1,
     color: '#303030',
-    fontFamily: 'Pretendard-Bold',
     fontSize: height * 24,
-    fontWeight: '600',
+    fontWeight: '700',
   },
   alarm: {
     marginRight: 10,

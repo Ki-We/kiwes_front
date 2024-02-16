@@ -1,5 +1,6 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, TouchableOpacity, StyleSheet} from 'react-native';
+import Text from '@components/atoms/Text';
 import Modal from 'react-native-modal';
 import {width, height} from '../../global';
 
@@ -58,14 +59,14 @@ const styles = StyleSheet.create({
   modalTitle: {
     textAlign: 'center',
     color: '#3DBE14',
-    fontFamily: 'Pretendard',
+
     fontWeight: '600',
     fontSize: height * 16,
   },
   modalText: {
     textAlign: 'center',
     color: '#303030',
-    fontFamily: 'Pretendard',
+
     fontWeight: '600',
     fontSize: height * 16,
   },
@@ -82,7 +83,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: width * 135,
     color: '#303030',
-    fontFamily: 'Pretendard',
+
     fontWeight: '600',
     fontSize: height * 16,
     borderRightColor: '#8A8A8A',
@@ -92,7 +93,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     color: '#303030',
-    fontFamily: 'Pretendard',
+
     fontWeight: '600',
     fontSize: height * 16,
     width: width * 135,
