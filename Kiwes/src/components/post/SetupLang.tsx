@@ -65,6 +65,8 @@ const styles = StyleSheet.create({
     marginBottom: height * 15,
   },
   highlight: {
+    fontSize: height * 12,
+    fontWeight: '600',
     color: '#3DBE14',
   },
 });

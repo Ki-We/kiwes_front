@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, View, Text} from 'react-native';
-import {width} from '../../global';
+import {height} from '../../global';
 
 export default function Step({title, children}: any) {
   return (
@@ -15,8 +15,7 @@ export default function Step({title, children}: any) {
 const styles = StyleSheet.create({
   stepTitle: {
     color: '#303030',
-    fontFamily: 'Pretendard',
-    fontSize: width * 25,
-    fontWeight: '800',
+    fontSize: height * 24,
+    fontWeight: '600',
   },
 });

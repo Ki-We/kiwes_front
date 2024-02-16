@@ -161,7 +161,7 @@ const BoardDefaultList = ({navigateToClub, fetchData, selected, data}: any) => {
                   </View>
                   <View style={styles.infoContainer}>
                     <Icon
-                      name="map-outline"
+                      name="location-outline"
                       size={14}
                       color={'#rgba(0, 0, 0, 0.7)'}
                     />
@@ -228,7 +228,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: height * 16,
-    fontWeight: 'bold',
+    fontWeight: '500',
     color: 'rgba(0, 0, 0, 1)',
     marginBottom: height * 5,
   },
@@ -239,6 +239,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   info: {
+    fontWeight: '400',
     fontSize: height * 11,
     color: 'rgba(0, 0, 0, 0.8)',
     marginLeft: width * 10,

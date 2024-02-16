@@ -5,7 +5,6 @@ import optionIcon from 'react-native-vector-icons/SimpleLineIcons';
 import {width, height} from '../../global';
 
 export default function Header({title, rightBtn, navigatePop}: any) {
-  console.log(title);
   return (
     <>
       <View style={styles.header}>
@@ -47,7 +46,6 @@ const styles = StyleSheet.create({
   },
   headerText: {
     color: '#303030',
-    fontFamily: 'Pretendard',
     fontSize: width * 20,
     fontWeight: '600',
   },

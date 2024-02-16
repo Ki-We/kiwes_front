@@ -36,7 +36,7 @@ export default function SetupDetail3({post, setPost}: any) {
         <Text style={styles.text}>기본 정보</Text>
         <TextInput
           style={styles.input}
-          placeholderTextColor={'#8A8A8A'}
+          placeholderTextColor={'#C2C2C2'}
           placeholder="모임 제목을 입력해주세요"
           onChangeText={text => {
             setPost({...post, title: text});
@@ -62,7 +62,7 @@ export default function SetupDetail3({post, setPost}: any) {
         <Text style={styles.text}>모임 소개</Text>
         <TextInput
           style={styles.textarea}
-          placeholderTextColor={'#8A8A8A'}
+          placeholderTextColor={'#C2C2C2'}
           placeholder="모임에 대해 소개해주세요"
           multiline={true}
           onChangeText={text => {
@@ -79,9 +79,8 @@ const styles = StyleSheet.create({
     margin: width * 20,
   },
   text: {
-    fontFamily: 'Pretendard',
-    fontWeight: '700',
-    fontSize: width * 13,
+    fontWeight: '600',
+    fontSize: height * 13,
     color: '#303030',
   },
 
@@ -101,17 +100,19 @@ const styles = StyleSheet.create({
     backgroundColor: '#F7F7F7',
   },
   textinfo: {
-    fontFamily: 'Pretendard',
-    color: '#8A8A8A',
+    color: '#C2C2C2',
     whiteSpace: 'pre-line',
     textAlign: 'center',
+    fontSize: height * 13,
+    fontWeight: '500',
   },
   input: {
     borderRadius: 10,
     backgroundColor: '#F7F7F7',
     padding: 5,
     paddingLeft: 10,
-    fontSize: 13,
+    fontSize: height * 13,
+    fontWeight: '500',
     color: '#8A8A8A',
     marginTop: height * 20,
     height: height * 48,
@@ -129,10 +130,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#F7F7F7',
     padding: 5,
     paddingLeft: 10,
-    fontSize: 13,
     color: '#8A8A8A',
     marginTop: height * 10,
     height: height * 180,
     textAlignVertical: 'top',
+    fontSize: height * 13,
+    fontWeight: '500',
   },
 });

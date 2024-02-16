@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, Text, StyleSheet, ScrollView, Pressable} from 'react-native';
 import {height, width} from '../../global';
+import {FlatList} from 'react-native-gesture-handler';
 
 export default function SetupLayout({
   isStart = false,
@@ -19,9 +20,12 @@ export default function SetupLayout({
       <View style={styles.titleContainer}>
         <Text style={styles.title}>{title}</Text>
       </View>
-
-      <ScrollView style={styles.middleContainer}>{children}</ScrollView>
-
+      <FlatList
+        style={styles.middleContainer}
+        data={[1]}
+        renderItem={() => <>{children}</>}
+        keyExtractor={(item, index) => index.toString()}
+      />
       <View style={styles.buttonContainer}>
         <Pressable
           style={isStart ? styles.prevBtn1 : styles.prevBtn2}
@@ -58,11 +62,9 @@ const styles = StyleSheet.create({
     marginLeft: width * 20,
   },
   title: {
-    fontFamily: 'Pretendard',
-    fontWeight: '700',
-    fontSize: width * 24,
+    fontWeight: '600',
+    fontSize: height * 24,
     color: '#303030',
-    whiteSpace: 'pre-line',
   },
   middleContainer: {
     flex: 1,
@@ -88,9 +90,8 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   prevColor1: {
-    fontFamily: 'Pretendard',
     fontWeight: '600',
-    fontSize: width * 16,
+    fontSize: height * 18,
     color: '#E8E8E8',
   },
   prevBtn2: {
@@ -103,9 +104,8 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   prevColor2: {
-    fontFamily: 'Pretendard',
     fontWeight: '600',
-    fontSize: width * 16,
+    fontSize: height * 18,
     color: '#303030',
   },
   nextBtn: {
@@ -118,9 +118,8 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   nextColor: {
-    fontFamily: 'Pretendard',
-    fontWeight: '700',
-    fontSize: width * 16,
+    fontWeight: '600',
+    fontSize: height * 18,
     color: '#ffffff',
   },
 });

@@ -6,7 +6,7 @@ export default function SearchBtn({text, onPress}: any) {
   return (
     <Pressable style={styles.button} onPress={onPress}>
       <View style={styles.buttonContent}>
-        <Text style={styles.text}>{text}</Text>
+        <Text style={styles.text}>df{text}</Text>
       </View>
     </Pressable>
   );
@@ -31,8 +31,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#303030',
-    fontFamily: 'Pretendard',
-    fontWeight: '300',
-    fontSize: width * 13,
+    fontWeight: '400',
+    fontSize: height * 14,
   },
 });

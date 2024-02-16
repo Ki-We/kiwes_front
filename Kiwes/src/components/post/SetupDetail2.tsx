@@ -21,7 +21,7 @@ export default function SetupDetail2({post, setPost}: any) {
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
-            placeholderTextColor={'#8A8A8A'}
+            placeholderTextColor={'#C2C2C2'}
             placeholder="인당 예상비용을 입력해주세요"
             keyboardType="number-pad"
             onChangeText={text => {
@@ -37,7 +37,7 @@ export default function SetupDetail2({post, setPost}: any) {
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
-            placeholderTextColor={'#8A8A8A'}
+            placeholderTextColor={'#C2C2C2'}
             placeholder="모임 인원을 입력해주세요"
             keyboardType="number-pad"
             onChangeText={text => {
@@ -73,9 +73,8 @@ const styles = StyleSheet.create({
     margin: width * 20,
   },
   text: {
-    fontFamily: 'Pretendard',
-    fontWeight: '700',
-    fontSize: width * 13,
+    fontWeight: '600',
+    fontSize: height * 13,
     color: '#303030',
   },
   inputContainer: {
@@ -91,7 +90,8 @@ const styles = StyleSheet.create({
     paddingRight: 10,
   },
   input: {
-    fontSize: 13,
+    fontSize: height * 13,
+    fontWeight: '500',
     color: '#8A8A8A',
     flex: 1,
   },

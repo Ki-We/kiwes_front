@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import RoundCategory from '../atoms/roundCategory';
 import {StyleSheet, Text, View} from 'react-native';
-import {width} from '../../global';
+import {height, width} from '../../global';
 import {categoryList} from '../../utils/utils';
 
 export default function SetupCategory({post, setPost}: any) {
@@ -45,5 +45,7 @@ const styles = StyleSheet.create({
   },
   highlight: {
     color: '#3DBE14',
+    fontSize: height * 12,
+    fontWeight: '600',
   },
 });

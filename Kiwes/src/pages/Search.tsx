@@ -8,7 +8,7 @@ import BoardList from '../components/BoardList';
 import {useEffect, useState} from 'react';
 import InitSearch from '../components/search/initSerch';
 import {Image, Keyboard, Pressable, StyleSheet, Text, View} from 'react-native';
-import {width} from '../global';
+import {height, width} from '../global';
 import ListComponent from '../components/atoms/ListComponent';
 
 export default function Search({navigation}: any) {
@@ -118,8 +118,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: '#000000',
-    fontFamily: 'Pretendard',
-    fontSize: width * 15,
-    fontWeight: '700',
+    fontSize: height * 16,
+    fontWeight: '600',
   },
 });
