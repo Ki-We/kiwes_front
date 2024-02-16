@@ -46,31 +46,30 @@ export const renderLocationDetail = ({clubInfo}: any) => {
 };
 
 const styles = StyleSheet.create({
-      locationImage: {
-        marginLeft: width * 30,
-        marginBottom: height * 20,
-      },
-      locationText: {
-        fontSize: height * 13,
-        fontWeight: '500',
-        color: '#8A8A8A',
-      },
-      mapContainer: {
-        marginTop: height * 10,
-        borderWidth: 4, 
-        borderColor: '#9BD23C', 
-        borderRadius: 30, 
-        overflow: 'hidden'
-      },
-      locationTitleText: {
-        fontSize: height * 16,
-        fontWeight: 'bold',
-        color: '#303030',
-      },
-      locationText: {
-        fontSize: height * 13,
-        fontWeight: '500',
-        color: '#8A8A8A',
-      },
-    },
+  locationImage: {
+    marginLeft: width * 30,
+    marginBottom: height * 20,
+  },
+  locationText: {
+    fontSize: height * 13,
+    fontWeight: '500',
+    color: '#8A8A8A',
+  },
+  mapContainer: {
+    marginTop: height * 10,
+    borderWidth: 4,
+    borderColor: '#9BD23C',
+    borderRadius: 30,
+    overflow: 'hidden',
+  },
+  locationTitleText: {
+    fontSize: height * 16,
+    fontWeight: 'bold',
+    color: '#303030',
+  },
+  locationText: {
+    fontSize: height * 13,
+    fontWeight: '500',
+    color: '#8A8A8A',
+  },
 });

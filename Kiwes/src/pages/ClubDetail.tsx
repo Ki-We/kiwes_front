@@ -128,10 +128,15 @@ const renderNickDetail = () => {
       </View>
   );
 };
-  
+  const DeleteClub = () => {
+  };
   const toggleMoreModal = () => {
     setIsMoreModalVisible((prev) => !prev);
   };
+  const navigateToCorrection = () => {
+    navigation.navigate('CorrectionPage', { clubId: clubId, clubInfo: clubInfo });
+  };
+
   const navigateToReviewPage = () => {
     navigation.navigate('ReviewPage', { clubId: clubId });
   };
@@ -351,7 +356,10 @@ const renderBtn = (tags: string[]) => {
       </View>
       <ClubDetailSettingModal 
         isVisible={isMoreModalVisible} 
-        onClose={toggleMoreModal}/>
+        onClose={toggleMoreModal}
+        navigateToCorrection={navigateToCorrection}
+        DeleteClub={DeleteClub}
+        />
       <View style={styles.imageContent}>
         {clubInfo && (
           <Image source={{ uri: clubInfo.baseInfo.thumbnailImageUrl }} style={styles.clubImage} />

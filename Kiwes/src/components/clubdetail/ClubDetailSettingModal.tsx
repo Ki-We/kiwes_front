@@ -3,7 +3,12 @@ import {StyleSheet, SafeAreaView, TouchableOpacity, Text} from 'react-native';
 import Modal from 'react-native-modal';
 import {height, width} from '../../global';
 
-function ClubDetailSettingModal({isVisible, onClose}: any) {
+function ClubDetailSettingModal({
+  isVisible,
+  onClose,
+  navigateToCorrection,
+  DeleteClub,
+}: any) {
   return (
     <Modal
       style={styles.modal}
@@ -15,6 +20,7 @@ function ClubDetailSettingModal({isVisible, onClose}: any) {
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
+            navigateToCorrection();
             onClose();
           }}>
           <Text style={styles.text}>수정하기</Text>
@@ -22,6 +28,7 @@ function ClubDetailSettingModal({isVisible, onClose}: any) {
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
+            DeleteClub();
             onClose();
           }}>
           <Text style={[styles.text, {color: '#FF0000'}]}>삭제하기</Text>
