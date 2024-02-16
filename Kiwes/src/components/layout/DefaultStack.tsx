@@ -27,6 +27,7 @@ import ChatTest from '../../pages/ChatTest';
 import ChatRoom from '../../pages/ChatRoom';
 import UploadImageTest from '../UploadImageTest';
 import OtherUserPage from '../../pages/OtherUserPage';
+import CorrectionPage from '../../pages/CorrectionPage';
 
 const LoginStack = () => {
   useEffect(() => {
@@ -101,6 +102,7 @@ const LoginStack = () => {
         <Stack.Screen name="ChatRoom" component={ChatRoom} />
         <Stack.Screen name="UploadImageTest" component={UploadImageTest} />
         <Stack.Screen name="OtherUserPage" component={OtherUserPage} />
+        <Stack.Screen name="CorrectionPage" component={CorrectionPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );
