@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, TouchableHighlight} from 'react-native';
+import {View, StyleSheet, TouchableHighlight} from 'react-native';
 import {Chat} from '../utils/commonInterface';
 import MyBubbleLongpressModal from '../components/myBubbleLongpressModal';
+import Text from '@components/atoms/Text';
 import {height} from '../global';
 
 export default function ChatBubbleMine({
@@ -102,13 +103,13 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#FFFFFF',
-    fontFamily: 'Pretendard',
+
     fontSize: height * 13,
     fontWeight: '400',
   },
   timeText: {
     color: '#303030',
-    fontFamily: 'Pretendard',
+
     fontSize: height * 10,
     fontWeight: '600',
   },

@@ -417,7 +417,7 @@ const ChatScreen = ({navigation, route}) => {
           <Text
             style={{
               color: '#8A8A8A',
-              fontFamily: 'Pretendard',
+
               fontSize: height * 18,
               fontWeight: '600',
             }}>
@@ -426,7 +426,7 @@ const ChatScreen = ({navigation, route}) => {
           <Text
             style={{
               color: '#303030',
-              fontFamily: 'Pretendard',
+
               fontSize: height * 16,
               fontWeight: '600',
             }}>
@@ -743,7 +743,7 @@ const chatInputStyle = StyleSheet.create({
     backgroundColor: '#EDEDED',
     padding: 5,
     paddingLeft: 10,
-    fontFamily: 'Pretendard',
+
     fontSize: height * 13,
     fontWeight: '400',
     marginTop: 5,
@@ -806,7 +806,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     color: '#303030',
-    fontFamily: 'Pretendard',
+
     fontSize: height * 20,
     fontWeight: '600',
   },
@@ -837,7 +837,7 @@ const styles = StyleSheet.create({
   },
   modalHeaderText: {
     color: '#5F5F5F',
-    fontFamily: 'Pretendard',
+
     fontSize: height * 20,
     fontWeight: '600',
   },

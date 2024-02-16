@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {Pressable, StyleSheet, View} from 'react-native';
 import {height, width} from '../../global';
 import DatePicker from 'react-native-date-picker';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCalendar} from '@fortawesome/free-regular-svg-icons';
 import {faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons';
-// import MapView, { PROVIDER_GOOGLE} from 'react-native-maps';
+import Text from '@components/atoms/Text';
 import {FlatList, TextInput} from 'react-native-gesture-handler';
 import {GOOGLE_WEB_API_KIEY} from '../../utils/googleConfig';
 import {RESTAPIBuilder} from '../../utils/restapiBuilder';
@@ -30,6 +30,7 @@ export default function SetupDetail1({post, setPost}: any) {
       });
 
     const result = results.map((r: any) => {
+      console.log('r : ', r);
       return {
         address: r.formatted_address,
         latitude: r.geometry.location.lat,
@@ -38,6 +39,7 @@ export default function SetupDetail1({post, setPost}: any) {
       };
     });
 
+    console.log(result);
     setSearchResult(result);
   };
   return (

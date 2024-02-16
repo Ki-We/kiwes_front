@@ -1,9 +1,10 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, TouchableOpacity, StyleSheet} from 'react-native';
 import Modal from 'react-native-modal';
 import {width, height} from '../global';
 import {apiServer} from '../utils/metaData';
 import {RESTAPIBuilder} from '../utils/restapiBuilder';
+import Text from '@components/atoms/Text';
 
 const KickModal = ({kickedData, onClose, kickUser, clubId}) => {
   const doKickUser = () => {
@@ -46,7 +47,7 @@ const KickModal = ({kickedData, onClose, kickUser, clubId}) => {
               style={{
                 textAlign: 'center',
                 color: '#8A8A8A',
-                fontFamily: 'Pretendard',
+
                 fontWeight: '600',
                 fontSize: height * 16,
               }}>
@@ -58,7 +59,7 @@ const KickModal = ({kickedData, onClose, kickUser, clubId}) => {
               style={{
                 textAlign: 'center',
                 color: '#8A8A8A',
-                fontFamily: 'Pretendard',
+
                 fontWeight: '600',
                 fontSize: height * 16,
               }}>
@@ -97,7 +98,7 @@ const styles = StyleSheet.create({
   modalNotion: {
     textAlign: 'center',
     color: '#F00',
-    fontFamily: 'Pretendard',
+
     fontWeight: '600',
     fontSize: height * 18,
     marginBottom: height * 15,
@@ -105,7 +106,7 @@ const styles = StyleSheet.create({
   modalTitle: {
     textAlign: 'center',
     color: '#3DBE14',
-    fontFamily: 'Pretendard',
+
     fontWeight: '600',
     fontSize: height * 16,
     marginBottom: height * 15,
@@ -113,7 +114,7 @@ const styles = StyleSheet.create({
   modalText: {
     textAlign: 'center',
     color: '#303030',
-    fontFamily: 'Pretendard',
+
     fontWeight: '600',
     fontSize: height * 16,
   },

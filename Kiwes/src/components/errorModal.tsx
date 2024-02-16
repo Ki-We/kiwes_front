@@ -1,7 +1,8 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import Modal from 'react-native-modal';
-import {colors, width, height} from '../global';
+import {width, height} from '../global';
+import Text from '@components/atoms/Text';
 
 const ErrorModal = ({isVisible, onClose}) => {
   return (
@@ -41,14 +42,14 @@ const styles = StyleSheet.create({
   modalTitle: {
     textAlign: 'center',
     color: '#F00',
-    fontFamily: 'Pretendard',
+
     fontWeight: '500',
     fontSize: height * 16,
   },
   modalText: {
     textAlign: 'center',
     // textAlign: 'center',
-    fontFamily: 'Pretendard',
+
     fontWeight: '500',
     fontSize: height * 16,
   },

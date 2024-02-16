@@ -1,5 +1,6 @@
 import React from 'react';
-import {StyleSheet, SafeAreaView, TouchableOpacity, Text} from 'react-native';
+import {StyleSheet, SafeAreaView, TouchableOpacity} from 'react-native';
+import Text from '@components/atoms/Text';
 import Modal from 'react-native-modal';
 import {height, width} from '../../global';
 
@@ -60,7 +61,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#303030',
-    fontFamily: 'Pretendard',
+
     fontSize: height * 18,
     fontWeight: '700',
   },

@@ -1,5 +1,6 @@
 import React from 'react';
-import {View, Text, Image, StyleSheet} from 'react-native';
+import {View, Image, StyleSheet} from 'react-native';
+import Text from '@components/atoms/Text';
 
 const NothingShow = ({title, styleKiwe}: any) => {
   return (

@@ -1,5 +1,6 @@
 import React from 'react';
-import {Text, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
+import Text from '@components/atoms/Text';
 import {Chat} from '../utils/commonInterface';
 import {height} from '../global';
 
@@ -11,7 +12,7 @@ const styles = StyleSheet.create({
   container: {
     color: '#303030',
     textAlign: 'center',
-    fontFamily: 'Pretendard',
+
     fontSize: height * 10,
     fontWeight: '600',
     paddingTop: 3,

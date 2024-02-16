@@ -1,7 +1,6 @@
 import React, {useState, useRef} from 'react';
 import {
   View,
-  Text,
   Image,
   TouchableOpacity,
   StyleSheet,
@@ -11,6 +10,7 @@ import {
 import Modal2 from 'react-native-modal';
 import {width, height, DeviceWidth} from '../global';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import Text from '@components/atoms/Text';
 
 const TranslateModal = ({isVisible, onClose, translate}) => {
   const [selectedSource, setSelectedSource] = useState('영어');
@@ -323,7 +323,7 @@ const styles = StyleSheet.create({
   modalText: {
     textAlign: 'center',
     color: '#303030',
-    fontFamily: 'Pretendard',
+
     fontWeight: '500',
     fontSize: height * 16,
   },

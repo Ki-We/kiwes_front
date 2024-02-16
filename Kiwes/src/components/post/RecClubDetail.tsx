@@ -1,19 +1,23 @@
-import React, { useState } from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import React, {useState} from 'react';
+import {View, Image, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Text from '@components/atoms/Text';
 
-const RecClubDetail = ({ title, date, location, languages }: any) => {
+const RecClubDetail = ({title, date, location, languages}: any) => {
   const [isLiked, setIsLiked] = useState(false);
 
   const toggleLike = () => {
-    setIsLiked((prev) => !prev);
+    setIsLiked(prev => !prev);
   };
 
   return (
     <View style={styles.recommendedGroupsContainer}>
       <View style={styles.roundedRectangle}>
         <View style={styles.groupContent}>
-          <Image source={require('../../assets/images/jejuImg.png')} style={styles.groupImage} />
+          <Image
+            source={require('../../assets/images/jejuImg.png')}
+            style={styles.groupImage}
+          />
           <View style={styles.textContent}>
             <Text style={styles.groupTitle}>{title}</Text>
             <Text style={styles.groupDetail}>{date}</Text>
@@ -22,7 +26,11 @@ const RecClubDetail = ({ title, date, location, languages }: any) => {
           </View>
         </View>
         <TouchableOpacity style={styles.RHeartContainer} onPress={toggleLike}>
-          <Icon name={isLiked ? 'heart' : 'heart-outline'} size={24} color={isLiked ? 'green' : '#58C047'} />
+          <Icon
+            name={isLiked ? 'heart' : 'heart-outline'}
+            size={24}
+            color={isLiked ? 'green' : '#58C047'}
+          />
         </TouchableOpacity>
       </View>
     </View>

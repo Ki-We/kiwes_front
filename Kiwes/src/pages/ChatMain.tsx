@@ -114,10 +114,9 @@ const styles = StyleSheet.create({
   },
   headerText: {
     color: '#303030',
-    fontFamily: 'Pretendard-Bold',
     fontSize: height * 24,
     // font-style: normal,
-    fontWeight: '600',
+    fontWeight: '700',
   },
   chatroomContainer: {
     height: height * 620,
@@ -150,13 +149,13 @@ const styles = StyleSheet.create({
     marginLeft: 0,
     marginRight: width * 4,
     color: '#58C047',
-    fontFamily: 'Pretendard',
+
     fontSize: height * 17,
     fontWeight: 'bold',
   },
   notification: {
     color: '#58C047',
-    fontFamily: 'Pretendard',
+
     fontSize: height * 14,
     // font-style: normal,
     fontWeight: '600',
@@ -167,10 +166,9 @@ const styles = StyleSheet.create({
   },
   chatroomContainerText: {
     color: '#303030',
-    fontFamily: 'Pretendard-Bold',
     fontSize: height * 16,
     // font-style: normal,
-    fontWeight: '600',
+    fontWeight: '700',
   },
   chatList: {
     padding: 20,
@@ -182,7 +180,7 @@ const styles = StyleSheet.create({
   chatListText: {
     marginRight: width * 6,
     color: '#303030',
-    fontFamily: 'Pretendard',
+
     fontSize: height * 16,
     fontWeight: '600',
   },
@@ -192,7 +190,7 @@ const styles = StyleSheet.create({
   peopleCountText: {
     marginLeft: 15,
     color: '#3DBE14',
-    fontFamily: 'Pretendard',
+
     fontSize: height * 16,
     fontWeight: '600',
   },

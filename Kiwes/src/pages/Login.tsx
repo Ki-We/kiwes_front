@@ -1,4 +1,4 @@
-import {StyleSheet, SafeAreaView, Image, Pressable, Text} from 'react-native';
+import {StyleSheet, SafeAreaView, Image, Pressable} from 'react-native';
 import React, {useCallback} from 'react';
 import * as KakaoLogin from '@react-native-seoul/kakao-login';
 import {apiServer} from '../utils/metaData';

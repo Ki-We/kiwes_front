@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {height, width} from '../../global';
 import {TextInput} from 'react-native-gesture-handler';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faWon} from '@fortawesome/free-solid-svg-icons';
 import {faUser} from '@fortawesome/free-regular-svg-icons';
+import Text from '@components/atoms/Text';
 import GenderBtn from './genderBtn';
 
 export default function SetupDetail2({post, setPost}: any) {

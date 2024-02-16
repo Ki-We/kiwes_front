@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
-import {View, Text, Button} from 'react-native';
+import {View, Button} from 'react-native';
 import SocketIOClient from 'socket.io-client';
+import Text from '@components/atoms/Text';
 export default function Test() {
   const socket = null;
 
@@ -50,7 +51,7 @@ export default function Test() {
   );
 }
 // import React, {useEffect} from 'react';
-// import {View, Text} from 'react-native';
+// import {View} from 'react-native';
 // import io from 'socket.io-client';
 
 // const SOCKET_SERVER_URL = 'http://localhost:4000'; // 서버의 URL로 대체해야 합니다.

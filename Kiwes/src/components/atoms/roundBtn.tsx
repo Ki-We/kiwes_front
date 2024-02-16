@@ -1,7 +1,8 @@
 import React from 'react';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {Pressable, StyleSheet, View} from 'react-native';
 import {height, width} from '../../global';
 import {langList} from '../../utils/utils';
+import Text from '@components/atoms/Text';
 
 export default function RoundBtn({id = '', text, isSelect, onPress}: any) {
   if (id != '') {

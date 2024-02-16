@@ -188,7 +188,7 @@ const InterestTopicSettingPage = ({route, navigation}) => {
             <Text
               style={{
                 color: '#FFFFFF',
-                fontFamily: 'Pretendard',
+
                 fontSize: height * 18,
                 fontWeight: '600',
               }}>
@@ -200,7 +200,7 @@ const InterestTopicSettingPage = ({route, navigation}) => {
             <Text
               style={{
                 color: '#DADADA',
-                fontFamily: 'Pretendard',
+
                 fontSize: height * 18,
                 fontWeight: '600',
               }}>
@@ -230,13 +230,13 @@ const styles = StyleSheet.create({
   },
   headerText: {
     color: '#303030',
-    fontFamily: 'Pretendard',
+
     fontSize: height * 20,
     fontWeight: '600',
   },
   mainText: {
     color: '#303030',
-    fontFamily: 'Pretendard',
+
     fontSize: height * 28,
     fontWeight: '600',
   },
@@ -280,7 +280,7 @@ const styles = StyleSheet.create({
   buttonText: {
     marginTop: height * 5,
     color: '#303030',
-    fontFamily: 'Pretendard',
+
     fontSize: height * 16,
     fontWeight: '500',
   },
