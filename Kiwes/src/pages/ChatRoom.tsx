@@ -67,12 +67,12 @@ const ChatScreen = ({navigation, route}) => {
 
   const [sendText, setSendText] = useState('');
   const [messages, setMessages] = useState<Chat[]>([
-    {
-      userId: 0,
-      msg: '테스트 사용자 님이 입장하셨습니다.',
-      time: '오후 4:35',
-    },
-    {userId: 2, msg: 'hello?', time: '2023-10-13 12:58'},
+    // {
+    //   userId: 0,
+    //   msg: '테스트 사용자 님이 입장하셨습니다.',
+    //   time: '오후 4:35',
+    // },
+    // {userId: 2, msg: 'hello?', time: '2023-10-13 12:58'},
     // {userId: 8, msg: ':D', time: '2023-10-13 12:58'},
     // {userId: 2, msg: 'oh hi!', time: '2023-10-13 12:58'},
     // {userId: 8, msg: ':(', time: '2023-10-13 12:59'},
@@ -188,6 +188,18 @@ const ChatScreen = ({navigation, route}) => {
     //   console.log(data);
     // });
     ////////////////////////////////////////////////////////////////////
+
+    socket.current?.on('sendMSG', data => {
+      messages.unshift(data);
+      setMessages(prev => {
+        return [data, ...prev];
+      });
+      const nextPage = 1;
+      // console.log(messages);
+      // console.log(messages.slice(0, DATA_PER_PAGE * nextPage));
+      setDisplayData(messages.slice(0, DATA_PER_PAGE * nextPage));
+      setPage(nextPage);
+    });
     socket.current?.on('msgList', data => {
       console.log('msgList get Data');
       const chat = data.chat;
@@ -195,16 +207,6 @@ const ChatScreen = ({navigation, route}) => {
       setMessages(reverseChat); //채팅반대로
       setDisplayData(reverseChat.slice(0, DATA_PER_PAGE * 1));
       // console.log(chat);
-    });
-    socket.current?.on('sendMSG', data => {
-      messages.unshift(data);
-      setMessages(prev => {
-        return [data, ...prev];
-      });
-
-      const nextPage = 1;
-      setDisplayData(messages.slice(0, DATA_PER_PAGE * nextPage));
-      setPage(nextPage);
     });
     socket.current?.on('kickedout', data => {
       // data = {userId: 1}// 강퇴당한 사람이 1이다.
@@ -231,6 +233,9 @@ const ChatScreen = ({navigation, route}) => {
   useEffect(() => {
     chatScrollRef.current?.scrollToEnd({animated: true});
   }, [messages]);
+  // useEffect(() => {
+  //   console.log(displayData);
+  // }, [displayData]);
 
   const colorList = [
     '#3196E8',
@@ -255,7 +260,7 @@ const ChatScreen = ({navigation, route}) => {
     socket.current.emit('sendMSG', newMessage);
 
     setSendText('');
-    Keyboard.dismiss();
+    // Keyboard.dismiss();
   };
 
   const kickUser = (id: number, name: string) => {
@@ -445,7 +450,7 @@ const ChatScreen = ({navigation, route}) => {
           <FlatList
             // contentContainerStyle={styles.contentContainer}
             data={displayData}
-            keyExtractor={(item, index) => index.toString()}
+            keyExtractor={(item, index) => item.msg + item.time}
             onEndReached={loadMoreData}
             onEndReachedThreshold={0.1}
             // data={messages}
