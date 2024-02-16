@@ -8,14 +8,11 @@ import {
   ScrollView,
   Modal,
 } from 'react-native';
-import { WebView } from 'react-native-webview';
 import  Icon  from 'react-native-vector-icons/Ionicons';
 import { RESTAPIBuilder } from '../utils/restapiBuilder';
 import { apiServer } from '../utils/metaData';
 import { Clipboard } from 'react-native';
 import { categoryIcon, categoryList, langList } from '../utils/utils';
-import { GOOGLE_WEB_API_KIEY } from '../utils/googleConfig';
-import MapView, { PROVIDER_GOOGLE} from 'react-native-maps';
 import { height, width } from '../global';
 import ClubDetailSettingModal from '../components/clubdetail/ClubDetailSettingModal';
 import { renderLocationDetail } from '../components/clubdetail/renderLocationDetail';
@@ -119,17 +116,6 @@ const ClubDetail = ({ route, navigation, type }: any) => {
       }
     }
   };
-
-const renderNickDetail = () => {
-  if (!NickName) {
-    return null;
-  }
-  return (
-    <View>
-      <Text style={styles.titleText}>{NickName.nickName}</Text>
-      </View>
-  );
-};
   
   const toggleMoreModal = () => {
     setIsMoreModalVisible((prev) => !prev);
@@ -164,31 +150,6 @@ const renderNickDetail = () => {
           {renderSection('인당 예상비용', baseInfo.cost)}
           {renderSection('성별', baseInfo.gender)}
           {renderSection('장소', baseInfo.locationKeyword)}
-        </View>
-      </View>
-    );
-  };
-  const renderLocationDetail = () => {
-    if (!clubInfo) {
-      return null;
-    }  
-    const baseInfo = clubInfo.baseInfo;
-    return (
-      <View style={styles.locationContent}>
-        <Text style={styles.locationTitleText}>{baseInfo.locationKeyword}</Text>
-        <Text style={styles.locationText}>{baseInfo.location}</Text>
-        <View style={styles.mapContainer}>
-        {baseInfo.latitude != 0 && baseInfo.longitude != 0 && 
-          <MapView
-          provider={PROVIDER_GOOGLE}
-          style={{ flex: 1, height: height * 180 }}
-          initialRegion={{
-            latitude: parseFloat(baseInfo.latitude),
-            longitude: parseFloat(baseInfo.longitude),
-            latitudeDelta: 0.000922,
-            longitudeDelta: 0.000421,
-          }}
-        />}
         </View>
       </View>
     );
