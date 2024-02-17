@@ -6,9 +6,9 @@ import {apiServer} from '../utils/metaData';
 
 const steps = ['언어', '카테고리', '상세정보1', '상세정보2', '상세정보3'];
 const CorrectionPage = ({route, navigation}: any) => {
-  const {clubId, clubInfo} = route.params;
+  const {baseInfo} = route.params;
   const {Funnel, Step, setStep} = useFunnel(steps[0]);
-  const url = `${apiServer}/api/v1/club/article/${clubId}`;
+  const url = `${apiServer}/api/v1/club/article/${baseInfo.clubId}`;
 
   const nextClickHandler = (s: string) => {
     if (!steps.includes(s)) setStep(steps[0]);

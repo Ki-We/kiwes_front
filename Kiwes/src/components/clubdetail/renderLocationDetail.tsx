@@ -1,14 +1,12 @@
-import {StyleSheet, Text, View} from 'react-native';
+import React from 'react';
+import {StyleSheet, View} from 'react-native';
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 import {height, width} from '../../global';
+import Text from '@components/atoms/Text';
 
-export const renderLocationDetail = ({clubInfo}: any) => {
-  if (!clubInfo) {
-    return null;
-  }
-  const baseInfo = clubInfo.baseInfo;
+export const renderLocationDetail = baseInfo => {
   return (
-    <View style={styles.locationContent}>
+    <View>
       <Text style={styles.locationTitleText}>{baseInfo.locationKeyword}</Text>
       <Text style={styles.locationText}>{baseInfo.location}</Text>
       <View style={styles.mapContainer}>
@@ -50,10 +48,5 @@ const styles = StyleSheet.create({
     fontSize: height * 16,
     fontWeight: 'bold',
     color: '#303030',
-  },
-  locationText: {
-    fontSize: height * 13,
-    fontWeight: '500',
-    color: '#8A8A8A',
   },
 });
