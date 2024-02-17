@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import Text from '@components/atoms/Text';
 import {
   View,
-  Text,
   Image,
   StyleSheet,
   TouchableOpacity,
@@ -35,9 +35,6 @@ const ClubDetail = ({ route, navigation, type }: any) => {
 
   const [clubInfo, setClubInfo] = useState(null);
   const [NickName, setNickNameInfo] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  const allList = type == 'category' ? categoryList : langList;
   
   const image = {
     share: require('../../assets/images/share.png'),
@@ -119,8 +116,10 @@ const ClubDetail = ({ route, navigation, type }: any) => {
   const toggleMoreModal = () => {
     setIsMoreModalVisible((prev) => !prev);
   };
+  const DeleteClub = () => {
+  };
   const navigateToCorrection = () => {
-    navigation.navigate('CorrectionPage', { clubId: clubId, clubInfo: clubInfo });
+    navigation.navigate('CorrectionPage', { baseInfo: clubInfo.baseInfo });
   };
 
   const navigateToReviewPage = () => {
@@ -362,7 +361,6 @@ const renderBtn = (tags: string[]) => {
         </TouchableOpacity>
         <Text style={styles.likeCount}>{likeCount}</Text>
         </View>
-        <Text style={styles.sectionText}>{clubId}</Text>
         <View style={styles.sectionContainer}>
         {renderClubDetail()}
         </View>
@@ -373,7 +371,7 @@ const renderBtn = (tags: string[]) => {
         </View>
         <View style={styles.locationContainer}>
           <Text style={styles.clubInfoTitle}>장소</Text>
-          {renderLocationDetail(clubInfo)}
+          {clubInfo && renderLocationDetail(clubInfo.baseInfo)}
         </View>
         <View style={styles.qnaContainer}>
         <Text style={styles.clubInfoTitle}>Q&A</Text>
@@ -440,7 +438,7 @@ const styles = StyleSheet.create({
     fontSize: height * 20,
     fontWeight: '600',
     color: '#303030',
-    marginTop: height * 30,
+    marginTop: height * 48,
     marginBottom: height * 50,
     padding: height * 8,
   },
