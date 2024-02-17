@@ -15,6 +15,7 @@ import {useFocusEffect} from '@react-navigation/native';
 
 export interface ProfileSetupInterface {
   navigation: any;
+  initPost: any;
   steps: string[];
   nextClickHandler: (nextStep: string) => void;
   Funnel: React.ComponentType<FunnelProps>;
@@ -23,27 +24,12 @@ export interface ProfileSetupInterface {
 
 const PostClubStep = ({
   navigation,
+  initPost,
   steps,
   nextClickHandler,
   Funnel,
   Step,
 }: ProfileSetupInterface) => {
-  const initPost = {
-    category: '',
-    content: '',
-    cost: -1,
-    date: '',
-    dueTo: '',
-    gender: '남자만',
-    languages: [],
-    location: '',
-    locationKeyword: '',
-    latitude: 0,
-    longitude: 0,
-    maxPeople: 0,
-    title: '',
-    imageSource: '',
-  };
   const [post, setPost] = useState(initPost);
 
   const postClub = async () => {
