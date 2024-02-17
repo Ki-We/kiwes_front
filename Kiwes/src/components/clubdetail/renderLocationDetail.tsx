@@ -4,7 +4,15 @@ import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 import {height, width} from '../../global';
 import Text from '@components/atoms/Text';
 
+<<<<<<< HEAD
 export const renderLocationDetail = baseInfo => {
+=======
+export const renderLocationDetail = (clubInfo: any) => {
+  if (!clubInfo) {
+    return null;
+  }
+  const baseInfo = clubInfo.baseInfo;
+>>>>>>> 7fd2c21a0932524e04f423687f77134a3f5d847b
   return (
     <View>
       <Text style={styles.locationTitleText}>{baseInfo.locationKeyword}</Text>
