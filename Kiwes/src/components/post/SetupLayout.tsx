@@ -1,22 +1,18 @@
 import React from 'react';
-import {View, StyleSheet, ScrollView, Pressable} from 'react-native';
+import {View, StyleSheet, Pressable} from 'react-native';
 import Text from '@components/atoms/Text';
 import {height, width} from '../../global';
 import {FlatList} from 'react-native-gesture-handler';
 
 export default function SetupLayout({
   isStart = false,
-  isEnd = false,
+  nextButton = '다음',
   title,
   children,
   onPrev,
   onNext,
 }: any) {
   return (
-    // <View style={styles1.container}>
-    //   <View style={styles1.case1} />
-    //   <View style={styles1.case2} />
-    // </View>
     <View style={styles.container}>
       <View style={styles.titleContainer}>
         <Text style={styles.title}>{title}</Text>
@@ -45,7 +41,7 @@ export default function SetupLayout({
         </Pressable>
         <Pressable style={styles.nextBtn} onPress={onNext}>
           <View style={styles.btn}>
-            <Text style={styles.nextColor}>{isEnd ? '등록' : '다음'}</Text>
+            <Text style={styles.nextColor}>{nextButton}</Text>
           </View>
         </Pressable>
       </View>

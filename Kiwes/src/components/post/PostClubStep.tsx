@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {FunnelProps, StepProps} from '../../hooks/useFunnel';
 import PostLayout from './PostLayout';
 import SetupLang from './SetupLang';
@@ -20,6 +20,8 @@ export interface ProfileSetupInterface {
   nextClickHandler: (nextStep: string) => void;
   Funnel: React.ComponentType<FunnelProps>;
   Step: React.ComponentType<StepProps>;
+  url: string;
+  type: string[];
 }
 
 const PostClubStep = ({
@@ -29,14 +31,15 @@ const PostClubStep = ({
   nextClickHandler,
   Funnel,
   Step,
+  url,
+  type,
 }: ProfileSetupInterface) => {
   const [post, setPost] = useState(initPost);
 
   const postClub = async () => {
+    console.log(post);
     if (post.title == '' || post.imageSource == '') return;
-
-    const url = `${apiServer}/api/v1/club/article`;
-    const {data} = await new RESTAPIBuilder(url, 'POST')
+    const {data} = await new RESTAPIBuilder(url, type[0])
       .setNeedToken(true)
       .setBody(post)
       .build()
@@ -56,9 +59,8 @@ const PostClubStep = ({
     if (!post.imageSource || typeof post.imageSource === 'number') {
       throw new Error('이미지를 선택해주세요');
     }
-    // const url = `${apiServer}/mypage/profileImg`;
-    const url = `${apiServer}/api/v1/club/article/presigned-url?clubId=${clubId}`;
-    const presignedResponse = await new RESTAPIBuilder(url, 'GET')
+    const imageUrl = `${apiServer}/api/v1/club/article/presigned-url?clubId=${clubId}`;
+    const presignedResponse = await new RESTAPIBuilder(imageUrl, 'GET')
       .setNeedToken(true)
       .build()
       .run()
@@ -66,6 +68,7 @@ const PostClubStep = ({
         console.log('post club err3 : ', err);
       });
     const presignedUrl = presignedResponse.data;
+    console.log(post.imageSource);
     const imageData = await RNFS.readFile(post.imageSource, 'base64');
     const binaryData = new Buffer(imageData, 'base64');
 
@@ -90,6 +93,7 @@ const PostClubStep = ({
       };
     }, []),
   );
+
   return (
     <PostLayout>
       <Funnel>
@@ -139,7 +143,7 @@ const PostClubStep = ({
         </Step>
         <Step name="상세정보3">
           <SetupLayout
-            isEnd={true}
+            nextButton={type[1]}
             title={'모임의 정보를\n입력해주세요.'}
             onPrev={() => nextClickHandler(steps[3])}
             onNext={postClub}>

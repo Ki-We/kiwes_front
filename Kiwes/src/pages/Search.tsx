@@ -8,7 +8,7 @@ import BoardList from '../components/BoardList';
 import {useEffect, useState} from 'react';
 import InitSearch from '../components/search/initSerch';
 import {Image, Keyboard, Pressable, StyleSheet, View} from 'react-native';
-import {height, width} from '../global';
+import {height} from '../global';
 import ListComponent from '@components/atoms/ListComponent';
 import Text from '@components/atoms/Text';
 

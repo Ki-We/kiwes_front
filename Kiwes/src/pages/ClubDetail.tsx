@@ -116,7 +116,16 @@ const ClubDetail = ({ route, navigation, type }: any) => {
   const toggleMoreModal = () => {
     setIsMoreModalVisible((prev) => !prev);
   };
-  const DeleteClub = () => {
+  const DeleteClub = async () => {
+    try {
+      await new RESTAPIBuilder(`${apiServer}/api/v1/club/article/${clubId}`, 'DELETE')
+        .setNeedToken(true)
+        .build()
+        .run();
+        navigation.navigate('Home');
+    } catch (error) {
+      console.error('Error 닉네임:', error);
+    }
   };
   const navigateToCorrection = () => {
     navigation.navigate('CorrectionPage', { baseInfo: clubInfo.baseInfo });

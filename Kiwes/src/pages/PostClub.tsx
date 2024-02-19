@@ -2,6 +2,7 @@ import React from 'react';
 import Header from '../components/layout/Header';
 import PostClubStep from '../components/post/PostClubStep';
 import {useFunnel} from '../hooks/useFunnel';
+import {apiServer} from '@/utils/metaData';
 
 const steps = ['언어', '카테고리', '상세정보1', '상세정보2', '상세정보3'];
 export default function PostClub({navigation}: any) {
@@ -30,6 +31,8 @@ export default function PostClub({navigation}: any) {
     title: '',
     imageSource: '',
   };
+  const url = `${apiServer}/api/v1/club/article`;
+  const type = ['POST', '등록'];
   return (
     <>
       <Header navigatePop={navigatePop} title={'모임 개설'} />
@@ -40,6 +43,8 @@ export default function PostClub({navigation}: any) {
         nextClickHandler={nextClickHandler}
         Funnel={Funnel}
         Step={Step}
+        url={url}
+        type={type}
       />
     </>
   );

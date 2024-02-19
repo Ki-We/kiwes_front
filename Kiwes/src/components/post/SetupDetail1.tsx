@@ -16,7 +16,7 @@ export default function SetupDetail1({post, setPost}: any) {
   const [open1, setOpen1] = useState(false);
   const [dueTo, setDueTo] = useState(post.dueTo);
   const [open2, setOpen2] = useState(false);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState(post.locationKeyword);
   const [searchResult, setSearchResult] = useState<LocationType[]>([]);
 
   const searchLocation = async () => {
@@ -117,10 +117,9 @@ export default function SetupDetail1({post, setPost}: any) {
             value={search}
             style={styles.input}
             placeholderTextColor={'#C2C2C2'}
-            placeholder="모임 장소를 검색해주세요"
+            placeholder="모임 장소를 검색해주세요."
             onChangeText={text => {
               setSearch(text);
-              // setPost({...post, locationKeyword: text});
             }}
             onSubmitEditing={searchLocation}
             returnKeyType="search"
@@ -231,6 +230,7 @@ const styles = StyleSheet.create({
     fontSize: height * 13,
     fontWeight: '500',
     flex: 1,
+    color: '#8A8A8A',
   },
   iconContainer: {
     marginRight: width * 5,
