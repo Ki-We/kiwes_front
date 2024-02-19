@@ -7,7 +7,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import LogoutModal from '../components/LogoutModal';
 import {RESTAPIBuilder} from '../utils/restapiBuilder';
 import {apiServer} from '../utils/metaData';
-import UploadImageTest from '../components/UploadImageTest';
 import {height, width} from '../global';
 const url = `${apiServer}/auth/quit`;
 const Terms =

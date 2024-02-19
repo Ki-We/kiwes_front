@@ -8,8 +8,9 @@ import {faPlus} from '@fortawesome/free-solid-svg-icons';
 import {launchImageLibrary} from 'react-native-image-picker';
 
 export default function SetupDetail3({post, setPost}: any) {
-  const [imageSource, setImageSource] = useState(null);
-
+  const [imageSource, setImageSource] = useState(post.imageSource);
+  const [title, setTitle] = useState(post.title);
+  const [content, setContent] = useState(post.content);
   const selectPhotoFromGallery = () => {
     const options = {
       noData: true,
@@ -38,7 +39,7 @@ export default function SetupDetail3({post, setPost}: any) {
         <TextInput
           style={styles.input}
           placeholderTextColor={'#C2C2C2'}
-          placeholder="모임 제목을 입력해주세요"
+          placeholder={title == '' ? '모임 제목을 입력해주세요.' : title}
           onChangeText={text => {
             setPost({...post, title: text});
           }}
@@ -64,7 +65,7 @@ export default function SetupDetail3({post, setPost}: any) {
         <TextInput
           style={styles.textarea}
           placeholderTextColor={'#C2C2C2'}
-          placeholder="모임에 대해 소개해주세요"
+          placeholder={content == '' ? '모임에 대해 소개해주세요.' : content}
           multiline={true}
           onChangeText={text => {
             setPost({...post, content: text});

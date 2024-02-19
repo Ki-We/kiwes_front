@@ -10,6 +10,8 @@ import GenderBtn from './genderBtn';
 
 export default function SetupDetail2({post, setPost}: any) {
   const [gender, setGender] = useState(post.gender);
+  const [cost, setCost] = useState(post.cost);
+  const [maxPeople, setMaxPeople] = useState(post.maxPeople);
   const genderList = [
     {key: 'MALE', text: '남자만'},
     {key: 'FEMALE', text: '여자만'},
@@ -23,7 +25,9 @@ export default function SetupDetail2({post, setPost}: any) {
           <TextInput
             style={styles.input}
             placeholderTextColor={'#C2C2C2'}
-            placeholder="인당 예상비용을 입력해주세요"
+            placeholder={
+              cost == -1 ? '인당 예상비용을 입력해주세요.' : cost.toString()
+            }
             keyboardType="number-pad"
             onChangeText={text => {
               setPost({...post, cost: Number(text)});
@@ -39,7 +43,11 @@ export default function SetupDetail2({post, setPost}: any) {
           <TextInput
             style={styles.input}
             placeholderTextColor={'#C2C2C2'}
-            placeholder="모임 인원을 입력해주세요"
+            placeholder={
+              maxPeople == 0
+                ? '모임 인원을 입력해주세요.'
+                : maxPeople.toString()
+            }
             keyboardType="number-pad"
             onChangeText={text => {
               setPost({...post, maxPeople: Number(text)});
