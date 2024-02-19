@@ -28,7 +28,6 @@ export function Home({navigation}: any) {
   const [data, setData] = useState();
 
   const [popularClubLikes, setPopularClubLikes] = useState({});
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   interface Banner {
     type: string;
     imageUrl: string;
@@ -162,13 +161,13 @@ export function Home({navigation}: any) {
     return `${year}.${month}.${day}`;
   };
 
+  // eslint-disable-next-line react/no-unstable-nested-components
   const RecommendedGroup = ({
     title,
     date,
     locationKeyword,
     languages,
     clubId,
-    navigation,
     image,
   }: any) => {
     const [isLiked, setIsLiked] = useState(false);
@@ -228,7 +227,7 @@ export function Home({navigation}: any) {
     );
   };
 
-  const renderPagination = (index: number, total: number, context: any) => {
+  const renderPagination = (index: number) => {
     return (
       <View style={styles.paginationContainer}>
         <View style={styles.pagination}>
