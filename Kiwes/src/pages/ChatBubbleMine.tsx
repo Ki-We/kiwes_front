@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import {View, StyleSheet, TouchableHighlight} from 'react-native';
 import {Chat} from '../utils/commonInterface';
 import MyBubbleLongpressModal from '../components/myBubbleLongpressModal';
 import Text from '@components/atoms/Text';
-import {height} from '../global';
+import {height, DeviceHeight} from '../global';
 
 export default function ChatBubbleMine({
   chat,
@@ -23,42 +23,43 @@ export default function ChatBubbleMine({
     noticeChat(chatBubbleData);
   };
 
+  const [modalPosition, setModalPosition] = useState({
+    top: 0,
+    left: 0,
+  });
+  const modalRef = useRef(null);
+  const openMyBubbleLongPressModal = event => {
+    if (modalRef && modalRef.current) {
+      modalRef.current.measure((fx, fy, width, height, px, py) => {
+        if (DeviceHeight / 2 >= clickedPosition.y) {
+          setModalPosition({top: py + 25, left: px - 25});
+        } else {
+          setModalPosition({top: py - 130, left: px - 25});
+        }
+        toggleMyBubbleLongpressModal();
+      });
+    }
+  };
+
   const [isMyBubbleLongpressModal, setMyBubbleLongpressModal] = useState(false);
 
   const toggleMyBubbleLongpressModal = () => {
     setMyBubbleLongpressModal(!isMyBubbleLongpressModal);
   };
 
-  const [componentHeight, setComponentHeight] = useState(0);
-  const bubbleHeight = event => {
-    const {height} = event.nativeEvent.layout;
-    setComponentHeight(height);
-  };
-
-  const [inBubblePosition, setInBubblePosition] = useState({x: 0, y: 0});
-  const bubblePosition = event => {
-    const {nativeEvent} = event;
-    const {locationX, locationY} = nativeEvent;
-    setInBubblePosition({x: locationX, y: locationY});
-  };
   const [clickedPosition, setClickedPosition] = useState({x: 0, y: 0});
   const backgroundPosition = event => {
     const {pageX, pageY} = event.nativeEvent;
     setClickedPosition({x: pageX, y: pageY});
   };
 
-  const chatBubbleLongPress = () => {
-    toggleMyBubbleLongpressModal();
-  };
   return (
     <View style={styles.container}>
       <TouchableHighlight
         style={styles.chat}
-        onLayout={bubbleHeight}
         onLongPress={event => {
-          bubblePosition(event);
           backgroundPosition(event);
-          chatBubbleLongPress();
+          openMyBubbleLongPressModal(event);
         }}
         underlayColor={'#589947'}
         activeOpacity={1}>
@@ -71,9 +72,8 @@ export default function ChatBubbleMine({
         isVisible={isMyBubbleLongpressModal}
         onClose={toggleMyBubbleLongpressModal}
         chatBubbleData={chatBubbleData}
+        modalPosition={modalPosition}
         backgroundPosition={clickedPosition}
-        inBubblePosition={inBubblePosition}
-        bubbleHeight={componentHeight}
         setBubbleData={setChatBubbleData}
         isHost={isHost}
         setNotification={setNotification}
