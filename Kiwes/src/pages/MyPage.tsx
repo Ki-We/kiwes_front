@@ -173,7 +173,7 @@ export function MyPage({navigation}: any) {
           size={25}
           onPress={() => {
             navigation.navigate('ProfileSettingPage', {
-              thumbnailImage: myPageInfo.profileImage + '?' + new Date(),
+              thumbnailImage: myPageInfo.profileImage,
               myIntroduction: myPageInfo.introduction,
             });
             console.log(myPageInfo.profileImage);
@@ -195,7 +195,7 @@ export function MyPage({navigation}: any) {
         <View>
           <Image
             source={{
-              uri: myPageInfo.profileImage + '?' + new Date(),
+              uri: myPageInfo.profileImage,
             }}
             style={styles.image}
             resizeMode="cover"
