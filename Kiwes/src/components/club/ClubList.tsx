@@ -1,3 +1,4 @@
+import React from 'react';
 import {Image, View, Modal, StyleSheet, Pressable} from 'react-native';
 import Text from '@components/atoms/Text';
 import {height, width} from '../../global';
@@ -39,7 +40,7 @@ export default function ClubList({navigation, selectedItem, type}: any) {
         onPress={() => setSelected(lang.key)}>
         <Text
           style={[
-            lang.key === selected ? styles.selectedText : null,
+            lang.key === selected ? styles.selectedText : {color: '#303030'},
             styles.scrollText,
           ]}>
           {lang.text}
@@ -64,7 +65,12 @@ export default function ClubList({navigation, selectedItem, type}: any) {
             style={styles.image}
           />
         )}
-        <Text style={[category.key === selected ? styles.selectedText : null]}>
+        <Text
+          style={[
+            category.key === selected
+              ? styles.selectedText
+              : {color: '#303030'},
+          ]}>
           {category.simple}
         </Text>
       </TouchableOpacity>
@@ -76,8 +82,11 @@ export default function ClubList({navigation, selectedItem, type}: any) {
   };
 
   const fetchCategory = (cursor: number) => {
-    if (selected == 'ALL') return getAllClub(cursor);
-    else return getSpecifiedClub(cursor);
+    if (selected === 'ALL') {
+      return getAllClub(cursor);
+    } else {
+      return getSpecifiedClub(cursor);
+    }
   };
   const getAllClub = async (cursor: number) => {
     const url = `${apiServer}/api/v1/club/getClubs?cursor=${cursor}`;
@@ -181,9 +190,6 @@ export default function ClubList({navigation, selectedItem, type}: any) {
               <FlatList
                 data={type == 'category' ? categories : langList}
                 onLayout={e => setContainerWidth(e.nativeEvent.layout.width)}
-                // ItemSeparatorComponent={() => (
-                //   <View style={{height: height * 35}}></View>
-                // )}
                 renderItem={({item}) => (
                   <View style={{width: containerWidth / 2}}>
                     {item.key === selected ? (
@@ -244,10 +250,10 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   addButton: {
-    left: -11,
-    top: 16,
-    width: 28,
-    height: 28,
+    left: width * -11,
+    top: height * 16,
+    width: width * 28,
+    height: height * 28,
   },
   addButtonContainer: {
     position: 'absolute',
@@ -255,20 +261,20 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   scrollContainer: {
-    paddingBottom: 10,
-    height: 50,
-    marginTop: 10,
+    paddingBottom: height * 10,
+    height: height * 50,
+    marginTop: height * 10,
   },
   scrollView: {
     paddingLeft: width * 40,
   },
   lastNewCategoryItem: {
-    marginRight: 20,
+    marginRight: width * 20,
   },
   categoryItem: {
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    marginHorizontal: 5,
+    paddingHorizontal: height * 20,
+    paddingVertical: width * 10,
+    marginHorizontal: height * 5,
     borderRadius: 30,
     borderWidth: 1,
     borderColor: '#9BD23C',
@@ -278,7 +284,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   categoryText: {
-    fontSize: 12,
+    fontSize: height * 12,
     color: '#303030',
   },
   scrollText: {

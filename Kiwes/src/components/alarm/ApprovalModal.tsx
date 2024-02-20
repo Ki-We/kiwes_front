@@ -21,7 +21,7 @@ const ApprovalModal = ({isVisible, onClose, member, exitClub, modaltype}) => {
         </View>
         <View style={styles.modalButtonGroup}>
           <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
-            <Text>취소</Text>
+            <Text style={styles.modalText}>취소</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.acceptButton}
@@ -29,7 +29,7 @@ const ApprovalModal = ({isVisible, onClose, member, exitClub, modaltype}) => {
               exitClub({data: member?.memberId});
               onClose();
             }}>
-            <Text>확인</Text>
+            <Text style={styles.modalText}>확인</Text>
           </TouchableOpacity>
         </View>
       </View>

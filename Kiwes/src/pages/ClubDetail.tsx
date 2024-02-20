@@ -67,6 +67,9 @@ const ClubDetail = ({ route, navigation, type }: any) => {
         .run();
         console.log(response.data);
         setClubInfo(response.data);
+        setLikeCount(response.data.baseInfo.heartCount);
+        setIsLiked(response.data.isHeart);
+        console.log(response.data)
     } catch (error) {
       console.error('Error fetching club detail:', error);
     }
@@ -175,11 +178,26 @@ const ClubDetail = ({ route, navigation, type }: any) => {
   };
   const navigateToProile = (memberId: any) => {
     console.log(memberId);
-    navigation.navigate('OtherUserPage', {memberId: memberId});
+    if(memberId !==0){
+      navigation.navigate('OtherUserPage', {memberId: memberId});
+    }
+    
   };
-  const toggleLike = () => {
-    setIsLiked((prev) => !prev);
-    setLikeCount((prevCount) => (isLiked ? prevCount - 1 : prevCount + 1));
+  const toggleLike = async () => {
+    try {
+      setIsLiked((prev) => !prev);
+      setLikeCount((prevCount) => (isLiked ? prevCount - 1 : prevCount + 1));
+      const apiUrl = `${apiServer}/api/v1/heart/${clubId}`;
+      await new RESTAPIBuilder(
+        apiUrl,
+        !isLiked ? 'PUT' : 'DELETE',
+      )
+        .setNeedToken(true)
+        .build()
+        .run();
+    } catch (err) {
+      console.error(err);
+    }
   };
   const renderClubDetail = () => {
     if (!clubInfo) {
@@ -195,7 +213,15 @@ const ClubDetail = ({ route, navigation, type }: any) => {
           {renderSection('모임 마감', baseInfo.dueTo)}
           {renderSection('인당 예상비용', `₩${baseInfo.cost.toLocaleString()}`)}
           {renderSection('성별', baseInfo.gender)}
-          {renderSection('장소', baseInfo.locationKeyword)}
+         
+        </View>
+        <View style={styles.sectionLocationContainer}>
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>장소</Text>
+            <View style={[styles.roundedBox,{width: baseInfo.locationKeyword.length >= 6 ? width*250 : width*70}]}>
+          <Text style={styles.sectionText}>{baseInfo.locationKeyword}</Text>
+          </View>
+        </View>        
         </View>
       </View>
     );
@@ -223,8 +249,9 @@ const ClubDetail = ({ route, navigation, type }: any) => {
       <View style={styles.hostContainer}>
         <Text style={styles.hostTitle}>호스트 정보</Text>
         <View style={styles.profileContainer}>
-          <TouchableOpacity onPress={() => navigateToProile(clubInfo.memberInfo.hostId)}>
-            <Image source={{ uri: clubInfo.memberInfo.hostThumbnailImage }} style={styles.profileImage} />
+          <TouchableOpacity onPress={()=>{
+            navigateToProile(clubInfo.memberInfo.hostId);}}>
+          <Image source={{ uri: clubInfo.memberInfo.hostThumbnailImage }} style={styles.profileImage} />
           </TouchableOpacity>
           <Text style={styles.profileText}>{memberInfo.hostNickname}</Text>
           <View style={styles.participantContainer}>
@@ -507,7 +534,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    padding: height * 8,
+    paddingTop: height * 8,
+    paddingHorizontal: height * 8,
+  },
+  sectionLocationContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    paddingBottom: height * 8,
+    paddingHorizontal: height * 8,
   },
   section: {
     width: '47%',

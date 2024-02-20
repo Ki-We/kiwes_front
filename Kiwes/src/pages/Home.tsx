@@ -27,8 +27,6 @@ export function Home({navigation}: any) {
   const [currentPage, setCurrentPage] = useState(0);
   const [data, setData] = useState();
 
-  const [popularClubLikes, setPopularClubLikes] = useState({});
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   interface Banner {
     type: string;
     imageUrl: string;
@@ -85,9 +83,6 @@ export function Home({navigation}: any) {
   useEffect(() => {
     fetchBanners();
   }, []);
-  useEffect(() => {
-    fetchBanners();
-  }, []);
 
   const fetchAndSetData = async () => {
     try {
@@ -110,14 +105,6 @@ export function Home({navigation}: any) {
   const handleBannerPress = (id, imageUrl) => {
     navigation.navigate('Event', {eventId: id, imageUrl: imageUrl});
   };
-  const logout = async () => {
-    await AsyncStorage.removeItem('userData');
-    navigation.reset({
-      index: 0,
-      routes: [{name: 'Login'}],
-    });
-  };
-
   const [popularGroupImages, setPopularGroupImages] = useState([
     {image: popularGroupImages, isLiked: false},
     {image: popularGroupImages, isLiked: false},
@@ -125,12 +112,26 @@ export function Home({navigation}: any) {
     {image: popularGroupImages, isLiked: false},
     {image: popularGroupImages, isLiked: false},
   ]);
-
-  const togglePopularClubLike = (clubId: number) => {
-    setPopularClubLikes(prevLikes => ({
-      ...prevLikes,
-      [clubId]: !prevLikes[clubId],
-    }));
+  const togglePopularClubLike = async (clubId: number) => {
+    try {
+      const updatedPosts = popularClubs.map(post =>
+        post.clubId === clubId
+          ? {...post, isHeart: post.isHeart === 'YES' ? 'NO' : 'YES'}
+          : post,
+      );
+      const post = popularClubs.find(post => post.clubId === clubId);
+      setPopularClubs(updatedPosts);
+      const apiUrl = `${apiServer}/api/v1/heart/${clubId}`;
+      await new RESTAPIBuilder(
+        apiUrl,
+        post.isHeart !== 'YES' ? 'PUT' : 'DELETE',
+      )
+        .setNeedToken(true)
+        .build()
+        .run();
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const navigateToClubDetail = (clubId): any => {
@@ -162,18 +163,35 @@ export function Home({navigation}: any) {
     return `${year}.${month}.${day}`;
   };
 
+  // eslint-disable-next-line react/no-unstable-nested-components
   const RecommendedGroup = ({
     title,
     date,
     locationKeyword,
     languages,
     clubId,
-    navigation,
+    isHeart,
     image,
   }: any) => {
-    const [isLiked, setIsLiked] = useState(false);
-    const toggleLike = () => {
-      setIsLiked(prev => !prev);
+    const [isLiked, setIsLiked] = useState(isHeart === 'YES' ? true : false);
+    const toggleLike = async () => {
+      try {
+        console.log('prev ' + isHeart);
+        const apiUrl = `${apiServer}/api/v1/heart/${clubId}`;
+        await new RESTAPIBuilder(apiUrl, !isLiked ? 'PUT' : 'DELETE')
+          .setNeedToken(true)
+          .build()
+          .run();
+        setIsLiked(prev => !prev);
+        const updatedPosts = popularClubs.map(post =>
+          post.clubId === clubId
+            ? {...post, isHeart: post.isHeart === 'YES' ? 'NO' : 'YES'}
+            : post,
+        );
+        setPopularClubs(updatedPosts);
+      } catch (err) {
+        console.error(err);
+      }
     };
 
     return (
@@ -219,7 +237,7 @@ export function Home({navigation}: any) {
               <Icon
                 name={isLiked ? 'heart' : 'heart-outline'}
                 size={height * 26}
-                color={isLiked ? 'green' : '#58C047'}
+                color={'#58C047'}
               />
             </TouchableOpacity>
           </View>
@@ -228,7 +246,7 @@ export function Home({navigation}: any) {
     );
   };
 
-  const renderPagination = (index: number, total: number, context: any) => {
+  const renderPagination = (index: number) => {
     return (
       <View style={styles.paginationContainer}>
         <View style={styles.pagination}>
@@ -340,15 +358,9 @@ export function Home({navigation}: any) {
                     style={styles.PHeartContainer}
                     onPress={() => togglePopularClubLike(club.clubId)}>
                     <Icon
-                      name={
-                        popularClubLikes[club.clubId]
-                          ? 'heart'
-                          : 'heart-outline'
-                      }
+                      name={club.isHeart === 'YES' ? 'heart' : 'heart-outline'}
                       size={height * 26}
-                      color={
-                        popularClubLikes[club.clubId] ? 'green' : '#58C047'
-                      }
+                      color={'#58C047'}
                     />
                   </TouchableOpacity>
                 </View>
@@ -390,6 +402,8 @@ export function Home({navigation}: any) {
                   locationKeyword={club.locationKeyword}
                   languages={renderClubLanguages(club.languages)}
                   clubId={club.clubId}
+                  index={index}
+                  isHeart={club.isHeart}
                   navigation={navigation}
                 />
               </View>

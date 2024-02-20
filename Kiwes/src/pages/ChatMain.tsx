@@ -15,6 +15,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faUser} from '@fortawesome/free-regular-svg-icons';
 import {useFocusEffect} from '@react-navigation/native';
 import {RESTAPIBuilder} from '../utils/restapiBuilder';
+import {ScrollView} from 'react-native-gesture-handler';
 
 export function ChatMain({navigation}: any) {
   const [roomList, setRoomList] = useState<ClubInfo[]>([]);
@@ -66,35 +67,36 @@ export function ChatMain({navigation}: any) {
           <Text style={styles.chatroomContainerText}>채팅 내역이 없습니다</Text>
         </View>
       )}
-      {roomList.map((club: ClubInfo, index) => {
-        return (
-          <View key={index} style={styles.chatList}>
-            <TouchableOpacity
-              style={styles.title}
-              onPress={() => {
-                navigation.navigate('ChatRoom', {clubId: club.clubId});
-              }}>
-              <Text style={styles.chatListText}>{club.title}</Text>
-            </TouchableOpacity>
-            <View style={styles.peopleCount}>
-              <FontAwesomeIcon icon={faUser} size={25} color="black" />
-              <Text style={styles.peopleCountText}>{club.currentPeople}</Text>
+      <ScrollView>
+        {roomList.map((club: ClubInfo, index) => {
+          return (
+            <View key={index} style={styles.chatList}>
+              <TouchableOpacity
+                style={styles.title}
+                onPress={() => {
+                  navigation.navigate('ChatRoom', {clubId: club.clubId});
+                }}>
+                <Text style={styles.chatListText}>{club.title}</Text>
+              </TouchableOpacity>
+              <View style={styles.peopleCount}>
+                <FontAwesomeIcon icon={faUser} size={25} color="black" />
+                <Text style={styles.peopleCountText}>{club.currentPeople}</Text>
+              </View>
             </View>
-          </View>
-          // <View style={styles.chatList}>
-          //   <TouchableOpacity
-          //     onPress={() => {
-          //       navigation.navigate('ChatRoom', {clubId: club.clubId});
-          //       // navigation.push('ChatRoom');
-          //     }}>
-          //     <Text>
-          //       {club.title}({club.currentPeople})
-          //     </Text>
-          //   </TouchableOpacity>
-          // </View>
-        );
-      })}
-
+            // <View style={styles.chatList}>
+            //   <TouchableOpacity
+            //     onPress={() => {
+            //       navigation.navigate('ChatRoom', {clubId: club.clubId});
+            //       // navigation.push('ChatRoom');
+            //     }}>
+            //     <Text>
+            //       {club.title}({club.currentPeople})
+            //     </Text>
+            //   </TouchableOpacity>
+            // </View>
+          );
+        })}
+      </ScrollView>
       {/* <View style={styles.bottomNavigate}></View> */}
     </SafeAreaView>
   );
@@ -135,9 +137,10 @@ const styles = StyleSheet.create({
   },
   notificationContainer: {
     flexDirection: 'row',
-    marginVertical: height * 16,
+    marginTop: height * 16,
     paddingVertical: height * 5,
-    paddingLeft: width * 10,
+    paddingLeft: 5,
+    paddingRight: 5,
     height: 'auto',
     borderTopColor: '#C0C0C0',
     borderBottomColor: '#C0C0C0',

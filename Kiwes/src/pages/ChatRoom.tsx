@@ -7,6 +7,7 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   StyleSheet,
+  Image,
   FlatList,
   TouchableOpacity,
   NativeModules,
@@ -36,7 +37,7 @@ import {Chat, ClubMember, ClubSimpleData} from '../utils/commonInterface';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faChessKing, faUser} from '@fortawesome/free-solid-svg-icons';
 import {RESTAPIBuilder} from '../utils/restapiBuilder';
-import {Buffer} from 'buffer';
+// import {Buffer} from 'buffer';
 
 const initUser = {
   nickName: '',
@@ -63,7 +64,7 @@ const ChatScreen = ({navigation, route}) => {
   const [user, setUser] = useState(initUser);
 
   const [notice, setNotice] = useState('');
-  const buffer = new Buffer(notice, 'utf-8');
+  // const buffer = new Buffer(notice, 'utf-8');
 
   const [sendText, setSendText] = useState('');
   const [messages, setMessages] = useState<Chat[]>([
@@ -182,11 +183,11 @@ const ChatScreen = ({navigation, route}) => {
       socket.current?.emit('enter', {roomID: clubId, userId: user.id});
     });
     //////////////////////////////////////////////////////////////////// 공지
-    // socket.current?.on('notice', data => {
-    //   const notice = data;
-    //   setNotice(data);
-    //   console.log(data);
-    // });
+    socket.current?.on('notice', (data: any) => {
+      console.log('data : ', data);
+      setNotice(data.msg);
+      console.log('Notice : ', data.msg);
+    });
     ////////////////////////////////////////////////////////////////////
 
     socket.current?.on('sendMSG', data => {
@@ -222,7 +223,7 @@ const ChatScreen = ({navigation, route}) => {
       }
     });
     socket.current?.on('error', data => {
-      console.log('error msg : ', data.msg);
+      console.log('errrr');
 
       // 네트워크 에러
     });
@@ -250,15 +251,16 @@ const ChatScreen = ({navigation, route}) => {
   const colorMap: {
     [key: string]: string;
   } = {};
+  const thumbnail: {
+    [key: string]: string;
+  } = {};
 
   const sendMSG = () => {
     const newMessage = {
       msg: sendText,
       userId: user?.id,
     };
-
     socket.current.emit('sendMSG', newMessage);
-
     setSendText('');
     // Keyboard.dismiss();
   };
@@ -347,7 +349,7 @@ const ChatScreen = ({navigation, route}) => {
         <View style={styles.chatBubble}>
           <ChatBubbleMine
             chat={message}
-            isHost={user.id === clubData?.hostId ? true : false}
+            isHost={user.id === clubData?.hostId ? true : true}
             noticeChat={(notice: string) => setNotification(notice)}
           />
         </View>
@@ -360,16 +362,21 @@ const ChatScreen = ({navigation, route}) => {
       }
 
       let writer = '(알수없음123)';
-      if (clubMembers[message.userId])
+      let thumbnail =
+        'https://kiwes2-bucket.s3.ap-northeast-2.amazonaws.com/profileimg/profile.jpg';
+      if (clubMembers[message.userId]) {
         writer = clubMembers[message.userId].nickName;
+        thumbnail = clubMembers[message.userId].thumbnail;
+      }
 
       return (
         <View style={styles.chatBubble}>
           <ChatBubbleOther
             writer={writer}
             chat={message}
+            thumbnail={thumbnail}
             color={colorMap[message.userId]}
-            isHost={user.id === clubData?.hostId ? true : false}
+            isHost={user.id === clubData?.hostId ? true : true}
             noticeChat={(notice: string) => setNotification(notice)}
           />
         </View>
@@ -379,21 +386,16 @@ const ChatScreen = ({navigation, route}) => {
 
   /////////////////////////////////////////////////////////////// 공지
   const setNotification = (notice: string) => {
-    // 수정
-    setNotice(notice);
-    console.log(notice);
+    const newNotice = {
+      msg: notice,
+    };
+    socket.current.emit('notice', newNotice);
   };
   ///////////////////////////////////////////////////////////////
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity
-          style={{backgroundColor: 'black', width: 30, height: 30}}
-          onPress={() => {
-            console.log(messages);
-          }}
-        />
         <backIcon.Button
           backgroundColor="#FFFFFF"
           iconStyle={{marginRight: 0, padding: 5}}
@@ -414,31 +416,27 @@ const ChatScreen = ({navigation, route}) => {
           onPress={toggleModal}
         />
       </View>
-      <View style={styles.separator} />
       {/* ///////////////////////////////////////////////////////// 공지 */}
-      <View>
-        <TouchableOpacity style={styles.notice}>
-          <Text
-            style={{
-              color: '#8A8A8A',
-
-              fontSize: height * 18,
-              fontWeight: '600',
-            }}>
-            공지
-          </Text>
-          <Text
-            style={{
-              color: '#303030',
-
-              fontSize: height * 16,
-              fontWeight: '600',
-            }}>
-            &nbsp;&nbsp;
-            {buffer.length > 46 ? notice.slice(0, 23) + '...' : notice}
-            {/* {buffer.length} */}
-          </Text>
-        </TouchableOpacity>
+      <View style={styles.notice}>
+        <Text
+          style={{
+            color: '#8A8A8A',
+            fontSize: height * 18,
+            fontWeight: '600',
+          }}>
+          공지
+        </Text>
+        <Text
+          style={{
+            color: '#303030',
+            fontSize: height * 16,
+            fontWeight: '600',
+          }}>
+          &nbsp;&nbsp;
+          {notice}
+          {/* {buffer.length > 46 ? notice.slice(0, 23) + '...' : notice} */}
+          {/* {buffer.length} */}
+        </Text>
       </View>
       {/* ///////////////////////////////////////////////////////////// */}
       <View style={styles.separator} />
@@ -617,15 +615,21 @@ const ChatScreen = ({navigation, route}) => {
           <ScrollView>
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <View style={styles.hostMember}>
-                <FontAwesomeIcon
-                  style={styles.icon}
-                  icon={faUser}
-                  size={25}
-                  color={colorMap[user.id]}
+              <TouchableOpacity
+                style={styles.hostMember}
+                onPress={() => {
+                  toggleModal();
+                  navigation.navigate('OtherUserPage', {
+                    memberId: clubData?.hostId,
+                  });
+                }}>
+                <Image
+                  source={{uri: clubData?.hostThumbnailImage}}
+                  style={styles.image}
+                  resizeMode="cover"
                 />
-                <Text>{clubData?.hostNickname}</Text>
-              </View>
+                <Text style={styles.modalText}>{clubData?.hostNickname}</Text>
+              </TouchableOpacity>
               <View style={{justifyContent: 'center', marginRight: width * 20}}>
                 <FontAwesomeIcon
                   style={styles.icon}
@@ -636,11 +640,6 @@ const ChatScreen = ({navigation, route}) => {
               </View>
             </View>
             {clubData?.members.map((member, i) => {
-              if (colorMap[member.id] == undefined) {
-                let num = Object.keys(colorMap).length;
-                if (num == colorList.length) num = num - colorList.length;
-                colorMap[member.id] = colorList[num];
-              }
               return (
                 <TouchableOpacity
                   key={`member_${member.id}_${i}`}
@@ -653,13 +652,12 @@ const ChatScreen = ({navigation, route}) => {
                     navigation.navigate('OtherUserPage', {memberId: member.id});
                   }}>
                   <View style={styles.memberList}>
-                    <FontAwesomeIcon
-                      style={styles.icon}
-                      icon={faUser}
-                      size={25}
-                      color={colorMap[member.id]}
+                    <Image
+                      source={{uri: member.thumbnail}}
+                      style={styles.image}
+                      resizeMode="cover"
                     />
-                    <Text>{member.nickName}</Text>
+                    <Text style={styles.modalText}>{member.nickName}</Text>
                   </View>
                   {isKickMode == true ? (
                     <View style={styles.kickButton}>
@@ -771,14 +769,14 @@ const styles = StyleSheet.create({
     paddingBottom: height * 17,
     marginLeft: width * 17,
     marginRight: width * 17,
-    alignItems: 'flex-start',
+    alignItems: 'center',
   },
   memberList: {
     paddingTop: height * 17,
     paddingBottom: height * 17,
     flexDirection: 'row',
     marginLeft: width * 17,
-    alignItems: 'flex-start',
+    alignItems: 'center',
   },
   kickButton: {
     justifyContent: 'center',
@@ -795,33 +793,37 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   separator: {
-    height: height * 5,
     borderBottomColor: '#EDEDED',
     borderBottomWidth: 1.5,
-    marginBottom: height * 10,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingRight: width * 10,
-    height: height * 66,
-    marginBottom: height * 20,
+    height: height * 70,
+    // marginBottom: height * 5,
+    borderBottomColor: '#EDEDED',
+    borderBottomWidth: 1.5,
   },
   headerText: {
     color: '#303030',
-
     fontSize: height * 20,
     fontWeight: '600',
   },
   notice: {
+    height: height * 60,
     paddingLeft: 5,
-    // width: '90%',
-    // paddingRight: 30,
-    // justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: height * 5,
     flexDirection: 'row',
+  },
+  image: {
+    width: width * 30,
+    height: height * 30,
+    borderRadius: 20,
+    marginRight: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   modal: {
     alignSelf: 'flex-end',
@@ -841,8 +843,12 @@ const styles = StyleSheet.create({
   },
   modalHeaderText: {
     color: '#5F5F5F',
-
     fontSize: height * 20,
+    fontWeight: '600',
+  },
+  modalText: {
+    color: '#303030',
+    fontSize: height * 15,
     fontWeight: '600',
   },
   userListContainer: {
