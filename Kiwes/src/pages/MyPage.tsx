@@ -195,7 +195,9 @@ export function MyPage({navigation}: any) {
         <View>
           <Image
             source={{
-              uri: myPageInfo.profileImage,
+              uri:
+                myPageInfo.profileImage ||
+                'https://kiwes2-bucket.s3.ap-northeast-2.amazonaws.com/profileimg/profile.jpg',
             }}
             style={styles.image}
             resizeMode="cover"

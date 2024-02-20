@@ -22,7 +22,7 @@ const imagePickerOption = {
 };
 
 let imagePath =
-  'https://s3-alpha-sig.figma.com/img/747c/b110/aab5c4d20ab8d710ceb49bd7c856a200?Expires=1707091200&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=RwnEfVVa6Vt2Drr4~v8aHdrXf42XiLwhO9tooS1b1La~cSbirqZ73z00gRIZ7YpuJRCv~dAGuayDgM5nYEiYa81SJf39zlSksEzdD01iQ9Xu~KilPwubhwlHDrQTgYuqORLF6-6sut-H8CMGBdu98z4JUKQWFdvo0SSxhhgSTOXGm3br26u~RITGwkvFnjcLP5LKvFVhCDsbB70wnPM2Z7YbYb9OhY2oFTbGjc7xmJAw6B5HmzdHXE4Ahb6cgkP-IbdtNXjUtBKXkRXqD-SZPgz4b~5nT9lX3WkvrkI4JkA-8P5mqpxUH7M2lX51jVzWTyLZrbvDbW4GPLw6auYzvA__';
+  'https://kiwes2-bucket.s3.ap-northeast-2.amazonaws.com/profileimg/profile.jpg';
 
 const ProfilePictureSettingPage = ({navigation}) => {
   const [response, setResponse] = useState('');
@@ -31,11 +31,11 @@ const ProfilePictureSettingPage = ({navigation}) => {
     if (response.didCancel || !response) {
       return;
     }
-    console.log(response);
+    // console.log(response);
     setResponse(response);
-    console.log('Image Uri : ', response.assets[0].uri);
+    // console.log('Image Uri : ', response.assets[0].uri);
     setImageFile(response.assets[0].uri);
-    console.log('ImageFile : ', imageFile);
+    // console.log('ImageFile : ', imageFile);
   };
   const setImageBasic = () => {
     setImageFile(imagePath);
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: width * 150,
-    height: height * 180,
+    height: height * 150,
     borderRadius: 90,
     justifyContent: 'center',
     alignItems: 'center',

@@ -25,7 +25,7 @@ export function ChatMain({navigation}: any) {
     }, []),
   );
   const initialize = async () => {
-    const url = `${apiServer}/api/v1/club/approval/my-club?cursor=0`;
+    const url = `${apiServer}/api/v1/club/approval/my-club`;
     const result = await new RESTAPIBuilder(url, 'GET')
       .setNeedToken(true)
       .build()

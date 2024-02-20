@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {View, TouchableOpacity, StyleSheet} from 'react-native';
 import Modal from 'react-native-modal';
-import {width, height, DeviceHeight} from '../global';
+import {width, height, DeviceHeight, DeviceWidth} from '../global';
 import {apiServer} from '../utils/metaData';
 import {RESTAPIBuilder} from '../utils/restapiBuilder';
 import Clipboard from '@react-native-clipboard/clipboard';
@@ -77,7 +77,7 @@ const messageLongpressModal = ({
         style={{
           position: 'absolute',
           top: modalPosition.top,
-          left: modalPosition.left,
+          left: DeviceWidth - width * 180,
         }}
         backdropOpacity={0}
         isVisible={isVisible}

@@ -12,18 +12,12 @@ import {width, height} from '../../global';
 import backIcon from 'react-native-vector-icons/Ionicons';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-let asiaImage =
-  'https://s3-alpha-sig.figma.com/img/e3cd/f289/ecb3b325cb0dc07d1a15b5f2d8257983?Expires=1706486400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=RXYcnaWmqFAzKA69Pgrxv4YWrmPmy~03HbCF4GFoNkfPFRK9CtBSVxVNcwiAWqOaTmZ9lgDg4ZJH4fqsjMqK49v0uGfjM0yKmDMeHVmOrbckth82oGMDe6nXL~CS9EFJqMR066EEY2EzY7OVi1ksrvERHBOIPvp-a~YHyA2sZZFvFjOiKymFCxp4i1CIxdQeQrHDxYOtxnfMtAu75bpwaVauq9-Uyu2qEmQpUgtc5VaQMLYcOq7x33rV-GQRKtq-aBOvmlUon9TUNOqwwSbeDM06wfv5Vf2S-jaNEXI~TNhcGAZcWMOhE9TcR7Hg9eL0lKq~V2Vep3ummu~yar~syA__';
-let europeImage =
-  'https://s3-alpha-sig.figma.com/img/0cab/0883/1744106c1d30930b14edbbef54e3cc5b?Expires=1706486400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=SJcmYxlGfR24yJ~iKMppcOIvrQCuqczxQuvCepKnHhSx6rpU-TFitvs~uGtHXw4Gdvk0i0RDBz7JvVxQEBrL32VbxClyvbv5BA-DGRXXYfW3xmmIGoH38YGbkp16fxE5Q7ylsuIVtmcPCrL1SE8GkMqUxBrGi1Md9r2yAfmztRv-goGsEKZ-Om3bF5L6hpinSULUekNPGcJvSAlTW~LrvB5dKbHGE~LcYf6BQqejGKqQjpRe~6Pw9Hb30uhedDPskA51UUHnckZ6ARJAhHqz27FJ-JxXkqUiLLaToMEFyoxYPf7epxiZhOhwBE6-gXF7rqsdEsoJEeZ6DLmcNj9TnQ__';
-let africaImage =
-  'https://s3-alpha-sig.figma.com/img/cb87/2fd8/aa1cbdc8e91fcb3e2a0d7bd71ad13bee?Expires=1706486400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=M6QMYlAqBm3AGKOmePX4OKdcQTjIaMm7VaLdMDP3~MMWaXLTHr73y-VAzBLpSwk~SsmND4uIBVIepIxV~VcZ89PZVbFpJN9v7bibuezIC1bkLqOxj9njnu5zIfvIGm4k4~oKVTFx-2s88~2m~peKnjuL0ffzl3KHfq-ZTSnUQThfX8CVp2QvZh9sd-sfMex3zjwaPSBGrvUklyiQWFI6KAl7GUKNYRXkUGpqWv6MAGiQNb-WwHXfAisxE4WN50jxYplp9Y8p58aewlMlF2ev5Ou-EPJKiMRQRmh5RhVbZL2fDRSjKTpZ22W0BHStLWCUkYRZJNEqWnMAmiSOsGWGYQ__';
-let northAmericaImage =
-  'https://s3-alpha-sig.figma.com/img/cf00/1ec8/f564994e79e5ececc559ffc09fdc7ff9?Expires=1706486400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=UHgPnuh7darJ6hpR4jzxvyo4~SGydTg5lJDLa58wR3ZLI~6A-2rcK4Yld4tnouvkFzvypCet64LHzz88ag7jK78bjjvbAFdqQ-0G90uNiNhx0C2dQ8d~ZB-GXsN0Z7Z6YmpUhlBii4uENEYG0aGDTNmMk22~iAxBXgRWoXsKwnpKcyedrMr1xT43gE3nN886bFEBMTG1ggU0vlrRlb8a44Ek25PTBXMH86zL9a550tdsj4zx2IIasN3JC4z18RvXgsVRIMcqxBda964HWdOT0uh5XNk3ws6ek7fNmOsZRPfyvhBsF8-XVIjb2iHTc~7VkjZrUbsVV7U3FJLIHLMSMw__';
-let southAmericaImage =
-  'https://s3-alpha-sig.figma.com/img/734c/7865/650b310024c984d022bdf6ec0285a790?Expires=1706486400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=N78QlY3SP0eNX86LVhqECz7-qFLqbarboMvJHOpLlhI1xllKEkD9NuXf0qOpYlWy2pfdhBpX1GMOGw-UgrgtqtJWEMk8bzZhuP~5pLRlhzAI0VabrfGTJYt4cPTu-toZh8RXUkfi1zKBRmMt2lwlv6wTwP1wph9Z7HWS9pvn6klU3aoDGC7f919-QLPj8KUPtT-TGX4TdCgMaNmDaFIy3ykPTJcBRAyA0OekfDM~CYmLifTOr8-wbn3mK4HpRHxVja3S1hu2kW5MuMegExQF2k~j3hPidT2KVX84GPZvvmMo-hzovmTPRHJ7n8n6vDSuCDDc6Lp1Wkr5Vs9VFcmLlA__';
-let oceaniaImage =
-  'https://s3-alpha-sig.figma.com/img/b865/be1b/b7bd83450311fc9947a8aded6e57af87?Expires=1706486400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=Sf9fLyYcr0druVtqH~LK8~okaXI4yddooaMm0i912j5hqubWyL7vodGvvw5i56NfEtzK72fT8aOk8ynbRo-wdmJ6pXyaoIyp6eQNdlXootcotiM34EK3u6P7~2vKnW4l2dUnuBm~~sWL-QvlRpcUOsx~Put~c3WAEsMgDFUjsJ5hP0XYqANctvfsoSxJB8o8VElakIt2gAy9TU0g1oZyp8Y4JvaJzzKfOq2p6n8xh6nm-5dh7SCGMNnXF~IKk-rssC08IozUsjzDeTcwp1VVeSLRcanKgLWRAzCApIpidPMRcS9cbpiAaw4U5rcd2q0ks1E~r31nFzjKSoMWnFQ7Gg__';
+let asiaImage = require('../../../assets/images/asia.png');
+let africaImage = require('../../../assets/images/africa.png');
+let northAmericaImage = require('../../../assets/images/northAmerica.png');
+let southAmericaImage = require('../../../assets/images/southAmerica.png');
+let oceaniaImage = require('../../../assets/images/oceania.png');
+let europeImage = require('../../../assets/images/europe.png');
 
 const NationDetailSettingPage = ({route, navigation}) => {
   const {nickname, gender, birthday, introduction} = route.params;
@@ -116,43 +110,39 @@ const NationDetailSettingPage = ({route, navigation}) => {
       </View>
       <View style={styles.imageContainer}>
         {selectedNation === '아시아' && (
-          <Image
-            source={{uri: asiaImage}}
-            style={styles.image}
-            resizeMode="contain"
-          />
+          <Image source={asiaImage} style={styles.image} resizeMode="contain" />
         )}
         {selectedNation === '유럽' && (
           <Image
-            source={{uri: europeImage}}
+            source={europeImage}
             style={styles.image}
             resizeMode="contain"
           />
         )}
         {selectedNation === '아프리카' && (
           <Image
-            source={{uri: africaImage}}
+            source={africaImage}
             style={styles.image}
             resizeMode="contain"
           />
         )}
         {selectedNation === '북아메리카' && (
           <Image
-            source={{uri: northAmericaImage}}
+            source={northAmericaImage}
             style={styles.image}
             resizeMode="contain"
           />
         )}
         {selectedNation === '남아메리카' && (
           <Image
-            source={{uri: southAmericaImage}}
+            source={southAmericaImage}
             style={styles.image}
             resizeMode="contain"
           />
         )}
         {selectedNation === '오세아니아' && (
           <Image
-            source={{uri: oceaniaImage}}
+            source={oceaniaImage}
             style={styles.image}
             resizeMode="contain"
           />
@@ -271,8 +261,8 @@ const styles = StyleSheet.create({
     marginBottom: height * 10,
   },
   image: {
-    width: width * 560,
-    height: height * 350,
+    width: width * 520,
+    height: height * 320,
     backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',

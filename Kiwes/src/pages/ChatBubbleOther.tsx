@@ -44,9 +44,13 @@ export default function ChatBubbleOther({
     if (modalRef && modalRef.current) {
       modalRef.current.measure((fx, fy, width, height, px, py) => {
         if (DeviceHeight / 2 >= clickedPosition.y) {
-          setModalPosition({top: py + 25, left: px - 25});
+          setModalPosition({top: py + height, left: px - 25});
         } else {
-          setModalPosition({top: py - 130, left: px - 25});
+          if (isHost) {
+            setModalPosition({top: py - 130, left: px - 25});
+          } else {
+            setModalPosition({top: py - 100, left: px - 25});
+          }
         }
         console.log(modalPosition.top);
         toggleOtherBubbleLongpressModal();
