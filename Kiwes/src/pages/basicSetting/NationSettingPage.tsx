@@ -10,9 +10,7 @@ import {
 import {width, height} from '../../global';
 import backIcon from 'react-native-vector-icons/Ionicons';
 
-let imagePath =
-  'https://s3-alpha-sig.figma.com/img/161f/dbd1/aedd1353d96cbd26574287bdd0db2010?Expires=1706486400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=SZCzPpIGMhNuMSRnKI68DH2hhzpCBjIpWi-Pp4Jr7rLj4PTATKOXhY64GItdIhYCBe2Hl1TR8Jx-VHYC72nPd69-Cy8whFRLXMfxL4iSvp9b7uVkFyz6nH~LABvuSPPgYApIG6E6YseZ5bt74UcqysYJgf2uc55mSwDWRo9Em2rpDCne53Cq-JkfWFX6WA6CIk5sxnDmB3~ij4HNJ-UVFFwW-eCuVhmxE6QSAimj5NhImpsBRfUHoXDVjzmR7SHnH-N-1-y7~6WuhP9oNBWfeI4mOdShTOvxwiW-lO85WiYOI6f5xZ8lV6v4AEA-T3yJQ2e0RhLY8Q2P1SFbMUVWFQ__';
-
+let imagePath = require('../../../assets/images/koreanKiwe.png');
 const NationSettingPage = ({route, navigation}) => {
   const {nickname, gender, birthday, introduction} = route.params;
   const [selectedNation, setNation] = useState('');
@@ -114,7 +112,6 @@ const NationSettingPage = ({route, navigation}) => {
             <Text
               style={{
                 color: '#000',
-
                 fontSize: height * 20,
                 fontWeight: '500',
               }}>
@@ -125,11 +122,7 @@ const NationSettingPage = ({route, navigation}) => {
       </View>
       <View style={styles.imageContainer}>
         {selectedNation === 'KOREA' ? (
-          <Image
-            source={{uri: imagePath}}
-            style={styles.image}
-            resizeMode="contain"
-          />
+          <Image source={imagePath} style={styles.image} resizeMode="contain" />
         ) : selectedNation === '외국인' ? (
           <View style={{height: height * 300}}></View>
         ) : (
@@ -153,7 +146,6 @@ const NationSettingPage = ({route, navigation}) => {
           <Text
             style={{
               color: '#DADADA',
-
               fontSize: height * 18,
               fontWeight: '600',
             }}>
@@ -182,13 +174,11 @@ const styles = StyleSheet.create({
   },
   headerText: {
     color: '#303030',
-
     fontSize: height * 20,
     fontWeight: '600',
   },
   mainText: {
     color: '#303030',
-
     fontSize: height * 28,
     fontWeight: '600',
   },

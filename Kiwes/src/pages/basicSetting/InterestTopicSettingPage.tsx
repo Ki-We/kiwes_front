@@ -162,14 +162,13 @@ const InterestTopicSettingPage = ({route, navigation}) => {
       <ScrollView>
         <View style={styles.mainContainer}>
           {checkBoxValues.map((value, index) => (
-            <View style={styles.checkBoxContainer}>
+            <View style={styles.checkBoxContainer} key={index}>
               <TouchableOpacity
                 style={
                   checkedBoxes.includes(value)
                     ? styles.selected
                     : styles.imageContainer
                 }
-                key={index}
                 onPress={() => toggleCheckbox(value)}>
                 <Image
                   source={images[index]}

@@ -32,9 +32,13 @@ export default function ChatBubbleMine({
     if (modalRef && modalRef.current) {
       modalRef.current.measure((fx, fy, width, height, px, py) => {
         if (DeviceHeight / 2 >= clickedPosition.y) {
-          setModalPosition({top: py + 25, left: px - 25});
+          setModalPosition({top: py + height, left: px});
         } else {
-          setModalPosition({top: py - 130, left: px - 25});
+          if (isHost) {
+            setModalPosition({top: py - 130, left: px});
+          } else {
+            setModalPosition({top: py - 100, left: px});
+          }
         }
         toggleMyBubbleLongpressModal();
       });
@@ -56,6 +60,7 @@ export default function ChatBubbleMine({
   return (
     <View style={styles.container}>
       <TouchableHighlight
+        ref={modalRef}
         style={styles.chat}
         onLongPress={event => {
           backgroundPosition(event);

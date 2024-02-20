@@ -349,7 +349,7 @@ const ChatScreen = ({navigation, route}) => {
         <View style={styles.chatBubble}>
           <ChatBubbleMine
             chat={message}
-            isHost={user.id === clubData?.hostId ? true : true}
+            isHost={user.id === clubData?.hostId ? true : false}
             noticeChat={(notice: string) => setNotification(notice)}
           />
         </View>
@@ -376,7 +376,7 @@ const ChatScreen = ({navigation, route}) => {
             chat={message}
             thumbnail={thumbnail}
             color={colorMap[message.userId]}
-            isHost={user.id === clubData?.hostId ? true : true}
+            isHost={user.id === clubData?.hostId ? true : false}
             noticeChat={(notice: string) => setNotification(notice)}
           />
         </View>
@@ -424,18 +424,17 @@ const ChatScreen = ({navigation, route}) => {
             fontSize: height * 18,
             fontWeight: '600',
           }}>
-          공지
+          공지&nbsp;&nbsp;
         </Text>
         <Text
+          numberOfLines={1}
+          ellipsizeMode="tail"
           style={{
             color: '#303030',
             fontSize: height * 16,
             fontWeight: '600',
           }}>
-          &nbsp;&nbsp;
           {notice}
-          {/* {buffer.length > 46 ? notice.slice(0, 23) + '...' : notice} */}
-          {/* {buffer.length} */}
         </Text>
       </View>
       {/* ///////////////////////////////////////////////////////////// */}
@@ -448,7 +447,7 @@ const ChatScreen = ({navigation, route}) => {
           <FlatList
             // contentContainerStyle={styles.contentContainer}
             data={displayData}
-            keyExtractor={(item, index) => item.msg + item.time}
+            keyExtractor={(item, index) => item.msg + item.time + index}
             onEndReached={loadMoreData}
             onEndReachedThreshold={0.1}
             // data={messages}
