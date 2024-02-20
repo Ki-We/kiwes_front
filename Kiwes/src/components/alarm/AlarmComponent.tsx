@@ -14,10 +14,7 @@ const AlarmComponent = ({item, navigateTo, navigateToProile}: any) => {
                 <TouchableOpacity onPress={navigateToProile}>
                   <Image
                     source={{
-                      uri:
-                        'https://kiwes2-bucket.s3.ap-northeast-2.amazonaws.com/profileimg/' +
-                        item.imageUrl +
-                        '.jpg',
+                      uri: item.imageUrl,
                     }}
                     style={styles.image}
                   />

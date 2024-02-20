@@ -159,7 +159,6 @@ const ClubDetail = ({ route, navigation, type }: any) => {
         .setNeedToken(true)
         .build()
         .run();
-        console.log(isLiked);
     } catch (err) {
       console.error(err);
     }
