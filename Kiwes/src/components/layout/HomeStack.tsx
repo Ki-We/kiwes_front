@@ -26,8 +26,8 @@ const HomeStack = ({navigation}) => {
 
   const CustomHeader = () => (
     <Image
-      source={require('../../../assets/images/logo.png')}
-      style={{width: width * 130, height: height * 60, marginTop: height * 10}}
+      source={require('../../../assets/images/kiwesLogo.png')}
+      style={{ width: 130, height: 60, top: 2}}
     />
   );
 
