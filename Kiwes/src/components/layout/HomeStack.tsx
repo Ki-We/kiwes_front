@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
-import { Dimensions, Image, TouchableOpacity, View } from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack';
+import React, {useEffect} from 'react';
+import {Dimensions, Image, TouchableOpacity, View} from 'react-native';
+import {createStackNavigator} from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ChatRoom from '../../pages/ChatRoom';
 import Home from '../../pages/Home';
@@ -10,8 +10,9 @@ import ClubLanguage from '../../pages/ClubLanguage';
 import ReviewPage from '../../pages/ReviewPage';
 import Event from '../../pages/Event';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {height, width} from '@/global';
 
-const HomeStack = ({ navigation }) => {
+const HomeStack = ({navigation}) => {
   console.log(Dimensions.get('screen').height);
   useEffect(() => {
     checkLoginState();
@@ -26,7 +27,7 @@ const HomeStack = ({ navigation }) => {
   const CustomHeader = () => (
     <Image
       source={require('../../../assets/images/logo.png')}
-      style={{ width: 130, height: 60 }}
+      style={{width: width * 130, height: height * 60, marginTop: height * 10}}
     />
   );
 
@@ -39,16 +40,24 @@ const HomeStack = ({ navigation }) => {
           headerShown: true,
           headerTitle: props => <CustomHeader {...props} />,
           headerRight: () => (
-            <View style={{ flexDirection: 'row' }}>
+            <View style={{flexDirection: 'row'}}>
               <TouchableOpacity
-                style={{ marginRight: 17 }}
+                style={{marginRight: 17, marginTop: height * 5}}
                 onPress={() => navigation.navigate('Search')}>
-                <Icon name="search-outline" size={30} style={{ color: 'black' }} />
+                <Icon
+                  name="search-outline"
+                  size={30}
+                  style={{color: 'black'}}
+                />
               </TouchableOpacity>
               <TouchableOpacity
-                style={{ marginRight: 17 }}
+                style={{marginRight: 17, marginTop: height * 5}}
                 onPress={() => navigation.navigate('AlarmPage')}>
-                <Icon name="notifications-outline" size={30} style={{ color: 'black' }} />
+                <Icon
+                  name="notifications-outline"
+                  size={30}
+                  style={{color: 'black'}}
+                />
               </TouchableOpacity>
             </View>
           ),
@@ -57,7 +66,7 @@ const HomeStack = ({ navigation }) => {
       <Stack.Screen
         name="ClubDetail"
         component={ClubDetail}
-        options={{ headerShown: false }}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="ClubCategory"
