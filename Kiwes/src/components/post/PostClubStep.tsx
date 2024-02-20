@@ -7,11 +7,13 @@ import SetupLayout from './SetupLayout';
 import SetupDetail1 from './SetupDetail1';
 import SetupDetail2 from './SetupDetail2';
 import SetupDetail3 from './SetupDetail3';
-import {apiServer} from '../../utils/metaData';
+import {apiServer, chatServer} from '../../utils/metaData';
 import {RESTAPIBuilder} from '../../utils/restapiBuilder';
 import RNFS from 'react-native-fs';
 import {Buffer} from 'buffer';
 import {useFocusEffect} from '@react-navigation/native';
+import {Pressable} from 'react-native';
+import Text from '@components/atoms/Text';
 
 export interface ProfileSetupInterface {
   navigation: any;
@@ -53,6 +55,19 @@ const PostClubStep = ({
       console.log('post club err2 : ', err);
     });
     console.log(`${data.clubId} 모임 이미지 업로드 완료`);
+
+    // 채팅 서버 Create Room
+    const chatUrl = `${chatServer}/room`;
+    const {msg} = await new RESTAPIBuilder(chatUrl, 'POST')
+      .setNeedToken(true)
+      .setBody({clubId: data.clubId})
+      .build()
+      .run()
+      .catch(err => {
+        console.log('post club err3 : ', err);
+      });
+    console.log(`모임 개설 Chatting : ${msg}`);
+
     navigation.navigate('ClubDetail', {clubId: data.clubId});
   };
   const uploadClubImage = async (clubId: number) => {
