@@ -3,7 +3,7 @@ import React, {useCallback, useState} from 'react';
 import {View, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import Text from '@components/atoms/Text';
 import {RESTAPIBuilder} from '../../utils/restapiBuilder';
-import {apiServer} from '../../utils/metaData';
+import {apiServer, chatServer} from '../../utils/metaData';
 import {height, width} from '../../global';
 import {ClubMemberApprovalRequestEach} from '../../utils/commonInterface';
 import {FlatList} from 'react-native-gesture-handler';
@@ -45,6 +45,17 @@ const ClubApproval = ({route, navigation}: any) => {
         .build()
         .run();
       fetchMembers();
+
+      const chatUrl = `${chatServer}/permit`;
+      const {msg} = await new RESTAPIBuilder(chatUrl, 'POST')
+        .setNeedToken(true)
+        .setBody({clubId: clubId.clubId, name: member?.nickname})
+        .build()
+        .run()
+        .catch(err => {
+          console.log('permit club err3 : ', err);
+        });
+      console.log(`모임 승인 : ${msg}`);
     } catch (err) {
       console.log(err);
     }
