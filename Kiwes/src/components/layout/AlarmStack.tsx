@@ -12,7 +12,7 @@ const AlarmStack = () => {
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="AlarmList" component={AlarmList} />
       <Stack.Screen name="RequestList" component={RequestList} />
-      <Stack.Screen name="ClubApproval" component={ClubApproval} />
+      <Stack.Screen name="ClubApprovalList" component={ClubApproval} />
     </Stack.Navigator>
   );
 };
