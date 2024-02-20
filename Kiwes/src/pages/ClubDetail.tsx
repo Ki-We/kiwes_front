@@ -24,14 +24,16 @@ const ClubDetail = ({ route, navigation, type }: any) => {
 
   const [isJoined, setIsJoined] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isShareVisible, setisShareVisible] = useState(false);
 
   const [isAdminMode, setIsAdminMode] = useState(false);
   const [isMoreModalVisible, setIsMoreModalVisible] = useState(false);
+  const [isJoinBtnVisible, setJoinBtnVisible] = useState(false);
 
   const [currentParticipants, setCurrentParticipants] = useState(0);
   const [maxParticipants, setMaxParticipants] = useState(5);
 
-  const [isRecruitmentComplete, setIsRecruitmentComplete] = useState(false);
+  const [recruitmentComplete, setRecruitmentComplete] = useState(false);
 
   const [clubInfo, setClubInfo] = useState(null);
   const [NickName, setNickNameInfo] = useState(null);
@@ -46,7 +48,15 @@ const ClubDetail = ({ route, navigation, type }: any) => {
   const copyToClipboard = () => {
     const clubURL = 'https://kiwes.com/club';
     Clipboard.setString(clubURL);
-    alert('친구들과 함께 모임을 즐겨보세요!');
+    setisShareVisible(true);
+  
+    setTimeout(() => {
+      setisShareVisible(false);
+    }, 2000);
+  };
+
+  const closeModal = () => {
+    setisShareVisible(false);
   };
 
   const fetchClubDetail = async (clubId) => {
@@ -55,6 +65,7 @@ const ClubDetail = ({ route, navigation, type }: any) => {
         .setNeedToken(true)
         .build()
         .run();
+        console.log(response.data);
         setClubInfo(response.data);
     } catch (error) {
       console.error('Error fetching club detail:', error);
@@ -88,34 +99,66 @@ const ClubDetail = ({ route, navigation, type }: any) => {
     }
   };
   
-  useEffect(() => { //todo
+  useEffect(() => {
     fetchNickName(NickName);
   }, []);
 
-  const toggleJoin = () => {
-    if (currentParticipants < maxParticipants && !isRecruitmentComplete) {
-      setIsJoined((prev) => !prev);
+  const isRecruitmentComplete = () => {
+    if (!clubInfo) {
+      return false;
+  }
+  const { memberInfo, baseInfo } = clubInfo;
+  const totalParticipants = memberInfo.koreanCount + memberInfo.foreignerCount;
+  const maxParticipants = memberInfo.maxPeople;
+  const isDeadlinePassed = checkRecruitmentDate(baseInfo.dateInfo);
+  
+  return totalParticipants >= maxParticipants || isDeadlinePassed;
+  };
 
-      if (!isJoined) {
-        setCurrentParticipants((prevCount) => prevCount + 1);
-
-        setIsModalVisible(true);
-        setTimeout(() => {
-          setIsModalVisible(false);
-        }, 1500);
+  const toggleJoin = async () => {
+    if (!clubInfo) {
+      return null;
+    }
+    const memberInfo = clubInfo.memberInfo;
+    const currentParticipants = memberInfo.koreanCount + memberInfo.foreignerCount;
+  
+    if (!isRecruitmentComplete()) {
+      try {
+        if (isJoined) {
+          const response = await new RESTAPIBuilder(`${apiServer}/api/v1/club/application/${clubId}`, 'DELETE')
+            .setNeedToken(true)
+            .build()
+            .run();
+          setIsJoined(false);
+          setCurrentParticipants((prevCount) => prevCount - 1);
+        } else {
+          const response = await new RESTAPIBuilder(`${apiServer}/api/v1/club/application/${clubId}`, 'POST')
+            .setNeedToken(true)
+            .build()
+            .run();
+          setIsJoined(true);
+          setCurrentParticipants((prevCount) => prevCount + 1);
+        }
+        fetchClubDetail(clubId);
+      } catch (error) {
+        console.error('Error while joining club:', error);
       }
     } else {
-      if (isRecruitmentComplete) {
-        alert('이미 참여 인원이 모두 찼습니다.');
-        setTimeout(() => {
-          setIsRecruitmentComplete(true);
-        }, 0);
-      }
+      alert('이미 참여 인원이 모두 찼습니다.');
+      setTimeout(() => {
+        setRecruitmentComplete(true);
+      }, 0);
     }
   };
+  
   const toggleMoreModal = () => {
     setIsMoreModalVisible((prev) => !prev);
   };
+
+  const toggleJoinBtn = () => {
+    setisJoinBtnVisible((prev) => !prev);
+  };
+
   const DeleteClub = async () => {
     try {
       await new RESTAPIBuilder(`${apiServer}/api/v1/club/article/${clubId}`, 'DELETE')
@@ -127,6 +170,7 @@ const ClubDetail = ({ route, navigation, type }: any) => {
       console.error('Error 닉네임:', error);
     }
   };
+
   const navigateToCorrection = () => {
     navigation.navigate('CorrectionPage', { baseInfo: clubInfo.baseInfo });
   };
@@ -151,6 +195,7 @@ const ClubDetail = ({ route, navigation, type }: any) => {
       return null;
     }
     const baseInfo = clubInfo.baseInfo; 
+    
     return (
       <View>
         <Text style={styles.titleText}>{baseInfo.title}</Text>
@@ -158,13 +203,14 @@ const ClubDetail = ({ route, navigation, type }: any) => {
         <View style={styles.sectionContainer}>
           {renderSection('모임 날짜', baseInfo.date)}
           {renderSection('모임 마감', baseInfo.dueTo)}
-          {renderSection('인당 예상비용', baseInfo.cost)}
+          {renderSection('인당 예상비용', baseInfo.cost.toLocaleString())}
           {renderSection('성별', baseInfo.gender)}
           {renderSection('장소', baseInfo.locationKeyword)}
         </View>
       </View>
     );
   };
+
   const renderClubContent = () => {
     if (!clubInfo) {
       return null;
@@ -176,6 +222,7 @@ const ClubDetail = ({ route, navigation, type }: any) => {
       </>
     );
   };
+
   const renderHostDetail = () => {
     if (!clubInfo) {
       return null;
@@ -186,79 +233,78 @@ const ClubDetail = ({ route, navigation, type }: any) => {
       <View style={styles.hostContainer}>
         <Text style={styles.hostTitle}>호스트 정보</Text>
         <View style={styles.profileContainer}>
-          <TouchableOpacity onPress={()=>{
-          console.log(clubInfo.memberInfo);
-            navigateToProile(clubInfo.memberInfo.hostId);}}>
-          <Image source={{ uri: clubInfo.memberInfo.hostThumbnailImage }} style={styles.profileImage} />
+          <TouchableOpacity onPress={() => navigateToProile(clubInfo.memberInfo.hostId)}>
+            <Image source={{ uri: clubInfo.memberInfo.hostThumbnailImage }} style={styles.profileImage} />
           </TouchableOpacity>
           <Text style={styles.profileText}>{memberInfo.hostNickname}</Text>
           <View style={styles.participantContainer}>
             <View style={styles.participantItem}>
-              <Image source={image.korean} style={styles.participantImage} />
-              <Text style={styles.participantText}>{memberInfo.koreanCount}</Text>
-            </View>
-            <View style={styles.participantItem}>
-            <Text style={styles.hostText}>참가 인원</Text>
-              <Image
-                source={image.foreigner}
-                style={styles.participantImage}
-              />
-              <Text style={styles.participantText}>{memberInfo.foreignerCount}</Text>
+              <Text style={styles.hostText}>참가 인원</Text>
+              <Image source={image.korean} style={styles.imageMargin} />
+              <Text style={styles.participantText}>{memberInfo.koreanCount}  </Text>
+              <Image source={image.foreigner} />
+              <Text style={styles.participantText1}>{memberInfo.foreignerCount}</Text>
             </View>
             <View style={styles.limitItem}>
               <Text style={styles.limitText}>모집 인원</Text>
-              <Text style={styles.participantText1}>{memberInfo.maxPeople}</Text>
+              <Text style={styles.participantText2}>{memberInfo.maxPeople}</Text>
             </View>
           </View>
         </View>
       </View>
-    );
-  };
-  const isRecruitmentClosed = (dueTo) => {
-    const currentDate = new Date();
-    const dueToDate = new Date(dueTo);
-    return currentDate > dueToDate;
+    );    
   };
 
-  const checkRecruitmentStatus = (dueTo) => {
-    const recruitmentClosed = isRecruitmentClosed(dueTo);
-    setIsRecruitmentComplete(recruitmentClosed);
+  const checkRecruitmentDate = (dateInfo) => {
+    const currentDate = new Date();
+    const dueToDate = new Date(dateInfo[1]);
+    return currentDate > dueToDate;
   };
   
   useEffect(() => {
-    console.log('clubinfo useeffect')
+    console.log('clubinfo useeffect');
     if (clubInfo) {
-      checkRecruitmentStatus(clubInfo.baseInfo.dueTo);
+      checkRecruitmentDate(clubInfo.baseInfo.dateInfo);
     }
   }, [clubInfo]);
 
   const renderJoinButton = () => {
+    if (!clubInfo) {
+      return null;
+    }
+  
+    const baseInfo = clubInfo.baseInfo;
+    const memberInfo = clubInfo.memberInfo;
+  
     let buttonStyle, buttonText, onPressFunction;
   
-    if (isRecruitmentComplete) {
-      buttonStyle = styles.cancelButton;
-      buttonText = '모집 마감';
-      onPressFunction = null;
-    } else if (isJoined) {
+    if (isAdminMode) {
+      return null;
+    }
+  
+    if (isJoined) {
       buttonStyle = styles.cancelButton;
       buttonText = '참여 취소';
       onPressFunction = toggleJoin;
-    } else if (currentParticipants < maxParticipants) {
-      buttonStyle = styles.joinButton;
-      buttonText = '참여하기';
-      onPressFunction = toggleJoin;
     } else {
-      buttonStyle = styles.cancelButton;
-      buttonText = '이미 참여 인원이 모두 찼습니다.';
-      onPressFunction = null;
+      if (isRecruitmentComplete()) {
+        buttonStyle = styles.cancelButton;
+        buttonText = '모집 마감';
+        onPressFunction = null;
+      } else {
+        buttonStyle = styles.joinButton;
+        buttonText = '참여하기';
+        onPressFunction = toggleJoin;
+      }
     }
-  
+
     return (
       <TouchableOpacity style={buttonStyle} onPress={onPressFunction}>
         <Text style={styles.buttonText}>{buttonText}</Text>
       </TouchableOpacity>
     );
   };
+
   const renderSection = (title, text) => (
     <View style={styles.section}>
       <Text style={styles.sectionTitle}>{title}</Text>
@@ -267,6 +313,7 @@ const ClubDetail = ({ route, navigation, type }: any) => {
       </View>
     </View>
   ); 
+
   const renderTag = (key:string, type:string) => {
     let text = 'UNDEFINED'
     if ( type == 'category' ){ 
@@ -290,14 +337,15 @@ const ClubDetail = ({ route, navigation, type }: any) => {
       </View>
     );
   }
-const renderBtn = (tags: string[]) => {
-  return (
-    <View style={styles.tagContainer2}>
-      {renderTag(tags[0], 'category')}
-      {tags.slice(1).map((tag, index) => {return renderTag(tag, 'lang')})}
-    </View>
-  );
-};
+
+  const renderBtn = (tags: string[]) => {
+    return (
+      <View style={styles.tagContainer2}>
+        {renderTag(tags[0], 'category')}
+        {tags.slice(1).map((tag, index) => {return renderTag(tag, 'lang')})}
+      </View>
+    );
+  };
 
   const renderQaItem = () => {
     if (!clubInfo || !clubInfo.qnas) {
@@ -316,6 +364,7 @@ const renderBtn = (tags: string[]) => {
       </View>
     ));
   };
+
   const renderReviewItem = () => {
     if (!clubInfo || !clubInfo.reviews) {
       return null;
@@ -333,15 +382,16 @@ const renderBtn = (tags: string[]) => {
       </View>
     ));
   };
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name="arrow-back" size={height * 30} color="#303030" />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => { copyToClipboard(); }} style={styles.shareContainer}>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => { copyToClipboard(); }} style={styles.shareContainer}>
           <Image source={image.share} />
-          </TouchableOpacity>
+        </TouchableOpacity>
           {isAdminMode && (
           <TouchableOpacity onPress={() => setIsMoreModalVisible(true)} style={styles.moreContainer}>
             <Image source={image.more} style={styles.more} />
@@ -386,14 +436,14 @@ const renderBtn = (tags: string[]) => {
         <Text style={styles.clubInfoTitle}>Q&A</Text>
         {renderQaItem()}
         <TouchableOpacity onPress={navigateToQnAPage}>
-          <Text style={styles.seeAllButton}>Q&A 모두 보기 ></Text>
+          <Text style={styles.seeAllButton}>Q&A 모두 보기 &gt;</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.reviewContainer}>
         <Text style={styles.clubInfoTitle}>후기</Text>
         {renderReviewItem()}
         <TouchableOpacity onPress={navigateToReviewPage}>
-          <Text style={styles.seeAllButton}>후기 모두 보기 ></Text>
+          <Text style={styles.seeAllButton}>후기 모두 보기 &gt;</Text>
         </TouchableOpacity>
       </View>
         <View style={styles.joinContainer}>
@@ -407,6 +457,21 @@ const renderBtn = (tags: string[]) => {
           <View style={styles.modalContent}>
             <Text style={styles.modalText}>
               <Text style={styles.greenBtn}>참여 신청</Text>이 완료되었습니다!
+            </Text>
+          </View>
+        </View>
+      </Modal>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isShareVisible}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalText}>
+              <Text style={styles.shareBold}>클립보드 저장 완료!</Text>
+            </Text>
+            <Text style={styles.modalText}>
+            <Text style={styles.shareText}>친구들과 함께 모임을 즐겨보세요!</Text>
             </Text>
           </View>
         </View>
@@ -521,18 +586,24 @@ const styles = StyleSheet.create({
   participantItem: {
     flexDirection: 'row',
     alignItems: 'flex-end',
-    marginLeft: width * 24,
+    marginLeft: width * 55,
   },
   participantText: {
     fontSize: height * 16,
     color: '#808080',
-    marginLeft: width * 9,
+    marginLeft: width * 5,
     fontWeight: '600',
   },
   participantText1: {
     fontSize: height * 16,
     color: '#808080',
-    marginLeft: width * -6,
+    marginLeft: width * 5,
+    fontWeight: '600',
+  },
+  participantText2: {
+    fontSize: height * 16,
+    color: '#808080',
+    marginLeft: width * -2,
     alignItems: 'flex-end',
     fontWeight: '600',
   },
@@ -556,14 +627,14 @@ const styles = StyleSheet.create({
     color: '#303030',
     fontSize: height * 12,
     fontWeight: '600',
-    top: height * -25,
-    left: height * -10,
+    top: height * -23,
+    marginLeft: width * 35,
   },
   limitText: {
     color: '#303030',
     fontSize: height * 12,
     fontWeight: '600',
-    marginLeft: width * -35,
+    marginLeft: width * -30,
   },
   participantInfo: {
     flexDirection: 'row',
@@ -708,6 +779,15 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#58C047',
   },
+  shareBold: {
+    fontSize: height * 16,
+    fontWeight: 'bold',
+    color: '#58C047',
+  },
+  shareText: {
+    fontSize: height * 14,
+    color: '#303030',
+  },
   moreContainer: {
     marginLeft: width * 20,
     width: width * 100,
@@ -768,6 +848,9 @@ const styles = StyleSheet.create({
     marginRight: width * 3,
     width: width * 16,
     height: width * 16,
+  },
+  imageMargin: {
+    marginRight: 1,
   },
 });
 
