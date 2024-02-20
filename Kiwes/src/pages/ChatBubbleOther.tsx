@@ -1,12 +1,12 @@
 // 채팅방 화면에 번역 언어 선택 및 텍스트 보여지는 새로운 모달 보이기
-import React, {useState} from 'react';
-import {View, StyleSheet, TouchableHighlight} from 'react-native';
+import React, {useState, useRef} from 'react';
+import {View, StyleSheet, Image, TouchableHighlight} from 'react-native';
 import Text from '@components/atoms/Text';
 import {Chat} from '../utils/commonInterface';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faUser} from '@fortawesome/free-solid-svg-icons';
 import OtherBubbleLongpressModal from '../components/otherBubbleLongpressModal';
-import {height} from '../global';
+import {width, height, DeviceHeight} from '../global';
 
 export default function ChatBubbleOther({
   writer,
@@ -14,13 +14,16 @@ export default function ChatBubbleOther({
   color,
   isHost,
   noticeChat,
+  thumbnail,
 }: {
   writer: string;
   chat: Chat;
   color: string;
   isHost: boolean;
+  thumbnail: string;
   noticeChat: (notice: string) => void;
 }) {
+  // console.log(writer, thumbnail);
   // const [chatBubblePosition, setChatBubblePosition] = useState({x: 0, y: 0});
   const [chatBubbleData, setchatMsg] = useState(chat.msg);
   const setChatBubbleData = translatedText => {
@@ -31,6 +34,26 @@ export default function ChatBubbleOther({
     noticeChat(chatBubbleData);
   };
 
+  const [modalPosition, setModalPosition] = useState({
+    top: 0,
+    left: 0,
+  });
+  const modalRef = useRef(null);
+  const openOtherBubbleLongPressModal = event => {
+    console.log(clickedPosition.y);
+    if (modalRef && modalRef.current) {
+      modalRef.current.measure((fx, fy, width, height, px, py) => {
+        if (DeviceHeight / 2 >= clickedPosition.y) {
+          setModalPosition({top: py + 25, left: px - 25});
+        } else {
+          setModalPosition({top: py - 130, left: px - 25});
+        }
+        console.log(modalPosition.top);
+        toggleOtherBubbleLongpressModal();
+      });
+    }
+  };
+
   const [isOtherBubbleLongpressModal, setOtherBubbleLongpressModal] =
     useState(false);
 
@@ -38,49 +61,31 @@ export default function ChatBubbleOther({
     setOtherBubbleLongpressModal(!isOtherBubbleLongpressModal);
   };
 
-  const [componentHeight, setComponentHeight] = useState(0);
-  const bubbleHeight = event => {
-    const {height} = event.nativeEvent.layout;
-    setComponentHeight(height);
-  };
-
-  const [inBubblePosition, setInBubblePosition] = useState({x: 0, y: 0});
-  const bubblePosition = event => {
-    const {nativeEvent} = event;
-    const {locationX, locationY} = nativeEvent;
-    setInBubblePosition({x: locationX, y: locationY});
-  };
   const [clickedPosition, setClickedPosition] = useState({x: 0, y: 0});
   const backgroundPosition = event => {
     const {pageX, pageY} = event.nativeEvent;
     setClickedPosition({x: pageX, y: pageY});
   };
 
-  const chatBubbleLongPress = () => {
-    toggleOtherBubbleLongpressModal();
-  };
-
   return (
     <>
       <View style={styles.container}>
         <View style={styles.user}>
-          <FontAwesomeIcon
-            style={styles.icon}
-            icon={faUser}
-            size={25}
-            color={color}
+          <Image
+            source={{uri: thumbnail}}
+            style={styles.image}
+            resizeMode="cover"
           />
         </View>
         <View style={{position: 'relative'}}>
           <Text>{writer}</Text>
           <View style={styles.chatContainer}>
             <TouchableHighlight
+              ref={modalRef}
               style={styles.chat}
-              onLayout={bubbleHeight}
               onLongPress={event => {
-                bubblePosition(event);
                 backgroundPosition(event);
-                chatBubbleLongPress();
+                openOtherBubbleLongPressModal(event);
               }}
               underlayColor={'#CCCCCC'}
               activeOpacity={1}>
@@ -95,9 +100,8 @@ export default function ChatBubbleOther({
           isVisible={isOtherBubbleLongpressModal}
           onClose={toggleOtherBubbleLongpressModal}
           chatBubbleData={chatBubbleData}
+          modalPosition={modalPosition}
           backgroundPosition={clickedPosition}
-          inBubblePosition={inBubblePosition}
-          bubbleHeight={componentHeight}
           setBubbleData={setChatBubbleData}
           isHost={isHost}
           setNotification={setNotification}
@@ -116,6 +120,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginLeft: 10,
     alignItems: 'flex-start',
+  },
+  image: {
+    width: width * 30,
+    height: height * 30,
+    borderRadius: 20,
+    marginRight: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   icon: {
     marginRight: 10,
@@ -141,13 +153,11 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#303030',
-
     fontSize: height * 13,
     fontWeight: '400',
   },
   timeText: {
     color: '#303030',
-
     fontSize: height * 10,
     fontWeight: '600',
   },

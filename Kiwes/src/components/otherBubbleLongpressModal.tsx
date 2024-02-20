@@ -13,9 +13,8 @@ const messageLongpressModal = ({
   isVisible,
   onClose,
   chatBubbleData,
+  modalPosition,
   backgroundPosition,
-  inBubblePosition,
-  bubbleHeight,
   setBubbleData,
   isHost,
   setNotification,
@@ -75,21 +74,11 @@ const messageLongpressModal = ({
   return (
     <>
       <Modal
-        style={
-          DeviceHeight / 2 >= backgroundPosition.y
-            ? {
-                position: 'absolute',
-                top:
-                  backgroundPosition.y +
-                  (bubbleHeight - inBubblePosition.y - 15),
-                left: 20,
-              }
-            : {
-                position: 'absolute',
-                top: backgroundPosition.y - (inBubblePosition.y + height * 90),
-                left: 20,
-              }
-        }
+        style={{
+          position: 'absolute',
+          top: modalPosition.top,
+          left: modalPosition.left,
+        }}
         backdropOpacity={0}
         isVisible={isVisible}
         animationInTiming={100}
@@ -104,25 +93,16 @@ const messageLongpressModal = ({
           }}>
           <View style={styles.modalButtonGroup}>
             <TouchableOpacity
-              style={{
-                flex: 1,
-                justifyContent: 'center',
-                borderBottomColor: '#8A8A8A',
-                borderBottomWidth: 1,
-              }}
+              style={styles.modalButton}
               onPress={() => {
                 copyToClipboard(chatBubbleData);
                 // fetchCopiedText();
               }}>
               <Text style={styles.modalText}>복사하기</Text>
             </TouchableOpacity>
+            <View style={styles.separator} />
             <TouchableOpacity
-              style={{
-                flex: 1,
-                justifyContent: 'center',
-                borderBottomColor: '#8A8A8A',
-                borderBottomWidth: 1,
-              }}
+              style={styles.modalButton}
               onPress={() => {
                 selectLanguages();
                 onClose();
@@ -130,14 +110,17 @@ const messageLongpressModal = ({
               <Text style={styles.modalText}>번역하기</Text>
             </TouchableOpacity>
             {isHost && (
-              <TouchableOpacity
-                style={{flex: 1, justifyContent: 'center'}}
-                onPress={() => {
-                  setNotification(chatBubbleData);
-                  onClose();
-                }}>
-                <Text style={styles.modalText}>공지</Text>
-              </TouchableOpacity>
+              <>
+                <View style={styles.separator} />
+                <TouchableOpacity
+                  style={styles.modalButton}
+                  onPress={() => {
+                    setNotification(chatBubbleData);
+                    onClose();
+                  }}>
+                  <Text style={styles.modalText}>공지</Text>
+                </TouchableOpacity>
+              </>
             )}
           </View>
         </View>
@@ -156,25 +139,32 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
     flex: 1,
     alignItems: 'center',
-    width: width * 130,
+    width: width * 150,
     height: height * 90,
     backgroundColor: '#FFFFFF',
     borderRadius: 20,
     borderColor: '#5F5F5F',
     borderWidth: 1.5,
   },
+  separator: {
+    borderBottomColor: '#8A8A8A',
+    borderBottomWidth: 1,
+    width: width * 150,
+  },
   modalText: {
     textAlign: 'center',
     color: '#303030',
-
     fontWeight: '600',
     fontSize: height * 12,
   },
   modalButtonGroup: {
     flex: 1,
     justifyContent: 'space-evenly',
-    width: width * 130,
-    height: height * 60,
+    width: width * 150,
+  },
+  modalButton: {
+    flex: 1,
+    justifyContent: 'center',
   },
 });
 
