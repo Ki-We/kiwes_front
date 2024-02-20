@@ -103,6 +103,15 @@ const ClubDetail = ({ route, navigation, type }: any) => {
     fetchNickName(NickName);
   }, []);
 
+  const isApproval = () => {
+    if (!clubInfo) {
+      return null;
+    }
+    const approvalStatus = clubInfo.isApproval;
+    console.log('approvalStatus:', approvalStatus);
+    return approvalStatus;
+  };
+
   const isRecruitmentComplete = () => {
     if (!clubInfo) {
       return false;
@@ -116,15 +125,9 @@ const ClubDetail = ({ route, navigation, type }: any) => {
   };
 
   const toggleJoin = async () => {
-    if (!clubInfo) {
-      return null;
-    }
-    const memberInfo = clubInfo.memberInfo;
-    const currentParticipants = memberInfo.koreanCount + memberInfo.foreignerCount;
-  
-    if (!isRecruitmentComplete()) {
+    fetchClubDetail(clubId);
       try {
-        if (isJoined) {
+        if (clubInfo.isApproval) {
           const response = await new RESTAPIBuilder(`${apiServer}/api/v1/club/application/${clubId}`, 'DELETE')
             .setNeedToken(true)
             .build()
@@ -136,27 +139,17 @@ const ClubDetail = ({ route, navigation, type }: any) => {
             .setNeedToken(true)
             .build()
             .run();
+          isApproval();
           setIsJoined(true);
           setCurrentParticipants((prevCount) => prevCount + 1);
-        }
-        fetchClubDetail(clubId);
+        } fetchClubDetail(clubId);
       } catch (error) {
         console.error('Error while joining club:', error);
       }
-    } else {
-      alert('이미 참여 인원이 모두 찼습니다.');
-      setTimeout(() => {
-        setRecruitmentComplete(true);
-      }, 0);
-    }
-  };
-  
-  const toggleMoreModal = () => {
-    setIsMoreModalVisible((prev) => !prev);
   };
 
-  const toggleJoinBtn = () => {
-    setisJoinBtnVisible((prev) => !prev);
+  const toggleMoreModal = () => {
+    setIsMoreModalVisible((prev) => !prev);
   };
 
   const DeleteClub = async () => {
@@ -165,7 +158,7 @@ const ClubDetail = ({ route, navigation, type }: any) => {
         .setNeedToken(true)
         .build()
         .run();
-        navigation.navigate('Home');
+      navigation.navigate('Home');
     } catch (error) {
       console.error('Error 닉네임:', error);
     }
@@ -174,7 +167,6 @@ const ClubDetail = ({ route, navigation, type }: any) => {
   const navigateToCorrection = () => {
     navigation.navigate('CorrectionPage', { baseInfo: clubInfo.baseInfo });
   };
-
   const navigateToReviewPage = () => {
     navigation.navigate('ReviewPage', { clubId: clubId });
   };
@@ -189,13 +181,11 @@ const ClubDetail = ({ route, navigation, type }: any) => {
     setIsLiked((prev) => !prev);
     setLikeCount((prevCount) => (isLiked ? prevCount - 1 : prevCount + 1));
   };
-
   const renderClubDetail = () => {
     if (!clubInfo) {
       return null;
     }
-    const baseInfo = clubInfo.baseInfo; 
-    
+    const baseInfo = clubInfo.baseInfo;
     return (
       <View>
         <Text style={styles.titleText}>{baseInfo.title}</Text>
@@ -203,7 +193,7 @@ const ClubDetail = ({ route, navigation, type }: any) => {
         <View style={styles.sectionContainer}>
           {renderSection('모임 날짜', baseInfo.date)}
           {renderSection('모임 마감', baseInfo.dueTo)}
-          {renderSection('인당 예상비용', baseInfo.cost.toLocaleString())}
+          {renderSection('인당 예상비용', `₩${baseInfo.cost.toLocaleString()}`)}
           {renderSection('성별', baseInfo.gender)}
           {renderSection('장소', baseInfo.locationKeyword)}
         </View>
@@ -214,7 +204,7 @@ const ClubDetail = ({ route, navigation, type }: any) => {
   const renderClubContent = () => {
     if (!clubInfo) {
       return null;
-    }  
+    }
     const baseInfo = clubInfo.baseInfo;
     return (
       <>
@@ -228,7 +218,7 @@ const ClubDetail = ({ route, navigation, type }: any) => {
       return null;
     }
     const memberInfo = clubInfo.memberInfo;
-    
+
     return (
       <View style={styles.hostContainer}>
         <Text style={styles.hostTitle}>호스트 정보</Text>
@@ -247,12 +237,12 @@ const ClubDetail = ({ route, navigation, type }: any) => {
             </View>
             <View style={styles.limitItem}>
               <Text style={styles.limitText}>모집 인원</Text>
-              <Text style={styles.participantText2}>{memberInfo.maxPeople}</Text>
+              <Text style={styles.participantText2}>{memberInfo.maxPeople>100? '99+' : memberInfo.maxPeople}</Text>
             </View>
           </View>
         </View>
       </View>
-    );    
+    );
   };
 
   const checkRecruitmentDate = (dateInfo) => {
@@ -260,7 +250,7 @@ const ClubDetail = ({ route, navigation, type }: any) => {
     const dueToDate = new Date(dateInfo[1]);
     return currentDate > dueToDate;
   };
-  
+
   useEffect(() => {
     console.log('clubinfo useeffect');
     if (clubInfo) {
@@ -272,17 +262,14 @@ const ClubDetail = ({ route, navigation, type }: any) => {
     if (!clubInfo) {
       return null;
     }
-  
-    const baseInfo = clubInfo.baseInfo;
-    const memberInfo = clubInfo.memberInfo;
-  
+
+    const approvalStatus = isApproval();
     let buttonStyle, buttonText, onPressFunction;
-  
+
     if (isAdminMode) {
       return null;
     }
-  
-    if (isJoined) {
+    if (approvalStatus == true) {
       buttonStyle = styles.cancelButton;
       buttonText = '참여 취소';
       onPressFunction = toggleJoin;
@@ -314,9 +301,9 @@ const ClubDetail = ({ route, navigation, type }: any) => {
     </View>
   ); 
 
-  const renderTag = (key:string, type:string) => {
-    let text = 'UNDEFINED'
-    if ( type == 'category' ){ 
+  const renderTag = (key: string, type: string) => {
+    let text = 'UNDEFINED';
+    if (type == 'category'){
       const category = categoryList.find(c => c.key === key);
       text = category ? category.simple : 'UNDEFINED';
     } else {
@@ -325,11 +312,11 @@ const ClubDetail = ({ route, navigation, type }: any) => {
     }
 
     return (
-        <View style={styles.tag2}>
+      <View style={styles.tag2}>
         {type=='category' && <Image
-          resizeMode="contain"
-          source={categoryIcon[key]}
-          style={styles.image}
+        resizeMode="contain"
+        source={categoryIcon[key]}
+        style={styles.image}
         />}
         <Text style={styles.tagText}>
           {text}
@@ -353,8 +340,8 @@ const ClubDetail = ({ route, navigation, type }: any) => {
     }
     return clubInfo.qnas.map((qna, index) => (
       <View key={index} style={styles.qaItem}>
-        <TouchableOpacity onPress={()=>navigateToProile(qna.questionerId)}>
-          <Image source={{ uri: qna.questionerImageUrl }} style={styles.qaProfileImage} />
+        <TouchableOpacity onPress={() => navigateToProile(qna.questionerId)}>
+          <Image source={{uri: qna.questionerImageUrl}} style={styles.qaProfileImage} />
         </TouchableOpacity>
         <View style={styles.qaContent}>
           <Text style={styles.qaNickname}>{qna.questionerNickname}</Text>
@@ -372,7 +359,7 @@ const ClubDetail = ({ route, navigation, type }: any) => {
     return clubInfo.reviews.map((review, index) => (
       <View key={index} style={styles.qaItem}>
         <TouchableOpacity onPress={()=>navigateToProile(review.reviewerId)}>
-        <Image source={{ uri: review.reviewerImageUrl }} style={styles.qaProfileImage} />
+        <Image source={{uri: review.reviewerImageUrl}} style={styles.qaProfileImage} />
         </TouchableOpacity>
         <View style={styles.qaContent}>
           <Text style={styles.qaNickname}>{review.reviewerNickname}</Text>
@@ -392,21 +379,21 @@ const ClubDetail = ({ route, navigation, type }: any) => {
         <TouchableOpacity onPress={() => { copyToClipboard(); }} style={styles.shareContainer}>
           <Image source={image.share} />
         </TouchableOpacity>
-          {isAdminMode && (
+        {isAdminMode && (
           <TouchableOpacity onPress={() => setIsMoreModalVisible(true)} style={styles.moreContainer}>
             <Image source={image.more} style={styles.more} />
           </TouchableOpacity>
         )}
       </View>
-      <ClubDetailSettingModal 
-        isVisible={isMoreModalVisible} 
+      <ClubDetailSettingModal
+        isVisible={isMoreModalVisible}
         onClose={toggleMoreModal}
         navigateToCorrection={navigateToCorrection}
         DeleteClub={DeleteClub}
-        />
+      />
       <View style={styles.imageContent}>
         {clubInfo && (
-          <Image source={{ uri: clubInfo.baseInfo.thumbnailImageUrl }} style={styles.clubImage} />
+          <Image source={{uri: clubInfo.baseInfo.thumbnailImageUrl}} style={styles.clubImage} />
         )}
       </View>
       <View style={styles.content}>
@@ -419,10 +406,10 @@ const ClubDetail = ({ route, navigation, type }: any) => {
           />
         </TouchableOpacity>
         <Text style={styles.likeCount}>{likeCount}</Text>
-        </View>
-        <View style={styles.sectionContainer}>
-        {renderClubDetail()}
-        </View>
+      </View>
+      <View style={styles.sectionContainer}>
+      {renderClubDetail()}
+      </View>
         {renderHostDetail()}
         <View style={styles.clubInfoContainer}>
           <Text style={styles.clubInfoTitle}>모임 소개</Text>
@@ -446,8 +433,8 @@ const ClubDetail = ({ route, navigation, type }: any) => {
           <Text style={styles.seeAllButton}>후기 모두 보기 &gt;</Text>
         </TouchableOpacity>
       </View>
-        <View style={styles.joinContainer}>
-        {renderJoinButton()}
+      <View style={styles.joinContainer}>
+      {renderJoinButton()}
       </View>
       <Modal
         animationType="slide"
@@ -603,9 +590,10 @@ const styles = StyleSheet.create({
   participantText2: {
     fontSize: height * 16,
     color: '#808080',
-    marginLeft: width * -2,
+    marginLeft: width * -15,
     alignItems: 'flex-end',
     fontWeight: '600',
+    textAlign: 'right',
   },
   profileText: {
     fontSize: height * 14,

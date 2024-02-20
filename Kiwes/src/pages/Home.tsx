@@ -275,8 +275,8 @@ export function Home({navigation}: any) {
         <Text style={styles.sectionTitle}>인기 모임</Text>
         <Swiper
           style={styles.wrapper1}
-          loop={true}
-          autoplay={true}
+          loop={false}
+          autoplay={false}
           autoplayTimeout={6}
           showsPagination={true}
           renderPagination={renderPagination}
@@ -372,8 +372,8 @@ export function Home({navigation}: any) {
           <Text style={styles.sectionTitle}>추천 모임</Text>
           <Swiper
             style={styles.wrapper2}
-            loop={true}
-            autoplay={true}
+            loop={false}
+            autoplay={false}
             autoplayTimeout={6}
             showsPagination={true}
             renderPagination={renderPagination}
