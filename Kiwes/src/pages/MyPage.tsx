@@ -146,7 +146,7 @@ export function MyPage({navigation}: any) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => {
             navigation.navigate('ProfileImageSettingPage');
           }}>
@@ -163,7 +163,7 @@ export function MyPage({navigation}: any) {
             navigation.navigate('ChatTest');
           }}>
           <Text> 채팅 설정</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <ProfileSettingIcon.Button
           backgroundColor="#FFFFFF"
           iconStyle={{marginRight: 0, padding: 0}}
