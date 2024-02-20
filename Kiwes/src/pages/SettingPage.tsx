@@ -10,9 +10,9 @@ import {apiServer} from '../utils/metaData';
 import {height, width} from '../global';
 const url = `${apiServer}/auth/quit`;
 const Terms =
-  'https://drive.google.com/file/d/1zIPn45nR6PTI5tkjW80rbFqEx3wmFScS/view?usp=sharing';
+  'https://drive.google.com/file/d/1waTqcNfpamEz7kgojNZ6zhqR56hCP_O7/view?usp=sharing';
 const PrivacyPolicy =
-  'https://drive.google.com/file/d/1Ri8iG7B2UI1aQjYvi9EtJBRcp_PoseCD/view?usp=sharing';
+  'https://drive.google.com/file/d/1N97jMwYhSD2nFJ103Z4BQsbYw4DagKHh/view?usp=sharing';
 const openPDF = (pdf: string) => {
   Linking.openURL(pdf);
 };
