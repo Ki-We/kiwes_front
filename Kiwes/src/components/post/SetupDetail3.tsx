@@ -103,7 +103,6 @@ const styles = StyleSheet.create({
   },
   textinfo: {
     color: '#C2C2C2',
-    whiteSpace: 'pre-line',
     textAlign: 'center',
     fontSize: height * 13,
     fontWeight: '500',
