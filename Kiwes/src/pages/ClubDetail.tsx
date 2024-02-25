@@ -11,7 +11,7 @@ import {
 import  Icon  from 'react-native-vector-icons/Ionicons';
 import { RESTAPIBuilder } from '../utils/restapiBuilder';
 import { apiServer } from '../utils/metaData';
-import { Clipboard } from 'react-native';
+import { useClipboard } from '@react-native-clipboard/clipboard';
 import { categoryIcon, categoryList, langList } from '../utils/utils';
 import { height, width } from '../global';
 import ClubDetailSettingModal from '../components/clubdetail/ClubDetailSettingModal';
@@ -37,6 +37,7 @@ const ClubDetail = ({ route, navigation, type }: any) => {
 
   const [clubInfo, setClubInfo] = useState(null);
   const [NickName, setNickNameInfo] = useState(null);
+  const [setString, setClipboardString] = useClipboard();
   
   const image = {
     share: require('../../assets/images/share.png'),
@@ -47,9 +48,9 @@ const ClubDetail = ({ route, navigation, type }: any) => {
 
   const copyToClipboard = () => {
     const clubURL = 'https://kiwes.com/club';
-    Clipboard.setString(clubURL);
+    setClipboardString(clubURL);
     setisShareVisible(true);
-  
+
     setTimeout(() => {
       setisShareVisible(false);
     }, 2000);
@@ -176,7 +177,7 @@ const ClubDetail = ({ route, navigation, type }: any) => {
   const navigateToQnAPage = () => {
     navigation.navigate('QnAPage', { clubId: clubId });
   };
-  const navigateToProile = (memberId: any) => {
+  const navigateToProfile = (memberId: any) => {
     console.log(memberId);
     if(memberId !==0){
       navigation.navigate('OtherUserPage', {memberId: memberId});
@@ -250,7 +251,7 @@ const ClubDetail = ({ route, navigation, type }: any) => {
         <Text style={styles.hostTitle}>호스트 정보</Text>
         <View style={styles.profileContainer}>
           <TouchableOpacity onPress={()=>{
-            navigateToProile(clubInfo.memberInfo.hostId);}}>
+            navigateToProfile(clubInfo.memberInfo.hostId);}}>
           <Image source={{ uri: clubInfo.memberInfo.hostThumbnailImage }} style={styles.profileImage} />
           </TouchableOpacity>
           <Text style={styles.profileText}>{memberInfo.hostNickname}</Text>
@@ -328,7 +329,7 @@ const ClubDetail = ({ route, navigation, type }: any) => {
     </View>
   ); 
 
-  const renderTag = (key: string, type: string) => {
+  const renderTag = (key: string, type: string, index: number) => {
     let text = 'UNDEFINED';
     if (type == 'category'){
       const category = categoryList.find(c => c.key === key);
@@ -337,13 +338,13 @@ const ClubDetail = ({ route, navigation, type }: any) => {
       const lang = langList.find(c => c.key === key);
       text = lang ? lang.text : 'UNDEFINED';
     }
-
+  
     return (
-      <View style={styles.tag2}>
+      <View key={`${type}-${index}`} style={styles.tag2}>
         {type=='category' && <Image
-        resizeMode="contain"
-        source={categoryIcon[key]}
-        style={styles.image}
+          resizeMode="contain"
+          source={categoryIcon[key]}
+          style={styles.image}
         />}
         <Text style={styles.tagText}>
           {text}
@@ -351,51 +352,62 @@ const ClubDetail = ({ route, navigation, type }: any) => {
       </View>
     );
   }
-
+  
   const renderBtn = (tags: string[]) => {
     return (
       <View style={styles.tagContainer2}>
-        {renderTag(tags[0], 'category')}
-        {tags.slice(1).map((tag, index) => {return renderTag(tag, 'lang')})}
+        {tags.map((tag, index) => {
+          return renderTag(tag, index === 0 ? 'category' : 'lang', index);
+        })}
       </View>
     );
   };
-
+  
   const renderQaItem = () => {
     if (!clubInfo || !clubInfo.qnas) {
       return null;
     }
-    return clubInfo.qnas.map((qna, index) => (
-      <View key={index} style={styles.qaItem}>
-        <TouchableOpacity onPress={() => navigateToProile(qna.questionerId)}>
-          <Image source={{uri: qna.questionerImageUrl}} style={styles.qaProfileImage} />
-        </TouchableOpacity>
-        <View style={styles.qaContent}>
-          <Text style={styles.qaNickname}>{qna.questionerNickname}</Text>
-          <Text style={styles.qaText}>{qna.questionContent}</Text>
-          <Text style={styles.qaDateTime}>{qna.questionDate}</Text>
-        </View>
+    return (
+      <View>
+        {clubInfo.qnas.map((qna, index1) => (
+          <View key={index1} style={styles.qaItem}>
+            <TouchableOpacity onPress={() => navigateToProfile(qna.questionerId)}>
+              <Image source={{uri: qna.questionerImageUrl}} key={qna.questionerImageUrl} style={styles.qaProfileImage} />
+            </TouchableOpacity>
+            <View style={styles.qaContent}>
+              <Text style={styles.qaNickname} key={qna.questionerNickname}>{qna.questionerNickname}</Text>
+              <Text style={styles.qaText} key={qna.questionContent}>{qna.questionContent}</Text>
+              <Text style={styles.qaDateTime} key={qna.questionDate}>{qna.questionDate}</Text>
+            </View>
+          </View>
+        ))}
       </View>
-    ));
+    );
   };
+  
+  
+const renderReviewItem = () => {
+  if (!clubInfo || !clubInfo.reviews) {
+    return null;
+  }
+  return (
+    <View>
+      {clubInfo.reviews.map((review, index)=> (
+        <View key={index} style={styles.qaItem}>
+          <TouchableOpacity onPress={() => navigateToProfile(review.reviewerId)} key={review.reviewerId}>
+            <Image source={{uri: review.reviewerImageUrl}} key={review.reviewerImageUrl} style={styles.qaProfileImage} />
+          </TouchableOpacity>
+          <View style={styles.qaContent}>
+            <Text style={styles.qaNickname} key={review.reviewerNickname}>{review.reviewerNickname}</Text>
+            <Text style={styles.qaText} key={review.reviewContent}>{review.reviewContent}</Text>
+            <Text style={styles.qaDateTime} key={review.reviewDate}>{review.reviewDate}</Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+};
 
-  const renderReviewItem = () => {
-    if (!clubInfo || !clubInfo.reviews) {
-      return null;
-    }
-    return clubInfo.reviews.map((review, index) => (
-      <View key={index} style={styles.qaItem}>
-        <TouchableOpacity onPress={()=>navigateToProile(review.reviewerId)}>
-        <Image source={{uri: review.reviewerImageUrl}} style={styles.qaProfileImage} />
-        </TouchableOpacity>
-        <View style={styles.qaContent}>
-          <Text style={styles.qaNickname}>{review.reviewerNickname}</Text>
-          <Text style={styles.qaText}>{review.reviewContent}</Text>
-          <Text style={styles.qaDateTime}>{review.reviewDate}</Text>
-        </View>
-      </View>
-    ));
-  };
 
   return (
     <ScrollView style={styles.container}>

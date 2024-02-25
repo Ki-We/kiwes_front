@@ -48,7 +48,7 @@ export default function Login({navigation}: any) {
         console.log(err);
         AsyncStorage.removeItem('userData');
       });
-    if (result.data.nickName === 'NotSet') {
+    if (result && result.data && result.data.nickName === 'NotSet') {
       navigation.reset({
         index: 0,
         routes: [{name: 'ProfileImageSettingPage'}],
