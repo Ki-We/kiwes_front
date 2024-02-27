@@ -150,7 +150,9 @@ const BoardDefaultList = ({navigateToClub, fetchData, selected, data}: any) => {
 
               <View style={styles.textContainer}>
                 <View>
-                  <Text style={styles.title}>{item.title}</Text>
+                  <Text style={styles.title} numberOfLines={1}>
+                    {item.title}
+                  </Text>
                   <View style={styles.infoContainer}>
                     <Icon
                       name="calendar-outline"
@@ -230,7 +232,7 @@ const styles = StyleSheet.create({
     fontSize: height * 16,
     fontWeight: '500',
     color: 'rgba(0, 0, 0, 1)',
-    marginBottom: height * 5,
+    marginBottom: height * 10,
   },
   infoContainer: {
     paddingBottom: height * 3,
