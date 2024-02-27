@@ -122,7 +122,7 @@ export const translateText: any = {
   보기: 'View',
   '내 모임 모두 보기': 'View All My Meetups',
   '승인 대기': 'Waiting for Approval',
-  '대기 중인 모임 모두 보기': 'View All Waiting Meetups',
+  '대기중인 모임 모두 보기': 'View All Waiting Meetups',
   '내 모임': 'My Meetups',
   '대기 중인 모임': 'Waiting Meetups',
   '채팅 내역이 없습니다': 'There is no chat history',
