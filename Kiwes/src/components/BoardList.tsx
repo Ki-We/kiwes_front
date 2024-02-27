@@ -164,7 +164,9 @@ const BoardList = ({url, navigateToClub, Nothing}: any) => {
 
               <View style={styles.textContainer}>
                 <View>
-                  <Text style={styles.title}>{item.title}</Text>
+                  <Text style={styles.title} numberOfLines={1}>
+                    {item.title}
+                  </Text>
                   <View style={styles.infoContainer}>
                     <Icon
                       name="calendar-outline"

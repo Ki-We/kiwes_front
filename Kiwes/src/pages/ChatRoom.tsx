@@ -66,6 +66,7 @@ const ChatScreen = ({navigation, route}) => {
   const [notice, setNotice] = useState('');
   // const buffer = new Buffer(notice, 'utf-8');
 
+  const [showNotice, setShowNotice] = useState(false);
   const [sendText, setSendText] = useState('');
   const [messages, setMessages] = useState<Chat[]>([
     // {
@@ -417,31 +418,31 @@ const ChatScreen = ({navigation, route}) => {
         />
       </View>
       {/* ///////////////////////////////////////////////////////// 공지 */}
-      <View style={styles.notice}>
-        {/* <View>
-          <Text
-            style={{
-              color: '#8A8A8A',
-              fontSize: height * 18,
-              fontWeight: '600',
-              marginRight: 3,
-            }}>
-            공지
-          </Text>
-        </View> */}
-        <View>
-          <Text
-            numberOfLines={1}
-            ellipsizeMode="tail"
-            style={{
-              color: '#303030',
-              fontSize: 16,
-              fontWeight: '600',
-            }}>
-            aaaaaaaaaaaaaaaaasdaaaaaaaaaaaaaaaaaaaaaaadddsfffffaadaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-          </Text>
-        </View>
-      </View>
+      <TouchableOpacity
+        style={styles.notice}
+        onPress={() => {
+          setShowNotice(!showNotice);
+        }}>
+        <Text
+          style={{
+            color: '#8A8A8A',
+            fontSize: height * 18,
+            fontWeight: '600',
+            marginRight: width * 10,
+          }}>
+          공지
+        </Text>
+        <Text
+          numberOfLines={showNotice ? 0 : 1}
+          style={{
+            flex: 1,
+            color: '#303030',
+            fontSize: height * 16,
+            fontWeight: '600',
+          }}>
+          {notice}
+        </Text>
+      </TouchableOpacity>
       {/* ///////////////////////////////////////////////////////////// */}
       <View style={styles.separator} />
       <TouchableWithoutFeedback>
@@ -816,10 +817,11 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   notice: {
-    height: height * 60,
-    paddingLeft: 5,
+    paddingHorizontal: width * 5,
+    paddingVertical: height * 15,
     alignItems: 'center',
     flexDirection: 'row',
+    justifyContent: 'flex-start',
   },
   image: {
     width: width * 30,
