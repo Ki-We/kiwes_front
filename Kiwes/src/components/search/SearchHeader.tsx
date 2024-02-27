@@ -5,9 +5,13 @@ import {width, height} from '../../global';
 import {TextInput} from 'react-native-gesture-handler';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons';
+import {useSelector} from 'react-redux';
+import {RootState} from '@/slice/RootReducer';
 
 export default function SearchHeader({navigation, doSearch}: any) {
   const [search, setSearch] = useState('');
+  const language = useSelector((state: RootState) => state.language);
+
   return (
     <>
       <View style={styles.header}>
@@ -25,7 +29,9 @@ export default function SearchHeader({navigation, doSearch}: any) {
           <TextInput
             style={styles.input}
             placeholderTextColor={'#8A8A8A'}
-            placeholder="  검색어를 입력하세요"
+            placeholder={
+              language.language == 'KO' ? '  검색어를 입력하세요' : 'Search'
+            }
             onChangeText={text => setSearch(text)}
             onSubmitEditing={() => doSearch(search)}
             returnKeyType="search"

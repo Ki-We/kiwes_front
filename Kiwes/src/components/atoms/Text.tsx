@@ -23,7 +23,7 @@ export default function DefaultFontStack({style, children}: any) {
     if (text === undefined || typeof text != 'string') return text;
     text = text?.replace(/\.\s*$/, '');
 
-    if (language.language == LANGUAGE.EN) {
+    if (language.language === LANGUAGE.EN) {
       return translateText[text] || text;
     }
     return text;
@@ -33,7 +33,7 @@ export default function DefaultFontStack({style, children}: any) {
 
 const styles = StyleSheet.create({
   defaultFont: {
-    fontFamily: 'ChosunCentennial_ttf',
+    fontFamily: 'Pretendard-Medium',
   },
   light: {
     fontFamily: 'Pretendard-Light',
@@ -46,7 +46,6 @@ const styles = StyleSheet.create({
   },
   semibold: {
     fontFamily: 'Pretendard-SemiBold',
-    // fontFamily: 'ChosunCentennial_ttf',
   },
   bold: {
     fontFamily: 'Pretendard-Bold',

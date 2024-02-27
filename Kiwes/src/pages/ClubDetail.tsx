@@ -169,6 +169,14 @@ const ClubDetail = ({route, navigation, type}: any) => {
       console.error('Error while joining club:', error);
     }
   };
+  useEffect(() => {
+    if (isJoined) {
+      setIsModalVisible(true);
+      setTimeout(() => {
+        setIsModalVisible(false);
+      }, 1500);
+    }
+  }, [isJoined]);
 
   const toggleMoreModal = () => {
     setIsMoreModalVisible(prev => !prev);
@@ -273,21 +281,26 @@ const ClubDetail = ({route, navigation, type}: any) => {
 
     return (
       <View style={styles.hostContainer}>
-        <Text style={styles.hostTitle}>호스트 정보</Text>
         <View style={styles.profileContainer}>
-          <TouchableOpacity
-            onPress={() => {
-              navigateToProfile(clubInfo.memberInfo.hostId);
-            }}>
-            <Image
-              source={{uri: clubInfo.memberInfo.hostThumbnailImage}}
-              style={styles.profileImage}
-            />
-          </TouchableOpacity>
-          <Text style={styles.profileText}>{memberInfo.hostNickname}</Text>
+          <View>
+            <Text style={styles.hostTitle}>호스트 정보</Text>
+            <View style={styles.profileDefault}>
+              <TouchableOpacity
+                onPress={() => {
+                  navigateToProfile(clubInfo.memberInfo.hostId);
+                }}>
+                <Image
+                  source={{uri: clubInfo.memberInfo.hostThumbnailImage}}
+                  style={styles.profileImage}
+                />
+              </TouchableOpacity>
+              <Text style={styles.profileText}>{memberInfo.hostNickname}</Text>
+            </View>
+          </View>
+
           <View style={styles.participantContainer}>
+            <Text style={styles.hostText}>참가 인원</Text>
             <View style={styles.participantItem}>
-              <Text style={styles.hostText}>참가 인원</Text>
               <Image source={image.korean} style={styles.imageMargin} />
               <Text style={styles.participantText}>
                 {memberInfo.koreanCount}{' '}
@@ -298,7 +311,7 @@ const ClubDetail = ({route, navigation, type}: any) => {
               </Text>
             </View>
             <View style={styles.limitItem}>
-              <Text style={styles.limitText}>모집 인원</Text>
+              <Text style={styles.hostText}>모집 인원</Text>
               <Text style={styles.participantText2}>
                 {memberInfo.maxPeople > 100 ? '99+' : memberInfo.maxPeople}
               </Text>
@@ -673,6 +686,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: height * 40,
   },
+
+  // 여기부터
   hostContainer: {
     borderTopWidth: 1,
     borderBottomWidth: 1,
@@ -683,82 +698,65 @@ const styles = StyleSheet.create({
     color: '#303030',
     fontSize: height * 12,
     fontWeight: '600',
-    marginTop: height * 5,
+  },
+  profileDefault: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: height * 10,
   },
   profileContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   profileImage: {
     width: width * 50,
     height: height * 50,
-    marginLeft: width * 3,
     borderRadius: 50,
+  },
+  profileText: {
+    marginLeft: width * 5,
+    fontSize: height * 14,
+    color: '#303030',
+    fontWeight: '500',
+    width: width * 120,
+  },
+  participantContainer: {
+    alignItems: 'flex-end',
+    justifyContent: 'center',
   },
   participantItem: {
     flexDirection: 'row',
     alignItems: 'flex-end',
-    marginLeft: width * 55,
+    gap: width * 5,
   },
   participantText: {
     fontSize: height * 16,
     color: '#808080',
-    marginLeft: width * 5,
     fontWeight: '600',
   },
   participantText1: {
     fontSize: height * 16,
     color: '#808080',
-    marginLeft: width * 5,
     fontWeight: '600',
   },
   participantText2: {
     fontSize: height * 16,
     color: '#808080',
-    marginLeft: width * -15,
     alignItems: 'flex-end',
     fontWeight: '600',
     textAlign: 'right',
   },
-  profileText: {
-    fontSize: height * 14,
-    color: '#303030',
-    marginLeft: width * 15,
-    marginTop: height * -7,
-    marginRight: width * 90,
-    fontWeight: '500',
-    width: width * 120,
-  },
-  participantContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: height * -50,
-    marginLeft: width * -70,
-  },
   hostText: {
-    position: 'absolute',
     color: '#303030',
     fontSize: height * 12,
     fontWeight: '600',
-    top: height * -23,
-    marginLeft: width * 35,
-  },
-  limitText: {
-    color: '#303030',
-    fontSize: height * 12,
-    fontWeight: '600',
-    marginLeft: width * -30,
-  },
-  participantInfo: {
-    flexDirection: 'row',
-    marginLeft: 'auto',
-    alignItems: 'flex-end',
+    marginBottom: height * 3,
   },
   limitItem: {
-    marginLeft: width * -17,
-    marginTop: height * 100,
     color: '#303030',
+    marginTop: height * 15,
   },
+  // 여기까지
   clubInfoContainer: {
     padding: height * 13,
   },
@@ -886,6 +884,7 @@ const styles = StyleSheet.create({
     fontSize: height * 16,
     fontWeight: 'bold',
     color: '#303030',
+    textAlign: 'center',
   },
   greenBtn: {
     fontSize: height * 16,

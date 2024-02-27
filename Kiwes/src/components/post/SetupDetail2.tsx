@@ -33,7 +33,7 @@ export default function SetupDetail2({post, setPost}: any) {
               cost == -1
                 ? language.language == LANGUAGE.KO
                   ? '인당 예상비용을 입력해주세요.'
-                  : 'The number of participants'
+                  : 'Enter the estimated cost/n'
                 : cost.toString()
             }
             keyboardType="number-pad"

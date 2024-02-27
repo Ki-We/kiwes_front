@@ -1,13 +1,23 @@
 import React from 'react';
 import RoundCategory from '../atoms/roundCategory';
 import {StyleSheet, View} from 'react-native';
-import {categoryList, langList} from '../../utils/utils';
+import {LANGUAGE, categoryList, langList} from '../../utils/utils';
 import Swiper from 'react-native-swiper';
 import RoundBtn from '../atoms/roundBtn';
 import {height, width} from '../../global';
+import {useSelector} from 'react-redux';
+import {RootState} from '@/slice/RootReducer';
 
 export default function ClubListDetail({type, navigation}: any) {
-  const swiperHeight = type == 'category' && width < 0.97 ? 200 : 150;
+  const language = useSelector((state: RootState) => state.language);
+  let swiperHeight = 150;
+  if (type == 'category') {
+    if (language.language === LANGUAGE.EN) {
+      swiperHeight += 80;
+    } else if (width < 0.97) {
+      swiperHeight += swiperHeight + 50;
+    }
+  }
   const allList = type == 'category' ? categoryList : langList;
   const splitIndex = Math.ceil(allList.length / 2);
   const secondRowCategoryList = allList.slice(splitIndex);
@@ -60,7 +70,10 @@ export default function ClubListDetail({type, navigation}: any) {
   };
   let style = styles.container2;
   if (type == 'category') {
-    style = width < 0.97 ? styles.container_small : styles.container;
+    style =
+      width < 0.97 || language.language == LANGUAGE.EN
+        ? styles.container_small
+        : styles.container;
   }
   return (
     <>
@@ -128,7 +141,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#DADADA',
     marginHorizontal: -1,
     borderRadius: 5,
-    top: 15,
+    top: height * 30,
   },
   paginationRectActive: {
     backgroundColor: '#9BD23C',
