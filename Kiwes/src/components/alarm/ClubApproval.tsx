@@ -150,7 +150,7 @@ const ClubApproval = ({route, navigation}: any) => {
                         handleOpenAcceptModal({item});
                       }
                     }}>
-                    <Text style={styles.button}> 승인 </Text>
+                    <Text style={styles.button}>승인</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
                     onPress={() => {
@@ -158,7 +158,7 @@ const ClubApproval = ({route, navigation}: any) => {
                         handleOpenRefuseModal({item});
                       }
                     }}>
-                    <Text style={styles.button}> 거절 </Text>
+                    <Text style={styles.button}>거절</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
 const Nothing = ({text}: {text: string}, {title}: {title: string}) => {
   return (
     <>
-      <Text style={styles.title}> {title}</Text>
+      <Text style={styles.title}>{title}</Text>
       <NothingShow title={text} styleKiwe={styleKiwe} />
     </>
   );

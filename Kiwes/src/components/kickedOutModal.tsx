@@ -33,9 +33,11 @@ const KickModal = ({kickedData, onClose, kickUser, clubId}) => {
       }}>
       <View style={styles.modalContainer}>
         <View style={styles.TextContainer}>
-          <Text style={styles.modalNotion}>!무분별한 퇴장을 삼가주세요!</Text>
-          <Text style={styles.modalTitle}>{kickedData.name} 님을</Text>
-          <Text style={styles.modalText}>퇴장 하시겠습니까?</Text>
+          <Text style={styles.modalNotion}>
+            무분별한 내보내기를 삼가 주세요.
+          </Text>
+          <Text style={styles.modalTitle}>{kickedData.name}님을</Text>
+          <Text style={styles.modalText}>내보내시겠습니까?</Text>
         </View>
         <View style={styles.modalButtonGroup}>
           <TouchableOpacity
@@ -98,9 +100,8 @@ const styles = StyleSheet.create({
   modalNotion: {
     textAlign: 'center',
     color: '#F00',
-
     fontWeight: '600',
-    fontSize: height * 18,
+    fontSize: height * 16,
     marginBottom: height * 15,
   },
   modalTitle: {
