@@ -4,6 +4,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Image,
+  Text as BasicText,
   StyleSheet,
   Linking,
 } from 'react-native';
@@ -44,14 +45,14 @@ const LanguageSelectPage = ({navigation}) => {
           ? styles.languageSelected
           : styles.languageSelectButton
       }>
-      <Text
+      <BasicText
         style={
           selectedLanguage === language
             ? [styles.languageSelectButtonText, {color: '#FFFFFF'}]
             : styles.languageSelectButtonText
         }>
         {language === 'KO' ? '한' : 'E'}
-      </Text>
+      </BasicText>
     </TouchableOpacity>
   );
 
@@ -193,7 +194,7 @@ const styles = StyleSheet.create({
     color: '#9BD23C',
     fontSize: height * 41,
     fontWeight: '600',
-    fontFamily: 'BMJUA_ttf',
+    fontFamily: 'ChosunCentennial_ttf',
   },
   languageTextContainer: {
     flexDirection: 'row',
