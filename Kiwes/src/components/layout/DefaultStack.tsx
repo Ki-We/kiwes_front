@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import LanguageSelectPage from '../../pages/LanguageSelectPage';
 import Login from '../../pages/Login';
 import BottomTab from './BottomTab';
 import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
@@ -23,6 +24,7 @@ import NationDetailSettingPage from '../../pages/basicSetting/NationDetailSettin
 import InterestLanguageSettingPage from '../../pages/basicSetting/InterestLanguageSettingPage';
 import InterestTopicSettingPage from '../../pages/basicSetting/InterestTopicSettingPage';
 import ProfileSettingPage from '../../pages/ProfileSettingPage';
+import LanguageSettingPage from '../../pages/LanguageSettingPage';
 import ChatTest from '../../pages/ChatTest';
 import ChatRoom from '../../pages/ChatRoom';
 import UploadImageTest from '../UploadImageTest';
@@ -49,8 +51,12 @@ const LoginStack = () => {
         },
       }}>
       <Stack.Navigator
-        initialRouteName="Login"
+        initialRouteName="LanguageSelectPage"
         screenOptions={{headerShown: false}}>
+        <Stack.Screen
+          name="LanguageSelectPage"
+          component={LanguageSelectPage}
+        />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="BottomTab" component={BottomTab} />
 
@@ -84,6 +90,10 @@ const LoginStack = () => {
         <Stack.Screen
           name="InterestTopicSettingPage"
           component={InterestTopicSettingPage}
+        />
+        <Stack.Screen
+          name="LanguageSettingPage"
+          component={LanguageSettingPage}
         />
         <Stack.Screen name="Search" component={Search} />
         <Stack.Screen name="WishPage" component={WishPage} />
