@@ -28,10 +28,14 @@ import ChatRoom from '../../pages/ChatRoom';
 import UploadImageTest from '../UploadImageTest';
 import OtherUserPage from '../../pages/OtherUserPage';
 import CorrectionPage from '../../pages/CorrectionPage';
+import {useDispatch} from 'react-redux';
+import {setLanguage} from '@/slice/LanguageSlice';
 
 const LoginStack = () => {
   useEffect(() => {
     checkLoginState();
+
+    getLanguage();
   }, []);
 
   const checkLoginState = async () => {
@@ -39,6 +43,14 @@ const LoginStack = () => {
     console.log('UserData : ', userData);
   };
   const Stack = createStackNavigator();
+
+  const dispatch = useDispatch();
+  const getLanguage = async () => {
+    let language = await AsyncStorage.getItem('language');
+    if (!language) language = 'EN';
+
+    dispatch(setLanguage({language}));
+  };
   return (
     <NavigationContainer
       theme={{
