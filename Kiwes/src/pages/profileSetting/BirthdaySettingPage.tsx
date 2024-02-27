@@ -1,14 +1,12 @@
 import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Pressable,
-  StyleSheet,
-} from 'react-native';
+import {View, TouchableOpacity, Pressable, StyleSheet} from 'react-native';
+import Text from '@components/atoms/Text';
 import {width, height} from '../../global';
 import backIcon from 'react-native-vector-icons/Ionicons';
 import DatePicker from 'react-native-date-picker';
+import {LANGUAGE} from '@/utils/utils';
+import {useSelector} from 'react-redux';
+import {RootState} from '@/slice/RootReducer';
 
 const BirthdaySettingPage = ({route, navigation}) => {
   const {nickname, gender} = route.params;
@@ -16,6 +14,7 @@ const BirthdaySettingPage = ({route, navigation}) => {
   const [open, setOpen] = useState(false);
   const [checkStatus, setCheckStatus] = useState(false);
   const [birthday, setBirthday] = useState('');
+  const language = useSelector((state: RootState) => state.language);
 
   const handleNext = () => {
     navigation.navigate('IntroduceSettingPage', {
@@ -72,6 +71,11 @@ const BirthdaySettingPage = ({route, navigation}) => {
           open={open}
           mode="date"
           date={date}
+          title={
+            language.language == LANGUAGE.KO ? '날짜 선택' : 'Select the Date'
+          }
+          confirmText={language.language == LANGUAGE.KO ? '확인' : 'Confirm'}
+          cancelText={language.language == LANGUAGE.KO ? '취소' : 'Cancel'}
           onConfirm={date => {
             setDate(date);
             setBirthday(

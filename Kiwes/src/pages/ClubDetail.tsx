@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import Text from '@components/atoms/Text';
 import {
   View,
@@ -8,17 +8,20 @@ import {
   ScrollView,
   Modal,
 } from 'react-native';
-import  Icon  from 'react-native-vector-icons/Ionicons';
-import { RESTAPIBuilder } from '../utils/restapiBuilder';
-import { apiServer } from '../utils/metaData';
-import { Clipboard } from 'react-native';
-import { categoryIcon, categoryList, langList } from '../utils/utils';
-import { height, width } from '../global';
+import Icon from 'react-native-vector-icons/Ionicons';
+import {RESTAPIBuilder} from '../utils/restapiBuilder';
+import {apiServer} from '../utils/metaData';
+import {useClipboard} from '@react-native-clipboard/clipboard';
+import {LANGUAGE, categoryIcon, categoryList, langList} from '../utils/utils';
+import {height, width} from '../global';
 import ClubDetailSettingModal from '../components/clubdetail/ClubDetailSettingModal';
-import { renderLocationDetail } from '../components/clubdetail/renderLocationDetail';
+import {renderLocationDetail} from '../components/clubdetail/renderLocationDetail';
+import {RootState} from '@/slice/RootReducer';
+import {useSelector} from 'react-redux';
 
-const ClubDetail = ({ route, navigation, type }: any) => {
-  const { clubId } = route.params;
+const ClubDetail = ({route, navigation, type}: any) => {
+  const language = useSelector((state: RootState) => state.language);
+  const {clubId} = route.params;
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
 
@@ -37,7 +40,8 @@ const ClubDetail = ({ route, navigation, type }: any) => {
 
   const [clubInfo, setClubInfo] = useState(null);
   const [NickName, setNickNameInfo] = useState(null);
-  
+  const [setString, setClipboardString] = useClipboard();
+
   const image = {
     share: require('../../assets/images/share.png'),
     more: require('../../assets/images/more.png'),
@@ -47,9 +51,9 @@ const ClubDetail = ({ route, navigation, type }: any) => {
 
   const copyToClipboard = () => {
     const clubURL = 'https://kiwes.com/club';
-    Clipboard.setString(clubURL);
+    setClipboardString(clubURL);
     setisShareVisible(true);
-  
+
     setTimeout(() => {
       setisShareVisible(false);
     }, 2000);
@@ -59,30 +63,37 @@ const ClubDetail = ({ route, navigation, type }: any) => {
     setisShareVisible(false);
   };
 
-  const fetchClubDetail = async (clubId) => {
+  const fetchClubDetail = async clubId => {
     try {
-      const response = await new RESTAPIBuilder(`${apiServer}/api/v1/club/info/detail/${clubId}`, 'GET')
+      const response = await new RESTAPIBuilder(
+        `${apiServer}/api/v1/club/info/detail/${clubId}`,
+        'GET',
+      )
         .setNeedToken(true)
         .build()
         .run();
-        console.log(response.data);
-        setClubInfo(response.data);
-        setLikeCount(response.data.baseInfo.heartCount);
-        setIsLiked(response.data.isHeart);
-        console.log(response.data)
+      console.log(response.data);
+      setClubInfo(response.data);
+      setLikeCount(response.data.baseInfo.heartCount);
+      setIsLiked(response.data.isHeart);
+      console.log(response.data);
     } catch (error) {
       console.error('Error fetching club detail:', error);
     }
   };
-  
+
   useEffect(() => {
-    console.log('clubId useEffect')
+    console.log('clubId useEffect');
     fetchClubDetail(clubId);
   }, [clubId]);
 
   useEffect(() => {
-    console.log("nickname, clubinfo useeffect")
-    if (NickName && clubInfo && NickName.nickName === clubInfo.memberInfo.hostNickname) {
+    console.log('nickname, clubinfo useeffect');
+    if (
+      NickName &&
+      clubInfo &&
+      NickName.nickName === clubInfo.memberInfo.hostNickname
+    ) {
       setIsAdminMode(true);
     } else {
       setIsAdminMode(false);
@@ -95,13 +106,13 @@ const ClubDetail = ({ route, navigation, type }: any) => {
         .setNeedToken(true)
         .build()
         .run();
-        setNickNameInfo(response.data);
-        console.log(response.data);
+      setNickNameInfo(response.data);
+      console.log(response.data);
     } catch (error) {
       console.error('Error 닉네임:', error);
     }
   };
-  
+
   useEffect(() => {
     fetchNickName(NickName);
   }, []);
@@ -118,46 +129,57 @@ const ClubDetail = ({ route, navigation, type }: any) => {
   const isRecruitmentComplete = () => {
     if (!clubInfo) {
       return false;
-  }
-  const { memberInfo, baseInfo } = clubInfo;
-  const totalParticipants = memberInfo.koreanCount + memberInfo.foreignerCount;
-  const maxParticipants = memberInfo.maxPeople;
-  const isDeadlinePassed = checkRecruitmentDate(baseInfo.dateInfo);
-  
-  return totalParticipants >= maxParticipants || isDeadlinePassed;
+    }
+    const {memberInfo, baseInfo} = clubInfo;
+    const totalParticipants =
+      memberInfo.koreanCount + memberInfo.foreignerCount;
+    const maxParticipants = memberInfo.maxPeople;
+    const isDeadlinePassed = checkRecruitmentDate(baseInfo.dateInfo);
+
+    return totalParticipants >= maxParticipants || isDeadlinePassed;
   };
 
   const toggleJoin = async () => {
     fetchClubDetail(clubId);
-      try {
-        if (clubInfo.isApproval) {
-          const response = await new RESTAPIBuilder(`${apiServer}/api/v1/club/application/${clubId}`, 'DELETE')
-            .setNeedToken(true)
-            .build()
-            .run();
-          setIsJoined(false);
-          setCurrentParticipants((prevCount) => prevCount - 1);
-        } else {
-          const response = await new RESTAPIBuilder(`${apiServer}/api/v1/club/application/${clubId}`, 'POST')
-            .setNeedToken(true)
-            .build()
-            .run();
-          isApproval();
-          setIsJoined(true);
-          setCurrentParticipants((prevCount) => prevCount + 1);
-        } fetchClubDetail(clubId);
-      } catch (error) {
-        console.error('Error while joining club:', error);
+    try {
+      if (clubInfo.isApproval) {
+        const response = await new RESTAPIBuilder(
+          `${apiServer}/api/v1/club/application/${clubId}`,
+          'DELETE',
+        )
+          .setNeedToken(true)
+          .build()
+          .run();
+        setIsJoined(false);
+        setCurrentParticipants(prevCount => prevCount - 1);
+      } else {
+        const response = await new RESTAPIBuilder(
+          `${apiServer}/api/v1/club/application/${clubId}`,
+          'POST',
+        )
+          .setNeedToken(true)
+          .build()
+          .run();
+        isApproval();
+        setIsJoined(true);
+        setCurrentParticipants(prevCount => prevCount + 1);
       }
+      fetchClubDetail(clubId);
+    } catch (error) {
+      console.error('Error while joining club:', error);
+    }
   };
 
   const toggleMoreModal = () => {
-    setIsMoreModalVisible((prev) => !prev);
+    setIsMoreModalVisible(prev => !prev);
   };
 
   const DeleteClub = async () => {
     try {
-      await new RESTAPIBuilder(`${apiServer}/api/v1/club/article/${clubId}`, 'DELETE')
+      await new RESTAPIBuilder(
+        `${apiServer}/api/v1/club/article/${clubId}`,
+        'DELETE',
+      )
         .setNeedToken(true)
         .build()
         .run();
@@ -168,30 +190,26 @@ const ClubDetail = ({ route, navigation, type }: any) => {
   };
 
   const navigateToCorrection = () => {
-    navigation.navigate('CorrectionPage', { baseInfo: clubInfo.baseInfo });
+    navigation.navigate('CorrectionPage', {baseInfo: clubInfo.baseInfo});
   };
   const navigateToReviewPage = () => {
-    navigation.navigate('ReviewPage', { clubId: clubId });
+    navigation.navigate('ReviewPage', {clubId: clubId});
   };
   const navigateToQnAPage = () => {
-    navigation.navigate('QnAPage', { clubId: clubId });
+    navigation.navigate('QnAPage', {clubId: clubId});
   };
-  const navigateToProile = (memberId: any) => {
+  const navigateToProfile = (memberId: any) => {
     console.log(memberId);
-    if(memberId !==0){
+    if (memberId !== 0) {
       navigation.navigate('OtherUserPage', {memberId: memberId});
     }
-    
   };
   const toggleLike = async () => {
     try {
-      setIsLiked((prev) => !prev);
-      setLikeCount((prevCount) => (isLiked ? prevCount - 1 : prevCount + 1));
+      setIsLiked(prev => !prev);
+      setLikeCount(prevCount => (isLiked ? prevCount - 1 : prevCount + 1));
       const apiUrl = `${apiServer}/api/v1/heart/${clubId}`;
-      await new RESTAPIBuilder(
-        apiUrl,
-        !isLiked ? 'PUT' : 'DELETE',
-      )
+      await new RESTAPIBuilder(apiUrl, !isLiked ? 'PUT' : 'DELETE')
         .setNeedToken(true)
         .build()
         .run();
@@ -210,18 +228,26 @@ const ClubDetail = ({ route, navigation, type }: any) => {
         {renderBtn(baseInfo.tags)}
         <View style={styles.sectionContainer}>
           {renderSection('모임 날짜', baseInfo.date)}
-          {renderSection('모임 마감', baseInfo.dueTo)}
+          {renderSection('모집 마감', baseInfo.dueTo)}
           {renderSection('인당 예상비용', `₩${baseInfo.cost.toLocaleString()}`)}
           {renderSection('성별', baseInfo.gender)}
-         
         </View>
         <View style={styles.sectionLocationContainer}>
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>장소</Text>
-            <View style={[styles.roundedBox,{width: baseInfo.locationKeyword.length >= 6 ? width*250 : width*70}]}>
-          <Text style={styles.sectionText}>{baseInfo.locationKeyword}</Text>
+            <View
+              style={[
+                styles.roundedBox,
+                {
+                  width:
+                    baseInfo.locationKeyword.length >= 6
+                      ? width * 250
+                      : width * 70,
+                },
+              ]}>
+              <Text style={styles.sectionText}>{baseInfo.locationKeyword}</Text>
+            </View>
           </View>
-        </View>        
         </View>
       </View>
     );
@@ -249,22 +275,33 @@ const ClubDetail = ({ route, navigation, type }: any) => {
       <View style={styles.hostContainer}>
         <Text style={styles.hostTitle}>호스트 정보</Text>
         <View style={styles.profileContainer}>
-          <TouchableOpacity onPress={()=>{
-            navigateToProile(clubInfo.memberInfo.hostId);}}>
-          <Image source={{ uri: clubInfo.memberInfo.hostThumbnailImage }} style={styles.profileImage} />
+          <TouchableOpacity
+            onPress={() => {
+              navigateToProfile(clubInfo.memberInfo.hostId);
+            }}>
+            <Image
+              source={{uri: clubInfo.memberInfo.hostThumbnailImage}}
+              style={styles.profileImage}
+            />
           </TouchableOpacity>
           <Text style={styles.profileText}>{memberInfo.hostNickname}</Text>
           <View style={styles.participantContainer}>
             <View style={styles.participantItem}>
               <Text style={styles.hostText}>참가 인원</Text>
               <Image source={image.korean} style={styles.imageMargin} />
-              <Text style={styles.participantText}>{memberInfo.koreanCount}  </Text>
+              <Text style={styles.participantText}>
+                {memberInfo.koreanCount}{' '}
+              </Text>
               <Image source={image.foreigner} />
-              <Text style={styles.participantText1}>{memberInfo.foreignerCount}</Text>
+              <Text style={styles.participantText1}>
+                {memberInfo.foreignerCount}
+              </Text>
             </View>
             <View style={styles.limitItem}>
               <Text style={styles.limitText}>모집 인원</Text>
-              <Text style={styles.participantText2}>{memberInfo.maxPeople>100? '99+' : memberInfo.maxPeople}</Text>
+              <Text style={styles.participantText2}>
+                {memberInfo.maxPeople > 100 ? '99+' : memberInfo.maxPeople}
+              </Text>
             </View>
           </View>
         </View>
@@ -272,7 +309,7 @@ const ClubDetail = ({ route, navigation, type }: any) => {
     );
   };
 
-  const checkRecruitmentDate = (dateInfo) => {
+  const checkRecruitmentDate = dateInfo => {
     const currentDate = new Date();
     const dueToDate = new Date(dateInfo[1]);
     return currentDate > dueToDate;
@@ -326,11 +363,11 @@ const ClubDetail = ({ route, navigation, type }: any) => {
         <Text style={styles.sectionText}>{text}</Text>
       </View>
     </View>
-  ); 
+  );
 
-  const renderTag = (key: string, type: string) => {
+  const renderTag = (key: string, type: string, index: number) => {
     let text = 'UNDEFINED';
-    if (type == 'category'){
+    if (type == 'category') {
       const category = categoryList.find(c => c.key === key);
       text = category ? category.simple : 'UNDEFINED';
     } else {
@@ -339,24 +376,25 @@ const ClubDetail = ({ route, navigation, type }: any) => {
     }
 
     return (
-      <View style={styles.tag2}>
-        {type=='category' && <Image
-        resizeMode="contain"
-        source={categoryIcon[key]}
-        style={styles.image}
-        />}
-        <Text style={styles.tagText}>
-          {text}
-        </Text>
+      <View key={`${type}-${index}`} style={styles.tag2}>
+        {type == 'category' && (
+          <Image
+            resizeMode="contain"
+            source={categoryIcon[key]}
+            style={styles.image}
+          />
+        )}
+        <Text style={styles.tagText}>{text}</Text>
       </View>
     );
-  }
+  };
 
   const renderBtn = (tags: string[]) => {
     return (
       <View style={styles.tagContainer2}>
-        {renderTag(tags[0], 'category')}
-        {tags.slice(1).map((tag, index) => {return renderTag(tag, 'lang')})}
+        {tags.map((tag, index) => {
+          return renderTag(tag, index === 0 ? 'category' : 'lang', index);
+        })}
       </View>
     );
   };
@@ -365,36 +403,67 @@ const ClubDetail = ({ route, navigation, type }: any) => {
     if (!clubInfo || !clubInfo.qnas) {
       return null;
     }
-    return clubInfo.qnas.map((qna, index) => (
-      <View key={index} style={styles.qaItem}>
-        <TouchableOpacity onPress={() => navigateToProile(qna.questionerId)}>
-          <Image source={{uri: qna.questionerImageUrl}} style={styles.qaProfileImage} />
-        </TouchableOpacity>
-        <View style={styles.qaContent}>
-          <Text style={styles.qaNickname}>{qna.questionerNickname}</Text>
-          <Text style={styles.qaText}>{qna.questionContent}</Text>
-          <Text style={styles.qaDateTime}>{qna.questionDate}</Text>
-        </View>
+    return (
+      <View>
+        {clubInfo.qnas.map((qna, index1) => (
+          <View key={index1} style={styles.qaItem}>
+            <TouchableOpacity
+              onPress={() => navigateToProfile(qna.questionerId)}>
+              <Image
+                source={{uri: qna.questionerImageUrl}}
+                key={qna.questionerImageUrl}
+                style={styles.qaProfileImage}
+              />
+            </TouchableOpacity>
+            <View style={styles.qaContent}>
+              <Text style={styles.qaNickname} key={qna.questionerNickname}>
+                {qna.questionerNickname}
+              </Text>
+              <Text style={styles.qaText} key={qna.questionContent}>
+                {qna.questionContent}
+              </Text>
+              <Text style={styles.qaDateTime} key={qna.questionDate}>
+                {qna.questionDate}
+              </Text>
+            </View>
+          </View>
+        ))}
       </View>
-    ));
+    );
   };
 
   const renderReviewItem = () => {
     if (!clubInfo || !clubInfo.reviews) {
       return null;
     }
-    return clubInfo.reviews.map((review, index) => (
-      <View key={index} style={styles.qaItem}>
-        <TouchableOpacity onPress={()=>navigateToProile(review.reviewerId)}>
-        <Image source={{uri: review.reviewerImageUrl}} style={styles.qaProfileImage} />
-        </TouchableOpacity>
-        <View style={styles.qaContent}>
-          <Text style={styles.qaNickname}>{review.reviewerNickname}</Text>
-          <Text style={styles.qaText}>{review.reviewContent}</Text>
-          <Text style={styles.qaDateTime}>{review.reviewDate}</Text>
-        </View>
+    return (
+      <View>
+        {clubInfo.reviews.map((review, index) => (
+          <View key={index} style={styles.qaItem}>
+            <TouchableOpacity
+              onPress={() => navigateToProfile(review.reviewerId)}
+              key={review.reviewerId}>
+              <Image
+                source={{uri: review.reviewerImageUrl}}
+                key={review.reviewerImageUrl}
+                style={styles.qaProfileImage}
+              />
+            </TouchableOpacity>
+            <View style={styles.qaContent}>
+              <Text style={styles.qaNickname} key={review.reviewerNickname}>
+                {review.reviewerNickname}
+              </Text>
+              <Text style={styles.qaText} key={review.reviewContent}>
+                {review.reviewContent}
+              </Text>
+              <Text style={styles.qaDateTime} key={review.reviewDate}>
+                {review.reviewDate}
+              </Text>
+            </View>
+          </View>
+        ))}
       </View>
-    ));
+    );
   };
 
   return (
@@ -403,11 +472,17 @@ const ClubDetail = ({ route, navigation, type }: any) => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name="arrow-back" size={height * 30} color="#303030" />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => { copyToClipboard(); }} style={styles.shareContainer}>
+        <TouchableOpacity
+          onPress={() => {
+            copyToClipboard();
+          }}
+          style={styles.shareContainer}>
           <Image source={image.share} />
         </TouchableOpacity>
         {isAdminMode && (
-          <TouchableOpacity onPress={() => setIsMoreModalVisible(true)} style={styles.moreContainer}>
+          <TouchableOpacity
+            onPress={() => setIsMoreModalVisible(true)}
+            style={styles.moreContainer}>
             <Image source={image.more} style={styles.more} />
           </TouchableOpacity>
         )}
@@ -420,7 +495,10 @@ const ClubDetail = ({ route, navigation, type }: any) => {
       />
       <View style={styles.imageContent}>
         {clubInfo && (
-          <Image source={{uri: clubInfo.baseInfo.thumbnailImageUrl}} style={styles.clubImage} />
+          <Image
+            source={{uri: clubInfo.baseInfo.thumbnailImageUrl}}
+            style={styles.clubImage}
+          />
         )}
       </View>
       <View style={styles.content}>
@@ -434,58 +512,70 @@ const ClubDetail = ({ route, navigation, type }: any) => {
         </TouchableOpacity>
         <Text style={styles.likeCount}>{likeCount}</Text>
       </View>
-      <View style={styles.sectionContainer}>
-      {renderClubDetail()}
+      <View style={styles.sectionContainer}>{renderClubDetail()}</View>
+      {renderHostDetail()}
+      <View style={styles.clubInfoContainer}>
+        <Text style={styles.clubInfoTitle}>모임 소개</Text>
+        {renderClubContent()}
       </View>
-        {renderHostDetail()}
-        <View style={styles.clubInfoContainer}>
-          <Text style={styles.clubInfoTitle}>모임 소개</Text>
-          {renderClubContent()}
-        </View>
-        <View style={styles.locationContainer}>
-          <Text style={styles.clubInfoTitle}>장소</Text>
-          {clubInfo && renderLocationDetail(clubInfo.baseInfo)}
-        </View>
-        <View style={styles.qnaContainer}>
+      <View style={styles.locationContainer}>
+        <Text style={styles.clubInfoTitle}>장소</Text>
+        {clubInfo && renderLocationDetail(clubInfo.baseInfo)}
+      </View>
+      <View style={styles.qnaContainer}>
         <Text style={styles.clubInfoTitle}>Q&A</Text>
         {renderQaItem()}
         <TouchableOpacity onPress={navigateToQnAPage}>
-          <Text style={styles.seeAllButton}>Q&A 모두 보기 &gt;</Text>
+          <Text style={styles.seeAllButton}>
+            {language.language == LANGUAGE.KO
+              ? 'Q&A 모두 보기'
+              : 'View all Q&A'}{' '}
+            &gt;
+          </Text>
         </TouchableOpacity>
       </View>
       <View style={styles.reviewContainer}>
         <Text style={styles.clubInfoTitle}>후기</Text>
         {renderReviewItem()}
         <TouchableOpacity onPress={navigateToReviewPage}>
-          <Text style={styles.seeAllButton}>후기 모두 보기 &gt;</Text>
+          <Text style={styles.seeAllButton}>
+            {language.language == LANGUAGE.KO
+              ? '후기 모두 보기'
+              : 'View all Reviews'}{' '}
+            &gt;
+          </Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.joinContainer}>
-      {renderJoinButton()}
-      </View>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={isModalVisible}>
+      <View style={styles.joinContainer}>{renderJoinButton()}</View>
+      <Modal animationType="slide" transparent={true} visible={isModalVisible}>
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Text style={styles.modalText}>
-              <Text style={styles.greenBtn}>참여 신청</Text>이 완료되었습니다!
+              {language.language == LANGUAGE.KO ? (
+                <>
+                  <Text style={styles.greenBtn}>참여 신청</Text>
+                  <Text>이 완료되었습니다!</Text>
+                </>
+              ) : (
+                <>
+                  <Text style={styles.greenBtn}>Your Request{'\n'}</Text>
+                  <Text>has been completed.</Text>
+                </>
+              )}
             </Text>
           </View>
         </View>
       </Modal>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={isShareVisible}>
+      <Modal animationType="slide" transparent={true} visible={isShareVisible}>
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Text style={styles.modalText}>
               <Text style={styles.shareBold}>클립보드 저장 완료!</Text>
             </Text>
             <Text style={styles.modalText}>
-            <Text style={styles.shareText}>친구들과 함께 모임을 즐겨보세요!</Text>
+              <Text style={styles.shareText}>
+                친구들과 함께 모임을 즐겨보세요!
+              </Text>
             </Text>
           </View>
         </View>
@@ -749,7 +839,7 @@ const styles = StyleSheet.create({
     color: '#303030',
     marginBottom: height * 15,
   },
-  reviewContainer:{
+  reviewContainer: {
     padding: height * 13,
   },
   joinButton: {
@@ -843,7 +933,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: height * 20,
     paddingHorizontal: width * 8,
-    marginRight: width * 10
+    marginRight: width * 10,
   },
   tagText: {
     color: '#303030',
@@ -862,10 +952,10 @@ const styles = StyleSheet.create({
   },
   mapContainer: {
     marginTop: height * 10,
-    borderWidth: 4, 
-    borderColor: '#9BD23C', 
-    borderRadius: 30, 
-    overflow: 'hidden'
+    borderWidth: 4,
+    borderColor: '#9BD23C',
+    borderRadius: 30,
+    overflow: 'hidden',
   },
   image: {
     marginRight: width * 3,

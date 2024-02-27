@@ -4,7 +4,6 @@ import {
   SafeAreaView,
   ScrollView,
   View,
-  Text,
   TextInput,
   Image,
   StyleSheet,
@@ -13,6 +12,7 @@ import {
   TouchableWithoutFeedback,
   TouchableOpacity,
 } from 'react-native';
+import Text from '@components/atoms/Text';
 import RNFS from 'react-native-fs';
 import {apiServer} from '../utils/metaData';
 import {RESTAPIBuilder} from '../utils/restapiBuilder';

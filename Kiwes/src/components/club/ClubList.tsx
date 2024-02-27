@@ -173,17 +173,21 @@ export default function ClubList({navigation, selectedItem, type}: any) {
                 console.log('close button');
                 setModalVisible(false);
               }}>
-              <Text
-                style={[
-                  [
-                    styles.selectionText,
-                    type == 'category'
-                      ? styles.categorySelectionText
-                      : styles.languageSelectionText,
-                  ],
-                ]}>
-                {type == 'category' ? '카테고리' : '언어'} 선택
-              </Text>
+              {type == 'category' ? (
+                <Text
+                  style={[
+                    [styles.selectionText, styles.categorySelectionText],
+                  ]}>
+                  카테고리 선택
+                </Text>
+              ) : (
+                <Text
+                  style={[
+                    [styles.selectionText, styles.languageSelectionText],
+                  ]}>
+                  언어 선택
+                </Text>
+              )}
               <Image source={require('../../../assets/images/close.png')} />
             </Pressable>
             <View style={styles.modalCategoriesContainer}>
@@ -214,7 +218,6 @@ export default function ClubList({navigation, selectedItem, type}: any) {
                       <Pressable
                         key={item.key}
                         onPress={() => {
-                          console.log('선택!!');
                           setSelected(item.key);
                           setModalVisible(false);
                         }}>

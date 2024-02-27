@@ -2,11 +2,14 @@ import React, {useState} from 'react';
 import RoundBtn from '../atoms/roundBtn';
 import {StyleSheet, View} from 'react-native';
 import {height, width} from '../../global';
-import {langList} from '../../utils/utils';
+import {LANGUAGE, langList} from '../../utils/utils';
 import {FlatList} from 'react-native-gesture-handler';
 import Text from '@components/atoms/Text';
+import {useSelector} from 'react-redux';
+import {RootState} from '@/slice/RootReducer';
 
 export default function SetupLang({post, setPost}: any) {
+  const language = useSelector((state: RootState) => state.language);
   const [selectedLang, setSelectedLang] = useState<String[]>(post.languages);
   const checkLang = () => {
     if (selectedLang.length >= 2) return false;
@@ -30,7 +33,10 @@ export default function SetupLang({post, setPost}: any) {
     <>
       <View style={styles.text}>
         <Text>
-          <Text style={styles.highlight}>*</Text> 최대 2개 선택 가능
+          <Text style={styles.highlight}>*</Text>{' '}
+          {language.language == LANGUAGE.KO
+            ? '최대 2개 선택 가능'
+            : 'Maximum two languages'}
         </Text>
       </View>
       <View style={styles.container}>

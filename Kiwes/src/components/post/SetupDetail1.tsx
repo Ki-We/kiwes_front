@@ -10,6 +10,9 @@ import {FlatList, TextInput} from 'react-native-gesture-handler';
 import {GOOGLE_WEB_API_KIEY} from '../../utils/googleConfig';
 import {RESTAPIBuilder} from '../../utils/restapiBuilder';
 import {LocationType} from '../../utils/commonInterface';
+import {RootState} from '@/slice/RootReducer';
+import {useSelector} from 'react-redux';
+import {LANGUAGE} from '@/utils/utils';
 
 export default function SetupDetail1({post, setPost}: any) {
   const [date, setDate] = useState(post.date);
@@ -18,6 +21,7 @@ export default function SetupDetail1({post, setPost}: any) {
   const [open2, setOpen2] = useState(false);
   const [search, setSearch] = useState(post.locationKeyword);
   const [searchResult, setSearchResult] = useState<LocationType[]>([]);
+  const language = useSelector((state: RootState) => state.language);
 
   const searchLocation = async () => {
     const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${search}&language=ko&key=${GOOGLE_WEB_API_KIEY}`;
@@ -30,7 +34,6 @@ export default function SetupDetail1({post, setPost}: any) {
       });
 
     const result = results.map((r: any) => {
-      console.log('r : ', r);
       return {
         address: r.formatted_address,
         latitude: r.geometry.location.lat,
@@ -39,7 +42,6 @@ export default function SetupDetail1({post, setPost}: any) {
       };
     });
 
-    console.log(result);
     setSearchResult(result);
   };
   return (
@@ -48,7 +50,11 @@ export default function SetupDetail1({post, setPost}: any) {
         <Text style={styles.text}>모임 날짜</Text>
         <Pressable style={styles.date} onPress={() => setOpen1(true)}>
           <Text style={dueTo == '' ? styles.dateText : styles.selectedDate}>
-            {date == '' ? '모임의 일정을 입력해주세요.' : date}
+            {date == ''
+              ? language.language == LANGUAGE.KO
+                ? '모임의 일정을 입력해주세요.'
+                : 'Enter the schedule of the Meetups'
+              : date}
           </Text>
           <Text>
             <FontAwesomeIcon icon={faCalendar} />
@@ -58,9 +64,11 @@ export default function SetupDetail1({post, setPost}: any) {
           mode="date"
           modal
           open={open1}
-          title={'날짜 선택'}
-          confirmText="확인"
-          cancelText="취소"
+          title={
+            language.language == LANGUAGE.KO ? '날짜 선택' : 'Select the Date'
+          }
+          confirmText={language.language == LANGUAGE.KO ? '확인' : 'Confirm'}
+          cancelText={language.language == LANGUAGE.KO ? '취소' : 'Cancel'}
           date={new Date()}
           onConfirm={date => {
             setOpen1(false);
@@ -81,7 +89,11 @@ export default function SetupDetail1({post, setPost}: any) {
         <Text style={styles.text}>모집 마감일</Text>
         <Pressable style={styles.date} onPress={() => setOpen2(true)}>
           <Text style={dueTo == '' ? styles.dateText : styles.selectedDate}>
-            {dueTo == '' ? '모임 마감일을 입력해주세요.' : dueTo}
+            {dueTo == ''
+              ? language.language == LANGUAGE.KO
+                ? '모집 마감일을 입력해주세요.'
+                : 'Enter the application deadline'
+              : dueTo}
           </Text>
           <Text>
             <FontAwesomeIcon icon={faCalendar} />
@@ -91,9 +103,11 @@ export default function SetupDetail1({post, setPost}: any) {
           mode="date"
           modal
           open={open2}
-          title={'날짜 선택'}
-          confirmText="확인"
-          cancelText="취소"
+          title={
+            language.language == LANGUAGE.KO ? '날짜 선택' : 'Select the Date'
+          }
+          confirmText={language.language == LANGUAGE.KO ? '확인' : 'Confirm'}
+          cancelText={language.language == LANGUAGE.KO ? '취소' : 'Cancel'}
           date={new Date()}
           onConfirm={date => {
             setOpen2(false);
@@ -117,7 +131,11 @@ export default function SetupDetail1({post, setPost}: any) {
             value={search}
             style={styles.input}
             placeholderTextColor={'#C2C2C2'}
-            placeholder="모임 장소를 검색해주세요."
+            placeholder={
+              language.language == LANGUAGE.KO
+                ? '모임 장소를 검색해주세요.'
+                : 'Search for the Meetups Location'
+            }
             onChangeText={text => {
               setSearch(text);
             }}

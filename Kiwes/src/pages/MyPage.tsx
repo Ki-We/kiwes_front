@@ -2,7 +2,6 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {
   TouchableOpacity,
   SafeAreaView,
-  Text,
   Image,
   ScrollView,
   View,
@@ -19,6 +18,7 @@ import {width, height, DeviceWidth} from '../global';
 import ProfileSettingIcon from 'react-native-vector-icons/SimpleLineIcons';
 import SettingIcon from 'react-native-vector-icons/SimpleLineIcons';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
+import Text from '@components/atoms/Text';
 
 export function MyPage({navigation}: any) {
   const [myPageInfo, setMyPageInfo] = useState([]);

@@ -6,26 +6,27 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import Text from '@components/atoms/Text';
 import {faPlus} from '@fortawesome/free-solid-svg-icons';
 import {launchImageLibrary} from 'react-native-image-picker';
+import {RootState} from '@/slice/RootReducer';
+import {useSelector} from 'react-redux';
+import {LANGUAGE} from '@/utils/utils';
 
 export default function SetupDetail3({post, setPost}: any) {
   const [imageSource, setImageSource] = useState(post.imageSource);
   const [title, setTitle] = useState(post.title);
   const [content, setContent] = useState(post.content);
+  const language = useSelector((state: RootState) => state.language);
   const selectPhotoFromGallery = () => {
     const options = {
       noData: true,
     };
 
     launchImageLibrary(options, response => {
-      console.log(response);
       if (response.didCancel) {
         console.log('User cancelled image picker');
       } else if (response.errorMessage) {
         console.log('ImagePicker Error: ', response.errorMessage);
       } else {
         const source = response.assets[0].uri;
-        console.log(response.assets[0].uri);
-        console.log(source);
         setImageSource(source);
         setPost({...post, imageSource: source});
       }
@@ -39,7 +40,13 @@ export default function SetupDetail3({post, setPost}: any) {
         <TextInput
           style={styles.input}
           placeholderTextColor={'#C2C2C2'}
-          placeholder={title == '' ? '모임 제목을 입력해주세요.' : title}
+          placeholder={
+            title == ''
+              ? language.language == LANGUAGE.KO
+                ? '모임 제목을 입력해주세요.'
+                : 'Enter the title of the Meetups'
+              : title
+          }
           onChangeText={text => {
             setPost({...post, title: text});
           }}
@@ -65,7 +72,13 @@ export default function SetupDetail3({post, setPost}: any) {
         <TextInput
           style={styles.textarea}
           placeholderTextColor={'#C2C2C2'}
-          placeholder={content == '' ? '모임에 대해 소개해주세요.' : content}
+          placeholder={
+            content == ''
+              ? language.language == LANGUAGE.KO
+                ? '모임에 대해 소개해주세요.'
+                : 'Introduce about the Meetups'
+              : content
+          }
           multiline={true}
           onChangeText={text => {
             setPost({...post, content: text});
@@ -103,7 +116,6 @@ const styles = StyleSheet.create({
   },
   textinfo: {
     color: '#C2C2C2',
-    whiteSpace: 'pre-line',
     textAlign: 'center',
     fontSize: height * 13,
     fontWeight: '500',
