@@ -10,7 +10,7 @@ import android.os.Bundle;
 public class MainActivity extends ReactActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SplashScreen.show(this);  // 이 줄을 추가하세요
+        SplashScreen.show(this);
         super.onCreate(savedInstanceState);
     }
   /**
