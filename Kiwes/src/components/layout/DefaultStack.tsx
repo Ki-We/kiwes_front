@@ -31,6 +31,7 @@ import CorrectionPage from '../../pages/CorrectionPage';
 import {useDispatch} from 'react-redux';
 import {setLanguage} from '@/slice/LanguageSlice';
 import Text from '@components/atoms/Text';
+import {LANGUAGE} from '@/utils/utils';
 
 const LoginStack = () => {
   useEffect(() => {
@@ -48,7 +49,7 @@ const LoginStack = () => {
   const dispatch = useDispatch();
   const getLanguage = async () => {
     let language = await AsyncStorage.getItem('language');
-    if (!language) language = 'EN';
+    if (!language) language = LANGUAGE.EN;
 
     dispatch(setLanguage({language}));
   };
