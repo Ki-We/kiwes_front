@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import {
   Keyboard,
   View,
-  Text,
   TextInput,
   TouchableOpacity,
   StyleSheet,
@@ -10,9 +9,8 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
 } from 'react-native';
+import Text from '@components/atoms/Text';
 import {width, height} from '../../global';
-import {apiServer} from '../../utils/metaData';
-import {RESTAPIBuilder} from '../../utils/restapiBuilder';
 import backIcon from 'react-native-vector-icons/Ionicons';
 import {Buffer} from 'buffer';
 
