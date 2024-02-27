@@ -233,6 +233,17 @@ const ClubDetail = ({route, navigation, type}: any) => {
     return (
       <View>
         <Text style={styles.titleText}>{baseInfo.title}</Text>
+        <View style={styles.content}>
+          <TouchableOpacity onPress={toggleLike}>
+            <Icon
+              name={isLiked ? 'heart' : 'heart-outline'}
+              size={25}
+              color="#58C047"
+              style={styles.heartIcon}
+            />
+          </TouchableOpacity>
+          <Text style={styles.likeCount}>{likeCount}</Text>
+        </View>
         {renderBtn(baseInfo.tags)}
         <View style={styles.sectionContainer}>
           {renderSection('모임 날짜', baseInfo.date)}
@@ -485,20 +496,22 @@ const ClubDetail = ({route, navigation, type}: any) => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name="arrow-back" size={height * 30} color="#303030" />
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            copyToClipboard();
-          }}
-          style={styles.shareContainer}>
-          <Image source={image.share} />
-        </TouchableOpacity>
-        {isAdminMode && (
+        <View style={styles.headerPart}>
           <TouchableOpacity
-            onPress={() => setIsMoreModalVisible(true)}
-            style={styles.moreContainer}>
-            <Image source={image.more} style={styles.more} />
+            onPress={() => {
+              copyToClipboard();
+            }}
+            style={styles.iconContainer}>
+            <Image source={image.share} />
           </TouchableOpacity>
-        )}
+          {isAdminMode && (
+            <TouchableOpacity
+              onPress={() => setIsMoreModalVisible(true)}
+              style={styles.iconContainer}>
+              <Image source={image.more} />
+            </TouchableOpacity>
+          )}
+        </View>
       </View>
       <ClubDetailSettingModal
         isVisible={isMoreModalVisible}
@@ -506,7 +519,7 @@ const ClubDetail = ({route, navigation, type}: any) => {
         navigateToCorrection={navigateToCorrection}
         DeleteClub={DeleteClub}
       />
-      <View style={styles.imageContent}>
+      <View>
         {clubInfo && (
           <Image
             source={{uri: clubInfo.baseInfo.thumbnailImageUrl}}
@@ -514,17 +527,7 @@ const ClubDetail = ({route, navigation, type}: any) => {
           />
         )}
       </View>
-      <View style={styles.content}>
-        <TouchableOpacity onPress={toggleLike}>
-          <Icon
-            name={isLiked ? 'heart' : 'heart-outline'}
-            size={25}
-            color="#58C047"
-            style={styles.heartIcon}
-          />
-        </TouchableOpacity>
-        <Text style={styles.likeCount}>{likeCount}</Text>
-      </View>
+
       <View style={styles.sectionContainer}>{renderClubDetail()}</View>
       {renderHostDetail()}
       <View style={styles.clubInfoContainer}>
@@ -606,33 +609,31 @@ const styles = StyleSheet.create({
     height: height * 170,
     resizeMode: 'cover',
   },
-  shareContainer: {
-    width: 20,
-    marginLeft: width * 270,
-  },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: height * 10,
-    position: 'absolute',
+    justifyContent: 'space-between',
   },
-  imageContent: {
-    top: height * 50,
+  headerPart: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  iconContainer: {
+    paddingLeft: width * 15,
+    paddingHorizontal: width * 5,
   },
   content: {
-    zIndex: 1,
-    position: 'absolute',
-    marginTop: height * 265,
-    padding: height * 15,
+    paddingHorizontal: width * 15,
+    paddingBottom: height * 10,
   },
   titleText: {
     fontSize: height * 20,
     fontWeight: '600',
     color: '#303030',
-    marginTop: height * 48,
-    marginBottom: height * 50,
     padding: height * 8,
   },
+
   sectionContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -899,10 +900,6 @@ const styles = StyleSheet.create({
   shareText: {
     fontSize: height * 14,
     color: '#303030',
-  },
-  moreContainer: {
-    marginLeft: width * 20,
-    width: width * 100,
   },
   moreModalContent: {
     backgroundColor: 'white',
