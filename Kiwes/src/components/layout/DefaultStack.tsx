@@ -30,6 +30,7 @@ import OtherUserPage from '../../pages/OtherUserPage';
 import CorrectionPage from '../../pages/CorrectionPage';
 import {useDispatch} from 'react-redux';
 import {setLanguage} from '@/slice/LanguageSlice';
+import Text from '@components/atoms/Text';
 
 const LoginStack = () => {
   useEffect(() => {

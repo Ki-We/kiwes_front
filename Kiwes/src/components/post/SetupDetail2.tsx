@@ -7,14 +7,18 @@ import {faWon} from '@fortawesome/free-solid-svg-icons';
 import {faUser} from '@fortawesome/free-regular-svg-icons';
 import Text from '@components/atoms/Text';
 import GenderBtn from './genderBtn';
+import {RootState} from '@/slice/RootReducer';
+import {useSelector} from 'react-redux';
+import {LANGUAGE} from '@/utils/utils';
 
 export default function SetupDetail2({post, setPost}: any) {
   const [gender, setGender] = useState(post.gender);
   const [cost, setCost] = useState(post.cost);
   const [maxPeople, setMaxPeople] = useState(post.maxPeople);
+  const language = useSelector((state: RootState) => state.language);
   const genderList = [
-    {key: 'MALE', text: '남자만'},
-    {key: 'FEMALE', text: '여자만'},
+    {key: 'M', text: '남자만'},
+    {key: 'F', text: '여자만'},
     {key: 'ALL', text: '누구나'},
   ];
   return (
@@ -26,7 +30,11 @@ export default function SetupDetail2({post, setPost}: any) {
             style={styles.input}
             placeholderTextColor={'#C2C2C2'}
             placeholder={
-              cost == -1 ? '인당 예상비용을 입력해주세요.' : cost.toString()
+              cost == -1
+                ? language.language == LANGUAGE.KO
+                  ? '인당 예상비용을 입력해주세요.'
+                  : 'The number of participants'
+                : cost.toString()
             }
             keyboardType="number-pad"
             onChangeText={text => {
@@ -45,7 +53,9 @@ export default function SetupDetail2({post, setPost}: any) {
             placeholderTextColor={'#C2C2C2'}
             placeholder={
               maxPeople == 0
-                ? '모임 인원을 입력해주세요.'
+                ? language.language == LANGUAGE.KO
+                  ? '모임 인원을 입력해주세요.'
+                  : 'Enter the number of participants'
                 : maxPeople.toString()
             }
             keyboardType="number-pad"
@@ -63,7 +73,7 @@ export default function SetupDetail2({post, setPost}: any) {
           {genderList.map(({key, text}, i) => (
             <GenderBtn
               key={`gender_${i}`}
-              text={text}
+              text={language.language == LANGUAGE.KO ? text : key}
               isSelect={gender === key}
               onPress={() => {
                 setGender(key);

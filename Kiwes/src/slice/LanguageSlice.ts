@@ -1,3 +1,4 @@
+import {LANGUAGE} from '@/utils/utils';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 interface LanguageState {
@@ -5,7 +6,7 @@ interface LanguageState {
 }
 
 const initialState: LanguageState = {
-  language: 'KO',
+  language: LANGUAGE.KO,
 };
 
 export const LanguageSlice = createSlice({
