@@ -497,13 +497,13 @@ const ClubDetail = ({route, navigation, type}: any) => {
           <Icon name="arrow-back" size={height * 30} color="#303030" />
         </TouchableOpacity>
         <View style={styles.headerPart}>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => {
               copyToClipboard();
             }}
             style={styles.iconContainer}>
             <Image source={image.share} />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           {isAdminMode && (
             <TouchableOpacity
               onPress={() => setIsMoreModalVisible(true)}

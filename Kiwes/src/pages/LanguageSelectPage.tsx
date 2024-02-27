@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {
   View,
   SafeAreaView,
   TouchableOpacity,
   Image,
+  Text as BasicText,
   StyleSheet,
   Linking,
 } from 'react-native';
@@ -11,6 +12,7 @@ import Text from '@components/atoms/Text';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {height, width} from '../global';
+import {useFocusEffect} from '@react-navigation/native';
 
 const Terms =
   'https://evendoha.notion.site/9494cdbdccfe49e783f603ca3d7acabb?pvs=4';
@@ -21,6 +23,20 @@ const openPDF = (pdf: string) => {
 };
 
 const LanguageSelectPage = ({navigation}) => {
+  useFocusEffect(
+    useCallback(() => {
+      checkLanguage();
+    }, []),
+  );
+  const checkLanguage = async () => {
+    const language = await AsyncStorage.getItem('language');
+    if (language == null) return;
+
+    navigation.reset({
+      index: 0,
+      routes: [{name: 'Login'}],
+    });
+  };
   const [selectedLanguage, setSelectedLanguage] = useState('');
   const [termsAgree, agreeToTerms] = useState(false);
   const [privacyAgree, agreeToPrivacy] = useState(false);
@@ -44,14 +60,14 @@ const LanguageSelectPage = ({navigation}) => {
           ? styles.languageSelected
           : styles.languageSelectButton
       }>
-      <Text
+      <BasicText
         style={
           selectedLanguage === language
             ? [styles.languageSelectButtonText, {color: '#FFFFFF'}]
             : styles.languageSelectButtonText
         }>
         {language === 'KO' ? '한' : 'E'}
-      </Text>
+      </BasicText>
     </TouchableOpacity>
   );
 
@@ -193,7 +209,7 @@ const styles = StyleSheet.create({
     color: '#9BD23C',
     fontSize: height * 41,
     fontWeight: '600',
-    fontFamily: 'BMJUA_ttf',
+    fontFamily: 'ChosunCentennial_ttf',
   },
   languageTextContainer: {
     flexDirection: 'row',

@@ -20,36 +20,6 @@ const BoardDefaultList = ({navigateToClub, fetchData, selected, data}: any) => {
   const [cursor, setCursor] = useState(0);
   const [isMore, setIsMore] = useState(true);
 
-  // const fetchAndSetData = async () => {
-  //   const newData = await fetchData(cursor);
-  //   console.log('newData : ', newData);
-  //   if (newData && newData.length > 0) {
-  //     setPosts(prevPosts => {
-  //       const updatedPosts = prevPosts.map(prevPost => {
-  //         const newPost = newData.find(
-  //           ({clubId}) => clubId === prevPost.clubId,
-  //         );
-  //         if (newPost) {
-  //           return JSON.stringify(newPost) !== JSON.stringify(prevPost)
-  //             ? newPost
-  //             : prevPost;
-  //         }
-  //         return prevPost;
-  //       });
-  //       const newPostsWithoutDuplicates = newData.filter(
-  //         newPost =>
-  //           !prevPosts.some(prevPost => prevPost.clubId === newPost.clubId),
-  //       );
-  //       return [...updatedPosts, ...newPostsWithoutDuplicates];
-  //     });
-  //   } else {
-  //     setIsMore(false);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchAndSetData();
-  // }, [cursor]);
   useEffect(() => {
     fetchNewData();
   }, [cursor, selected]);

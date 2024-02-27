@@ -57,8 +57,6 @@ export const translateText: any = {
     'This username isn’t available. Please try another.',
   '인기 모임': ' Popular Meetups',
   공지: 'Notice',
-  '카테고리별 모임': 'Category',
-  '언어별 모임': 'Language',
   '추천 모임': 'Recommendation',
   '카테고리 선택': 'Select Category',
   '언어 선택': 'Select Language',

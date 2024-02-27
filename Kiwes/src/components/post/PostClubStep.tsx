@@ -83,7 +83,6 @@ const PostClubStep = ({
         console.log('post club err3 : ', err);
       });
     const presignedUrl = presignedResponse.data;
-    console.log(post.imageSource);
     const imageData = await RNFS.readFile(post.imageSource, 'base64');
     const binaryData = new Buffer(imageData, 'base64');
 
