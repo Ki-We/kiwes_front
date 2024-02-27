@@ -318,7 +318,6 @@ const styles = StyleSheet.create({
   },
   checkText: {
     color: '#303030',
-
     fontSize: height * 12,
     fontWeight: '500',
   },

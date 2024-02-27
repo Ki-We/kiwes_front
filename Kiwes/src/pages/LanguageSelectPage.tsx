@@ -1,15 +1,24 @@
 import React, {useState} from 'react';
 import {
   View,
-  Text,
   SafeAreaView,
   TouchableOpacity,
   Image,
   StyleSheet,
+  Linking,
 } from 'react-native';
+import Text from '@components/atoms/Text';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {height, width} from '../global';
+
+const Terms =
+  'https://evendoha.notion.site/9494cdbdccfe49e783f603ca3d7acabb?pvs=4';
+const PrivacyPolicy =
+  'https://evendoha.notion.site/78ca0b2126144376bb66ff017c489a90?pvs=4';
+const openPDF = (pdf: string) => {
+  Linking.openURL(pdf);
+};
 
 const LanguageSelectPage = ({navigation}) => {
   const [selectedLanguage, setSelectedLanguage] = useState('');
@@ -50,7 +59,7 @@ const LanguageSelectPage = ({navigation}) => {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Image
-          source={require('./kiwesLogo.png')}
+          source={require('../../assets/images/kiwesLogo.png')}
           style={styles.image}
           resizeMode="contain"
         />
@@ -95,9 +104,11 @@ const LanguageSelectPage = ({navigation}) => {
             onPress={() => agreeToTerms(!termsAgree)}>
             <Icon name="check" size={15} color="#FFFFFF" />
           </TouchableOpacity>
-          <Text style={styles.agreementText}>
-            이용약관 동의 / Terms and Conditions Agreement
-          </Text>
+          <TouchableOpacity onPress={() => openPDF(Terms)}>
+            <Text style={styles.agreementText}>
+              이용약관 동의 / Terms and Conditions Agreement
+            </Text>
+          </TouchableOpacity>
         </View>
         <View style={styles.agreement}>
           <TouchableOpacity
@@ -109,9 +120,11 @@ const LanguageSelectPage = ({navigation}) => {
             onPress={() => agreeToPrivacy(!privacyAgree)}>
             <Icon name="check" size={15} color="#FFFFFF" />
           </TouchableOpacity>
-          <Text style={styles.agreementText}>
-            개인정보 처리방침 동의 / Privacy Policy Agreement
-          </Text>
+          <TouchableOpacity onPress={() => openPDF(PrivacyPolicy)}>
+            <Text style={styles.agreementText}>
+              개인정보 처리방침 동의 / Privacy Policy Agreement
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
       {selectedLanguage !== '' && termsAgree && privacyAgree ? (
@@ -180,6 +193,7 @@ const styles = StyleSheet.create({
     color: '#9BD23C',
     fontSize: height * 41,
     fontWeight: '600',
+    fontFamily: 'BMJUA_ttf',
   },
   languageTextContainer: {
     flexDirection: 'row',

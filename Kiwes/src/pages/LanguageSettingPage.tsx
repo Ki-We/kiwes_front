@@ -1,34 +1,34 @@
 import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  SafeAreaView,
-  TouchableOpacity,
-  StyleSheet,
-} from 'react-native';
+import {View, SafeAreaView, TouchableOpacity, StyleSheet} from 'react-native';
+import Text from '@components/atoms/Text';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {width, height} from '../global';
 import backIcon from 'react-native-vector-icons/Ionicons';
+import {useDispatch, useSelector} from 'react-redux';
+import {RootState} from '@/slice/RootReducer';
+import {setLanguage} from '@/slice/LanguageSlice';
+import {LANGUAGE} from '@/utils/utils';
 
-const LanguageSettingPage = ({route, navigation}) => {
-  const currentLanguage = 'KO';
-  const [selectedLanguage, setSelectedLanguage] = useState(currentLanguage);
+const LanguageSettingPage = ({navigation}) => {
+  const language = useSelector((state: RootState) => state.language);
+  const dispatch = useDispatch();
+  const [selectedLanguage, setSelectedLanguage] = useState(language.language);
 
   const languageSelectComplete = async () => {
+    dispatch(setLanguage({language: selectedLanguage}));
     await AsyncStorage.setItem('language', selectedLanguage);
-    const savedLanguage = await AsyncStorage.getItem('language');
-    console.log(savedLanguage);
+
     navigation.reset({
       index: 0,
       routes: [{name: 'BottomTab'}],
     });
   };
 
-  const handleLanguageSelection = (language: string) => {
+  const handleLanguageSelection = (language: LANGUAGE) => {
     setSelectedLanguage(language);
   };
 
-  const languageSelectButton = (language: string) => (
+  const languageSelectButton = (language: LANGUAGE) => (
     <TouchableOpacity
       onPress={() => handleLanguageSelection(language)}
       style={
@@ -67,14 +67,14 @@ const LanguageSettingPage = ({route, navigation}) => {
       <View style={styles.mainContainer}>
         <Text style={styles.mainText}>Select Language</Text>
         <View style={styles.languageSelectButtonContainer}>
-          {languageSelectButton('KO')}
-          {languageSelectButton('EN')}
+          {languageSelectButton(LANGUAGE.KO)}
+          {languageSelectButton(LANGUAGE.EN)}
         </View>
         <View style={styles.languageTextContainer}>
           <View style={styles.languageTextBox}>
             <Text
               style={
-                selectedLanguage === 'KO'
+                selectedLanguage === LANGUAGE.KO
                   ? [styles.languageText, {color: '#9BD23C'}]
                   : styles.languageText
               }>
@@ -84,7 +84,7 @@ const LanguageSettingPage = ({route, navigation}) => {
           <View style={styles.languageTextBox}>
             <Text
               style={
-                selectedLanguage === 'EN'
+                selectedLanguage === LANGUAGE.EN
                   ? [styles.languageText, {color: '#9BD23C'}]
                   : styles.languageText
               }>
@@ -162,6 +162,7 @@ const styles = StyleSheet.create({
     color: '#9BD23C',
     fontSize: height * 41,
     fontWeight: '600',
+    fontFamily: 'BMJUA_ttf',
   },
   languageTextContainer: {
     flexDirection: 'row',

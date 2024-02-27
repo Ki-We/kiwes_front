@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {
   Keyboard,
   View,
+  Text,
   TextInput,
   TouchableOpacity,
   StyleSheet,
@@ -9,7 +10,6 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
 } from 'react-native';
-import Text from '@components/atoms/Text';
 import {width, height} from '../../global';
 import {apiServer} from '../../utils/metaData';
 import {RESTAPIBuilder} from '../../utils/restapiBuilder';
@@ -159,7 +159,6 @@ const styles = StyleSheet.create({
   },
   mainText: {
     color: '#303030',
-
     fontSize: height * 15,
     fontWeight: '600',
   },
@@ -171,7 +170,6 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: '#F8F8F8',
     padding: 10,
-
     fontSize: height * 15,
     fontWeight: '500',
     width: '100%',
@@ -188,6 +186,11 @@ const styles = StyleSheet.create({
     marginTop: 10,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  checkText: {
+    color: '#303030',
+    fontSize: height * 12,
+    fontWeight: '500',
   },
 });
 
