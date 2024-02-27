@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import {
   Keyboard,
   View,
-  Text,
   TextInput,
   TouchableOpacity,
   StyleSheet,
@@ -15,6 +14,7 @@ import {apiServer} from '../../utils/metaData';
 import {RESTAPIBuilder} from '../../utils/restapiBuilder';
 import backIcon from 'react-native-vector-icons/Ionicons';
 import {Buffer} from 'buffer';
+import Text from '@components/atoms/Text';
 
 const NickNameSettingPage = ({navigation}) => {
   const [nickname, setNickname] = useState('');

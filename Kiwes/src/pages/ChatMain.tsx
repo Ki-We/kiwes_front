@@ -4,10 +4,10 @@ import {
   SafeAreaView,
   StatusBar,
   StyleSheet,
-  Text,
   View,
   TouchableOpacity,
 } from 'react-native';
+import Text from '@components/atoms/Text';
 import {DeviceHeight, DeviceWidth, width, height} from '../global';
 import {apiServer} from '../utils/metaData';
 import {ClubInfo} from '../utils/commonInterface';

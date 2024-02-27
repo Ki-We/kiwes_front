@@ -10,7 +10,7 @@ const NothingShow = ({title, styleKiwe}: any) => {
         style={styleKiwe.image}
         resizeMode="contain"
       />
-      <Text style={styleKiwe.text}> {title}</Text>
+      <Text style={styleKiwe.text}>{title}</Text>
     </View>
   );
 };

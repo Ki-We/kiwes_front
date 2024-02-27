@@ -2,12 +2,12 @@ import React, {useCallback, useState} from 'react';
 import {
   TouchableOpacity,
   SafeAreaView,
-  Text,
   Image,
   ScrollView,
   View,
   StyleSheet,
 } from 'react-native';
+import Text from '@components/atoms/Text';
 import BoardList from '../components/BoardList';
 import NothingShow from '../components/NothingShow';
 import ReviewBubble from './ReviewBubble';

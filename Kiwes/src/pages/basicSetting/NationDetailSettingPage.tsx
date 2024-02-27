@@ -92,7 +92,7 @@ const NationDetailSettingPage = ({route, navigation}) => {
           paddingLeft: width * 20,
           padding: 5,
         }}>
-        <Text style={styles.mainText}>본인의 국적을 {'\n'}선택해주세요.</Text>
+        <Text style={styles.mainText}>본인의 국적을{'\n'}선택해주세요.</Text>
       </View>
       <View style={styles.mainContainer}>
         <View>

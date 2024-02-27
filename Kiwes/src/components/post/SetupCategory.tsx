@@ -3,15 +3,21 @@ import RoundCategory from '../atoms/roundCategory';
 import {StyleSheet, View} from 'react-native';
 import {height, width} from '../../global';
 import Text from '@components/atoms/Text';
-import {categoryList} from '../../utils/utils';
+import {LANGUAGE, categoryList} from '../../utils/utils';
+import {RootState} from '@/slice/RootReducer';
+import {useSelector} from 'react-redux';
 
 export default function SetupCategory({post, setPost}: any) {
   const [category, setCategory] = useState(post.category);
+  const language = useSelector((state: RootState) => state.language);
   return (
     <>
       <View style={styles.text}>
         <Text>
-          <Text style={styles.highlight}>*</Text> 하나만 선택 가능
+          <Text style={styles.highlight}>*</Text>
+          {language.language == LANGUAGE.KO
+            ? ' 하나만 선택 가능'
+            : ' You can choose only one'}
         </Text>
       </View>
       <View style={styles.container}>

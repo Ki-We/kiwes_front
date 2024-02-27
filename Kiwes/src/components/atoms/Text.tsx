@@ -1,5 +1,5 @@
 import {RootState} from '@/slice/RootReducer';
-import {translateText} from '@/utils/utils';
+import {LANGUAGE, translateText} from '@/utils/utils';
 import {Text, StyleSheet} from 'react-native';
 import {useSelector} from 'react-redux';
 
@@ -23,10 +23,7 @@ export default function DefaultFontStack({style, children}: any) {
     if (text === undefined || typeof text != 'string') return text;
     text = text?.replace(/\.\s*$/, '');
 
-    if (text.includes('선택')) {
-      console.log('text : ', text);
-    }
-    if (language.language == 'EN') {
+    if (language.language == LANGUAGE.EN) {
       return translateText[text] || text;
     }
     return text;

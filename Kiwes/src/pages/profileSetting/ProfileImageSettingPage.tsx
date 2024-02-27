@@ -2,12 +2,12 @@ import React, {useState} from 'react';
 import {
   SafeAreaView,
   View,
-  Text,
   Image,
   StyleSheet,
   Platform,
   TouchableOpacity,
 } from 'react-native';
+import Text from '@components/atoms/Text';
 import {launchImageLibrary} from 'react-native-image-picker';
 import backIcon from 'react-native-vector-icons/Ionicons';
 import cameraIcon from 'react-native-vector-icons/FontAwesome';

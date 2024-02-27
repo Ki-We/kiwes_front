@@ -32,12 +32,16 @@ export default function Login({navigation}: any) {
   );
   const checkIsLogin = async () => {
     const userData = await AsyncStorage.getItem('userData');
+    console.log('userData : ', userData);
     if (userData == null) {
-      return;
+      const tokenData = {
+        userId: 5,
+        accssToken:
+          'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ3b2RuZDAxMzFAZ21haWwuY29tIiwiYXV0aCI6IlJPTEVfVVNFUixST0xFX1VTRVIiLCJpc0FkZGl0aW9uYWxJbmZvUHJvdmlkZWQiOnRydWUsImV4cCI6MTcwODMzOTc2NH0.b1KzZ2IivLlp5kj7DU4lmkjdZsKw6AFpftnD9UDFE_RctLpOr4TAQoHRUvgVbzP8Y_S88-mo66nXqJYIdtxK-w',
+      };
+      await AsyncStorage.setItem('userData', JSON.stringify(tokenData));
+      // return;
     }
-
-    const tokenData = JSON.parse(userData);
-    console.log(tokenData.accessToken);
 
     const url = `${apiServer}/myid`;
     const result = await new RESTAPIBuilder(url, 'GET')
@@ -71,7 +75,10 @@ export default function Login({navigation}: any) {
     });
     await GoogleSignin.hasPlayServices();
     const userInfo = await GoogleSignin.signIn().catch(error => {
+      console.log('here?');
       console.log(error);
+      console.log(error.code);
+      console.log(error.message);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         console.log('Login Cancel : ', error.message);
       } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {

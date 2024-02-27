@@ -423,8 +423,9 @@ const ChatScreen = ({navigation, route}) => {
             color: '#8A8A8A',
             fontSize: height * 18,
             fontWeight: '600',
+            marginRight: 3,
           }}>
-          공지&nbsp;&nbsp;
+          공지
         </Text>
         <Text
           numberOfLines={1}

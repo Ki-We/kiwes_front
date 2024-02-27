@@ -1,7 +1,6 @@
 import React, {useEffect, useCallback, useRef, useState} from 'react';
 import {
   View,
-  Text,
   Image,
   TouchableOpacity,
   KeyboardAvoidingView,
@@ -18,6 +17,7 @@ import sendIcon from 'react-native-vector-icons/Feather';
 import {useFocusEffect} from '@react-navigation/native';
 import NothingShow from '../NothingShow';
 import {ScrollView} from 'react-native-gesture-handler';
+import Text from '@components/atoms/Text';
 
 const QnAList = ({clubId, navigateToProile}: any) => {
   const [qnas, setQnas] = useState<QnADetail[]>([]);
