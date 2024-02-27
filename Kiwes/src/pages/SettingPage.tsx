@@ -8,16 +8,19 @@ import LogoutModal from '../components/LogoutModal';
 import {RESTAPIBuilder} from '../utils/restapiBuilder';
 import {apiServer} from '../utils/metaData';
 import {height, width} from '../global';
+import {useSelector} from 'react-redux';
+import {RootState} from '@/slice/RootReducer';
 const url = `${apiServer}/auth/quit`;
 const Terms =
-  'https://drive.google.com/file/d/1waTqcNfpamEz7kgojNZ6zhqR56hCP_O7/view?usp=sharing';
+  'https://evendoha.notion.site/9494cdbdccfe49e783f603ca3d7acabb?pvs=4';
 const PrivacyPolicy =
-  'https://drive.google.com/file/d/1N97jMwYhSD2nFJ103Z4BQsbYw4DagKHh/view?usp=sharing';
+  'https://evendoha.notion.site/78ca0b2126144376bb66ff017c489a90?pvs=4';
 const openPDF = (pdf: string) => {
   Linking.openURL(pdf);
 };
 
 const SettingPage = ({navigation}: any) => {
+  const language = useSelector((state: RootState) => state.language);
   const [modalVisible, setModalVisible] = useState(false);
   const [modaltype, setModaltype] = useState('승락');
   const handleOpenLogoutModal = () => {
@@ -65,9 +68,15 @@ const SettingPage = ({navigation}: any) => {
     <>
       <Header navigatePop={navigatePop} title={'설정'} />
       <View style={styles.container}>
-        {/* <TouchableOpacity>
-          <Text style={styles.text}>언어 설정</Text>
-        </TouchableOpacity> */}
+        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('LanguageSettingPage')}>
+            <Text style={styles.text}>언어 설정</Text>
+          </TouchableOpacity>
+          <Text style={[styles.text, {color: '#58C047', fontWeight: '600'}]}>
+            {language.language === 'KO' ? '한국어' : 'English'}
+          </Text>
+        </View>
         <TouchableOpacity onPress={() => openPDF(Terms)}>
           <Text style={styles.text}>이용 약관</Text>
         </TouchableOpacity>

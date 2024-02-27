@@ -418,25 +418,29 @@ const ChatScreen = ({navigation, route}) => {
       </View>
       {/* ///////////////////////////////////////////////////////// 공지 */}
       <View style={styles.notice}>
-        <Text
-          style={{
-            color: '#8A8A8A',
-            fontSize: height * 18,
-            fontWeight: '600',
-            marginRight: 3,
-          }}>
-          공지
-        </Text>
-        <Text
-          numberOfLines={1}
-          ellipsizeMode="tail"
-          style={{
-            color: '#303030',
-            fontSize: height * 16,
-            fontWeight: '600',
-          }}>
-          {notice}
-        </Text>
+        {/* <View>
+          <Text
+            style={{
+              color: '#8A8A8A',
+              fontSize: height * 18,
+              fontWeight: '600',
+              marginRight: 3,
+            }}>
+            공지
+          </Text>
+        </View> */}
+        <View>
+          <Text
+            numberOfLines={1}
+            ellipsizeMode="tail"
+            style={{
+              color: '#303030',
+              fontSize: 16,
+              fontWeight: '600',
+            }}>
+            aaaaaaaaaaaaaaaaasdaaaaaaaaaaaaaaaaaaaaaaadddsfffffaadaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+          </Text>
+        </View>
       </View>
       {/* ///////////////////////////////////////////////////////////// */}
       <View style={styles.separator} />
