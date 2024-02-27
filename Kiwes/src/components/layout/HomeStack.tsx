@@ -11,9 +11,13 @@ import ReviewPage from '../../pages/ReviewPage';
 import Event from '../../pages/Event';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {height, width} from '@/global';
+import {useSelector} from 'react-redux';
+import {RootState} from '@/slice/RootReducer';
+import {LANGUAGE} from '@/utils/utils';
 
 const HomeStack = ({navigation}) => {
-  console.log(Dimensions.get('screen').height);
+  const language = useSelector((state: RootState) => state.language);
+
   useEffect(() => {
     checkLoginState();
   }, []);
@@ -27,7 +31,7 @@ const HomeStack = ({navigation}) => {
   const CustomHeader = () => (
     <Image
       source={require('../../../assets/images/kiwesLogo.png')}
-      style={{ width: 130, height: 60, top: 2}}
+      style={{width: 130, height: 60, top: 2}}
     />
   );
 
@@ -73,7 +77,8 @@ const HomeStack = ({navigation}) => {
         component={ClubCategory}
         options={{
           headerShown: true,
-          headerTitle: '카테고리별 모임',
+          headerTitle:
+            language.language == LANGUAGE.KO ? '카테고리별 모임' : 'Category',
           headerTitleAlign: 'center',
         }}
       />
@@ -82,7 +87,8 @@ const HomeStack = ({navigation}) => {
         component={ClubLanguage}
         options={{
           headerShown: true,
-          headerTitle: '언어별 모임',
+          headerTitle:
+            language.language == LANGUAGE.KO ? '언어별 모임' : 'Language',
           headerTitleAlign: 'center',
         }}
       />
@@ -101,7 +107,7 @@ const HomeStack = ({navigation}) => {
         component={Event}
         options={{
           headerShown: true,
-          headerTitle: '이벤트',
+          headerTitle: language.language == LANGUAGE.KO ? '이벤트' : 'Event',
           headerTitleAlign: 'center',
         }}
       />

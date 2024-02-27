@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {
   View,
   SafeAreaView,
@@ -12,6 +12,7 @@ import Text from '@components/atoms/Text';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {height, width} from '../global';
+import {useFocusEffect} from '@react-navigation/native';
 
 const Terms =
   'https://evendoha.notion.site/9494cdbdccfe49e783f603ca3d7acabb?pvs=4';
@@ -22,6 +23,20 @@ const openPDF = (pdf: string) => {
 };
 
 const LanguageSelectPage = ({navigation}) => {
+  useFocusEffect(
+    useCallback(() => {
+      checkLanguage();
+    }, []),
+  );
+  const checkLanguage = async () => {
+    const language = await AsyncStorage.getItem('language');
+    if (language == null) return;
+
+    navigation.reset({
+      index: 0,
+      routes: [{name: 'Login'}],
+    });
+  };
   const [selectedLanguage, setSelectedLanguage] = useState('');
   const [termsAgree, agreeToTerms] = useState(false);
   const [privacyAgree, agreeToPrivacy] = useState(false);

@@ -11,6 +11,7 @@ import {apiServer} from '../utils/metaData';
 import {width, height} from '../global';
 import Icon from 'react-native-vector-icons/Ionicons';
 import NothingShow from '../components/NothingShow';
+
 const url = `${apiServer}/api/v1/heart/club_list?cursor=`;
 const WishPage = ({navigation}: any) => {
   const navigateToClub = (clubId: any) => {

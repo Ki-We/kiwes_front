@@ -13,9 +13,9 @@ export default function ClubListDetail({type, navigation}: any) {
   let swiperHeight = 150;
   if (type == 'category') {
     if (language.language === LANGUAGE.EN) {
-      swiperHeight += 80;
+      swiperHeight += 90;
     } else if (width < 0.97) {
-      swiperHeight += swiperHeight + 50;
+      swiperHeight += 50;
     }
   }
   const allList = type == 'category' ? categoryList : langList;
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    gap: 3,
+    gap: width * 6,
     marginTop: 10,
     paddingHorizontal: 30,
   },
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     margin: width * 12,
   },
   container2: {
@@ -121,6 +121,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-between',
     margin: width * 12,
+    // paddingHorizontal: width * 10,
   },
   swiper: {
     height: 150,
