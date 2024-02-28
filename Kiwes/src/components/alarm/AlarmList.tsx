@@ -8,22 +8,24 @@ import {Alarm} from '../../utils/commonInterface';
 import AlarmComponent from './AlarmComponent';
 import {height, width} from '../../global';
 import NothingShow from '../NothingShow';
+import {useSelector} from 'react-redux';
+import {RootState} from '@/slice/RootReducer';
 
-const url = `${apiServer}/api/v1/alarm/`;
 const timePeriods = ['오늘', '어제', '이번 주', '이전 활동'];
 const pageNavigationMap = {
   CLUB: {page: 'ClubDetail', idKey: 'clubId'},
   CHAT: {page: 'ChatMain', idKey: 'clubId'},
   NOTICE: {page: 'NoticePage', idKey: 'noticeId'},
   EVENT: {page: 'EventPage', idKey: 'noticeId'},
-  ACCESS: {page: 'RequestList', idKey: 'clubId'}, // 승인 페이지
+  ACCESS: {page: 'RequestList', idKey: 'clubId'},
 };
 
 const AlarmList = ({navigation}: any) => {
+  const language = useSelector((state: RootState) => state.language);
+  const url = `${apiServer}/api/v1/alarm/?lang=${language.language}`;
   const [alarms, setAlarms] = useState<Alarm[]>([]);
   const [isEmpty, setIsEmpty] = useState(false);
   const navigateTo = (item: any) => {
-    console.log(item);
     const {page, idKey} = pageNavigationMap[item.type];
     if (page && idKey) {
       navigation.navigate(page, {[idKey]: item[`${idKey}`]});
@@ -34,6 +36,7 @@ const AlarmList = ({navigation}: any) => {
   };
   const fetchData = async () => {
     try {
+      console.log(url);
       const response = await new RESTAPIBuilder(url, 'GET')
         .setNeedToken(true)
         .build()
