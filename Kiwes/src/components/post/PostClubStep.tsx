@@ -12,8 +12,6 @@ import {RESTAPIBuilder} from '../../utils/restapiBuilder';
 import RNFS from 'react-native-fs';
 import {Buffer} from 'buffer';
 import {useFocusEffect} from '@react-navigation/native';
-import {Pressable} from 'react-native';
-import Text from '@components/atoms/Text';
 
 export interface ProfileSetupInterface {
   navigation: any;

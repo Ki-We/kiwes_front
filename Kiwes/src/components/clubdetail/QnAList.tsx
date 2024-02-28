@@ -16,7 +16,6 @@ import {apiServer} from '../../utils/metaData';
 import sendIcon from 'react-native-vector-icons/Feather';
 import {useFocusEffect} from '@react-navigation/native';
 import NothingShow from '../NothingShow';
-import {ScrollView} from 'react-native-gesture-handler';
 import Text from '@components/atoms/Text';
 
 const QnAList = ({clubId, navigateToProile}: any) => {

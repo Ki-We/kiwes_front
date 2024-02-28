@@ -38,16 +38,16 @@ export default function SetupDetail3({post, setPost}: any) {
       <View style={styles.container}>
         <Text style={styles.text}>기본 정보</Text>
         <TextInput
+          value={title == '' ? '' : title}
           style={styles.input}
           placeholderTextColor={'#C2C2C2'}
           placeholder={
-            title == ''
-              ? language.language == LANGUAGE.KO
-                ? '모임 제목을 입력해주세요.'
-                : 'Enter the title of the Meetups'
-              : title
+            language.language == LANGUAGE.KO
+              ? '모임 제목을 입력해주세요.'
+              : 'Enter the title of the Meetups'
           }
           onChangeText={text => {
+            setTitle(text);
             setPost({...post, title: text});
           }}
         />
@@ -70,17 +70,17 @@ export default function SetupDetail3({post, setPost}: any) {
         </Pressable>
         <Text style={styles.text}>모임 소개</Text>
         <TextInput
+          value={content == '' ? '' : content}
           style={styles.textarea}
           placeholderTextColor={'#C2C2C2'}
           placeholder={
-            content == ''
-              ? language.language == LANGUAGE.KO
-                ? '모임에 대해 소개해주세요.'
-                : 'Introduce about the Meetups'
-              : content
+            language.language == LANGUAGE.KO
+              ? '모임에 대해 소개해주세요.'
+              : 'Introduce about the Meetups'
           }
           multiline={true}
           onChangeText={text => {
+            setContent(text);
             setPost({...post, content: text});
           }}
         />

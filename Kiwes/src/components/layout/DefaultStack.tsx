@@ -27,12 +27,10 @@ import ProfileSettingPage from '../../pages/ProfileSettingPage';
 import LanguageSettingPage from '../../pages/LanguageSettingPage';
 import ChatTest from '../../pages/ChatTest';
 import ChatRoom from '../../pages/ChatRoom';
-import UploadImageTest from '../UploadImageTest';
 import OtherUserPage from '../../pages/OtherUserPage';
 import CorrectionPage from '../../pages/CorrectionPage';
 import {useDispatch} from 'react-redux';
 import {setLanguage} from '@/slice/LanguageSlice';
-import Text from '@components/atoms/Text';
 import {LANGUAGE} from '@/utils/utils';
 
 const LoginStack = () => {
@@ -124,7 +122,6 @@ const LoginStack = () => {
         <Stack.Screen name="QnAPage" component={QnAPage} />
         <Stack.Screen name="ChatTest" component={ChatTest} />
         <Stack.Screen name="ChatRoom" component={ChatRoom} />
-        <Stack.Screen name="UploadImageTest" component={UploadImageTest} />
         <Stack.Screen name="OtherUserPage" component={OtherUserPage} />
         <Stack.Screen name="CorrectionPage" component={CorrectionPage} />
       </Stack.Navigator>
