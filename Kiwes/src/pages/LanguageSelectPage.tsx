@@ -50,7 +50,7 @@ const LanguageSelectPage = ({navigation}) => {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Image
-          source={require('./kiwesLogo.png')}
+          source={require('../../assets/images/kiwesLogo.png')}
           style={styles.image}
           resizeMode="contain"
         />
