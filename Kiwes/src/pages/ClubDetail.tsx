@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import Text from '@components/atoms/Text';
 import {
   View,
@@ -18,8 +18,9 @@ import ClubDetailSettingModal from '../components/clubdetail/ClubDetailSettingMo
 import {renderLocationDetail} from '../components/clubdetail/renderLocationDetail';
 import {RootState} from '@/slice/RootReducer';
 import {useSelector} from 'react-redux';
+import { useFocusEffect } from '@react-navigation/native';
 
-const ClubDetail = ({route, navigation, type}: any) => {
+const ClubDetail = ({route, navigation}: any) => {
   const language = useSelector((state: RootState) => state.language);
   const {clubId} = route.params;
   const [isLiked, setIsLiked] = useState(false);
@@ -31,12 +32,12 @@ const ClubDetail = ({route, navigation, type}: any) => {
 
   const [isAdminMode, setIsAdminMode] = useState(false);
   const [isMoreModalVisible, setIsMoreModalVisible] = useState(false);
-  const [isJoinBtnVisible, setJoinBtnVisible] = useState(false);
+  // const [isJoinBtnVisible, setJoinBtnVisible] = useState(false);
 
-  const [currentParticipants, setCurrentParticipants] = useState(0);
-  const [maxParticipants, setMaxParticipants] = useState(5);
+  // const [currentParticipants, setCurrentParticipants] = useState(0);
+  // const [maxParticipants, setMaxParticipants] = useState(5);
 
-  const [recruitmentComplete, setRecruitmentComplete] = useState(false);
+  // const [recruitmentComplete, setRecruitmentComplete] = useState(false);
 
   const [clubInfo, setClubInfo] = useState(null);
   const [NickName, setNickNameInfo] = useState(null);
@@ -76,19 +77,23 @@ const ClubDetail = ({route, navigation, type}: any) => {
       setClubInfo(response.data);
       setLikeCount(response.data.baseInfo.heartCount);
       setIsLiked(response.data.isHeart);
-      console.log(response.data);
     } catch (error) {
       console.error('Error fetching club detail:', error);
     }
   };
 
-  useEffect(() => {
-    console.log('clubId useEffect');
-    fetchClubDetail(clubId);
-  }, [clubId]);
+  // useEffect(() => {
+  //   fetchClubDetail(clubId);
+  // }, [clubId]);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchClubDetail(clubId);
+      return () => {};
+    }, []),
+  );
 
   useEffect(() => {
-    console.log('nickname, clubinfo useeffect');
     if (
       NickName &&
       clubInfo &&
@@ -122,7 +127,6 @@ const ClubDetail = ({route, navigation, type}: any) => {
       return null;
     }
     const approvalStatus = clubInfo.isApproval;
-    console.log('approvalStatus:', approvalStatus);
     return approvalStatus;
   };
 
@@ -151,7 +155,7 @@ const ClubDetail = ({route, navigation, type}: any) => {
           .build()
           .run();
         setIsJoined(false);
-        setCurrentParticipants(prevCount => prevCount - 1);
+        // setCurrentParticipants(prevCount => prevCount - 1);
       } else {
         const response = await new RESTAPIBuilder(
           `${apiServer}/api/v1/club/application/${clubId}`,
@@ -162,7 +166,7 @@ const ClubDetail = ({route, navigation, type}: any) => {
           .run();
         isApproval();
         setIsJoined(true);
-        setCurrentParticipants(prevCount => prevCount + 1);
+        // setCurrentParticipants(prevCount => prevCount + 1);
       }
       fetchClubDetail(clubId);
     } catch (error) {
@@ -340,7 +344,6 @@ const ClubDetail = ({route, navigation, type}: any) => {
   };
 
   useEffect(() => {
-    console.log('clubinfo useeffect');
     if (clubInfo) {
       checkRecruitmentDate(clubInfo.baseInfo.dateInfo);
     }
@@ -621,7 +624,7 @@ const styles = StyleSheet.create({
   },
   iconContainer: {
     paddingLeft: width * 15,
-    paddingHorizontal: width * 5,
+    paddingHorizontal: width * 8,
   },
   content: {
     paddingHorizontal: width * 15,
