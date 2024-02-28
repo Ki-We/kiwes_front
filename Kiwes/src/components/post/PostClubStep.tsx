@@ -71,6 +71,8 @@ const PostClubStep = ({
   const uploadClubImage = async (clubId: number) => {
     if (!post.imageSource || typeof post.imageSource === 'number') {
       throw new Error('이미지를 선택해주세요');
+    } else if (post.imageSource.startsWith('https')) {
+      return;
     }
     const imageUrl = `${apiServer}/api/v1/club/article/presigned-url?clubId=${clubId}`;
     const presignedResponse = await new RESTAPIBuilder(imageUrl, 'GET')
