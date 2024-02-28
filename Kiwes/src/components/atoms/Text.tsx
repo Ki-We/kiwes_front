@@ -3,7 +3,11 @@ import {LANGUAGE, translateText} from '@/utils/utils';
 import {Text, StyleSheet} from 'react-native';
 import {useSelector} from 'react-redux';
 
-export default function DefaultFontStack({style, children}: any) {
+export default function DefaultFontStack({
+  style,
+  children,
+  numberOfLines,
+}: any) {
   const language = useSelector((state: RootState) => state.language);
 
   let fontSize = styles.medium;
@@ -23,17 +27,27 @@ export default function DefaultFontStack({style, children}: any) {
     if (text === undefined || typeof text != 'string') return text;
     text = text?.replace(/\.\s*$/, '');
 
-    if (language.language == LANGUAGE.EN) {
+    if (language.language === LANGUAGE.EN) {
       return translateText[text] || text;
     }
     return text;
   };
-  return <Text style={[fontSize, style]}>{checkLanguage(children)}</Text>;
+  const textComponent = (
+    <Text style={[fontSize, style]}>{checkLanguage(children)}</Text>
+  );
+
+  return numberOfLines !== undefined ? (
+    <Text style={[fontSize, style]} numberOfLines={numberOfLines}>
+      {textComponent}
+    </Text>
+  ) : (
+    textComponent
+  );
 }
 
 const styles = StyleSheet.create({
   defaultFont: {
-    fontFamily: 'ChosunCentennial_ttf',
+    fontFamily: 'Pretendard-Medium',
   },
   light: {
     fontFamily: 'Pretendard-Light',
@@ -46,7 +60,6 @@ const styles = StyleSheet.create({
   },
   semibold: {
     fontFamily: 'Pretendard-SemiBold',
-    // fontFamily: 'ChosunCentennial_ttf',
   },
   bold: {
     fontFamily: 'Pretendard-Bold',

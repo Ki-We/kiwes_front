@@ -3,8 +3,12 @@ import {View, TouchableOpacity, StyleSheet} from 'react-native';
 import Text from '@components/atoms/Text';
 import Modal from 'react-native-modal';
 import {width, height} from '../../global';
+import {useSelector} from 'react-redux';
+import {RootState} from '@/slice/RootReducer';
+import {LANGUAGE} from '@/utils/utils';
 
 const ApprovalModal = ({isVisible, onClose, member, exitClub, modaltype}) => {
+  const language = useSelector((state: RootState) => state.language);
   return (
     <Modal
       style={styles.modal}
@@ -14,10 +18,25 @@ const ApprovalModal = ({isVisible, onClose, member, exitClub, modaltype}) => {
       onBackdropPress={onClose}>
       <View style={styles.modalContainer}>
         <View style={styles.TextContainer}>
-          <Text style={styles.modalTitle}>
-            {member?.nickname}님<Text style={styles.modalText}>을</Text>
+          <Text style={styles.modalText}>
+            {language.language == LANGUAGE.KO ? (
+              <>
+                <Text style={styles.highlight}>{member?.nickname}님</Text>
+                <Text style={styles.modalText}>
+                  을{'\n'}
+                  {modaltype}하시겠습니까?
+                </Text>
+              </>
+            ) : (
+              <>
+                <Text style={styles.modalText}>
+                  Would you like to{'\n'}
+                  {modaltype == '승인' ? 'approve' : 'reject'}{' '}
+                  <Text style={styles.highlight}>{member?.nickname}</Text>?
+                </Text>
+              </>
+            )}
           </Text>
-          <Text style={styles.modalText}>{modaltype}하시겠습니까?</Text>
         </View>
         <View style={styles.modalButtonGroup}>
           <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
@@ -56,17 +75,15 @@ const styles = StyleSheet.create({
     height: height * 126,
     width: width * 265,
   },
-  modalTitle: {
-    textAlign: 'center',
+  highlight: {
     color: '#3DBE14',
-
     fontWeight: '600',
     fontSize: height * 16,
+    lineHeight: height * 30,
   },
   modalText: {
     textAlign: 'center',
     color: '#303030',
-
     fontWeight: '600',
     fontSize: height * 16,
   },
@@ -82,20 +99,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: width * 135,
-    color: '#303030',
-
-    fontWeight: '600',
-    fontSize: height * 16,
     borderRightColor: '#8A8A8A',
     borderRightWidth: 1,
   },
   acceptButton: {
     alignItems: 'center',
     justifyContent: 'center',
-    color: '#303030',
-
-    fontWeight: '600',
-    fontSize: height * 16,
     width: width * 135,
   },
 });

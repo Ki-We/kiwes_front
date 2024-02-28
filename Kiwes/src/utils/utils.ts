@@ -57,8 +57,6 @@ export const translateText: any = {
     'This username isn’t available. Please try another.',
   '인기 모임': ' Popular Meetups',
   공지: 'Notice',
-  '카테고리별 모임': 'Category',
-  '언어별 모임': 'Language',
   '추천 모임': 'Recommendation',
   '카테고리 선택': 'Select Category',
   '언어 선택': 'Select Language',
@@ -111,6 +109,7 @@ export const translateText: any = {
   '인기 검색어': 'Top Searches',
   알림: 'Notifications',
   승인: 'Approval',
+  거절: 'Deny',
   오늘: 'Today',
   어제: 'Yesterday',
   '이번 주': 'This week',
@@ -153,9 +152,11 @@ export const translateText: any = {
   '모임 소개': 'Meetups Introduction',
   등록: 'Register',
   취소하기: 'Cancel',
+  취소: 'Cancel',
+  확인: 'Confirm',
   '모임 날짜': 'Date',
   '모집 마감': 'Deadline',
-  '인당 예상비용': 'Estimated Cost/N',
+  '인당 예상비용': 'Cost/N',
   '참여 모임': 'All',
   '개설 모임': 'My',
   후기: 'Review',
@@ -177,7 +178,18 @@ export const translateText: any = {
   '참여 취소': 'Cancel',
 
   전체: 'All',
+  수정하기: 'Edit',
+  삭제하기: 'Delete',
 
-  '조회 가능한 모임이 없어요!': 'There is no Meetups!',
+  '조회 가능한 모임이 없어요!': 'There are no Meetups!',
   'Host는 채팅방 퇴장이 불가합니다!': 'Host can’t leave the chat room',
+  '작성된 후기가 없어요!': 'There are no Reviews!',
+  '작성된 문의가 없어요!': 'There are no Q&A!',
+  '승인 신청자가 아직 없어요!': 'There are no applicants for approval!',
+
+  '클립보드 저장 완료!': 'Save to clipboard complete!',
+  '친구들과 함께 모임을 즐겨보세요!': 'Enjoy the gathering with your friends!',
+
+  '!무분별한 퇴장을 삼가주세요!':
+    '!Please refrain from leaving indiscriminately!',
 };

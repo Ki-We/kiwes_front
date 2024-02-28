@@ -191,9 +191,7 @@ const QnAList = ({clubId, navigateToProile}: any) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{flex: 1}}>
       {cursor === 0 && !isMore ? (
-        <ScrollView>
-          <NothingShow title={'작성된 후기가 없어요!'} styleKiwe={styleKiwe} />
-        </ScrollView>
+        <NothingShow title={'작성된 문의가 없어요!'} styleKiwe={styleKiwe} />
       ) : (
         <FlatList
           data={qnas}

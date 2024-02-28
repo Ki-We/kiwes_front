@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useState, useCallback, useRef, useEffect} from 'react';
 import {useFocusEffect} from '@react-navigation/native';
 import Text from '@components/atoms/Text';
@@ -26,7 +25,6 @@ export function Home({navigation}: any) {
   const popularGroupsRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(0);
   const [data, setData] = useState();
-
   interface Banner {
     type: string;
     imageUrl: string;
@@ -266,7 +264,7 @@ export function Home({navigation}: any) {
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContainer}>
       <View style={styles.container}>
-        <View style={styles.banner}>
+        <View>
           <TouchableOpacity onPress={handleBannerPress}>
             <Swiper
               style={styles.wrapper}
@@ -606,7 +604,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     color: 'white',
     fontSize: height * 16,
-    fontWeight: 600,
+    fontWeight: '600',
     textShadowColor: 'rgba(0, 0, 0, 0.75)',
     textShadowOffset: {width: -1, height: 1},
     textShadowRadius: 10,

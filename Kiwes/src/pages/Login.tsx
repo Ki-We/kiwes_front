@@ -34,13 +34,7 @@ export default function Login({navigation}: any) {
     const userData = await AsyncStorage.getItem('userData');
     console.log('userData : ', userData);
     if (userData == null) {
-      const tokenData = {
-        userId: 5,
-        accssToken:
-          'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ3b2RuZDAxMzFAZ21haWwuY29tIiwiYXV0aCI6IlJPTEVfVVNFUixST0xFX1VTRVIiLCJpc0FkZGl0aW9uYWxJbmZvUHJvdmlkZWQiOnRydWUsImV4cCI6MTcwODMzOTc2NH0.b1KzZ2IivLlp5kj7DU4lmkjdZsKw6AFpftnD9UDFE_RctLpOr4TAQoHRUvgVbzP8Y_S88-mo66nXqJYIdtxK-w',
-      };
-      await AsyncStorage.setItem('userData', JSON.stringify(tokenData));
-      // return;
+      return;
     }
 
     const url = `${apiServer}/myid`;

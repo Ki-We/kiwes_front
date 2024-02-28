@@ -29,11 +29,12 @@ export default function SetupDetail2({post, setPost}: any) {
           <TextInput
             style={styles.input}
             placeholderTextColor={'#C2C2C2'}
+            maxLength={6}
             placeholder={
               cost == -1
                 ? language.language == LANGUAGE.KO
-                  ? '인당 예상비용을 입력해주세요.'
-                  : 'The number of participants'
+                  ? '인당 예상비용을 입력해주세요. ( 100만원 미만 )'
+                  : 'Enter the estimated cost/n'
                 : cost.toString()
             }
             keyboardType="number-pad"
@@ -54,11 +55,12 @@ export default function SetupDetail2({post, setPost}: any) {
             placeholder={
               maxPeople == 0
                 ? language.language == LANGUAGE.KO
-                  ? '모임 인원을 입력해주세요.'
+                  ? '모임 인원을 입력해주세요. ( 100명 미만 )'
                   : 'Enter the number of participants'
                 : maxPeople.toString()
             }
             keyboardType="number-pad"
+            maxLength={2}
             onChangeText={text => {
               setPost({...post, maxPeople: Number(text)});
             }}

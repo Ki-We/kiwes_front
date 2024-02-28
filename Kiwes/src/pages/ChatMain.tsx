@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Text from '@components/atoms/Text';
-import {DeviceHeight, DeviceWidth, width, height} from '../global';
+import {width, height} from '../global';
 import {apiServer} from '../utils/metaData';
 import {ClubInfo} from '../utils/commonInterface';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -76,28 +76,18 @@ export function ChatMain({navigation}: any) {
                 onPress={() => {
                   navigation.navigate('ChatRoom', {clubId: club.clubId});
                 }}>
-                <Text style={styles.chatListText}>{club.title}</Text>
+                <Text style={styles.chatListText} numberOfLines={1}>
+                  {club.title}
+                </Text>
               </TouchableOpacity>
               <View style={styles.peopleCount}>
                 <FontAwesomeIcon icon={faUser} size={25} color="black" />
                 <Text style={styles.peopleCountText}>{club.currentPeople}</Text>
               </View>
             </View>
-            // <View style={styles.chatList}>
-            //   <TouchableOpacity
-            //     onPress={() => {
-            //       navigation.navigate('ChatRoom', {clubId: club.clubId});
-            //       // navigation.push('ChatRoom');
-            //     }}>
-            //     <Text>
-            //       {club.title}({club.currentPeople})
-            //     </Text>
-            //   </TouchableOpacity>
-            // </View>
           );
         })}
       </ScrollView>
-      {/* <View style={styles.bottomNavigate}></View> */}
     </SafeAreaView>
   );
 }
@@ -178,9 +168,8 @@ const styles = StyleSheet.create({
     width: width * 290,
   },
   chatListText: {
-    marginRight: width * 6,
+    marginRight: width * 20,
     color: '#303030',
-
     fontSize: height * 16,
     fontWeight: '600',
   },

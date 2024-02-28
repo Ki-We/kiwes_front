@@ -174,19 +174,9 @@ export default function ClubList({navigation, selectedItem, type}: any) {
                 setModalVisible(false);
               }}>
               {type == 'category' ? (
-                <Text
-                  style={[
-                    [styles.selectionText, styles.categorySelectionText],
-                  ]}>
-                  카테고리 선택
-                </Text>
+                <Text style={styles.selectionText}>카테고리 선택</Text>
               ) : (
-                <Text
-                  style={[
-                    [styles.selectionText, styles.languageSelectionText],
-                  ]}>
-                  언어 선택
-                </Text>
+                <Text style={styles.selectionText}>언어 선택</Text>
               )}
               <Image source={require('../../../assets/images/close.png')} />
             </Pressable>
@@ -326,22 +316,15 @@ const styles = StyleSheet.create({
     fontSize: height * 13,
     color: '#000',
   },
-  categorySelectionText: {
-    right: width * 195,
-  },
-  languageSelectionText: {
-    right: width * 220,
-  },
   modalCategory: {
     fontSize: 16,
     marginBottom: 50,
   },
   closeButton: {
-    position: 'absolute',
-    right: width * 30,
-    top: height * 20,
     flexDirection: 'row',
     alignItems: 'center',
+    paddingHorizontal: width * 30,
+    justifyContent: 'space-between',
   },
   checkImage: {
     width: width * 15,
@@ -351,7 +334,7 @@ const styles = StyleSheet.create({
     marginRight: 30,
   },
   modalCategoriesContainer: {
-    marginTop: height * 60,
+    marginTop: height * 20,
     marginBottom: height * 40,
     paddingHorizontal: width * 10,
   },

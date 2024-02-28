@@ -1,17 +1,42 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {
   View,
-  Text,
   SafeAreaView,
   TouchableOpacity,
   Image,
+  Text as BasicText,
   StyleSheet,
+  Linking,
 } from 'react-native';
+import Text from '@components/atoms/Text';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {height, width} from '../global';
+import {useFocusEffect} from '@react-navigation/native';
+
+const Terms =
+  'https://evendoha.notion.site/9494cdbdccfe49e783f603ca3d7acabb?pvs=4';
+const PrivacyPolicy =
+  'https://evendoha.notion.site/78ca0b2126144376bb66ff017c489a90?pvs=4';
+const openPDF = (pdf: string) => {
+  Linking.openURL(pdf);
+};
 
 const LanguageSelectPage = ({navigation}) => {
+  useFocusEffect(
+    useCallback(() => {
+      checkLanguage();
+    }, []),
+  );
+  const checkLanguage = async () => {
+    const language = await AsyncStorage.getItem('language');
+    if (language == null) return;
+
+    navigation.reset({
+      index: 0,
+      routes: [{name: 'Login'}],
+    });
+  };
   const [selectedLanguage, setSelectedLanguage] = useState('');
   const [termsAgree, agreeToTerms] = useState(false);
   const [privacyAgree, agreeToPrivacy] = useState(false);
@@ -35,14 +60,14 @@ const LanguageSelectPage = ({navigation}) => {
           ? styles.languageSelected
           : styles.languageSelectButton
       }>
-      <Text
+      <BasicText
         style={
           selectedLanguage === language
             ? [styles.languageSelectButtonText, {color: '#FFFFFF'}]
             : styles.languageSelectButtonText
         }>
         {language === 'KO' ? '한' : 'E'}
-      </Text>
+      </BasicText>
     </TouchableOpacity>
   );
 
@@ -95,9 +120,11 @@ const LanguageSelectPage = ({navigation}) => {
             onPress={() => agreeToTerms(!termsAgree)}>
             <Icon name="check" size={15} color="#FFFFFF" />
           </TouchableOpacity>
-          <Text style={styles.agreementText}>
-            이용약관 동의 / Terms and Conditions Agreement
-          </Text>
+          <TouchableOpacity onPress={() => openPDF(Terms)}>
+            <Text style={styles.agreementText}>
+              이용약관 동의 / Terms and Conditions Agreement
+            </Text>
+          </TouchableOpacity>
         </View>
         <View style={styles.agreement}>
           <TouchableOpacity
@@ -109,9 +136,11 @@ const LanguageSelectPage = ({navigation}) => {
             onPress={() => agreeToPrivacy(!privacyAgree)}>
             <Icon name="check" size={15} color="#FFFFFF" />
           </TouchableOpacity>
-          <Text style={styles.agreementText}>
-            개인정보 처리방침 동의 / Privacy Policy Agreement
-          </Text>
+          <TouchableOpacity onPress={() => openPDF(PrivacyPolicy)}>
+            <Text style={styles.agreementText}>
+              개인정보 처리방침 동의 / Privacy Policy Agreement
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
       {selectedLanguage !== '' && termsAgree && privacyAgree ? (
@@ -180,6 +209,7 @@ const styles = StyleSheet.create({
     color: '#9BD23C',
     fontSize: height * 41,
     fontWeight: '600',
+    fontFamily: 'ChosunCentennial_ttf',
   },
   languageTextContainer: {
     flexDirection: 'row',

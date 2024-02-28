@@ -20,36 +20,6 @@ const BoardDefaultList = ({navigateToClub, fetchData, selected, data}: any) => {
   const [cursor, setCursor] = useState(0);
   const [isMore, setIsMore] = useState(true);
 
-  // const fetchAndSetData = async () => {
-  //   const newData = await fetchData(cursor);
-  //   console.log('newData : ', newData);
-  //   if (newData && newData.length > 0) {
-  //     setPosts(prevPosts => {
-  //       const updatedPosts = prevPosts.map(prevPost => {
-  //         const newPost = newData.find(
-  //           ({clubId}) => clubId === prevPost.clubId,
-  //         );
-  //         if (newPost) {
-  //           return JSON.stringify(newPost) !== JSON.stringify(prevPost)
-  //             ? newPost
-  //             : prevPost;
-  //         }
-  //         return prevPost;
-  //       });
-  //       const newPostsWithoutDuplicates = newData.filter(
-  //         newPost =>
-  //           !prevPosts.some(prevPost => prevPost.clubId === newPost.clubId),
-  //       );
-  //       return [...updatedPosts, ...newPostsWithoutDuplicates];
-  //     });
-  //   } else {
-  //     setIsMore(false);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchAndSetData();
-  // }, [cursor]);
   useEffect(() => {
     fetchNewData();
   }, [cursor, selected]);
@@ -150,7 +120,9 @@ const BoardDefaultList = ({navigateToClub, fetchData, selected, data}: any) => {
 
               <View style={styles.textContainer}>
                 <View>
-                  <Text style={styles.title}>{item.title}</Text>
+                  <Text style={styles.title} numberOfLines={1}>
+                    {item.title}
+                  </Text>
                   <View style={styles.infoContainer}>
                     <Icon
                       name="calendar-outline"
@@ -230,7 +202,7 @@ const styles = StyleSheet.create({
     fontSize: height * 16,
     fontWeight: '500',
     color: 'rgba(0, 0, 0, 1)',
-    marginBottom: height * 5,
+    marginBottom: height * 10,
   },
   infoContainer: {
     paddingBottom: height * 3,

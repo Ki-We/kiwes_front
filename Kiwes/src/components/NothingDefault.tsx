@@ -6,9 +6,6 @@ export default function NothingDefault({text}: {text: string}) {
   return <NothingShow title={text} styleKiwe={styleKiwe} />;
 }
 const styleKiwe = StyleSheet.create({
-  image: {
-    height: height * 300,
-  },
   text: {
     fontSize: height * 20,
     fontWeight: 'bold',

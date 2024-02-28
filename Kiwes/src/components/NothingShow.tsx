@@ -16,7 +16,8 @@ const NothingShow = ({title, styleKiwe}: any) => {
 };
 const styles = StyleSheet.create({
   container: {
-    justifyContent: 'flex-start',
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
   },
 });

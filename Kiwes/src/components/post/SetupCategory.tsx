@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    margin: width * 20,
+    margin: width * 15,
     gap: 5,
   },
   text: {
