@@ -27,19 +27,19 @@ export default function SetupDetail2({post, setPost}: any) {
         <Text style={styles.text}>인당 예상비용</Text>
         <View style={styles.inputContainer}>
           <TextInput
+            value={cost == 0 ? '' : cost.toString()}
             style={styles.input}
             placeholderTextColor={'#C2C2C2'}
             maxLength={6}
             placeholder={
-              cost == -1
-                ? language.language == LANGUAGE.KO
-                  ? '인당 예상비용을 입력해주세요. ( 100만원 미만 )'
-                  : 'Enter the estimated cost/n'
-                : cost.toString()
+              language.language == LANGUAGE.KO
+                ? '인당 예상비용을 입력해주세요. ( 100만원 미만 )'
+                : 'Enter the estimated cost/n'
             }
             keyboardType="number-pad"
             onChangeText={text => {
-              setPost({...post, cost: Number(text)});
+              setCost(Number(text));
+              setPost(prevPost => ({...prevPost, cost: Number(text)}));
             }}
           />
           <View style={styles.iconContainer}>
@@ -50,18 +50,18 @@ export default function SetupDetail2({post, setPost}: any) {
         <Text style={styles.text}>모임 인원</Text>
         <View style={styles.inputContainer}>
           <TextInput
+            value={maxPeople == 0 ? '' : maxPeople.toString()}
             style={styles.input}
             placeholderTextColor={'#C2C2C2'}
             placeholder={
-              maxPeople == 0
-                ? language.language == LANGUAGE.KO
-                  ? '모임 인원을 입력해주세요. ( 100명 미만 )'
-                  : 'Enter the number of participants'
-                : maxPeople.toString()
+              language.language == LANGUAGE.KO
+                ? '모임 인원을 입력해주세요. ( 100명 미만 )'
+                : 'Enter the number of participants'
             }
             keyboardType="number-pad"
             maxLength={2}
             onChangeText={text => {
+              setMaxPeople(Number(text));
               setPost({...post, maxPeople: Number(text)});
             }}
           />
