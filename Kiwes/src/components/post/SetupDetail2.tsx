@@ -21,13 +21,14 @@ export default function SetupDetail2({post, setPost}: any) {
     {key: 'F', text: '여자만'},
     {key: 'ALL', text: '누구나'},
   ];
+  console.log('setupdetail2 : ', post);
   return (
     <>
       <View style={styles.container}>
         <Text style={styles.text}>인당 예상비용</Text>
         <View style={styles.inputContainer}>
           <TextInput
-            value={cost == 0 ? '' : cost.toString()}
+            value={cost.toString()}
             style={styles.input}
             placeholderTextColor={'#C2C2C2'}
             maxLength={6}
@@ -38,6 +39,11 @@ export default function SetupDetail2({post, setPost}: any) {
             }
             keyboardType="number-pad"
             onChangeText={text => {
+              if (Number.isNaN(Number(text))) {
+                setCost(0);
+                setPost(prevPost => ({...prevPost, cost: 0}));
+                return;
+              }
               setCost(Number(text));
               setPost(prevPost => ({...prevPost, cost: Number(text)}));
             }}
@@ -50,7 +56,7 @@ export default function SetupDetail2({post, setPost}: any) {
         <Text style={styles.text}>모임 인원</Text>
         <View style={styles.inputContainer}>
           <TextInput
-            value={maxPeople == 0 ? '' : maxPeople.toString()}
+            value={maxPeople.toString()}
             style={styles.input}
             placeholderTextColor={'#C2C2C2'}
             placeholder={
@@ -61,6 +67,11 @@ export default function SetupDetail2({post, setPost}: any) {
             keyboardType="number-pad"
             maxLength={2}
             onChangeText={text => {
+              if (Number.isNaN(Number(text))) {
+                setMaxPeople(0);
+                setPost(prevPost => ({...prevPost, maxPeople: 0}));
+                return;
+              }
               setMaxPeople(Number(text));
               setPost({...post, maxPeople: Number(text)});
             }}

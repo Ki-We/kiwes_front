@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import RoundCategory from '../atoms/roundCategory';
 import {StyleSheet, View} from 'react-native';
 import {LANGUAGE, categoryList, langList} from '../../utils/utils';
@@ -7,6 +7,7 @@ import RoundBtn from '../atoms/roundBtn';
 import {height, width} from '../../global';
 import {useSelector} from 'react-redux';
 import {RootState} from '@/slice/RootReducer';
+import {FlatList} from 'react-native-gesture-handler';
 
 export default function ClubListDetail({type, navigation}: any) {
   const language = useSelector((state: RootState) => state.language);
@@ -23,6 +24,7 @@ export default function ClubListDetail({type, navigation}: any) {
   const secondRowCategoryList = allList.slice(splitIndex);
   const firstRowCategoryList = allList.slice(0, splitIndex);
 
+  const [containerWidth, setContainerWidth] = useState(0);
   const renderPaginationRect = (index: number, total: number) => {
     return (
       <View style={styles.paginationContainer}>
@@ -84,14 +86,53 @@ export default function ClubListDetail({type, navigation}: any) {
         style={{height: swiperHeight}}
         renderPagination={renderPaginationRect}>
         <View style={style}>
-          {firstRowCategoryList.map(({key, text}, i) => (
-            <View key={`first_${i}`}>{renderBtn(key, text)}</View>
-          ))}
+          {type === 'category' ? (
+            firstRowCategoryList.map(({key, text}, i) => (
+              <View key={`first_${i}`}>{renderBtn(key, text)}</View>
+            ))
+          ) : (
+            <FlatList
+              data={firstRowCategoryList}
+              style={{height: '100%'}}
+              showsVerticalScrollIndicator={false}
+              renderItem={({item}) => (
+                <View style={{paddingHorizontal: width * 5}}>
+                  {renderBtn(item.key, item.text)}
+                </View>
+              )}
+              numColumns={3}
+            />
+          )}
         </View>
         <View style={style}>
-          {secondRowCategoryList.map(({key, text}, i) => (
-            <View key={`second${i}`}>{renderBtn(key, text)}</View>
-          ))}
+          {type === 'category' ? (
+            secondRowCategoryList.map(({key, text}, i) => (
+              <View key={`first_${i}`}>{renderBtn(key, text)}</View>
+            ))
+          ) : (
+            <FlatList
+              data={secondRowCategoryList}
+              showsVerticalScrollIndicator={false}
+              renderItem={({item}) => (
+                <View style={{paddingHorizontal: width * 5}}>
+                  {renderBtn(item.key, item.text)}
+                </View>
+              )}
+              numColumns={3}
+            />
+          )}
+          {/* <FlatList
+            data={secondRowCategoryList}
+            renderItem={({item}) => (
+              <View>{renderBtn(item.key, item.text)}</View>
+            )}
+            columnWrapperStyle={{
+              justifyContent: 'space-between',
+              marginBottom: 0,
+            }}
+            onLayout={e => setContainerWidth(e.nativeEvent.layout.width)}
+            numColumns={3}
+          /> */}
         </View>
       </Swiper>
     </>
@@ -117,11 +158,9 @@ const styles = StyleSheet.create({
   },
   container2: {
     alignItems: 'center',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     margin: width * 12,
-    // paddingHorizontal: width * 10,
+    minHeight: 200,
   },
   swiper: {
     height: 150,

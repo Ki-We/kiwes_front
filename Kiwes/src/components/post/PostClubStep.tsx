@@ -85,11 +85,17 @@ const PostClubStep = ({
       navigation.navigate('ClubDetail', {clubId: data.clubId});
     }
   };
-  const uploadClubImage = async (clubId: number) => {
+  const checkImageUpload = () => {
     if (!post.imageSource || typeof post.imageSource === 'number') {
-      throw new Error('이미지를 선택해주세요');
+      return false;
     } else if (post.imageSource.startsWith('https')) {
-      return;
+      return false;
+    }
+    return true;
+  };
+  const uploadClubImage = async (clubId: number) => {
+    if (!checkImageUpload()) {
+      throw new Error('이미지를 선택해주세요');
     }
     const imageUrl = `${apiServer}/api/v1/club/article/presigned-url?clubId=${clubId}`;
     const presignedResponse = await new RESTAPIBuilder(imageUrl, 'GET')
@@ -155,7 +161,8 @@ const PostClubStep = ({
             title={'모임의 날짜와 마감일,\n장소를 알려주세요.'}
             onPrev={() => nextClickHandler(steps[1])}
             onNext={() => {
-              if (post.date == '' || post.dueTo == '') return;
+              if (post.date == '' || post.dueTo == '' || post.location == '')
+                return;
               nextClickHandler(steps[3]);
             }}>
             <SetupDetail1 post={post} setPost={setPost} />
@@ -166,7 +173,7 @@ const PostClubStep = ({
             title={'모임의 비용과 참여인원,\n성별을 골라주세요'}
             onPrev={() => nextClickHandler(steps[2])}
             onNext={() => {
-              if (post.cost < 0 || post.maxPeople == 0) return;
+              if (post.cost < 0 || post.maxPeople <= 0) return;
               nextClickHandler(steps[4]);
             }}>
             <SetupDetail2 post={post} setPost={setPost} />
@@ -177,7 +184,11 @@ const PostClubStep = ({
             nextButton={type[1]}
             title={'모임의 정보를\n입력해주세요.'}
             onPrev={() => nextClickHandler(steps[3])}
-            onNext={postClub}>
+            onNext={() => {
+              if (post.title == '' || post.content == '' || !checkImageUpload())
+                return;
+              postClub();
+            }}>
             <SetupDetail3 post={post} setPost={setPost} />
           </SetupLayout>
         </Step>
