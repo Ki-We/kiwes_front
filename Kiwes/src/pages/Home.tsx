@@ -267,6 +267,23 @@ export function Home({navigation}: any) {
       </View>
     );
   };
+  const renderRecPagination = (index: number) => {
+    return (
+      <View style={styles.paginationRecContainer}>
+        <View style={styles.paginationRec}>
+          {popularGroupImages.map((image, i) => (
+            <View
+              key={i}
+              style={[
+                styles.paginationDot,
+                i === index ? styles.paginationDotActive : null,
+              ]}
+            />
+          ))}
+        </View>
+      </View>
+    );
+  };
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContainer}>
       <View style={styles.container}>
@@ -397,13 +414,14 @@ export function Home({navigation}: any) {
             autoplay={false}
             autoplayTimeout={6}
             showsPagination={true}
-            renderPagination={renderPagination}
+            renderPagination={renderRecPagination}
             onIndexChanged={index => setCurrentPage(index)}
             ref={popularGroupsRef}>
             {popularClubs.map((club: any, index: number) => (
               <View
                 key={index}
-                style={[styles.paginationInfo, {marginBottom: height * 40}]}>
+                style={[styles.paginationInfo, {marginBottom: height * 40}]}
+                >
                 <RecommendedGroup
                   image={{uri: club.thumbnailImage}}
                   title={club.title}
@@ -418,7 +436,6 @@ export function Home({navigation}: any) {
               </View>
             ))}
           </Swiper>
-          <View style={[styles.paginationInfo, {marginBottom: height * 60}]} />
         </View>
       </View>
     </ScrollView>
@@ -439,11 +456,11 @@ const styles = StyleSheet.create({
   wrapper1: {
     height: height * 350,
     alignSelf: 'center',
-    marginVertical: height * 10,
+    marginVertical: height * 5,
   },
   wrapper2: {
     height: height * 170,
-    marginBottom: height * -10,
+    marginBottom: height * 20,
   },
   popularGroupSlide: {
     justifyContent: 'center',
@@ -456,7 +473,7 @@ const styles = StyleSheet.create({
   },
   sectionContainer: {
     alignItems: 'center',
-    marginTop: height * 20,
+    marginTop: height * 10,
   },
   sectionContent: {
     width: '100%',
@@ -497,13 +514,21 @@ const styles = StyleSheet.create({
     marginHorizontal: height * 3,
   },
   paginationContainer: {
-    position: 'absolute',
-    bottom: height * 15,
-    width: '100%',
+    bottom: height * 25,
     justifyContent: 'center',
     alignItems: 'center',
   },
   pagination: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  paginationRecContainer: {
+    bottom: height * 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  paginationRec: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
