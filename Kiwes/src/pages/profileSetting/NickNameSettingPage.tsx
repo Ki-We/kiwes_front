@@ -131,6 +131,7 @@ const NickNameSettingPage = ({navigation}) => {
                       ? '닉네임 입력'
                       : 'Enter UserName'
                   }
+                  placeholderTextColor="#8F8F8F"
                   style={
                     language.language === LANGUAGE.KO
                       ? styles.input
@@ -182,7 +183,7 @@ const NickNameSettingPage = ({navigation}) => {
               ) : (
                 <Text style={styles.checkText}>
                   {language.language == LANGUAGE.KO
-                    ? '닉네임은 한글, 영어 포함 ' +
+                    ? '닉네임은 영어로 ' +
                       byteLength() +
                       ' bytes 이내로 작성해주세요.'
                     : 'Please write your username within ' +
@@ -294,6 +295,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     borderColor: '#303030',
     backgroundColor: '#FFF',
+    color: '#000',
     paddingBottom: height * 15,
     width: width * 260,
     fontSize: height * 15,
@@ -314,13 +316,11 @@ const styles = StyleSheet.create({
   },
   checkText: {
     color: '#58C047',
-
     fontSize: height * 13,
     fontWeight: '500',
   },
   errorText: {
     color: 'red',
-
     fontSize: height * 13,
     fontWeight: '500',
   },
