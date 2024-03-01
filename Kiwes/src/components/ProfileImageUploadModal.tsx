@@ -1,11 +1,6 @@
 import React from 'react';
-import {
-  StyleSheet,
-  SafeAreaView,
-  View,
-  TouchableOpacity,
-  Text,
-} from 'react-native';
+import {StyleSheet, SafeAreaView, View, TouchableOpacity} from 'react-native';
+import Text from '@components/atoms/Text';
 import Modal from 'react-native-modal';
 import {height, width} from '../global';
 

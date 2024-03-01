@@ -7,6 +7,8 @@ import SetupLayout from './SetupLayout';
 import SetupDetail1 from './SetupDetail1';
 import SetupDetail2 from './SetupDetail2';
 import SetupDetail3 from './SetupDetail3';
+import Loading from './Loading';
+import ErrorModal from '../errorModal';
 import {apiServer, chatServer} from '../../utils/metaData';
 import {RESTAPIBuilder} from '../../utils/restapiBuilder';
 import RNFS from 'react-native-fs';
@@ -35,38 +37,53 @@ const PostClubStep = ({
   type,
 }: ProfileSetupInterface) => {
   const [post, setPost] = useState(initPost);
+  const [loadingVisible, setLoadingVisible] = useState(false);
+  const [isErrorModalVisible, setErrorModalVisible] = useState(false);
+
+  const toggleErrorModal = () => {
+    setErrorModalVisible(!isErrorModalVisible);
+  };
 
   const postClub = async () => {
-    console.log(post);
     if (post.title == '' || post.imageSource == '') return;
-    const {data} = await new RESTAPIBuilder(url, type[0])
-      .setNeedToken(true)
-      .setBody(post)
-      .build()
-      .run()
-      .catch(err => {
-        console.log('post club err1 : ', err);
+    else {
+      setLoadingVisible(true);
+      console.log(post);
+      const {data} = await new RESTAPIBuilder(url, type[0])
+        .setNeedToken(true)
+        .setBody(post)
+        .build()
+        .run()
+        .catch(err => {
+          console.log('post club err1 : ', err);
+          setLoadingVisible(false);
+          toggleErrorModal();
+        });
+
+      console.log(`${data.clubId} 모임 개설 완료`);
+      await uploadClubImage(data.clubId).catch(err => {
+        console.log('post club err2 : ', err);
+        setLoadingVisible(false);
+        toggleErrorModal();
       });
+      console.log(`${data.clubId} 모임 이미지 업로드 완료`);
 
-    console.log(`${data.clubId} 모임 개설 완료`);
-    await uploadClubImage(data.clubId).catch(err => {
-      console.log('post club err2 : ', err);
-    });
-    console.log(`${data.clubId} 모임 이미지 업로드 완료`);
-
-    // 채팅 서버 Create Room
-    const chatUrl = `${chatServer}/room`;
-    const {msg} = await new RESTAPIBuilder(chatUrl, 'POST')
-      .setNeedToken(true)
-      .setBody({clubId: data.clubId})
-      .build()
-      .run()
-      .catch(err => {
-        console.log('post club err3 : ', err);
-      });
-    console.log(`모임 개설 Chatting : ${msg}`);
-
-    navigation.navigate('ClubDetail', {clubId: data.clubId});
+      // 채팅 서버 Create Room
+      const chatUrl = `${chatServer}/room`;
+      const {msg} = await new RESTAPIBuilder(chatUrl, 'POST')
+        .setNeedToken(true)
+        .setBody({clubId: data.clubId})
+        .build()
+        .run()
+        .catch(err => {
+          console.log('post club err3 : ', err);
+          setLoadingVisible(false);
+          toggleErrorModal();
+        });
+      console.log(`모임 개설 Chatting : ${msg}`);
+      setLoadingVisible(false);
+      navigation.navigate('ClubDetail', {clubId: data.clubId});
+    }
   };
   const uploadClubImage = async (clubId: number) => {
     if (!post.imageSource || typeof post.imageSource === 'number') {
@@ -165,6 +182,8 @@ const PostClubStep = ({
           </SetupLayout>
         </Step>
       </Funnel>
+      {loadingVisible && <Loading />}
+      <ErrorModal isVisible={isErrorModalVisible} onClose={toggleErrorModal} />
     </PostLayout>
   );
 };

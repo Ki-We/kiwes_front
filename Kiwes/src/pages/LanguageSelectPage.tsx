@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
     color: '#9BD23C',
     fontSize: height * 41,
     fontWeight: '600',
-    fontFamily: 'ChosunCentennial_ttf',
+    fontFamily: 'BMJUA_ttf',
   },
   languageTextContainer: {
     flexDirection: 'row',

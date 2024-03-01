@@ -15,11 +15,15 @@ import {RESTAPIBuilder} from '../../utils/restapiBuilder';
 import backIcon from 'react-native-vector-icons/Ionicons';
 import {Buffer} from 'buffer';
 import Text from '@components/atoms/Text';
+import {LANGUAGE} from '@/utils/utils';
+import {useSelector} from 'react-redux';
+import {RootState} from '@/slice/RootReducer';
 
 const NickNameSettingPage = ({navigation}) => {
   const [nickname, setNickname] = useState('');
   const [keyboardStatus, setKeyboardStatus] = useState('20');
   const [checkStatus, setCheckStatus] = useState('');
+  const language = useSelector((state: RootState) => state.language);
 
   const buffer = new Buffer(nickname, 'utf-8');
   const byteLength = () => {
@@ -120,10 +124,22 @@ const NickNameSettingPage = ({navigation}) => {
           </View>
           <View>
             <View style={styles.inputContainer}>
-              <View style={styles.input}>
+              <View>
                 <TextInput
-                  placeholder="닉네임 입력"
-                  style={styles.input}
+                  placeholder={
+                    language.language === LANGUAGE.KO
+                      ? '닉네임 입력'
+                      : 'Enter UserName'
+                  }
+                  style={
+                    language.language === LANGUAGE.KO
+                      ? styles.input
+                      : {
+                          ...styles.input,
+                          width: width * 230,
+                          height: height * 60,
+                        }
+                  }
                   onChangeText={handleTextChange}
                   value={nickname}
                   onPressIn={refreshCheckStatus}
@@ -135,11 +151,19 @@ const NickNameSettingPage = ({navigation}) => {
                     checkNinkName();
                     Keyboard.dismiss();
                   }}
-                  style={styles.checkButton}>
+                  style={
+                    language.language === LANGUAGE.KO
+                      ? styles.checkButton
+                      : {
+                          ...styles.checkButton,
+                          width: width * 106,
+                          height: height * 60,
+                        }
+                  }>
                   <Text
                     style={{
                       color: '#FFF',
-
+                      textAlign: 'center',
                       fontSize: height * 15,
                       fontWeight: 600,
                     }}>
@@ -157,14 +181,25 @@ const NickNameSettingPage = ({navigation}) => {
                 </Text>
               ) : (
                 <Text style={styles.checkText}>
-                  닉네임은 한글, 영어 포함 {byteLength()} byte 이내로
-                  작성해주세요.
+                  {language.language == LANGUAGE.KO
+                    ? '닉네임은 한글, 영어 포함 ' +
+                      byteLength() +
+                      ' bytes 이내로 작성해주세요.'
+                    : 'Please write your username within ' +
+                      byteLength() +
+                      ' bytes including Korean and English.'}
                 </Text>
               )}
             </View>
           </View>
           {checkStatus === 'true' ? (
-            <TouchableOpacity style={styles.nextButton1} onPress={handleNext}>
+            <TouchableOpacity
+              style={
+                language.language === LANGUAGE.KO
+                  ? styles.nextButton1
+                  : {...styles.nextButton1, marginTop: height * 60}
+              }
+              onPress={handleNext}>
               <Text
                 style={{
                   color: '#FFFFFF',
@@ -175,7 +210,12 @@ const NickNameSettingPage = ({navigation}) => {
               </Text>
             </TouchableOpacity>
           ) : (
-            <View style={styles.nextButton2}>
+            <View
+              style={
+                language.language === LANGUAGE.KO
+                  ? styles.nextButton2
+                  : {...styles.nextButton2, marginTop: height * 60}
+              }>
               <Text
                 style={{
                   color: '#DADADA',
