@@ -1,8 +1,8 @@
 import React, {useState, useRef} from 'react';
-import {View, StyleSheet, TouchableHighlight} from 'react-native';
+import {View, StyleSheet, TouchableHighlight, Text} from 'react-native';
 import {Chat} from '../utils/commonInterface';
 import MyBubbleLongpressModal from '../components/myBubbleLongpressModal';
-import Text from '@components/atoms/Text';
+// import Text from '@components/atoms/Text';
 import {height, DeviceHeight} from '../global';
 
 export default function ChatBubbleMine({
@@ -28,11 +28,21 @@ export default function ChatBubbleMine({
     left: 0,
   });
   const modalRef = useRef(null);
-  const openMyBubbleLongPressModal = event => {
+
+  const [isMyBubbleLongpressModal, setMyBubbleLongpressModal] = useState(false);
+
+  const toggleMyBubbleLongpressModal = () => {
+    setMyBubbleLongpressModal(!isMyBubbleLongpressModal);
+  };
+
+  const [clickedPosition, setClickedPosition] = useState({x: 0, y: 0});
+  const backgroundPosition = event => {
+    const {pageX, pageY} = event.nativeEvent;
+    setClickedPosition({x: pageX, y: pageY});
     if (modalRef && modalRef.current) {
       modalRef.current.measure((fx, fy, width, height, px, py) => {
-        if (DeviceHeight / 2 >= clickedPosition.y) {
-          setModalPosition({top: py + height, left: px});
+        if (DeviceHeight / 2 >= pageY) {
+          setModalPosition({top: py + height - 5, left: px});
         } else {
           if (isHost) {
             setModalPosition({top: py - 130, left: px});
@@ -45,18 +55,6 @@ export default function ChatBubbleMine({
     }
   };
 
-  const [isMyBubbleLongpressModal, setMyBubbleLongpressModal] = useState(false);
-
-  const toggleMyBubbleLongpressModal = () => {
-    setMyBubbleLongpressModal(!isMyBubbleLongpressModal);
-  };
-
-  const [clickedPosition, setClickedPosition] = useState({x: 0, y: 0});
-  const backgroundPosition = event => {
-    const {pageX, pageY} = event.nativeEvent;
-    setClickedPosition({x: pageX, y: pageY});
-  };
-
   return (
     <View style={styles.container}>
       <TouchableHighlight
@@ -64,7 +62,6 @@ export default function ChatBubbleMine({
         style={styles.chat}
         onLongPress={event => {
           backgroundPosition(event);
-          openMyBubbleLongPressModal(event);
         }}
         underlayColor={'#589947'}
         activeOpacity={1}>
@@ -99,7 +96,7 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     paddingTop: 7,
     paddingBottom: 7,
-    maxWidth: '70%', // You can adjust the percentage as needed
+    maxWidth: '70%',
     borderRadius: 20,
   },
   time: {
@@ -108,14 +105,13 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#FFFFFF',
-
     fontSize: height * 13,
-    fontWeight: '400',
+    // fontWeight: '400',
+    fontFamily: 'Pretendard-Regular',
   },
   timeText: {
     color: '#303030',
-
     fontSize: height * 10,
-    fontWeight: '600',
+    fontFamily: 'Pretendard-SemiBold',
   },
 });

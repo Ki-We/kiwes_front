@@ -1,7 +1,7 @@
 // 채팅방 화면에 번역 언어 선택 및 텍스트 보여지는 새로운 모달 보이기
 import React, {useState, useRef} from 'react';
-import {View, StyleSheet, Image, TouchableHighlight} from 'react-native';
-import Text from '@components/atoms/Text';
+import {View, StyleSheet, Image, TouchableHighlight, Text} from 'react-native';
+// import Text from '@components/atoms/Text';
 import {Chat} from '../utils/commonInterface';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faUser} from '@fortawesome/free-solid-svg-icons';
@@ -39,24 +39,6 @@ export default function ChatBubbleOther({
     left: 0,
   });
   const modalRef = useRef(null);
-  const openOtherBubbleLongPressModal = event => {
-    console.log(clickedPosition.y);
-    if (modalRef && modalRef.current) {
-      modalRef.current.measure((fx, fy, width, height, px, py) => {
-        if (DeviceHeight / 2 >= clickedPosition.y) {
-          setModalPosition({top: py + height, left: px - 25});
-        } else {
-          if (isHost) {
-            setModalPosition({top: py - 130, left: px - 25});
-          } else {
-            setModalPosition({top: py - 100, left: px - 25});
-          }
-        }
-        console.log(modalPosition.top);
-        toggleOtherBubbleLongpressModal();
-      });
-    }
-  };
 
   const [isOtherBubbleLongpressModal, setOtherBubbleLongpressModal] =
     useState(false);
@@ -69,6 +51,20 @@ export default function ChatBubbleOther({
   const backgroundPosition = event => {
     const {pageX, pageY} = event.nativeEvent;
     setClickedPosition({x: pageX, y: pageY});
+    if (modalRef && modalRef.current) {
+      modalRef.current.measure((fx, fy, width, height, px, py) => {
+        if (DeviceHeight / 2 >= clickedPosition.y) {
+          setModalPosition({top: py + height - 5, left: px - 25});
+        } else {
+          if (isHost) {
+            setModalPosition({top: py - 130 + height, left: px - 25});
+          } else {
+            setModalPosition({top: py - 100 + height, left: px - 25});
+          }
+        }
+        toggleOtherBubbleLongpressModal();
+      });
+    }
   };
 
   return (
@@ -89,7 +85,6 @@ export default function ChatBubbleOther({
               style={styles.chat}
               onLongPress={event => {
                 backgroundPosition(event);
-                openOtherBubbleLongPressModal(event);
               }}
               underlayColor={'#CCCCCC'}
               activeOpacity={1}>
@@ -158,12 +153,14 @@ const styles = StyleSheet.create({
   text: {
     color: '#303030',
     fontSize: height * 13,
-    fontWeight: '400',
+    // fontWeight: '400',
+    fontFamily: 'Pretendard-Regular',
   },
   timeText: {
     color: '#303030',
     fontSize: height * 10,
-    fontWeight: '600',
+    // fontWeight: '600',
+    fontFamily: 'Pretendard-SemiBold',
   },
 });
 
