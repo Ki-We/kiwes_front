@@ -12,20 +12,6 @@ import java.util.List;
 import org.devio.rn.splashscreen.SplashScreen;
 
 
-//import android.content.pm.PackageInfo;
-//import android.content.pm.PackageManager;
-//import android.content.pm.Signature;
-//import android.os.Bundle;
-//import android.util.Base64;
-//import android.util.Log;
-//import com.facebook.react.ReactActivity;
-//import com.facebook.react.ReactActivityDelegate;
-//import com.facebook.react.ReactRootView;
-//import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
-//
-//import java.security.MessageDigest;
-//import java.security.NoSuchAlgorithmException;
-
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost =
