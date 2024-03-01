@@ -18,7 +18,7 @@ export default function PostClub({navigation}: any) {
   const initPost = {
     category: '',
     content: '',
-    cost: -1,
+    cost: 0,
     date: '',
     dueTo: '',
     gender: '남자만',

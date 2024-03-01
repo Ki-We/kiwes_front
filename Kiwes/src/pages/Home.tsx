@@ -345,17 +345,14 @@ export function Home({navigation}: any) {
                           `, ${languageMap[club.languages[1]]}`}
                       </Text>
                     </View>
-                    <View style={styles.overlayMaxInfo}>
-                      <View
-                        style={[
-                          styles.overlayCommonItem1,
-                          styles.overlayItem4,
-                        ]}>
-                        <Text style={styles.overlayItemText2}>
-                          <Icon name="person-outline" size={height * 12} />{' '}
-                          {club.current_max}
-                        </Text>
-                      </View>
+                  </View>
+                  <View style={styles.overlayMaxInfo}>
+                    <View
+                      style={[styles.overlayCommonItem1, styles.overlayItem4]}>
+                      <Text style={styles.overlayItemText2}>
+                        <Icon name="person-outline" size={height * 12} />{' '}
+                        {club.current_max}
+                      </Text>
                     </View>
                   </View>
                   <TouchableOpacity
@@ -373,13 +370,21 @@ export function Home({navigation}: any) {
           ))}
         </Swiper>
         <View style={styles.sectionContainer}>
-          <Text style={styles.sectionTitle}>{language.language == LANGUAGE.KO ? '카테고리별 모임' : 'Category Meetups'}</Text>
+          <Text style={styles.sectionTitle}>
+            {language.language == LANGUAGE.KO
+              ? '카테고리별 모임'
+              : 'Category Meetups'}
+          </Text>
           <View style={styles.sectionContent}>
             <ClubListDetail type="category" navigation={navigation} />
           </View>
         </View>
         <View style={styles.sectionContainer}>
-          <Text style={styles.sectionTitle}>{language.language == LANGUAGE.KO ? '언어별 모임' : 'Language Meetups'}</Text>
+          <Text style={styles.sectionTitle}>
+            {language.language == LANGUAGE.KO
+              ? '언어별 모임'
+              : 'Language Meetups'}
+          </Text>
           <View style={styles.sectionContent}>
             <ClubListDetail type="language" navigation={navigation} />
           </View>
@@ -625,10 +630,9 @@ const styles = StyleSheet.create({
   },
   overlayMaxInfo: {
     position: 'absolute',
-    flex: 1,
-    top: height * 65,
-    width: width * 78,
-    left: width * 232,
+    bottom: height * 70,
+    minWidth: width * 78,
+    right: width * 15,
   },
   overlayCommonItem: {
     alignSelf: 'flex-start',
