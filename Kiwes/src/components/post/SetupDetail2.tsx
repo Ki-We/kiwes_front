@@ -17,8 +17,8 @@ export default function SetupDetail2({post, setPost}: any) {
   const [maxPeople, setMaxPeople] = useState(post.maxPeople);
   const language = useSelector((state: RootState) => state.language);
   const genderList = [
-    {key: 'M', text: '남자만'},
-    {key: 'F', text: '여자만'},
+    {key: 'MALE', text: '남자만'},
+    {key: 'FEMALE', text: '여자만'},
     {key: 'ALL', text: '누구나'},
   ];
   console.log('setupdetail2 : ', post);

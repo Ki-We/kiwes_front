@@ -103,6 +103,7 @@ const IntroduceSettingPage = ({route, navigation}) => {
                     ? '간단하게 본인을 소개해주세요 :)'
                     : 'Please introduce yourself briefly :)'
                 }
+                placeholderTextColor="#8F8F8F"
                 style={styles.input}
                 onChangeText={handleTextChange}
                 value={introduction}
@@ -117,7 +118,6 @@ const IntroduceSettingPage = ({route, navigation}) => {
             <Text
               style={{
                 color: '#FFFFFF',
-
                 fontSize: height * 18,
                 fontWeight: '600',
               }}>
@@ -175,6 +175,9 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: '#F8F8F8',
+    color: '#000',
+    shadowColor: '#000',
+    placeholderColor: '#000',
     padding: 10,
     fontSize: height * 15,
     fontWeight: '500',

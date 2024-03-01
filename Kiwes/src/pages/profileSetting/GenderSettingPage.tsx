@@ -73,6 +73,7 @@ const GenderSettingPage = ({route, navigation}) => {
               paddingLeft: width * 20,
               fontSize: height * 18,
               fontWeight: '500',
+              color: '#000',
             }}>
             남
           </Text>
@@ -84,6 +85,7 @@ const GenderSettingPage = ({route, navigation}) => {
               paddingLeft: width * 20,
               fontSize: height * 18,
               fontWeight: '500',
+              color: '#000',
             }}>
             여
           </Text>

@@ -10,7 +10,6 @@ import {
 import Text from '@components/atoms/Text';
 import {launchImageLibrary} from 'react-native-image-picker';
 import backIcon from 'react-native-vector-icons/Ionicons';
-import cameraIcon from 'react-native-vector-icons/FontAwesome';
 import {width, height} from '../../global';
 import ProfileImageUploadModal from '../../components/ProfileImageUploadModal';
 
@@ -111,15 +110,6 @@ const ProfilePictureSettingPage = ({navigation}) => {
                 resizeMode="cover"
               />
             </TouchableOpacity>
-            {/* <cameraIcon.Button
-              backgroundColor="#FFFFFF"
-              iconStyle={{marginRight: 0, padding: 5}}
-              borderRadius={50}
-              name="camera"
-              color="black"
-              size={25}
-              onPress={modalOpen}
-            /> */}
           </View>
         </View>
       </View>
