@@ -7,23 +7,30 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  FlatList,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Swiper from 'react-native-swiper';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {RESTAPIBuilder} from '../utils/restapiBuilder';
 import {apiServer} from '../utils/metaData';
 import {languageMap} from '../utils/languageMap';
 import ClubListDetail from '../components/club/ClubListDetail';
-import {langList} from '../utils/utils';
+import {LANGUAGE, langList} from '../utils/utils';
 import {height, width} from '../global';
+import {setLanguage} from '@/slice/LanguageSlice';
+import {language} from '@/utils/utils';
+import {useSelector} from 'react-redux';
 
 const bannerUrl = `${apiServer}/api/v1/banner`;
 const url = `${apiServer}/api/v1/club/info/detail/1`;
 
 export function Home({navigation}: any) {
+  const language = useSelector((state: RootState) => state.language);
   const bannerRef = useRef(null);
   const popularGroupsRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(0);
+  const [popularClubs, setPopularClubs] = useState([]);
   const [data, setData] = useState();
   interface Banner {
     type: string;
@@ -31,7 +38,6 @@ export function Home({navigation}: any) {
     url: string;
     id: number;
   }
-  const [popularClubs, setPopularClubs] = useState([]);
 
   const fetchPopularClubs = async () => {
     try {
@@ -291,9 +297,9 @@ export function Home({navigation}: any) {
         <Text style={styles.sectionTitle}>인기 모임</Text>
         <Swiper
           style={styles.wrapper1}
-          loop={false}
-          autoplay={false}
-          autoplayTimeout={6}
+          loop={true}
+          autoplay={true}
+          autoplayTimeout={5}
           showsPagination={true}
           renderPagination={renderPagination}
           onIndexChanged={(index: number) => setCurrentPage(index)}
@@ -367,13 +373,13 @@ export function Home({navigation}: any) {
           ))}
         </Swiper>
         <View style={styles.sectionContainer}>
-          <Text style={styles.sectionTitle}>카테고리별 모임</Text>
+          <Text style={styles.sectionTitle}>{language.language == LANGUAGE.KO ? '카테고리별 모임' : 'Category Meetups'}</Text>
           <View style={styles.sectionContent}>
             <ClubListDetail type="category" navigation={navigation} />
           </View>
         </View>
         <View style={styles.sectionContainer}>
-          <Text style={styles.sectionTitle}>언어별 모임</Text>
+          <Text style={styles.sectionTitle}>{language.language == LANGUAGE.KO ? '언어별 모임' : 'Language Meetups'}</Text>
           <View style={styles.sectionContent}>
             <ClubListDetail type="language" navigation={navigation} />
           </View>
@@ -431,8 +437,8 @@ const styles = StyleSheet.create({
     marginVertical: height * 10,
   },
   wrapper2: {
-    height: height * 180,
-    marginBottom: height * -20,
+    height: height * 170,
+    marginBottom: height * -10,
   },
   popularGroupSlide: {
     justifyContent: 'center',
@@ -487,7 +493,7 @@ const styles = StyleSheet.create({
   },
   paginationContainer: {
     position: 'absolute',
-    bottom: height * 10,
+    bottom: height * 15,
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
