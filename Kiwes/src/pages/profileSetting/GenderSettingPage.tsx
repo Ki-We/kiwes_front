@@ -70,20 +70,22 @@ const GenderSettingPage = ({route, navigation}) => {
           {renderRadioButton('MALE')}
           <Text
             style={{
+              paddingLeft: width * 20,
               fontSize: height * 18,
               fontWeight: '500',
             }}>
-            &nbsp;&nbsp;&nbsp;&nbsp;남
+            남
           </Text>
         </View>
         <View style={styles.radioButtonContainer}>
           {renderRadioButton('FEMALE')}
           <Text
             style={{
+              paddingLeft: width * 20,
               fontSize: height * 18,
               fontWeight: '500',
             }}>
-            &nbsp;&nbsp;&nbsp;&nbsp;여
+            여
           </Text>
         </View>
       </View>

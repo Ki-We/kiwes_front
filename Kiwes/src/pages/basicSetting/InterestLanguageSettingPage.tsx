@@ -1,18 +1,18 @@
 import React, {useState} from 'react';
-import {
-  SafeAreaView,
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-} from 'react-native';
+import {SafeAreaView, View, TouchableOpacity, StyleSheet} from 'react-native';
+import Text from '@components/atoms/Text';
 import {width, height} from '../../global';
 import backIcon from 'react-native-vector-icons/Ionicons';
+import {LANGUAGE} from '@/utils/utils';
+import {useSelector} from 'react-redux';
+import {RootState} from '@/slice/RootReducer';
 
 const InterestLanguageSettingPage = ({route, navigation}) => {
   const {nickname, gender, birthday, introduction, nation} = route.params;
   const [checkedBoxes, setCheckedBoxes] = useState([]);
   const [selectedLanguages, setSelectedLanguages] = useState([]);
+  const language = useSelector((state: RootState) => state.language);
+
   const checkBoxValues = [
     '한국어',
     'English',
@@ -101,7 +101,9 @@ const InterestLanguageSettingPage = ({route, navigation}) => {
           padding: 5,
         }}>
         <Text style={styles.mainText}>
-          관심언어를 {'\n'}1개 이상 선택해 주세요.
+          {language.language == LANGUAGE.KO
+            ? '관심언어를 \n1개 이상 선택해 주세요.'
+            : 'Select at least one\nlanguage of interest.'}
         </Text>
       </View>
       <View style={styles.mainContainer}>
@@ -109,8 +111,12 @@ const InterestLanguageSettingPage = ({route, navigation}) => {
           <TouchableOpacity
             style={
               checkedBoxes.includes(value)
-                ? styles.selected
-                : styles.radioButtonCircle
+                ? language.language === LANGUAGE.KO
+                  ? styles.selected
+                  : {...styles.selected, paddingHorizontal: 10}
+                : language.language === LANGUAGE.KO
+                ? styles.radioButtonCircle
+                : {...styles.radioButtonCircle, paddingHorizontal: 10}
             }
             key={index}
             onPress={() => toggleCheckbox(value)}>

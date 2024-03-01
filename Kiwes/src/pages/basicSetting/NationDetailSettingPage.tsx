@@ -2,15 +2,18 @@ import React, {useState, useRef} from 'react';
 import {
   SafeAreaView,
   View,
-  Text,
   Image,
   TouchableOpacity,
   Modal,
   StyleSheet,
 } from 'react-native';
+import Text from '@components/atoms/Text';
 import {width, height} from '../../global';
 import backIcon from 'react-native-vector-icons/Ionicons';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {LANGUAGE} from '@/utils/utils';
+import {useSelector} from 'react-redux';
+import {RootState} from '@/slice/RootReducer';
 
 let asiaImage = require('../../../assets/images/asia.png');
 let africaImage = require('../../../assets/images/africa.png');
@@ -25,6 +28,7 @@ const NationDetailSettingPage = ({route, navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalPosition, setModalPosition] = useState({top: 0, left: 0});
   const targetRef = useRef(null);
+  const language = useSelector((state: RootState) => state.language);
 
   const nationOptions = [
     '아시아',
@@ -92,7 +96,11 @@ const NationDetailSettingPage = ({route, navigation}) => {
           paddingLeft: width * 20,
           padding: 5,
         }}>
-        <Text style={styles.mainText}>본인의 국적을{'\n'}선택해주세요.</Text>
+        <Text style={styles.mainText}>
+          {language.language == LANGUAGE.KO
+            ? '본인의 국적을\n선택해주세요.'
+            : 'Select your\nnationality'}
+        </Text>
       </View>
       <View style={styles.mainContainer}>
         <View>

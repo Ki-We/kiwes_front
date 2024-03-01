@@ -5,9 +5,9 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
-  Modal,
+  Modal as DefaultModal,
 } from 'react-native';
-import Modal2 from 'react-native-modal';
+import Modal from 'react-native-modal';
 import {width, height, DeviceWidth} from '../global';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Text from '@components/atoms/Text';
@@ -142,7 +142,7 @@ const TranslateModal = ({isVisible, onClose, translate}) => {
   };
 
   return (
-    <Modal2
+    <Modal
       style={{
         position: 'absolute',
         top: height * 200,
@@ -205,7 +205,7 @@ const TranslateModal = ({isVisible, onClose, translate}) => {
           </TouchableOpacity>
         </View>
       </View>
-      <Modal
+      <DefaultModal
         transparent={true}
         visible={sourceModalVisible}
         onRequestClose={closeSourceModal}>
@@ -254,8 +254,8 @@ const TranslateModal = ({isVisible, onClose, translate}) => {
             </TouchableOpacity>
           ))}
         </ScrollView>
-      </Modal>
-      <Modal
+      </DefaultModal>
+      <DefaultModal
         transparent={true}
         visible={targetModalVisible}
         onRequestClose={closeTargetModal}>
@@ -300,8 +300,8 @@ const TranslateModal = ({isVisible, onClose, translate}) => {
             </TouchableOpacity>
           ))}
         </ScrollView>
-      </Modal>
-    </Modal2>
+      </DefaultModal>
+    </Modal>
   );
 };
 

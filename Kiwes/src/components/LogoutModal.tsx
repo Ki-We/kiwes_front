@@ -101,7 +101,6 @@ const styles = StyleSheet.create({
   acceptButton: {
     alignItems: 'center',
     justifyContent: 'center',
-    height: height * 40,
     width: width * 135,
   },
 });

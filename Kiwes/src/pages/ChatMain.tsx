@@ -49,45 +49,47 @@ export function ChatMain({navigation}: any) {
         <Text style={styles.headerText}>CHAT</Text>
       </View>
       {roomList.length > 0 ? (
-        <View style={styles.notificationContainer}>
-          <Text style={styles.alert}>!</Text>
-          <Text style={styles.notification}>
-            지정된 모임 날짜 14일 후에는 채팅방이 자동으로 삭제됩니다
-          </Text>
-        </View>
+        <>
+          <View style={styles.notificationContainer}>
+            <Text style={styles.alert}>!</Text>
+            <Text style={styles.notification}>
+              지정된 모임 날짜 14일 후에는 채팅방이 자동으로 삭제됩니다
+            </Text>
+          </View>
+          <ScrollView>
+            {roomList.map((club: ClubInfo, index) => {
+              return (
+                <View key={index} style={styles.chatList}>
+                  <TouchableOpacity
+                    style={styles.title}
+                    onPress={() => {
+                      navigation.navigate('ChatRoom', {clubId: club.clubId});
+                    }}>
+                    <Text style={styles.chatListText} numberOfLines={1}>
+                      {club.title}
+                    </Text>
+                  </TouchableOpacity>
+                  <View style={styles.peopleCount}>
+                    <FontAwesomeIcon icon={faUser} size={25} color="black" />
+                    <Text style={styles.peopleCountText}>
+                      {club.currentPeople}
+                    </Text>
+                  </View>
+                </View>
+              );
+            })}
+          </ScrollView>
+        </>
       ) : (
         <View style={styles.emptyContainer}>
           <Image
-            source={{
-              uri: 'https://s3-alpha-sig.figma.com/img/b71d/e6c6/1008645f3e774e6b2d61b042cd7cc973?Expires=1698019200&Signature=I8FydDj7BCqjYMJC56-l-7zjr7EuePuITOlzCLnecwXPdKCqfb-5iV~dei6HFyVkWCFeo3tx~lfAdgCrIxlXHqB4Iv2MGUtFqlyh4TZ4hm8NgDdOob2H4oi5Hbr5FFhqlo3EOTu3Ve4lDlqFJFx5Aq~efR-WipgKSL7XNSWcYTbsGG7mw~YjU~bOVZr-gKasyEcIz8aqJ1fkt~Nm3rmQfwQAI-LNsB6Qx8FKXamAMA0oOjkpdFhv4i4j-ZiPk~MGJ40TWAZPv-O~rMT0n9s1P2GFBH5MSl9NIFmQNXY0pE4lWolqVMaoK8YQO3-NT56PGR1~Ay5UAnm1Aef5MfJ1zg__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4',
-            }}
+            source={require('../../assets/images/soSad.png')}
             style={styles.image}
             resizeMode="contain"
           />
           <Text style={styles.chatroomContainerText}>채팅 내역이 없습니다</Text>
         </View>
       )}
-      <ScrollView>
-        {roomList.map((club: ClubInfo, index) => {
-          return (
-            <View key={index} style={styles.chatList}>
-              <TouchableOpacity
-                style={styles.title}
-                onPress={() => {
-                  navigation.navigate('ChatRoom', {clubId: club.clubId});
-                }}>
-                <Text style={styles.chatListText} numberOfLines={1}>
-                  {club.title}
-                </Text>
-              </TouchableOpacity>
-              <View style={styles.peopleCount}>
-                <FontAwesomeIcon icon={faUser} size={25} color="black" />
-                <Text style={styles.peopleCountText}>{club.currentPeople}</Text>
-              </View>
-            </View>
-          );
-        })}
-      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -124,6 +126,7 @@ const styles = StyleSheet.create({
     // backgroundColor: '#58C047',
     borderBottomColor: '#C0C0C0',
     borderBottomWidth: 2,
+    paddingBottom: height * 100,
   },
   notificationContainer: {
     flexDirection: 'row',
@@ -151,8 +154,8 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   image: {
-    width: width * 133,
-    height: height * 167,
+    width: width * 171,
+    height: height * 240,
   },
   chatroomContainerText: {
     color: '#303030',

@@ -3,16 +3,19 @@ import {
   SafeAreaView,
   ScrollView,
   View,
-  Text,
   Image,
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
+import Text from '@components/atoms/Text';
 import {apiServer} from '../../utils/metaData';
 import {RESTAPIBuilder} from '../../utils/restapiBuilder';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {width, height} from '../../global';
 import backIcon from 'react-native-vector-icons/Ionicons';
+import {LANGUAGE} from '@/utils/utils';
+import {useSelector} from 'react-redux';
+import {RootState} from '@/slice/RootReducer';
 
 const images = [
   require('../../../assets/images/kpop.png'),
@@ -36,6 +39,7 @@ const InterestTopicSettingPage = ({route, navigation}) => {
     route.params;
   const [checkedBoxes, setCheckedBoxes] = useState([]);
   const [selectedTopics, setSelectedTopics] = useState([]);
+  const language = useSelector((state: RootState) => state.language);
   const checkBoxValues = [
     'K-pop',
     '한국문화',
@@ -156,7 +160,9 @@ const InterestTopicSettingPage = ({route, navigation}) => {
           padding: 5,
         }}>
         <Text style={styles.mainText}>
-          관심주제를 {'\n'}1개 이상 선택해 주세요.
+          {language.language == LANGUAGE.KO
+            ? '관심주제를\n1개 이상 선택해 주세요.'
+            : 'Select at least one\ntopic of interest.'}
         </Text>
       </View>
       <ScrollView>
@@ -244,10 +250,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'flex-start',
-    alignItems: 'center',
   },
   checkBoxContainer: {
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     marginHorizontal: width * 5,
     width: '30%',

@@ -74,6 +74,7 @@ export const translateText: any = {
   중복확인: 'Check Availability',
   '닉네임은 한글, 영어 포함 15 byte 이내로 작성해주세요.':
     'Write your username within 15 bytes including Korean and English',
+  '사용 가능한 닉네임 입니다': 'Available Username',
   '확인 완료되었습니다': 'Verification is complete',
   생년월일: 'Date of birth',
   클릭해주세요: 'Click here',
@@ -91,7 +92,7 @@ export const translateText: any = {
   남아메리카: 'South America',
   오세아니아: 'Oceania',
   기타: 'Others',
-  '한국 문화': 'K-Culture',
+  한국문화: 'K-Culture',
   '맛집/카페': 'Restaurant/Cafe',
   스포츠: 'Sports',
   '문화/전시/공연': 'Exhibition/Show',
@@ -168,7 +169,7 @@ export const translateText: any = {
   로그아웃: 'Log out',
   탈퇴하기: 'Leave the App',
   '기본 설정': 'Preferences',
-  '본인의 국적을\n선택해주세요.': 'Select your nationality',
+  // '본인의 국적을\n선택해주세요.': 'Select your nationality',
 
   // 글 상세 페이지
   '호스트 정보': 'Host Information',

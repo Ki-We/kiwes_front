@@ -2,18 +2,22 @@ import React, {useState} from 'react';
 import {
   SafeAreaView,
   View,
-  Text,
   Image,
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
+import Text from '@components/atoms/Text';
 import {width, height} from '../../global';
 import backIcon from 'react-native-vector-icons/Ionicons';
+import {LANGUAGE} from '@/utils/utils';
+import {useSelector} from 'react-redux';
+import {RootState} from '@/slice/RootReducer';
 
 let imagePath = require('../../../assets/images/koreanKiwe.png');
 const NationSettingPage = ({route, navigation}) => {
   const {nickname, gender, birthday, introduction} = route.params;
   const [selectedNation, setNation] = useState('');
+  const language = useSelector((state: RootState) => state.language);
 
   const handleNationSelection = nation => {
     setNation(nation);
@@ -94,7 +98,11 @@ const NationSettingPage = ({route, navigation}) => {
           paddingLeft: width * 20,
           padding: 5,
         }}>
-        <Text style={styles.mainText}>본인의 국적을{'\n'}선택해주세요.</Text>
+        <Text style={styles.mainText}>
+          {language.language == LANGUAGE.KO
+            ? '본인의 국적을\n선택해주세요.'
+            : 'Select your\nnationality'}
+        </Text>
       </View>
       <View>
         <View style={styles.mainContainer}>

@@ -13,11 +13,15 @@ import Text from '@components/atoms/Text';
 import {width, height} from '../../global';
 import backIcon from 'react-native-vector-icons/Ionicons';
 import {Buffer} from 'buffer';
+import {LANGUAGE} from '@/utils/utils';
+import {useSelector} from 'react-redux';
+import {RootState} from '@/slice/RootReducer';
 
 const IntroduceSettingPage = ({route, navigation}) => {
   const {nickname, gender, birthday} = route.params;
   const [introduction, setIntroduction] = useState('');
   const [keyboardStatus, setKeyboardStatus] = useState('20');
+  const language = useSelector((state: RootState) => state.language);
 
   const buffer = new Buffer(introduction, 'utf-8');
   const byteLength = 150 - buffer.length;
@@ -94,7 +98,11 @@ const IntroduceSettingPage = ({route, navigation}) => {
           <View>
             <View style={styles.inputContainer}>
               <TextInput
-                placeholder="간단하게 본인을 소개해주세요 :)"
+                placeholder={
+                  language.language == LANGUAGE.KO
+                    ? '간단하게 본인을 소개해주세요 :)'
+                    : 'Please introduce yourself briefly :)'
+                }
                 style={styles.input}
                 onChangeText={handleTextChange}
                 value={introduction}

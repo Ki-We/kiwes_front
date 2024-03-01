@@ -32,27 +32,10 @@ export default function Login({navigation}: any) {
   );
   const checkIsLogin = async () => {
     const userData = await AsyncStorage.getItem('userData');
-    console.log('userData : ', userData);
+    // console.log('userData : ', userData);
     if (userData == null) {
       return;
-    }
-
-    const url = `${apiServer}/myid`;
-    const result = await new RESTAPIBuilder(url, 'GET')
-      .setNeedToken(true)
-      .build()
-      .run()
-      .catch(err => {
-        console.log(err);
-        AsyncStorage.removeItem('userData');
-      });
-    if (result && result.data && result.data.nickName === 'NotSet') {
-      navigation.reset({
-        index: 0,
-        routes: [{name: 'ProfileImageSettingPage'}],
-      });
-    } else if (result) {
-      console.log('verify Result : ', result);
+    } else {
       navigation.reset({
         index: 0,
         routes: [{name: 'BottomTab'}],
@@ -108,10 +91,32 @@ export default function Login({navigation}: any) {
       accessToken: data.accessToken,
     };
     await AsyncStorage.setItem('userData', JSON.stringify(tokenData));
-    navigation.reset({
-      index: 0,
-      routes: [{name: 'BottomTab'}], // 로그인 화면의 라우트 이름을 지정
-    });
+
+    const idCheckUrl = `${apiServer}/myid`;
+    const idResult = await new RESTAPIBuilder(idCheckUrl, 'GET')
+      .setNeedToken(true)
+      .build()
+      .run()
+      .catch(err => {
+        console.log(err);
+        AsyncStorage.removeItem('userData');
+      });
+    if (idResult.data.nickName === 'NotSet') {
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'ProfileImageSettingPage'}],
+      });
+    } else if (idResult) {
+      console.log('verify Result : ', idResult);
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'BottomTab'}],
+      });
+    }
+    // navigation.reset({
+    //   index: 0,
+    //   routes: [{name: 'BottomTab'}], // 로그인 화면의 라우트 이름을 지정
+    // });
     // await navigation.navigate('BottomTab');
   };
 
@@ -142,10 +147,28 @@ export default function Login({navigation}: any) {
       accessToken: data.accessToken,
     };
     await AsyncStorage.setItem('userData', JSON.stringify(tokenData));
-    navigation.reset({
-      index: 0,
-      routes: [{name: 'BottomTab'}],
-    });
+
+    const idCheckUrl = `${apiServer}/myid`;
+    const idResult = await new RESTAPIBuilder(idCheckUrl, 'GET')
+      .setNeedToken(true)
+      .build()
+      .run()
+      .catch(err => {
+        console.log(err);
+        AsyncStorage.removeItem('userData');
+      });
+    if (idResult.data.nickName === 'NotSet') {
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'ProfileImageSettingPage'}],
+      });
+    } else if (idResult) {
+      console.log('verify Result : ', idResult);
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'BottomTab'}],
+      });
+    }
     // await navigation.navigate('BottomTab');
   };
   return (
