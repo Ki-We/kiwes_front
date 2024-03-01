@@ -18,7 +18,8 @@ import ClubDetailSettingModal from '../components/clubdetail/ClubDetailSettingMo
 import {renderLocationDetail} from '../components/clubdetail/renderLocationDetail';
 import {RootState} from '@/slice/RootReducer';
 import {useSelector} from 'react-redux';
-import { useFocusEffect } from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
+import {language} from '@/utils/utils';
 
 const ClubDetail = ({route, navigation}: any) => {
   const language = useSelector((state: RootState) => state.language);
@@ -735,11 +736,13 @@ const styles = StyleSheet.create({
   },
   participantText: {
     fontSize: height * 16,
+    alignItems: 'flex-end',
     color: '#808080',
     fontWeight: '600',
   },
   participantText1: {
     fontSize: height * 16,
+    alignItems: 'flex-end',
     color: '#808080',
     fontWeight: '600',
   },
@@ -753,6 +756,7 @@ const styles = StyleSheet.create({
   hostText: {
     color: '#303030',
     fontSize: height * 12,
+    alignItems: 'flex-end',
     fontWeight: '600',
     marginBottom: height * 3,
   },
