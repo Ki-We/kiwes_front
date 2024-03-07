@@ -202,7 +202,7 @@ const BoardList = ({url, navigateToClub, Nothing}: any) => {
                 onPress={() => toggleLike(item.clubId)}>
                 <Icon
                   name={item.isHeart === 'YES' ? 'heart' : 'heart-outline'}
-                  size={25}
+                  size={height * 25}
                   color="#58C047"
                 />
               </TouchableOpacity>

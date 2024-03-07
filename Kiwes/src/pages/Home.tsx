@@ -7,9 +7,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  FlatList,
 } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Swiper from 'react-native-swiper';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {RESTAPIBuilder} from '../utils/restapiBuilder';
@@ -18,9 +16,10 @@ import {languageMap} from '../utils/languageMap';
 import ClubListDetail from '../components/club/ClubListDetail';
 import {LANGUAGE, langList} from '../utils/utils';
 import {height, width} from '../global';
-import {setLanguage} from '@/slice/LanguageSlice';
-import {language} from '@/utils/utils';
 import {useSelector} from 'react-redux';
+import Carousel from 'react-native-snap-carousel';
+import {Banner} from '@/utils/commonInterface';
+import {RootState} from '@/slice/RootReducer';
 
 const bannerUrl = `${apiServer}/api/v1/banner`;
 const url = `${apiServer}/api/v1/club/info/detail/1`;
@@ -28,16 +27,20 @@ const url = `${apiServer}/api/v1/club/info/detail/1`;
 export function Home({navigation}: any) {
   const language = useSelector((state: RootState) => state.language);
   const bannerRef = useRef(null);
-  const popularGroupsRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(0);
+  const [RecommandPage, setRecommandPage] = useState(0);
   const [popularClubs, setPopularClubs] = useState([]);
   const [data, setData] = useState();
-  interface Banner {
-    type: string;
-    imageUrl: string;
-    url: string;
-    id: number;
-  }
+  const [banners, setBanners] = useState<Banner[]>([]);
+
+
+  const [popularGroupImages, setPopularGroupImages] = useState([
+    {image: popularGroupImages, isLiked: false},
+    {image: popularGroupImages, isLiked: false},
+    {image: popularGroupImages, isLiked: false},
+    {image: popularGroupImages, isLiked: false},
+    {image: popularGroupImages, isLiked: false},
+  ]);
 
   const fetchPopularClubs = async () => {
     try {
@@ -57,8 +60,6 @@ export function Home({navigation}: any) {
   useEffect(() => {
     fetchPopularClubs();
   }, []);
-
-  const [banners, setBanners] = useState<Banner[]>([]);
 
   const fetchData = async (num: number) => {
     try {
@@ -109,13 +110,7 @@ export function Home({navigation}: any) {
   const handleBannerPress = (id, imageUrl) => {
     navigation.navigate('Event', {eventId: id, imageUrl: imageUrl});
   };
-  const [popularGroupImages, setPopularGroupImages] = useState([
-    {image: popularGroupImages, isLiked: false},
-    {image: popularGroupImages, isLiked: false},
-    {image: popularGroupImages, isLiked: false},
-    {image: popularGroupImages, isLiked: false},
-    {image: popularGroupImages, isLiked: false},
-  ]);
+
   const togglePopularClubLike = async (clubId: number) => {
     try {
       const updatedPosts = popularClubs.map(post =>
@@ -201,36 +196,37 @@ export function Home({navigation}: any) {
     return (
       <TouchableOpacity onPress={() => navigateToClubDetail(clubId)}>
         <View style={styles.RecGroupsContainer}>
-          <View style={styles.groupContent}>
-            <Image source={image} style={styles.groupImage} />
-            <View style={styles.textContent}>
-              <View style={styles.infoContainer1}>
-                <Text style={styles.groupTitle}>{title}</Text>
-              </View>
-              <View style={styles.infoContainer}>
+          <Image source={image} style={styles.groupImage} />
+          <View style={{flexDirection: 'column'}}>
+            <View style={[styles.textContainer, {width: width * 180}]}>
+              <Text style={styles.groupTitle} numberOfLines={1}>
+                {title}
+              </Text>
+            </View>
+            <View style={styles.textContainer}>
+              <View style={styles.infoRecommandContainer}>
                 <Icon
                   name="calendar-outline"
                   size={height * 14}
                   color={'rgba(0, 0, 0, 0.7)'}
-                  style={styles.icon}
                 />
                 <Text style={styles.groupDetail}>{date}</Text>
               </View>
-              <View style={[styles.infoContainer, {marginTop: height * -2}]}>
+              <View style={styles.infoRecommandContainer}>
                 <Icon
                   name="location-outline"
                   size={height * 14}
                   color={'rgba(0, 0, 0, 0.7)'}
-                  style={styles.icon}
                 />
-                <Text style={styles.groupDetail}>{locationKeyword}</Text>
+                <Text style={styles.groupDetail} numberOfLines={1}>
+                  {locationKeyword}
+                </Text>
               </View>
-              <View style={[styles.infoContainer, {marginTop: height * -2}]}>
+              <View style={styles.infoRecommandContainer}>
                 <Icon
                   name="globe"
                   size={height * 14}
                   color={'rgba(0, 0, 0, 0.7)'}
-                  style={styles.icon}
                 />
                 <Text>{languages}</Text>
               </View>
@@ -267,7 +263,7 @@ export function Home({navigation}: any) {
       </View>
     );
   };
-  const renderRecPagination = (index: number) => {
+  const renderRecommandPagination = (index: number) => {
     return (
       <View style={styles.paginationRecContainer}>
         <View style={styles.paginationRec}>
@@ -284,108 +280,139 @@ export function Home({navigation}: any) {
       </View>
     );
   };
+
+
+
+  const renderPopuarItem = ({item, index}) => {
+    const club = item;
+    return (
+      <TouchableOpacity
+        style={styles.wrapper1}
+        key={index}
+        onPress={() => navigateToClubDetail(club.clubId)}>
+        <View style={styles.popularGroupSlide}>
+          <View style={styles.imageContainer}>
+            <Image
+              source={{uri: club.thumbnailImage}}
+              style={styles.popularGroupsImage}
+              resizeMode="cover"
+            />
+            <View style={styles.titleContainer}>
+              <Image
+                source={{uri: club.hostProfileImg}}
+                style={styles.titleImage}
+              />
+              <View style={styles.titleTextContainer}>
+                <Text style={styles.titleText} numberOfLines={1}>
+                  {club.title}
+                </Text>
+                <TouchableOpacity
+                  // style={styles.PHeartContainer}
+                  onPress={() => togglePopularClubLike(club.clubId)}>
+                  <Icon
+                    name={club.isHeart === 'YES' ? 'heart' : 'heart-outline'}
+                    size={height * 26}
+                    color={'#58C047'}
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+            <View style={styles.overlayAddInfo}>
+              <View style={[styles.overlayCommonItem, styles.overlayItem1]}>
+                <Text style={styles.overlayItemText}>
+                  {convertDate(club.date)}
+                </Text>
+              </View>
+              <View style={[styles.overlayCommonItem, styles.overlayItem2]}>
+                <Text style={styles.overlayItemText}>
+                  {club.locationKeyword}
+                </Text>
+              </View>
+              <View style={[styles.overlayCommonItem, styles.overlayItem3]}>
+                <Text style={styles.overlayItemText}>
+                  {languageMap[club.languages[0]]}
+                  {club.languages.length > 1 &&
+                    `, ${languageMap[club.languages[1]]}`}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.overlayMaxInfo}>
+              <View style={[styles.overlayCommonItem1, styles.overlayItem4]}>
+                <Text style={styles.overlayItemText2}>
+                  <Icon name="person-outline" size={height * 12} />
+                  {' ' + club.current_max}
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
+  const renderRecommandItem = ({item, index}) => {
+    const club = item;
+    return (
+      <View
+        key={index}
+        style={[styles.paginationInfo, {marginBottom: height * 40}]}>
+        <RecommendedGroup
+          image={{uri: club.thumbnailImage}}
+          title={club.title}
+          date={convertDate(club.date)}
+          locationKeyword={club.locationKeyword}
+          languages={renderClubLanguages(club.languages)}
+          clubId={club.clubId}
+          index={index}
+          isHeart={club.isHeart}
+          navigation={navigation}
+        />
+      </View>
+    );
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContainer}>
       <View style={styles.container}>
         <View>
-          <TouchableOpacity onPress={handleBannerPress}>
-            <Swiper
-              style={styles.wrapper}
-              loop={false}
-              autoplay={false}
-              autoplayTimeout={5}
-              showsPagination={false}
-              ref={bannerRef}>
-              {banners.map((banner, index) => (
-                <TouchableOpacity
-                  key={index}
-                  onPress={() => handleBannerPress(banner.id, banner.imageUrl)}>
-                  <View>
-                    <Image
-                      source={{uri: banner.url}}
-                      style={styles.bannerImage}
-                    />
-                  </View>
-                </TouchableOpacity>
-              ))}
-            </Swiper>
-          </TouchableOpacity>
+          <Swiper
+            style={styles.wrapper}
+            loop={false}
+            autoplay={false}
+            autoplayTimeout={5}
+            showsPagination={false}
+            ref={bannerRef}>
+            {banners.map((banner, index) => (
+              <TouchableOpacity
+                key={index}
+                onPress={() => handleBannerPress(banner.id, banner.imageUrl)}>
+                <View>
+                  <Image
+                    source={{uri: banner.url}}
+                    style={styles.bannerImage}
+                  />
+                </View>
+              </TouchableOpacity>
+            ))}
+          </Swiper>
         </View>
         <Text style={styles.sectionTitle}>인기 모임</Text>
-        <Swiper
-          style={styles.wrapper1}
+        <Carousel
           loop={true}
           autoplay={true}
-          autoplayTimeout={5}
-          showsPagination={true}
-          renderPagination={renderPagination}
-          onIndexChanged={(index: number) => setCurrentPage(index)}
-          ref={popularGroupsRef}>
-          {popularClubs.map((club: any, index: number) => (
-            <TouchableOpacity
-              key={index}
-              onPress={() => navigateToClubDetail(club.clubId)}>
-              <View style={styles.popularGroupSlide}>
-                <View style={styles.imageContainer}>
-                  <Image
-                    source={{uri: club.thumbnailImage}}
-                    style={styles.popularGroupsImage}
-                    resizeMode="cover"
-                  />
-                  <View style={styles.titleContainer}>
-                    <Image
-                      source={{uri: club.hostProfileImg}}
-                      style={styles.titleImage}
-                    />
-                    <View style={styles.titleTextContainer}>
-                      <Text style={styles.titleText}>{club.title}</Text>
-                    </View>
-                  </View>
-                  <View style={styles.overlayAddInfo}>
-                    <View
-                      style={[styles.overlayCommonItem, styles.overlayItem1]}>
-                      <Text style={styles.overlayItemText}>
-                        {convertDate(club.date)}
-                      </Text>
-                    </View>
-                    <View
-                      style={[styles.overlayCommonItem, styles.overlayItem2]}>
-                      <Text style={styles.overlayItemText}>
-                        {club.locationKeyword}
-                      </Text>
-                    </View>
-                    <View
-                      style={[styles.overlayCommonItem, styles.overlayItem3]}>
-                      <Text style={styles.overlayItemText}>
-                        {languageMap[club.languages[0]]}
-                        {club.languages.length > 1 &&
-                          `, ${languageMap[club.languages[1]]}`}
-                      </Text>
-                    </View>
-                  </View>
-                  <View style={styles.overlayMaxInfo}>
-                    <View
-                      style={[styles.overlayCommonItem1, styles.overlayItem4]}>
-                      <Text style={styles.overlayItemText2}>
-                        <Icon name="person-outline" size={height * 12} />{' '}
-                        {club.current_max}
-                      </Text>
-                    </View>
-                  </View>
-                  <TouchableOpacity
-                    style={styles.PHeartContainer}
-                    onPress={() => togglePopularClubLike(club.clubId)}>
-                    <Icon
-                      name={club.isHeart === 'YES' ? 'heart' : 'heart-outline'}
-                      size={height * 26}
-                      color={'#58C047'}
-                    />
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </TouchableOpacity>
-          ))}
-        </Swiper>
+          autoplayDelay={6000}
+          autoplayInterval={5000}
+          enableMomentum={true}
+          layout={'default'}
+          data={popularClubs}
+          sliderWidth={width * 360}
+          itemWidth={width * 360}
+          renderItem={renderPopuarItem}
+          onSnapToItem={index => {
+            setCurrentPage(index);
+          }}
+        />
+        {renderPagination(currentPage)}
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>
             {language.language == LANGUAGE.KO
@@ -408,34 +435,22 @@ export function Home({navigation}: any) {
         </View>
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>추천 모임</Text>
-          <Swiper
-            style={styles.wrapper2}
-            loop={false}
-            autoplay={false}
-            autoplayTimeout={6}
-            showsPagination={true}
-            renderPagination={renderRecPagination}
-            onIndexChanged={index => setCurrentPage(index)}
-            ref={popularGroupsRef}>
-            {popularClubs.map((club: any, index: number) => (
-              <View
-                key={index}
-                style={[styles.paginationInfo, {marginBottom: height * 40}]}
-                >
-                <RecommendedGroup
-                  image={{uri: club.thumbnailImage}}
-                  title={club.title}
-                  date={convertDate(club.date)}
-                  locationKeyword={club.locationKeyword}
-                  languages={renderClubLanguages(club.languages)}
-                  clubId={club.clubId}
-                  index={index}
-                  isHeart={club.isHeart}
-                  navigation={navigation}
-                />
-              </View>
-            ))}
-          </Swiper>
+          <Carousel
+            loop={true}
+            autoplay={true}
+            autoplayDelay={6000}
+            autoplayInterval={5000}
+            enableMomentum={true}
+            layout={'default'}
+            data={popularClubs}
+            sliderWidth={width * 360}
+            itemWidth={width * 360}
+            renderItem={renderRecommandItem}
+            onSnapToItem={index => {
+              setRecommandPage(index);
+            }}
+          />
+          {renderRecommandPagination(RecommandPage)}
         </View>
       </View>
     </ScrollView>
@@ -454,9 +469,10 @@ const styles = StyleSheet.create({
     height: height * 180,
   },
   wrapper1: {
+    marginLeft: width * 10,
     height: height * 350,
     alignSelf: 'center',
-    marginVertical: height * 5,
+    marginTop: height * 15,
   },
   wrapper2: {
     height: height * 170,
@@ -561,9 +577,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#9BD23C',
   },
   RecGroupsContainer: {
-    justifyContent: 'center',
-    alignSelf: 'center',
-    width: width * 340,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    width: width * 350,
     height: height * 130,
     marginTop: height * 20,
     backgroundColor: 'rgba(255, 253, 141, 0.3)',
@@ -581,22 +598,23 @@ const styles = StyleSheet.create({
     height: height * 90,
     marginLeft: width * 15,
   },
-  textContent: {
-    marginLeft: width * 20,
+  textContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    marginLeft: width * 15,
   },
   groupTitle: {
     color: '#303030',
     fontSize: height * 14,
     fontWeight: '500',
-    right: width * 10,
-    bottom: height * -25,
+    paddingTop: height * 14,
   },
   groupDetail: {
     color: '#303030',
     fontSize: height * 12,
     fontWeight: '400',
-    left: width * 2,
-    bottom: height * -11,
+    marginLeft: width * 10,
   },
   flatListContainer: {
     justifyContent: 'center',
@@ -607,23 +625,17 @@ const styles = StyleSheet.create({
     position: 'relative',
     top: height * 5,
   },
-  PHeartContainer: {
-    position: 'absolute',
-    top: height * 15,
-    right: width * 10,
-  },
   RHeartContainer: {
-    position: 'absolute',
-    bottom: height * 1,
-    right: width * 10,
+    alignSelf: 'flex-end',
+    marginBottom: height * 10,
   },
   titleContainer: {
     flexDirection: 'row',
-    top: height * -325,
-    left: width * 10,
+    top: height * -330,
+    width: width * 330,
+    paddingHorizontal: width * 5,
     alignContent: 'center',
-    textAlign: 'center',
-    textAlignVertical: 'center',
+    zIndex: 0,
   },
   titleImage: {
     width: width * 50,
@@ -633,11 +645,12 @@ const styles = StyleSheet.create({
   titleTextContainer: {
     flex: 1,
     marginLeft: width * 6,
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     paddingBottom: height * 8,
+    flexDirection: 'row',
+    alignSelf: 'center',
   },
   titleText: {
-    textAlign: 'left',
     color: 'white',
     fontSize: height * 16,
     fontWeight: '600',
@@ -714,10 +727,6 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     backgroundColor: '#FFFFD8',
   },
-  infoContainer1: {
-    top: height * -26,
-    left: width * 10,
-  },
   infoContainer: {
     zIndex: 1,
     top: height * -11,
@@ -728,6 +737,12 @@ const styles = StyleSheet.create({
   icon: {
     top: height * 13,
     left: width * -9,
+  },
+  infoRecommandContainer: {
+    paddingBottom: height * 3,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
   },
 });
 
