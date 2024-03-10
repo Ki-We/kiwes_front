@@ -22,6 +22,9 @@ export default function DefaultFontStack({
       fontSize = styles.bold;
     }
   }
+  if (style && !style.color) {
+    style.color = '#303030';
+  }
 
   const checkLanguage = (text: string) => {
     if (text === undefined || typeof text != 'string') return text;
