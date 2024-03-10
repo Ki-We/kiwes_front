@@ -12,8 +12,8 @@ export default function SetupCategory({post, setPost}: any) {
   const language = useSelector((state: RootState) => state.language);
   return (
     <>
-      <View style={styles.text}>
-        <Text>
+      <View>
+        <Text style={styles.text}>
           <Text style={styles.highlight}>*</Text>
           {language.language == LANGUAGE.KO
             ? ' 하나만 선택 가능'

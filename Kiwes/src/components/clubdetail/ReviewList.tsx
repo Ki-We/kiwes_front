@@ -326,6 +326,7 @@ const ReviewList = ({clubId, navigateToProile}: any) => {
             onChangeText={text => {
               setInputText(text);
             }}
+            placeholderTextColor={'#8A8A8A'}
             value={inputText}
             multiline={true}
             scrollEnabled={true}
@@ -439,6 +440,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#EDEDED',
     padding: height * 5,
     paddingLeft: width * 10,
+    color: '#303030',
     fontSize: height * 13,
     marginTop: height * 5,
     marginBottom: height * 10,
