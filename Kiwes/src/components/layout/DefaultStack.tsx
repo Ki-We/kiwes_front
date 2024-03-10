@@ -63,7 +63,7 @@ const LoginStack = () => {
         },
       }}>
       <Stack.Navigator
-        initialRouteName="LanguageSelectPage"
+        initialRouteName="BottomTab"
         screenOptions={{headerShown: false}}>
         <Stack.Screen
           name="LanguageSelectPage"

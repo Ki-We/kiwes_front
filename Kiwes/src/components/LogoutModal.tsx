@@ -26,7 +26,7 @@ const LogoutModal = ({isVisible, onClose, exitClub, modaltype}) => {
         </View>
         <View style={styles.modalButtonGroup}>
           <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
-            <Text>취소</Text>
+            <Text style={{color: '#303030'}}>취소</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.acceptButton}
@@ -34,7 +34,7 @@ const LogoutModal = ({isVisible, onClose, exitClub, modaltype}) => {
               exitClub();
               onClose();
             }}>
-            <Text>확인</Text>
+            <Text style={{color: '#303030'}}>확인</Text>
           </TouchableOpacity>
         </View>
       </View>

@@ -36,10 +36,24 @@ export default function Login({navigation}: any) {
     if (userData == null) {
       return;
     } else {
-      navigation.reset({
-        index: 0,
-        routes: [{name: 'BottomTab'}],
-      });
+      const idCheckUrl = `${apiServer}/myid`;
+      const idResult = await new RESTAPIBuilder(idCheckUrl, 'GET')
+        .setNeedToken(true)
+        .build()
+        .run()
+        .catch(err => {
+          console.log(err);
+          AsyncStorage.removeItem('userData');
+        });
+      if (idResult.data.nickName === 'NotSet') {
+        return;
+      } else if (idResult) {
+        console.log('verify Result : ', idResult);
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'BottomTab'}],
+        });
+      }
     }
   };
   const signInWithApple = async () => {

@@ -42,10 +42,10 @@ export function MyPage({navigation}: any) {
   };
   const styleKiwe = StyleSheet.create({
     image: {
-      height: height * 300,
+      height: height * 250,
     },
     text: {
-      fontSize: height * 20,
+      fontSize: height * 15,
       fontWeight: 'bold',
       color: 'rgba(0, 0, 0, 1)',
       margin: 10,
@@ -262,30 +262,50 @@ export function MyPage({navigation}: any) {
         {optionButton('후기')}
       </View>
       {selectedOption === '참여 모임' ? (
-        <ScrollView>
-          <View style={styles.participatedClubIconContainer}>
-            {participatedClub?.map((club: ParticipatedClubInfo, index) => {
-              return (
-                <View key={index}>
-                  <TouchableOpacity
-                    activeOpacity={0.5}
-                    onPress={() => {
-                      navigation.navigate('ClubDetail', {clubId: club.clubId});
-                    }}>
-                    <Image
-                      source={{uri: club.thumbnailImage}}
-                      style={styles.participatedClubIcon}
-                      resizeMode="cover"
-                    />
-                  </TouchableOpacity>
-                </View>
-              );
-            })}
-          </View>
-        </ScrollView>
+        <>
+          {reviewList.length === 0 ? (
+            <View
+              style={{
+                paddingTop: height * 45,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Image
+                source={require('../../assets/images/soSad.png')}
+                style={{height: height * 250}}
+                resizeMode="contain"
+              />
+              <Text style={styleKiwe.text}>조회 가능한 모임이 없어요!</Text>
+            </View>
+          ) : (
+            <ScrollView>
+              <View style={styles.participatedClubIconContainer}>
+                {participatedClub?.map((club: ParticipatedClubInfo, index) => {
+                  return (
+                    <View key={index}>
+                      <TouchableOpacity
+                        activeOpacity={0.5}
+                        onPress={() => {
+                          navigation.navigate('ClubDetail', {
+                            clubId: club.clubId,
+                          });
+                        }}>
+                        <Image
+                          source={{uri: club.thumbnailImage}}
+                          style={styles.participatedClubIcon}
+                          resizeMode="cover"
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  );
+                })}
+              </View>
+            </ScrollView>
+          )}
+        </>
       ) : selectedOption === '개설 모임' ? (
         <View>
-          <View style={{height: height * 320}}>
+          <View style={{height: height * 375}}>
             <BoardList
               url={urlOwn}
               navigateToClub={navigateToClub}
@@ -294,18 +314,38 @@ export function MyPage({navigation}: any) {
           </View>
         </View>
       ) : (
-        <ScrollView>
-          <View style={{marginBottom: 20}}>
-            {reviewList?.map((review: ReviewList, index) => {
-              return (
-                <View key={index}>
-                  <ReviewBubble reviewList={review} navigation={navigation} />
-                </View>
-              );
-            })}
-          </View>
-          <Text></Text>
-        </ScrollView>
+        <>
+          {reviewList.length === 0 ? (
+            <View
+              style={{
+                paddingTop: height * 45,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Image
+                source={require('../../assets/images/soSad.png')}
+                style={{height: height * 250}}
+                resizeMode="contain"
+              />
+              <Text style={styleKiwe.text}>조회 가능한 후기가 없어요!</Text>
+            </View>
+          ) : (
+            <ScrollView>
+              <View style={{marginBottom: 20}}>
+                {reviewList?.map((review: ReviewList, index) => {
+                  return (
+                    <View key={index}>
+                      <ReviewBubble
+                        reviewList={review}
+                        navigation={navigation}
+                      />
+                    </View>
+                  );
+                })}
+              </View>
+            </ScrollView>
+          )}
+        </>
       )}
     </SafeAreaView>
   );

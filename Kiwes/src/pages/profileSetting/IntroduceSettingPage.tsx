@@ -177,7 +177,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#F8F8F8',
     color: '#000',
     shadowColor: '#000',
-    placeholderColor: '#000',
     padding: 10,
     fontSize: height * 15,
     fontWeight: '500',

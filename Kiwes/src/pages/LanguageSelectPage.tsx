@@ -30,8 +30,10 @@ const LanguageSelectPage = ({navigation}) => {
   );
   const checkLanguage = async () => {
     const language = await AsyncStorage.getItem('language');
-    if (language == null) return;
-
+    if (language == null) {
+      return;
+    }
+    console.log(language);
     navigation.reset({
       index: 0,
       routes: [{name: 'Login'}],
