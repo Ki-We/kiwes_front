@@ -25,8 +25,8 @@ export default function ClubList({navigation, selectedItem, type}: any) {
   const [data, setData] = useState<BoardPost[]>([]);
 
   const renderItems = () => {
-    if (type == 'category') return renderCategories();
-    else if (type == 'language') return renderLangagues();
+    if (type === 'category') return renderCategories();
+    else if (type === 'language') return renderLangagues();
   };
 
   const renderLangagues = () => {
@@ -58,7 +58,7 @@ export default function ClubList({navigation, selectedItem, type}: any) {
           styles.scrollText,
         ]}
         onPress={() => setSelected(category.key)}>
-        {category.key != 'ALL' && (
+        {category.key !== 'ALL' && (
           <Image
             resizeMode="contain"
             source={categoryIcon[category.key]}
@@ -96,6 +96,7 @@ export default function ClubList({navigation, selectedItem, type}: any) {
       .run()
       .catch(err => console.error('get All club : ', err));
     setData(data);
+    console.log(data);
     return data;
   };
   const getSpecifiedClub = async (cursor: number) => {
@@ -109,6 +110,7 @@ export default function ClubList({navigation, selectedItem, type}: any) {
       .catch(error => {
         console.error('get Specified club - catgory : ', error);
       });
+    console.log(data);
     setData(data);
     return data;
   };
@@ -150,7 +152,7 @@ export default function ClubList({navigation, selectedItem, type}: any) {
         </View>
       </View>
       <BoardDefaultList
-        fetchData={type == 'category' ? fetchCategory : fetchLanguage}
+        fetchData={type === 'category' ? fetchCategory : fetchLanguage}
         data={data}
         selected={selected}
         navigateToClub={navigateToClub}
@@ -173,7 +175,7 @@ export default function ClubList({navigation, selectedItem, type}: any) {
                 console.log('close button');
                 setModalVisible(false);
               }}>
-              {type == 'category' ? (
+              {type === 'category' ? (
                 <Text style={styles.selectionText}>카테고리 선택</Text>
               ) : (
                 <Text style={styles.selectionText}>언어 선택</Text>
