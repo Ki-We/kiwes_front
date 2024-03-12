@@ -31,8 +31,6 @@ export default function PostClub({navigation}: any) {
     title: '',
     imageSource: '',
   };
-  const url = `${apiServer}/api/v1/club/article`;
-  const type = ['POST', '등록'];
   return (
     <>
       <Header navigatePop={navigatePop} title={'모임 개설'} />
@@ -43,8 +41,7 @@ export default function PostClub({navigation}: any) {
         nextClickHandler={nextClickHandler}
         Funnel={Funnel}
         Step={Step}
-        url={url}
-        type={type}
+        isEdit={false}
       />
     </>
   );

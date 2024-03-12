@@ -5,7 +5,7 @@ import {width, height} from '../global';
 import Text from '@components/atoms/Text';
 
 const LogoutModal = ({isVisible, onClose, exitClub, modaltype}) => {
-  const logoutMessage = `${modaltype}하시겠습니까`;
+  const logoutMessage = `${modaltype}하시겠습니까?`;
   const secessionMessage =
     '탈퇴 즉시 회원 정보는 삭제되며,\n 탈퇴 후 30일간 재가입이 불가합니다.';
   return (
