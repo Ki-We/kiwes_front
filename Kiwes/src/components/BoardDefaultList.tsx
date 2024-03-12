@@ -154,7 +154,7 @@ const BoardDefaultList = ({navigateToClub, fetchData, selected, data}: any) => {
                   </View>
                 </View>
               </View>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 style={styles.heartContainer}
                 onPress={() => toggleLike(item.clubId)}>
                 <Icon
@@ -162,7 +162,7 @@ const BoardDefaultList = ({navigateToClub, fetchData, selected, data}: any) => {
                   size={25}
                   color="#58C047"
                 />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </TouchableOpacity>
           )}
         />
