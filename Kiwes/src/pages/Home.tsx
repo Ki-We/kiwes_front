@@ -22,7 +22,6 @@ import {Banner} from '@/utils/commonInterface';
 import {RootState} from '@/slice/RootReducer';
 
 const bannerUrl = `${apiServer}/api/v1/banner`;
-const url = `${apiServer}/api/v1/club/info/detail/1`;
 
 export function Home({navigation}: any) {
   const language = useSelector((state: RootState) => state.language);
@@ -30,9 +29,8 @@ export function Home({navigation}: any) {
   const [currentPage, setCurrentPage] = useState(0);
   const [RecommandPage, setRecommandPage] = useState(0);
   const [popularClubs, setPopularClubs] = useState([]);
-  const [data, setData] = useState();
+  const [recommandClubs, setRecommandClubs] = useState([]);
   const [banners, setBanners] = useState<Banner[]>([]);
-
 
   const [popularGroupImages, setPopularGroupImages] = useState([
     {image: popularGroupImages, isLiked: false},
@@ -57,22 +55,28 @@ export function Home({navigation}: any) {
     }
   };
 
-  useEffect(() => {
-    fetchPopularClubs();
-  }, []);
-
-  const fetchData = async (num: number) => {
+  const fetchRecommandClubs = async () => {
     try {
-      const response = await new RESTAPIBuilder(url, 'GET')
+      const response = await new RESTAPIBuilder(
+        `${apiServer}/api/v1/club/recommand`,
+        'GET',
+      )
         .setNeedToken(true)
         .build()
         .run();
-      return response.data;
-    } catch (err) {
-      console.log(err);
-      return [];
+      setRecommandClubs(response.data);
+    } catch (error) {
+      console.error('Error fetching recommand clubs:', error);
     }
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchPopularClubs();
+      fetchRecommandClubs();
+      return () => {};
+    }, []),
+  );
 
   const fetchBanners = async () => {
     try {
@@ -89,24 +93,6 @@ export function Home({navigation}: any) {
     fetchBanners();
   }, []);
 
-  const fetchAndSetData = async () => {
-    try {
-      const newData = await fetchData();
-      if (newData && newData.baseInfo) {
-        setData(newData);
-      } else {
-        console.error('Data or baseInfo is undefined in the response.');
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  useFocusEffect(
-    useCallback(() => {
-      fetchAndSetData();
-      return () => {};
-    }, []),
-  );
   const handleBannerPress = (id, imageUrl) => {
     navigation.navigate('Event', {eventId: id, imageUrl: imageUrl});
   };
@@ -187,7 +173,7 @@ export function Home({navigation}: any) {
             ? {...post, isHeart: post.isHeart === 'YES' ? 'NO' : 'YES'}
             : post,
         );
-        setPopularClubs(updatedPosts);
+        setRecommandClubs(updatedPosts);
       } catch (err) {
         console.error(err);
       }
@@ -280,8 +266,6 @@ export function Home({navigation}: any) {
       </View>
     );
   };
-
-
 
   const renderPopuarItem = ({item, index}) => {
     const club = item;
@@ -400,14 +384,15 @@ export function Home({navigation}: any) {
         <Carousel
           loop={true}
           autoplay={true}
-          autoplayDelay={6000}
-          autoplayInterval={5000}
+          autoplayDelay={4500}
+          autoplayInterval={4500}
           enableMomentum={true}
           layout={'default'}
           data={popularClubs}
           sliderWidth={width * 360}
           itemWidth={width * 360}
           renderItem={renderPopuarItem}
+          loopClonesPerSide={7}
           onSnapToItem={index => {
             setCurrentPage(index);
           }}
@@ -438,11 +423,11 @@ export function Home({navigation}: any) {
           <Carousel
             loop={true}
             autoplay={true}
-            autoplayDelay={6000}
-            autoplayInterval={5000}
+            autoplayDelay={4500}
+            autoplayInterval={4500}
             enableMomentum={true}
             layout={'default'}
-            data={popularClubs}
+            data={recommandClubs}
             sliderWidth={width * 360}
             itemWidth={width * 360}
             renderItem={renderRecommandItem}
