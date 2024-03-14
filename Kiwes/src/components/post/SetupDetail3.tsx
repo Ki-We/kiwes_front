@@ -5,6 +5,8 @@ import {
   View,
   Image,
   KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Platform,
 } from 'react-native';
 import {height, width} from '../../global';
 import {TextInput} from 'react-native-gesture-handler';
@@ -40,60 +42,61 @@ export default function SetupDetail3({post, setPost}: any) {
   };
 
   return (
-    <>
-      <KeyboardAvoidingView style={styles.container}>
-        <Text style={styles.text}>기본 정보</Text>
+    <KeyboardAvoidingView
+      keyboardVerticalOffset={700}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}>
+      <Text style={styles.text}>기본 정보</Text>
+      <TextInput
+        value={title == '' ? '' : title}
+        style={styles.input}
+        placeholderTextColor={'#C2C2C2'}
+        placeholder={
+          language.language == LANGUAGE.KO
+            ? '모임 제목을 입력해주세요.'
+            : 'Enter the title of the Meetups'
+        }
+        onChangeText={text => {
+          setTitle(text);
+          setPost({...post, title: text});
+        }}
+      />
+      <Pressable
+        style={styles.thumbnail}
+        onPress={() => {
+          selectPhotoFromGallery();
+        }}>
+        {imageSource ? (
+          <Image source={{uri: imageSource}} style={styles.imagebox} />
+        ) : (
+          <Text style={styles.textinfo}>
+            {'대표 이미지를 업로드해주세요\n(파일 크기 최대 10MB)'}
+          </Text>
+        )}
+
+        <View style={styles.iconContainer}>
+          <FontAwesomeIcon icon={faPlus} />
+        </View>
+      </Pressable>
+      <Text style={styles.text}>모임 소개</Text>
+      <TouchableWithoutFeedback>
         <TextInput
-          value={title == '' ? '' : title}
-          style={styles.input}
+          value={content == '' ? '' : content}
+          style={styles.textarea}
           placeholderTextColor={'#C2C2C2'}
           placeholder={
             language.language == LANGUAGE.KO
-              ? '모임 제목을 입력해주세요.'
-              : 'Enter the title of the Meetups'
+              ? '모임에 대해 소개해주세요.'
+              : 'Introduce about the Meetups'
           }
+          multiline
           onChangeText={text => {
-            setTitle(text);
-            setPost({...post, title: text});
+            setContent(text);
+            setPost({...post, content: text});
           }}
         />
-        <Pressable
-          style={styles.thumbnail}
-          onPress={() => {
-            selectPhotoFromGallery();
-          }}>
-          {imageSource ? (
-            <Image source={{uri: imageSource}} style={styles.imagebox} />
-          ) : (
-            <Text style={styles.textinfo}>
-              {'대표 이미지를 업로드해주세요\n(파일 크기 최대 10MB)'}
-            </Text>
-          )}
-
-          <View style={styles.iconContainer}>
-            <FontAwesomeIcon icon={faPlus} />
-          </View>
-        </Pressable>
-        <Text style={styles.text}>모임 소개</Text>
-        <View>
-          <TextInput
-            value={content == '' ? '' : content}
-            style={styles.textarea}
-            placeholderTextColor={'#C2C2C2'}
-            placeholder={
-              language.language == LANGUAGE.KO
-                ? '모임에 대해 소개해주세요.'
-                : 'Introduce about the Meetups'
-            }
-            multiline
-            onChangeText={text => {
-              setContent(text);
-              setPost({...post, content: text});
-            }}
-          />
-        </View>
-      </KeyboardAvoidingView>
-    </>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 }
 

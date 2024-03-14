@@ -183,6 +183,7 @@ export const translateText: any = {
   삭제하기: 'Delete',
 
   '조회 가능한 모임이 없어요!': 'There are no Meetups!',
+  '조회 가능한 후기가 없어요!': 'There are no Reviews!',
   'Host는 채팅방 퇴장이 불가합니다!': 'Host can’t leave the chat room',
   '작성된 후기가 없어요!': 'There are no Reviews!',
   '작성된 문의가 없어요!': 'There are no Q&A!',
