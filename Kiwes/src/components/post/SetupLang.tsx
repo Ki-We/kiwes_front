@@ -31,10 +31,10 @@ export default function SetupLang({post, setPost}: any) {
   };
   return (
     <>
-      <View style={styles.text}>
-        <Text>
-          <Text style={styles.highlight}>*</Text>{' '}
-          {language.language == LANGUAGE.KO
+      <View>
+        <Text style={styles.text}>
+          <Text style={styles.highlight}>*{' '}</Text>
+          {language.language === LANGUAGE.KO
             ? '최대 2개 선택 가능'
             : 'Maximum two languages'}
         </Text>

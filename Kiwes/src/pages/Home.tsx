@@ -33,7 +33,6 @@ export function Home({navigation}: any) {
   const [data, setData] = useState();
   const [banners, setBanners] = useState<Banner[]>([]);
 
-
   const [popularGroupImages, setPopularGroupImages] = useState([
     {image: popularGroupImages, isLiked: false},
     {image: popularGroupImages, isLiked: false},
@@ -281,8 +280,6 @@ export function Home({navigation}: any) {
     );
   };
 
-
-
   const renderPopuarItem = ({item, index}) => {
     const club = item;
     return (
@@ -307,7 +304,6 @@ export function Home({navigation}: any) {
                   {club.title}
                 </Text>
                 <TouchableOpacity
-                  // style={styles.PHeartContainer}
                   onPress={() => togglePopularClubLike(club.clubId)}>
                   <Icon
                     name={club.isHeart === 'YES' ? 'heart' : 'heart-outline'}
@@ -415,7 +411,7 @@ export function Home({navigation}: any) {
         {renderPagination(currentPage)}
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>
-            {language.language == LANGUAGE.KO
+            {language.language === LANGUAGE.KO
               ? '카테고리별 모임'
               : 'Category Meetups'}
           </Text>
@@ -425,7 +421,7 @@ export function Home({navigation}: any) {
         </View>
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>
-            {language.language == LANGUAGE.KO
+            {language.language === LANGUAGE.KO
               ? '언어별 모임'
               : 'Language Meetups'}
           </Text>
@@ -474,10 +470,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: height * 15,
   },
-  wrapper2: {
-    height: height * 170,
-    marginBottom: height * 20,
-  },
   popularGroupSlide: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -510,24 +502,6 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     resizeMode: 'contain',
     opacity: 0.65,
-  },
-  categoryList: {
-    marginTop: height * 15,
-    width: '100%',
-    paddingHorizontal: height * 10,
-  },
-  categoryColumnWrapper: {
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
-    flexDirection: 'row',
-  },
-  categoryItem: {
-    borderRadius: 50,
-    borderWidth: 1,
-    borderColor: '#9BD23C',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginHorizontal: height * 3,
   },
   paginationContainer: {
     bottom: height * 25,
@@ -565,17 +539,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  paginationRectItem: {
-    width: width * 20,
-    height: height * 5,
-    backgroundColor: '#DADADA',
-    marginHorizontal: height * -1,
-    borderRadius: 5,
-    top: height * 15,
-  },
-  paginationRectActive: {
-    backgroundColor: '#9BD23C',
-  },
   RecGroupsContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
@@ -587,10 +550,6 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     borderColor: '#DADADA',
     borderWidth: 1,
-  },
-  groupContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
   },
   groupImage: {
     borderRadius: 20,
@@ -615,11 +574,6 @@ const styles = StyleSheet.create({
     fontSize: height * 12,
     fontWeight: '400',
     marginLeft: width * 10,
-  },
-  flatListContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    left: width * 15,
   },
   imageContainer: {
     position: 'relative',
@@ -658,9 +612,6 @@ const styles = StyleSheet.create({
     textShadowOffset: {width: -1, height: 1},
     textShadowRadius: 10,
   },
-  overlayTextContainer2: {
-    marginVertical: height * 5,
-  },
   overlayAddInfo: {
     position: 'absolute',
     bottom: height * 70,
@@ -697,9 +648,6 @@ const styles = StyleSheet.create({
   overlayItem4: {
     backgroundColor: '#00000080',
   },
-  overlayLanguage: {
-    flexDirection: 'row',
-  },
   overlayItemText: {
     color: '#303030',
     fontSize: height * 12,
@@ -711,21 +659,6 @@ const styles = StyleSheet.create({
     fontSize: height * 15,
     fontWeight: '600',
     marginVertical: height * 1,
-  },
-  overlayContainer: {
-    position: 'absolute',
-    top: height * 180,
-    left: width * -260,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginVertical: height * 10,
-  },
-  overlayText2: {
-    width: width * 65,
-    textAlign: 'center',
-    color: '#303030',
-    borderRadius: 30,
-    backgroundColor: '#FFFFD8',
   },
   infoContainer: {
     zIndex: 1,
