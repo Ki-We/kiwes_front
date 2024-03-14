@@ -8,7 +8,7 @@ export const colors = {
 
 export const basicDimensions = {
   height: 812,
-  width: 370,
+  width: 375,
 };
 
 export const DeviceHeight: number = Number(Dimensions.get('screen').height);
