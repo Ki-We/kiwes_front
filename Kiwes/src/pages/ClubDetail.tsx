@@ -341,8 +341,9 @@ const ClubDetail = ({route, navigation}: any) => {
 
   const checkRecruitmentDate = dateInfo => {
     const currentDate = new Date();
-    const dueToDate = new Date(dateInfo[1]);
-    return currentDate > dueToDate;
+    // const dueToDate = new Date(dateInfo[1]);
+    const dueToTime = new Date(dateInfo[1]).setHours(23, 59, 59, 999);
+    return currentDate > dueToTime;
   };
 
   useEffect(() => {
@@ -362,7 +363,7 @@ const ClubDetail = ({route, navigation}: any) => {
     if (isAdminMode) {
       return null;
     }
-    if (approvalStatus == true) {
+    if (approvalStatus === true) {
       buttonStyle = styles.cancelButton;
       buttonText = '참여 취소';
       onPressFunction = toggleJoin;
