@@ -220,7 +220,8 @@ const ClubDetail = ({route, navigation}: any) => {
   const toggleLike = async () => {
     try {
       setIsLiked(prev => !prev);
-      setLikeCount(prevCount => (isLiked ? prevCount - 1 : prevCount + 1));
+      const newLikeCount = isLiked ? likeCount - 1 : likeCount + 1;
+      setLikeCount(Math.max(newLikeCount, 0));
       const apiUrl = `${apiServer}/api/v1/heart/${clubId}`;
       await new RESTAPIBuilder(apiUrl, !isLiked ? 'PUT' : 'DELETE')
         .setNeedToken(true)

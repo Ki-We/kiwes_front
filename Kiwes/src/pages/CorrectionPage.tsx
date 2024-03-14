@@ -8,9 +8,9 @@ const steps = ['언어', '카테고리', '상세정보1', '상세정보2', '상�
 const CorrectionPage = ({route, navigation}: any) => {
   const {baseInfo} = route.params;
   const {Funnel, Step, setStep} = useFunnel(steps[0]);
-  const url = `${apiServer}/api/v1/club/article/${baseInfo.clubId}`;
-  console.log(baseInfo.date);
+
   const initPost = {
+    clubId: baseInfo.clubId,
     category: baseInfo.tags[0],
     content: baseInfo.content,
     cost: baseInfo.cost,
@@ -36,7 +36,6 @@ const CorrectionPage = ({route, navigation}: any) => {
   const navigatePop = () => {
     navigation.pop();
   };
-  const type = ['PUT', '수정'];
   return (
     <>
       <Header navigatePop={navigatePop} title={'모임 수정'} />
@@ -47,8 +46,7 @@ const CorrectionPage = ({route, navigation}: any) => {
         nextClickHandler={nextClickHandler}
         Funnel={Funnel}
         Step={Step}
-        url={url}
-        type={type}
+        isEdit={true}
       />
     </>
   );
