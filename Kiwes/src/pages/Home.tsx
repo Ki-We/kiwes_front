@@ -7,38 +7,47 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  Dimensions,
 } from 'react-native';
 import Swiper from 'react-native-swiper';
-import Icon from 'react-native-vector-icons/Ionicons';
 import {RESTAPIBuilder} from '../utils/restapiBuilder';
 import {apiServer} from '../utils/metaData';
 import {languageMap} from '../utils/languageMap';
 import ClubListDetail from '../components/club/ClubListDetail';
 import {LANGUAGE, langList} from '../utils/utils';
 import {height, width} from '../global';
+import Icon from 'react-native-vector-icons/Ionicons';
 import {useSelector} from 'react-redux';
 import Carousel from 'react-native-snap-carousel';
 import {Banner} from '@/utils/commonInterface';
 import {RootState} from '@/slice/RootReducer';
 
 const bannerUrl = `${apiServer}/api/v1/banner`;
+const url = `${apiServer}/api/v1/club/info/detail/1`;
 
 export function Home({navigation}: any) {
   const language = useSelector((state: RootState) => state.language);
   const bannerRef = useRef(null);
+  const { width: screenWidth } = Dimensions.get('window');
+  const carouselRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(0);
   const [RecommandPage, setRecommandPage] = useState(0);
   const [popularClubs, setPopularClubs] = useState([]);
-  const [recommandClubs, setRecommandClubs] = useState([]);
+  const [recommendedClubs, setRecommendedClubs] = useState([]);
+  const [data, setData] = useState();
   const [banners, setBanners] = useState<Banner[]>([]);
+  const [popularGroupImages, setPopularGroupImages] = useState([]);
+  const [isUserDragging, setIsUserDragging] = useState(false);
 
-  const [popularGroupImages, setPopularGroupImages] = useState([
-    {image: popularGroupImages, isLiked: false},
-    {image: popularGroupImages, isLiked: false},
-    {image: popularGroupImages, isLiked: false},
-    {image: popularGroupImages, isLiked: false},
-    {image: popularGroupImages, isLiked: false},
-  ]);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!isUserDragging && carouselRef.current) {
+        carouselRef.current.snapToNext();
+      }
+    }, 500);
+
+    return () => clearInterval(interval);
+  }, [isUserDragging]);
 
   const fetchPopularClubs = async () => {
     try {
@@ -55,47 +64,78 @@ export function Home({navigation}: any) {
     }
   };
 
-  const fetchRecommandClubs = async () => {
-    try {
-      const response = await new RESTAPIBuilder(
-        `${apiServer}/api/v1/club/recommand`,
-        'GET',
-      )
-        .setNeedToken(true)
-        .build()
-        .run();
-      setRecommandClubs(response.data);
-    } catch (error) {
-      console.error('Error fetching recommand clubs:', error);
-    }
-  };
-
-  useFocusEffect(
-    useCallback(() => {
-      fetchPopularClubs();
-      fetchRecommandClubs();
-      return () => {};
-    }, []),
-  );
-
-  const fetchBanners = async () => {
-    try {
-      const response = await new RESTAPIBuilder(bannerUrl, 'GET')
-        .setNeedToken(true)
-        .build()
-        .run();
-      setBanners(response.data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
   useEffect(() => {
+    fetchPopularClubs();
+  }, []);
+
+  const fetchData = async (num: number) => {
+    try {
+      const response = await new RESTAPIBuilder(url, 'GET')
+        .setNeedToken(true)
+        .build()
+        .run();
+      return response.data;
+    } catch (err) {
+      console.log(err);
+      return [];
+    }
+  };
+
+  useEffect(() => {
+    const fetchBanners = async () => {
+      try {
+        const response = await new RESTAPIBuilder(bannerUrl, 'GET')
+          .setNeedToken(true)
+          .build()
+          .run();
+        setBanners(response.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
     fetchBanners();
   }, []);
 
-  const handleBannerPress = (id, imageUrl) => {
-    navigation.navigate('Event', {eventId: id, imageUrl: imageUrl});
+  const handleBannerPress = (id: number, imageUrl: string) => {
+    navigation.navigate('Event', { eventId: id, imageUrl: imageUrl });
   };
+  const renderBannerItem = ({ item, index }: { item: Banner; index: number }) => {
+    return (
+      <TouchableOpacity
+        key={index.toString()}
+        onPress={() => {
+          if (item.type === 'EVENT') {
+            handleBannerPress(item.id, item.imageUrl);
+          }
+        }}
+        disabled={item.type !== 'EVENT'}
+      >
+        <Image
+          source={{ uri: item.url }}
+          style={[styles.bannerImage, { width: screenWidth }]}
+        />
+      </TouchableOpacity>
+    );
+  };
+
+  const fetchAndSetData = async () => {
+    try {
+      const newData = await fetchData();
+      if (newData && newData.baseInfo) {
+        setData(newData);
+      } else {
+        console.error('Data or baseInfo is undefined in the response.');
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useFocusEffect(
+    useCallback(() => {
+      fetchAndSetData();
+      return () => {};
+    }, []),
+  );
 
   const togglePopularClubLike = async (clubId: number) => {
     try {
@@ -173,7 +213,7 @@ export function Home({navigation}: any) {
             ? {...post, isHeart: post.isHeart === 'YES' ? 'NO' : 'YES'}
             : post,
         );
-        setRecommandClubs(updatedPosts);
+        setPopularClubs(updatedPosts);
       } catch (err) {
         console.error(err);
       }
@@ -236,7 +276,7 @@ export function Home({navigation}: any) {
     return (
       <View style={styles.paginationContainer}>
         <View style={styles.pagination}>
-          {popularGroupImages.map((image, i) => (
+          {popularClubs.map((club, i) => (
             <View
               key={i}
               style={[
@@ -249,11 +289,12 @@ export function Home({navigation}: any) {
       </View>
     );
   };
+
   const renderRecommandPagination = (index: number) => {
     return (
       <View style={styles.paginationRecContainer}>
         <View style={styles.paginationRec}>
-          {popularGroupImages.map((image, i) => (
+          {popularClubs.map((club, i) => (
             <View
               key={i}
               style={[
@@ -357,45 +398,37 @@ export function Home({navigation}: any) {
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContainer}>
       <View style={styles.container}>
-        <View>
-          <Swiper
-            style={styles.wrapper}
-            loop={false}
-            autoplay={false}
-            autoplayTimeout={5}
-            showsPagination={false}
-            ref={bannerRef}>
-            {banners.map((banner, index) => (
-              <TouchableOpacity
-                key={index}
-                onPress={() => handleBannerPress(banner.id, banner.imageUrl)}>
-                <View>
-                  <Image
-                    source={{uri: banner.url}}
-                    style={styles.bannerImage}
-                  />
-                </View>
-              </TouchableOpacity>
-            ))}
-          </Swiper>
-        </View>
+        <Carousel
+          loop={true}
+          autoplay={true}
+          autoplayDelay={3000}
+          autoplayInterval={5000}
+          enableMomentum={true}
+          layout="default"
+          data={banners}
+          renderItem={renderBannerItem}
+          sliderWidth={screenWidth}
+          itemWidth={screenWidth}
+        />
         <Text style={styles.sectionTitle}>인기 모임</Text>
         <Carousel
           loop={true}
           autoplay={true}
-          autoplayDelay={4500}
-          autoplayInterval={4500}
+          autoplayDelay={5000}
+          autoplayInterval={7000}
           enableMomentum={true}
           layout={'default'}
           data={popularClubs}
           sliderWidth={width * 360}
           itemWidth={width * 360}
           renderItem={renderPopuarItem}
-          loopClonesPerSide={7}
           onSnapToItem={index => {
             setCurrentPage(index);
           }}
+          lockScrollWhileSnapping={true}
+          // lockScrollTimeoutDuration={100}
         />
+
         {renderPagination(currentPage)}
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>
@@ -422,17 +455,19 @@ export function Home({navigation}: any) {
           <Carousel
             loop={true}
             autoplay={true}
-            autoplayDelay={4500}
-            autoplayInterval={4500}
+            autoplayDelay={5000}
+            autoplayInterval={7000}
             enableMomentum={true}
             layout={'default'}
-            data={recommandClubs}
+            data={popularClubs}
             sliderWidth={width * 360}
             itemWidth={width * 360}
             renderItem={renderRecommandItem}
             onSnapToItem={index => {
               setRecommandPage(index);
             }}
+            lockScrollWhileSnapping={true}
+            // lockScrollTimeoutDuration={500}
           />
           {renderRecommandPagination(RecommandPage)}
         </View>
@@ -464,8 +499,8 @@ const styles = StyleSheet.create({
   },
   bannerImage: {
     width: '100%',
-    height: '100%',
-    resizeMode: 'contain',
+    height: height * 180,
+    resizeMode: 'cover',
   },
   sectionContainer: {
     alignItems: 'center',
