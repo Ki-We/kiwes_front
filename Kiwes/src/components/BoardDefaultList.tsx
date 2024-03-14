@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   View,
   FlatList,
@@ -14,6 +14,7 @@ import {languageMap} from '../utils/languageMap';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {height, width} from '../global';
 import NothingDefault from './NothingDefault';
+import {useFocusEffect} from '@react-navigation/native';
 
 const BoardDefaultList = ({navigateToClub, fetchData, selected, data}: any) => {
   const [posts, setPosts] = useState<BoardPost[]>(data);
@@ -26,6 +27,7 @@ const BoardDefaultList = ({navigateToClub, fetchData, selected, data}: any) => {
   useEffect(() => {
     setCursor(0);
   }, [selected]);
+
   const fetchNewData = async () => {
     const data = await fetchData(cursor);
     if (data && data.length > 0) {
@@ -83,7 +85,23 @@ const BoardDefaultList = ({navigateToClub, fetchData, selected, data}: any) => {
       );
     }
   };
-
+  useFocusEffect(
+    useCallback(() => {
+      setIsMore(true);
+      refreshData();
+      return () => {};
+    }, [selected]),
+  );
+  const refreshData = async () => {
+    let newData: BoardPost[] = [];
+    for (let i = 0; i <= cursor; i++) {
+      const data = await fetchData(i);
+      newData = [...newData, ...data];
+    }
+    if (newData && newData.length > 0) {
+      setPosts(newData);
+    }
+  };
   return (
     <>
       {cursor === 0 && !isMore ? (
@@ -154,7 +172,7 @@ const BoardDefaultList = ({navigateToClub, fetchData, selected, data}: any) => {
                   </View>
                 </View>
               </View>
-              {/* <TouchableOpacity
+              <TouchableOpacity
                 style={styles.heartContainer}
                 onPress={() => toggleLike(item.clubId)}>
                 <Icon
@@ -162,7 +180,7 @@ const BoardDefaultList = ({navigateToClub, fetchData, selected, data}: any) => {
                   size={25}
                   color="#58C047"
                 />
-              </TouchableOpacity> */}
+              </TouchableOpacity>
             </TouchableOpacity>
           )}
         />
