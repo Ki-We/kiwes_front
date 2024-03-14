@@ -89,7 +89,6 @@ const InterestTopicSettingPage = ({route, navigation}) => {
       setCheckedBoxes([...checkedBoxes, value]);
       setSelectedTopics([...selectedTopics, valueToCodeMap(value)]);
     }
-    console.log(selectedTopics);
   };
 
   const settingComplete = async () => {
@@ -98,7 +97,6 @@ const InterestTopicSettingPage = ({route, navigation}) => {
       return;
     }
     const tokenData = JSON.parse(userData);
-    console.log('whole data: ', route.params, checkedBoxes);
 
     const url = `${apiServer}/additional-info`;
     const data = {
@@ -197,7 +195,7 @@ const InterestTopicSettingPage = ({route, navigation}) => {
                 fontSize: height * 18,
                 fontWeight: '600',
               }}>
-              설정완료
+              설정 완료
             </Text>
           </TouchableOpacity>
         ) : (
@@ -209,7 +207,7 @@ const InterestTopicSettingPage = ({route, navigation}) => {
                 fontSize: height * 18,
                 fontWeight: '600',
               }}>
-              설정완료
+              설정 완료
             </Text>
           </View>
         )}

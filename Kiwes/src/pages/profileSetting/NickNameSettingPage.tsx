@@ -33,7 +33,7 @@ const NickNameSettingPage = ({navigation}) => {
   const handleTextChange = inputText => {
     // 한글 영어 숫자 가능하려면 /[^\w\dㄱ-ㅎㅏ-ㅣ가-힣]/g, '' 입력
     const inputBuffer = new Buffer(inputText, 'utf-8');
-    const filteredText = inputText.replace(/[^a-zA-Z가-힣]/g, '');
+    const filteredText = inputText.replace(/[^a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
     if (inputBuffer.length <= 15) {
       setNickname(filteredText);
     }
@@ -183,7 +183,7 @@ const NickNameSettingPage = ({navigation}) => {
               ) : (
                 <Text style={styles.checkText}>
                   {language.language == LANGUAGE.KO
-                    ? '닉네임은 영어로 ' +
+                    ? '닉네임은 한글, 영어 포함 ' +
                       byteLength() +
                       ' bytes 이내로 작성해주세요.'
                     : 'Please write your username within ' +

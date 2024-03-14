@@ -13,6 +13,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {height, width} from '../global';
 import {useFocusEffect} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
+import {setLanguage} from '@/slice/LanguageSlice';
 
 const Terms =
   'https://evendoha.notion.site/9494cdbdccfe49e783f603ca3d7acabb?pvs=4';
@@ -23,17 +25,17 @@ const openPDF = (pdf: string) => {
 };
 
 const LanguageSelectPage = ({navigation}) => {
+  const dispatch = useDispatch();
   useFocusEffect(
     useCallback(() => {
       checkLanguage();
     }, []),
   );
   const checkLanguage = async () => {
-    const language = await AsyncStorage.getItem('language');
-    if (language == null) {
+    const asyncLanguage = await AsyncStorage.getItem('language');
+    if (asyncLanguage == null) {
       return;
     }
-    console.log(language);
     navigation.reset({
       index: 0,
       routes: [{name: 'Login'}],
@@ -44,19 +46,18 @@ const LanguageSelectPage = ({navigation}) => {
   const [privacyAgree, agreeToPrivacy] = useState(false);
   const languageSelectComplete = async () => {
     await AsyncStorage.setItem('language', selectedLanguage);
+    dispatch(setLanguage({language: selectedLanguage}));
     navigation.reset({
       index: 0,
       routes: [{name: 'Login'}],
     });
   };
 
-  const handleLanguageSelection = (language: string) => {
-    setSelectedLanguage(language);
-  };
-
   const languageSelectButton = (language: string) => (
     <TouchableOpacity
-      onPress={() => handleLanguageSelection(language)}
+      onPress={() => {
+        setSelectedLanguage(language);
+      }}
       style={
         selectedLanguage === language
           ? styles.languageSelected

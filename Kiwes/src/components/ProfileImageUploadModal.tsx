@@ -32,13 +32,7 @@ function ProfileImageUploadModal({
             setImageFromLibrary();
             onClose();
           }}>
-          <Text
-            style={[
-              styles.text,
-              {paddingBottom: height * 10, color: '#303030'},
-            ]}>
-            갤러리에서 가져오기
-          </Text>
+          <Text style={styles.text}>갤러리에서 가져오기</Text>
         </TouchableOpacity>
       </SafeAreaView>
     </Modal>
