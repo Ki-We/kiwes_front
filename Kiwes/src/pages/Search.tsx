@@ -1,16 +1,16 @@
-import React from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SearchHeader from '../components/search/SearchHeader';
 import {apiServer} from '../utils/metaData';
 import {RESTAPIBuilder} from '../utils/restapiBuilder';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import BoardList from '../components/BoardList';
-import {useEffect, useState} from 'react';
 import InitSearch from '../components/search/initSerch';
 import {Image, Keyboard, Pressable, StyleSheet, View} from 'react-native';
 import {height} from '../global';
 import ListComponent from '@components/atoms/ListComponent';
 import Text from '@components/atoms/Text';
+import {useFocusEffect} from '@react-navigation/native';
 
 export default function Search({navigation}: any) {
   const [init, setInit] = useState(true);
@@ -52,9 +52,12 @@ export default function Search({navigation}: any) {
   const navigateToClub = (clubId: any) => {
     navigation.navigate('ClubDetail', {clubId: clubId});
   };
-  useEffect(() => {
-    getRecommand();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      getRecommand();
+      return () => {};
+    }, []),
+  );
   // eslint-disable-next-line react/no-unstable-nested-components
   const Nothing = () => {
     return (

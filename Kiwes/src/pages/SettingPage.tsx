@@ -10,6 +10,7 @@ import {apiServer} from '../utils/metaData';
 import {height, width} from '../global';
 import {useSelector} from 'react-redux';
 import {RootState} from '@/slice/RootReducer';
+import {LANGUAGE} from '@/utils/utils';
 const url = `${apiServer}/auth/quit`;
 const Terms =
   'https://evendoha.notion.site/9494cdbdccfe49e783f603ca3d7acabb?pvs=4';
@@ -74,7 +75,7 @@ const SettingPage = ({navigation}: any) => {
             <Text style={styles.text}>언어 설정</Text>
           </TouchableOpacity>
           <Text style={[styles.text, {color: '#58C047', fontWeight: '600'}]}>
-            {language.language === 'KO' ? '한국어' : 'English'}
+            {language.language === LANGUAGE.KO ? '한국어' : 'English'}
           </Text>
         </View>
         <TouchableOpacity onPress={() => openPDF(Terms)}>

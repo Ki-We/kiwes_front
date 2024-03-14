@@ -22,8 +22,7 @@ export interface ProfileSetupInterface {
   nextClickHandler: (nextStep: string) => void;
   Funnel: React.ComponentType<FunnelProps>;
   Step: React.ComponentType<StepProps>;
-  url: string;
-  type: string[];
+  isEdit: boolean;
 }
 
 const PostClubStep = ({
@@ -33,8 +32,7 @@ const PostClubStep = ({
   nextClickHandler,
   Funnel,
   Step,
-  url,
-  type,
+  isEdit,
 }: ProfileSetupInterface) => {
   const [post, setPost] = useState(initPost);
   const [loadingVisible, setLoadingVisible] = useState(false);
@@ -43,13 +41,51 @@ const PostClubStep = ({
   const toggleErrorModal = () => {
     setErrorModalVisible(!isErrorModalVisible);
   };
-
-  const postClub = async () => {
+  const insertClub = () => {
+    if (isEdit) editClub();
+    else postClub();
+  };
+  const editClub = async () => {
     if (post.title == '' || post.imageSource == '') return;
     else {
       setLoadingVisible(true);
+      await new RESTAPIBuilder(
+        `${apiServer}/api/v1/club/article/${initPost.clubId}`,
+        'PUT',
+      )
+        .setNeedToken(true)
+        .setBody(post)
+        .build()
+        .run()
+        .catch(err => {
+          console.log('put club err1 : ', err);
+          setLoadingVisible(false);
+          toggleErrorModal();
+          return;
+        }).then(() => {});
+      
+        if ( !post.imageSource.startsWith('https') ){
+          await uploadClubImage(initPost.clubId).catch(err => {
+            console.log('put club err2 : ', err);
+            setLoadingVisible(false);
+            toggleErrorModal();
+            return;
+          });
+        }
+        
+      navigation.navigate('ClubDetail', {clubId: initPost.clubId});
+        setLoadingVisible(false);
+    }
+  };
+  const postClub = async () => {
+    if (post.title == '' || post.imageSource == '' || !checkImageUpload()) return;
+    else {
+      setLoadingVisible(true);
       console.log(post);
-      const {data} = await new RESTAPIBuilder(url, type[0])
+      const {data} = await new RESTAPIBuilder(
+        `${apiServer}/api/v1/club/article`,
+        'POST',
+      )
         .setNeedToken(true)
         .setBody(post)
         .build()
@@ -60,7 +96,6 @@ const PostClubStep = ({
           toggleErrorModal();
         });
 
-      console.log(`${data.clubId} 모임 개설 완료`);
       await uploadClubImage(data.clubId).catch(err => {
         console.log('post club err2 : ', err);
         setLoadingVisible(false);
@@ -88,9 +123,7 @@ const PostClubStep = ({
   const checkImageUpload = () => {
     if (!post.imageSource || typeof post.imageSource === 'number') {
       return false;
-    } else if (post.imageSource.startsWith('https')) {
-      return false;
-    }
+    } 
     return true;
   };
   const uploadClubImage = async (clubId: number) => {
@@ -104,6 +137,7 @@ const PostClubStep = ({
       .run()
       .catch(err => {
         console.log('post club err3 : ', err);
+        return;
       });
     const presignedUrl = presignedResponse.data;
     const imageData = await RNFS.readFile(post.imageSource, 'base64');
@@ -181,13 +215,13 @@ const PostClubStep = ({
         </Step>
         <Step name="상세정보3">
           <SetupLayout
-            nextButton={type[1]}
+            nextButton={isEdit ? '수정' : '등록'}
             title={'모임의 정보를\n입력해주세요.'}
             onPrev={() => nextClickHandler(steps[3])}
             onNext={() => {
-              if (post.title == '' || post.content == '' || !checkImageUpload())
+              if (post.title == '' || post.content == '' )
                 return;
-              postClub();
+              insertClub();
             }}>
             <SetupDetail3 post={post} setPost={setPost} />
           </SetupLayout>

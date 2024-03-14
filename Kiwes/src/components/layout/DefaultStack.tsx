@@ -36,7 +36,6 @@ import {LANGUAGE} from '@/utils/utils';
 const LoginStack = () => {
   useEffect(() => {
     checkLoginState();
-
     getLanguage();
   }, []);
 

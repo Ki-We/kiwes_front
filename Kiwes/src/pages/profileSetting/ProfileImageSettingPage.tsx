@@ -8,7 +8,11 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Text from '@components/atoms/Text';
+import RNFS from 'react-native-fs';
 import {launchImageLibrary} from 'react-native-image-picker';
+import {apiServer} from '../../utils/metaData';
+import {RESTAPIBuilder} from '../../utils/restapiBuilder';
+import {Buffer} from 'buffer';
 import backIcon from 'react-native-vector-icons/Ionicons';
 import {width, height} from '../../global';
 import ProfileImageUploadModal from '../../components/ProfileImageUploadModal';
@@ -20,12 +24,43 @@ const imagePickerOption = {
   includeBase64: Platform.OS === 'android',
 };
 
-let imagePath =
+let basicImagePath =
   'https://kiwes2-bucket.s3.ap-northeast-2.amazonaws.com/profileimg/profile.jpg';
 
 const ProfilePictureSettingPage = ({navigation}) => {
   const [response, setResponse] = useState('');
-  const [imageFile, setImageFile] = useState(imagePath);
+  const [imageFile, setImageFile] = useState(basicImagePath);
+
+  const profileImageSubmit = async () => {
+    const url = `${apiServer}/mypage/profileImg`;
+    const presignedResponse = await new RESTAPIBuilder(url, 'GET')
+      .setNeedToken(true)
+      .build()
+      .run()
+      .catch(err => {
+        console.log(err);
+      });
+    const presignedUrl = presignedResponse.data;
+    console.log('presignedUrl: ', presignedUrl);
+    // Read the file and convert it to binary
+    console.log('imageFile: ', imageFile);
+
+    const imageData = await RNFS.readFile(imageFile, 'base64');
+    const binaryData = new Buffer(imageData, 'base64');
+
+    const uploadResponse = await fetch(presignedUrl, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'image/jpeg',
+      },
+      body: binaryData,
+    });
+    console.log(uploadResponse);
+    if (!uploadResponse.ok) {
+      const errorMessage = await uploadResponse.text();
+      console.log(errorMessage);
+    }
+  };
   const onPickImage = response => {
     if (response.didCancel || !response) {
       return;
@@ -37,7 +72,7 @@ const ProfilePictureSettingPage = ({navigation}) => {
     // console.log('ImageFile : ', imageFile);
   };
   const setImageBasic = () => {
-    setImageFile(imagePath);
+    setImageFile(basicImagePath);
   };
   // 갤러리에서 사진 선택
   const setImageFromLibrary = () => {
@@ -52,6 +87,7 @@ const ProfilePictureSettingPage = ({navigation}) => {
   };
 
   const handleNext = () => {
+    profileImageSubmit();
     navigation.navigate('NickNameSettingPage');
   };
 

@@ -24,7 +24,6 @@ export default function ClubListDetail({type, navigation}: any) {
   const secondRowCategoryList = allList.slice(splitIndex);
   const firstRowCategoryList = allList.slice(0, splitIndex);
 
-  const [containerWidth, setContainerWidth] = useState(0);
   const renderPaginationRect = (index: number, total: number) => {
     return (
       <View style={styles.paginationContainer}>

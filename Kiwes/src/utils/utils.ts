@@ -92,7 +92,7 @@ export const translateText: any = {
   남아메리카: 'South America',
   오세아니아: 'Oceania',
   기타: 'Others',
-  한국문화: 'K-Culture',
+  '한국 문화': 'K-Culture',
   '맛집/카페': 'Restaurant/Cafe',
   스포츠: 'Sports',
   '문화/전시/공연': 'Exhibition/Show',
@@ -135,6 +135,7 @@ export const translateText: any = {
     'Your membership information will be immediately deleted, and cannot be recovered. Rejoining is not allowed within 30 days',
   대화상대: 'Members',
   '모임 개설': 'Create Meetups',
+  '모임 수정': 'Edit Meetups',
   '모임에서 사용할\n언어를 골라주세요': 'Select the language',
   '모임의 카테고리를\n골라주세요': 'Select the Category',
   '모임의 날짜와 마감일,\n장소를 알려주세요':
@@ -178,11 +179,15 @@ export const translateText: any = {
   참여하기: 'JOIN',
   '참여 취소': 'Cancel',
 
+  '로그아웃하시겠습니까?': 'Do you want to log out?',
+
   전체: 'All',
+  수정: 'Edit',
   수정하기: 'Edit',
   삭제하기: 'Delete',
 
   '조회 가능한 모임이 없어요!': 'There are no Meetups!',
+  '조회 가능한 후기가 없어요!': 'There are no Reviews!',
   'Host는 채팅방 퇴장이 불가합니다!': 'Host can’t leave the chat room',
   '작성된 후기가 없어요!': 'There are no Reviews!',
   '작성된 문의가 없어요!': 'There are no Q&A!',
@@ -193,4 +198,6 @@ export const translateText: any = {
 
   '!무분별한 퇴장을 삼가주세요!':
     '!Please refrain from leaving indiscriminately!',
+  '탈퇴 즉시 회원 정보는 삭제되며,\n 탈퇴 후 30일간 재가입이 불가합니다.':
+    'Your membership information will be immediately deleted, and cannot be recovered. Rejoining is not allowed within 30 days. ',
 };
