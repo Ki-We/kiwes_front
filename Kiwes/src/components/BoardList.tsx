@@ -47,7 +47,7 @@ const BoardList = ({url, navigateToClub, Nothing}: any) => {
     }
   };
 
-  const refreshWishData = async () => {
+  const refreshData = async () => {
     let newData: BoardPost[] = [];
     for (let i = 0; i <= cursor; i++) {
       const data = await fetchData(i);
@@ -84,14 +84,19 @@ const BoardList = ({url, navigateToClub, Nothing}: any) => {
 
   useFocusEffect(
     useCallback(() => {
-      if (url === `${apiServer}/api/v1/heart/club_list?cursor=`) {
+      console.log(url);
+      setIsMore(true);
+      if (url.includes(`${apiServer}/api/v1/search?keyword=`)) {
         setIsMore(true);
-        refreshWishData();
+        setCursor(0);
+        fetchAndSetData();
+      } else {
+        refreshData();
       }
       return () => {
         if (url === `${apiServer}/api/v1/heart/club_list?cursor=`) {
           setIsMore(true);
-          refreshWishData();
+          refreshData();
         }
       };
     }, []),
