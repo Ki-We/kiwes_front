@@ -22,8 +22,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   image: {
-    maxHeight: '70%',
-    maxWidth: '70%',
+    maxHeight: '45%',
+    maxWidth: '45%',
   },
 });
 
