@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
   },
   image: {
     maxHeight: '70%',
-    maxWidth: '70%',y
+    maxWidth: '70%',
   },
 });
 
