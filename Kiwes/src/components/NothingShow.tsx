@@ -7,18 +7,24 @@ const NothingShow = ({title, styleKiwe}: any) => {
     <View style={styles.container}>
       <Image
         source={require('../../assets/images/soSad.png')}
-        style={styleKiwe.image}
+        style={[styles.image, styleKiwe.image]}
         resizeMode="contain"
       />
       <Text style={styleKiwe.text}>{title}</Text>
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
+  image: {
+    maxHeight: '70%',
+    maxWidth: '70%',y
+  },
 });
+
 export default NothingShow;
