@@ -165,7 +165,6 @@ const styles = StyleSheet.create({
     height: 150,
   },
   paginationContainer: {
-    marginTop: height * -20,
     justifyContent: 'center',
     alignItems: 'center',
   },
