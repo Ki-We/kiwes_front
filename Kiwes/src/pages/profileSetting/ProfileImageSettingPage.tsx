@@ -30,35 +30,53 @@ let basicImagePath =
 const ProfilePictureSettingPage = ({navigation}) => {
   const [response, setResponse] = useState('');
   const [imageFile, setImageFile] = useState(basicImagePath);
+  const [isProfileImageBasic, setProfileImageBasic] = useState(false);
 
   const profileImageSubmit = async () => {
-    const url = `${apiServer}/mypage/profileImg`;
-    const presignedResponse = await new RESTAPIBuilder(url, 'GET')
-      .setNeedToken(true)
-      .build()
-      .run()
-      .catch(err => {
-        console.log(err);
+    if (isProfileImageBasic) {
+      const url = `${apiServer}/mypage/defalut`;
+      await new RESTAPIBuilder(url, 'POST')
+        .setNeedToken(true)
+        .setBody(basicImagePath)
+        .build()
+        .run()
+        .then(({data}) => {
+          console.log(data);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      console.log(basicImagePath);
+      setProfileImageBasic(false);
+    } else {
+      const url = `${apiServer}/mypage/profileImg`;
+      const presignedResponse = await new RESTAPIBuilder(url, 'GET')
+        .setNeedToken(true)
+        .build()
+        .run()
+        .catch(err => {
+          console.log(err);
+        });
+      const presignedUrl = presignedResponse.data;
+      console.log('presignedUrl: ', presignedUrl);
+      // Read the file and convert it to binary
+      console.log('imageFile: ', imageFile);
+
+      const imageData = await RNFS.readFile(imageFile, 'base64');
+      const binaryData = new Buffer(imageData, 'base64');
+
+      const uploadResponse = await fetch(presignedUrl, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'image/jpeg',
+        },
+        body: binaryData,
       });
-    const presignedUrl = presignedResponse.data;
-    console.log('presignedUrl: ', presignedUrl);
-    // Read the file and convert it to binary
-    console.log('imageFile: ', imageFile);
-
-    const imageData = await RNFS.readFile(imageFile, 'base64');
-    const binaryData = new Buffer(imageData, 'base64');
-
-    const uploadResponse = await fetch(presignedUrl, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'image/jpeg',
-      },
-      body: binaryData,
-    });
-    console.log(uploadResponse);
-    if (!uploadResponse.ok) {
-      const errorMessage = await uploadResponse.text();
-      console.log(errorMessage);
+      console.log(uploadResponse);
+      if (!uploadResponse.ok) {
+        const errorMessage = await uploadResponse.text();
+        console.log(errorMessage);
+      }
     }
   };
   const onPickImage = response => {
@@ -73,6 +91,7 @@ const ProfilePictureSettingPage = ({navigation}) => {
   };
   const setImageBasic = () => {
     setImageFile(basicImagePath);
+    setProfileImageBasic(true);
   };
   // 갤러리에서 사진 선택
   const setImageFromLibrary = () => {
@@ -205,7 +224,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: width * 150,
-    height: height * 150,
+    height: height * 155,
     borderRadius: 90,
     justifyContent: 'center',
     alignItems: 'center',

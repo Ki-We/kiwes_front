@@ -12,6 +12,7 @@ import {
   TouchableWithoutFeedback,
   TouchableOpacity,
 } from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Text from '@components/atoms/Text';
 import RNFS from 'react-native-fs';
 import {apiServer} from '../utils/metaData';
@@ -35,6 +36,7 @@ let imagePath =
 const ProfileSettingPage = ({route, navigation}) => {
   const {thumbnailImage, myIntroduction} = route.params;
   const [imageFile, setImageFile] = useState(thumbnailImage);
+  const [isProfileImageBasic, setProfileImageBasic] = useState(false);
   const onPickImage = response => {
     if (response.didCancel || !response) {
       return;
@@ -43,6 +45,7 @@ const ProfileSettingPage = ({route, navigation}) => {
   };
   const setImageBasic = () => {
     setImageFile(imagePath);
+    setProfileImageBasic(true);
   };
   // 갤러리에서 사진 선택
   const setImageFromLibrary = () => {
@@ -57,33 +60,50 @@ const ProfileSettingPage = ({route, navigation}) => {
   };
 
   const profileImageSubmit = async () => {
-    const url = `${apiServer}/mypage/profileImg`;
-    const presignedResponse = await new RESTAPIBuilder(url, 'GET')
-      .setNeedToken(true)
-      .build()
-      .run()
-      .catch(err => {
-        console.log(err);
+    if (isProfileImageBasic) {
+      const url = `${apiServer}/mypage/defalut`;
+      await new RESTAPIBuilder(url, 'POST')
+        .setNeedToken(true)
+        .setBody(imagePath)
+        .build()
+        .run()
+        .then(({data}) => {
+          console.log(data);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      console.log(imagePath);
+      setProfileImageBasic(false);
+    } else {
+      const url = `${apiServer}/mypage/profileImg`;
+      const presignedResponse = await new RESTAPIBuilder(url, 'GET')
+        .setNeedToken(true)
+        .build()
+        .run()
+        .catch(err => {
+          console.log(err);
+        });
+      const presignedUrl = presignedResponse.data;
+      console.log('presignedUrl: ', presignedUrl);
+      // Read the file and convert it to binary
+      console.log('imageFile: ', imageFile);
+
+      const imageData = await RNFS.readFile(imageFile, 'base64');
+      const binaryData = new Buffer(imageData, 'base64');
+
+      const uploadResponse = await fetch(presignedUrl, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'image/jpeg',
+        },
+        body: binaryData,
       });
-    const presignedUrl = presignedResponse.data;
-    console.log('presignedUrl: ', presignedUrl);
-    // Read the file and convert it to binary
-    console.log('imageFile: ', imageFile);
-
-    const imageData = await RNFS.readFile(imageFile, 'base64');
-    const binaryData = new Buffer(imageData, 'base64');
-
-    const uploadResponse = await fetch(presignedUrl, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'image/jpeg',
-      },
-      body: binaryData,
-    });
-    console.log(uploadResponse);
-    if (!uploadResponse.ok) {
-      const errorMessage = await uploadResponse.text();
-      console.log(errorMessage);
+      console.log(uploadResponse);
+      if (!uploadResponse.ok) {
+        const errorMessage = await uploadResponse.text();
+        console.log(errorMessage);
+      }
     }
   };
 
@@ -284,7 +304,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: width * 140,
-    height: height * 140,
+    height: height * 145,
     borderRadius: 90,
     justifyContent: 'center',
     alignItems: 'center',
