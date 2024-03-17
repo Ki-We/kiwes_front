@@ -68,6 +68,25 @@ export function Home({navigation}: any) {
     fetchPopularClubs();
   }, []);
 
+  const fetchRecommendedClubs = async () => {
+    try {
+      const response = await new RESTAPIBuilder(
+        `${apiServer}/api/v1/club/recommand`,
+        'GET',
+      )
+        .setNeedToken(true)
+        .build()
+        .run();
+      setRecommendedClubs(response.data);
+    } catch (error) {
+      console.error('Error fetching Recommended clubs:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchRecommendedClubs();
+  }, []);
+
   const fetchData = async (num: number) => {
     try {
       const response = await new RESTAPIBuilder(url, 'GET')
@@ -459,7 +478,7 @@ export function Home({navigation}: any) {
             autoplayInterval={7000}
             enableMomentum={true}
             layout={'default'}
-            data={popularClubs}
+            data={recommendedClubs}
             sliderWidth={width * 360}
             itemWidth={width * 360}
             renderItem={renderRecommandItem}
