@@ -36,13 +36,12 @@ const AlarmList = ({navigation}: any) => {
   };
   const fetchData = async () => {
     try {
-      console.log(url);
       const response = await new RESTAPIBuilder(url, 'GET')
         .setNeedToken(true)
         .build()
         .run();
-      if (!response.data) {
-        setIsEmpty(false);
+      if (response.data.length === 0) {
+        setIsEmpty(true);
         return;
       }
       setAlarms(response.data);
@@ -53,9 +52,7 @@ const AlarmList = ({navigation}: any) => {
   useFocusEffect(
     useCallback(() => {
       fetchData();
-      return () => {
-        fetchData();
-      };
+      return () => {};
     }, []),
   );
   return (
@@ -118,14 +115,13 @@ const Nothing = ({text}: {text: string}) => {
 };
 const styleKiwe = StyleSheet.create({
   image: {
-    marginTop: height * 200,
-    height: height * 170,
+    height: height * 300,
   },
   text: {
-    fontSize: height * 16,
-    fontWeight: '600',
+    fontSize: height * 20,
+    fontWeight: 'bold',
     color: 'rgba(0, 0, 0, 1)',
-    marginBottom: height * 3,
+    margin: 10,
   },
 });
 export default AlarmList;

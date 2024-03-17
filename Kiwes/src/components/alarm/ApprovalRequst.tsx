@@ -98,7 +98,9 @@ const ApprovalRequst = ({url, navigateToRequestList, Nothing}: any) => {
                       style={styles.image}
                       resizeMode="contain"
                     />
-                    <Text style={styles.info}>{item.currentPeople}</Text>
+                    <Text style={styles.info}>
+                      {item.currentPeople > 100 ? '99+' : item.currentPeople}
+                    </Text>
                   </View>
                 </View>
               </View>

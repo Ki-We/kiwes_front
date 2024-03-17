@@ -445,6 +445,7 @@ const styles = StyleSheet.create({
     marginBottom: height * 10,
     minHeight: height * 35,
     maxHeight: height * 180,
+    color: '#000',
   },
 });
 const styleKiwe = StyleSheet.create({
