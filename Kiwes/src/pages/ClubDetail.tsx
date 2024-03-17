@@ -33,12 +33,6 @@ const ClubDetail = ({route, navigation}: any) => {
 
   const [isAdminMode, setIsAdminMode] = useState(false);
   const [isMoreModalVisible, setIsMoreModalVisible] = useState(false);
-  // const [isJoinBtnVisible, setJoinBtnVisible] = useState(false);
-
-  // const [currentParticipants, setCurrentParticipants] = useState(0);
-  // const [maxParticipants, setMaxParticipants] = useState(5);
-
-  // const [recruitmentComplete, setRecruitmentComplete] = useState(false);
 
   const [clubInfo, setClubInfo] = useState(null);
   const [NickName, setNickNameInfo] = useState(null);
@@ -51,19 +45,19 @@ const ClubDetail = ({route, navigation}: any) => {
     foreigner: require('../../assets/images/foreigner.png'),
   };
 
-  const copyToClipboard = () => {
-    const clubURL = 'https://kiwes.com/club';
-    setClipboardString(clubURL);
-    setisShareVisible(true);
+  // const copyToClipboard = () => {
+  //   const clubURL = 'https://kiwes.com/club';
+  //   setClipboardString(clubURL);
+  //   setisShareVisible(true);
 
-    setTimeout(() => {
-      setisShareVisible(false);
-    }, 2000);
-  };
+  //   setTimeout(() => {
+  //     setisShareVisible(false);
+  //   }, 2000);
+  // };
 
-  const closeModal = () => {
-    setisShareVisible(false);
-  };
+  // const closeModal = () => {
+  //   setisShareVisible(false);
+  // };
 
   const fetchClubDetail = async clubId => {
     try {
@@ -74,7 +68,6 @@ const ClubDetail = ({route, navigation}: any) => {
         .setNeedToken(true)
         .build()
         .run();
-      console.log(response.data);
       setClubInfo(response.data);
       setLikeCount(response.data.baseInfo.heartCount);
       setIsLiked(response.data.isHeart);
@@ -82,10 +75,6 @@ const ClubDetail = ({route, navigation}: any) => {
       console.error('Error fetching club detail:', error);
     }
   };
-
-  // useEffect(() => {
-  //   fetchClubDetail(clubId);
-  // }, [clubId]);
 
   useFocusEffect(
     useCallback(() => {
@@ -113,7 +102,6 @@ const ClubDetail = ({route, navigation}: any) => {
         .build()
         .run();
       setNickNameInfo(response.data);
-      console.log(response.data);
     } catch (error) {
       console.error('Error 닉네임:', error);
     }
@@ -139,9 +127,8 @@ const ClubDetail = ({route, navigation}: any) => {
     const totalParticipants =
       memberInfo.koreanCount + memberInfo.foreignerCount;
     const maxParticipants = memberInfo.maxPeople;
-    const isDeadlinePassed = checkRecruitmentDate(baseInfo.dateInfo);
-
-    return totalParticipants >= maxParticipants || isDeadlinePassed;
+    // const isDeadlinePassed = checkRecruitmentDate(baseInfo.dateInfo);
+    return totalParticipants >= maxParticipants || clubInfo.isActivated == 'NO';
   };
 
   const toggleJoin = async () => {
@@ -212,7 +199,6 @@ const ClubDetail = ({route, navigation}: any) => {
     navigation.navigate('QnAPage', {clubId: clubId});
   };
   const navigateToProfile = (memberId: any) => {
-    console.log(memberId);
     if (memberId !== 0) {
       navigation.navigate('OtherUserPage', {memberId: memberId});
     }
