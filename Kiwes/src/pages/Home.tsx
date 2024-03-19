@@ -9,7 +9,6 @@ import {
   ScrollView,
   Dimensions,
 } from 'react-native';
-import Swiper from 'react-native-swiper';
 import {RESTAPIBuilder} from '../utils/restapiBuilder';
 import {apiServer} from '../utils/metaData';
 import {languageMap} from '../utils/languageMap';
@@ -23,20 +22,18 @@ import {Banner} from '@/utils/commonInterface';
 import {RootState} from '@/slice/RootReducer';
 
 const bannerUrl = `${apiServer}/api/v1/banner`;
-const url = `${apiServer}/api/v1/club/info/detail/1`;
 
 export function Home({navigation}: any) {
   const language = useSelector((state: RootState) => state.language);
-  const bannerRef = useRef(null);
-  const { width: screenWidth } = Dimensions.get('window');
+  const {width: screenWidth} = Dimensions.get('window');
   const carouselRef = useRef(null);
+  // const bannerRef = useRef(null);
+
   const [currentPage, setCurrentPage] = useState(0);
   const [RecommandPage, setRecommandPage] = useState(0);
   const [popularClubs, setPopularClubs] = useState([]);
   const [recommendedClubs, setRecommendedClubs] = useState([]);
-  const [data, setData] = useState();
   const [banners, setBanners] = useState<Banner[]>([]);
-  const [popularGroupImages, setPopularGroupImages] = useState([]);
   const [isUserDragging, setIsUserDragging] = useState(false);
 
   useEffect(() => {
@@ -64,10 +61,6 @@ export function Home({navigation}: any) {
     }
   };
 
-  useEffect(() => {
-    fetchPopularClubs();
-  }, []);
-
   const fetchRecommendedClubs = async () => {
     try {
       const response = await new RESTAPIBuilder(
@@ -82,24 +75,6 @@ export function Home({navigation}: any) {
       console.error('Error fetching Recommended clubs:', error);
     }
   };
-
-  useEffect(() => {
-    fetchRecommendedClubs();
-  }, []);
-
-  const fetchData = async (num: number) => {
-    try {
-      const response = await new RESTAPIBuilder(url, 'GET')
-        .setNeedToken(true)
-        .build()
-        .run();
-      return response.data;
-    } catch (err) {
-      console.log(err);
-      return [];
-    }
-  };
-
   useEffect(() => {
     const fetchBanners = async () => {
       try {
@@ -116,9 +91,9 @@ export function Home({navigation}: any) {
   }, []);
 
   const handleBannerPress = (id: number, imageUrl: string) => {
-    navigation.navigate('Event', { eventId: id, imageUrl: imageUrl });
+    navigation.navigate('Event', {eventId: id, imageUrl: imageUrl});
   };
-  const renderBannerItem = ({ item, index }: { item: Banner; index: number }) => {
+  const renderBannerItem = ({item, index}: {item: Banner; index: number}) => {
     return (
       <TouchableOpacity
         key={index.toString()}
@@ -127,31 +102,19 @@ export function Home({navigation}: any) {
             handleBannerPress(item.id, item.imageUrl);
           }
         }}
-        disabled={item.type !== 'EVENT'}
-      >
+        disabled={item.type !== 'EVENT'}>
         <Image
-          source={{ uri: item.url }}
-          style={[styles.bannerImage, { width: screenWidth }]}
+          source={{uri: item.url}}
+          style={[styles.bannerImage, {width: screenWidth}]}
         />
       </TouchableOpacity>
     );
   };
 
-  const fetchAndSetData = async () => {
-    try {
-      const newData = await fetchData();
-      if (newData && newData.baseInfo) {
-        setData(newData);
-      } else {
-        console.error('Data or baseInfo is undefined in the response.');
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
   useFocusEffect(
     useCallback(() => {
-      fetchAndSetData();
+      fetchPopularClubs();
+      fetchRecommendedClubs();
       return () => {};
     }, []),
   );
