@@ -313,15 +313,16 @@ export function Home({navigation}: any) {
                 <Text style={styles.titleText} numberOfLines={1}>
                   {club.title}
                 </Text>
-                <TouchableOpacity
-                  onPress={() => togglePopularClubLike(club.clubId)}>
-                  <Icon
-                    name={club.isHeart === 'YES' ? 'heart' : 'heart-outline'}
-                    size={height * 26}
-                    color={'#58C047'}
-                  />
-                </TouchableOpacity>
               </View>
+              <TouchableOpacity
+                onPress={() => togglePopularClubLike(club.clubId)}>
+                <Icon
+                  name={club.isHeart === 'YES' ? 'heart' : 'heart-outline'}
+                  size={height * 26}
+                  color={'#58C047'}
+                  style={styles.popHeart}
+                />
+              </TouchableOpacity>
             </View>
             <View style={styles.overlayAddInfo}>
               <View style={[styles.overlayCommonItem, styles.overlayItem1]}>
@@ -591,9 +592,9 @@ const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: 'row',
     top: height * -330,
-    width: width * 330,
+    width: width * 331,
     paddingHorizontal: width * 5,
-    alignContent: 'center',
+    alignContent: 'space-between',
     zIndex: 0,
   },
   titleImage: {
@@ -616,6 +617,11 @@ const styles = StyleSheet.create({
     textShadowColor: 'rgba(0, 0, 0, 0.75)',
     textShadowOffset: {width: -1, height: 1},
     textShadowRadius: 10,
+  },
+  popHeart: {
+    alignSelf: 'flex-end',
+    marginleft: width * 15,
+    marginTop: height * 8,
   },
   overlayAddInfo: {
     position: 'absolute',
