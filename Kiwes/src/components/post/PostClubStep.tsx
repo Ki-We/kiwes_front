@@ -8,7 +8,7 @@ import SetupDetail1 from './SetupDetail1';
 import SetupDetail2 from './SetupDetail2';
 import SetupDetail3 from './SetupDetail3';
 import Loading from './Loading';
-import ErrorModal from '../errorModal';
+import ErrorModal from '../ErrorModal';
 import {apiServer, chatServer} from '../../utils/metaData';
 import {RESTAPIBuilder} from '../../utils/restapiBuilder';
 import RNFS from 'react-native-fs';
@@ -62,23 +62,25 @@ const PostClubStep = ({
           setLoadingVisible(false);
           toggleErrorModal();
           return;
-        }).then(() => {});
-      
-        if ( !post.imageSource.startsWith('https') ){
-          await uploadClubImage(initPost.clubId).catch(err => {
-            console.log('put club err2 : ', err);
-            setLoadingVisible(false);
-            toggleErrorModal();
-            return;
-          });
-        }
-        
+        })
+        .then(() => {});
+
+      if (!post.imageSource.startsWith('https')) {
+        await uploadClubImage(initPost.clubId).catch(err => {
+          console.log('put club err2 : ', err);
+          setLoadingVisible(false);
+          toggleErrorModal();
+          return;
+        });
+      }
+
       navigation.navigate('ClubDetail', {clubId: initPost.clubId});
-        setLoadingVisible(false);
+      setLoadingVisible(false);
     }
   };
   const postClub = async () => {
-    if (post.title == '' || post.imageSource == '' || !checkImageUpload()) return;
+    if (post.title == '' || post.imageSource == '' || !checkImageUpload())
+      return;
     else {
       setLoadingVisible(true);
       console.log(post);
@@ -123,7 +125,7 @@ const PostClubStep = ({
   const checkImageUpload = () => {
     if (!post.imageSource || typeof post.imageSource === 'number') {
       return false;
-    } 
+    }
     return true;
   };
   const uploadClubImage = async (clubId: number) => {
@@ -219,8 +221,7 @@ const PostClubStep = ({
             title={'모임의 정보를\n입력해주세요.'}
             onPrev={() => nextClickHandler(steps[3])}
             onNext={() => {
-              if (post.title == '' || post.content == '' )
-                return;
+              if (post.title == '' || post.content == '') return;
               insertClub();
             }}>
             <SetupDetail3 post={post} setPost={setPost} />

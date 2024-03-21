@@ -177,12 +177,14 @@ const ProfileSettingPage = ({route, navigation}) => {
       </View>
       <TouchableWithoutFeedback style={{flex: 1}} onPress={Keyboard.dismiss}>
         <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          // behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          // keyboardVerticalOffset={keyboardStatus}
           style={{flex: 1, backgroundColor: '#FFFFFF'}}>
           <ScrollView
-            keyboardShouldPersistTaps="handled"
-            keyboardDismissMode="interactive"
-            keyboardVerticalOffset={keyboardStatus}>
+            style={{flexGrow: 1}}
+            // keyboardShouldPersistTaps="handled"
+            // keyboardDismissMode="interactive"
+          >
             <View
               style={{
                 marginTop: height * 60,
@@ -235,7 +237,7 @@ const ProfileSettingPage = ({route, navigation}) => {
                     style={styles.input}
                     onChangeText={handleTextChange}
                     value={introduction}
-                    multiline
+                    multiline={true}
                   />
                 </View>
                 <View
@@ -317,7 +319,7 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     padding: 15,
-    flexDirection: 'row',
+    // flexDirection: 'row',
     justifyContent: 'center',
   },
   input: {

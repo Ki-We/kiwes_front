@@ -266,13 +266,13 @@ export function MyPage({navigation}: any) {
           {participatedClub.length === 0 ? (
             <View
               style={{
-                paddingTop: height * 45,
+                paddingTop: height * 80,
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
               <Image
                 source={require('../../assets/images/soSad.png')}
-                style={{height: height * 250}}
+                style={{height: height * 180}}
                 resizeMode="contain"
               />
               <Text style={styleKiwe.text}>조회 가능한 모임이 없어요!</Text>
@@ -318,13 +318,13 @@ export function MyPage({navigation}: any) {
           {reviewList.length === 0 ? (
             <View
               style={{
-                paddingTop: height * 45,
+                paddingTop: height * 80,
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
               <Image
                 source={require('../../assets/images/soSad.png')}
-                style={{height: height * 250}}
+                style={{height: height * 180}}
                 resizeMode="contain"
               />
               <Text style={styleKiwe.text}>조회 가능한 후기가 없어요!</Text>

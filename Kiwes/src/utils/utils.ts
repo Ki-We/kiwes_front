@@ -195,7 +195,8 @@ export const translateText: any = {
 
   '클립보드 저장 완료!': 'Save to clipboard complete!',
   '친구들과 함께 모임을 즐겨보세요!': 'Enjoy the gathering with your friends!',
-
+  '채팅방 알림이 오지 않으니\n채팅방을 수시로 확인해주세요.':
+    'There is no chat notification, please check the chat frequently.',
   '!무분별한 퇴장을 삼가주세요!':
     '!Please refrain from leaving indiscriminately!',
   '탈퇴 즉시 회원 정보는 삭제되며,\n 탈퇴 후 30일간 재가입이 불가합니다.':
