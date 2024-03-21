@@ -11,7 +11,7 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import {RESTAPIBuilder} from '../utils/restapiBuilder';
 import {apiServer} from '../utils/metaData';
-import {useClipboard} from '@react-native-clipboard/clipboard';
+// import {useClipboard} from '@react-native-clipboard/clipboard';
 import {LANGUAGE, categoryIcon, categoryList, langList} from '../utils/utils';
 import {height, width} from '../global';
 import ClubDetailSettingModal from '../components/clubdetail/ClubDetailSettingModal';
@@ -19,7 +19,7 @@ import {renderLocationDetail} from '../components/clubdetail/renderLocationDetai
 import {RootState} from '@/slice/RootReducer';
 import {useSelector} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
-import {language} from '@/utils/utils';
+// import {language} from '@/utils/utils';
 
 const ClubDetail = ({route, navigation}: any) => {
   const language = useSelector((state: RootState) => state.language);
@@ -36,7 +36,7 @@ const ClubDetail = ({route, navigation}: any) => {
 
   const [clubInfo, setClubInfo] = useState(null);
   const [NickName, setNickNameInfo] = useState(null);
-  const [setString, setClipboardString] = useClipboard();
+  // const [setString, setClipboardString] = useClipboard();
 
   const image = {
     share: require('../../assets/images/share.png'),
@@ -185,7 +185,7 @@ const ClubDetail = ({route, navigation}: any) => {
         .run();
       navigation.navigate('Home');
     } catch (error) {
-      console.error('Error 닉네임:', error);
+      console.error(error);
     }
   };
 

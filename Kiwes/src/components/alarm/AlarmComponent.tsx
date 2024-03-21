@@ -19,7 +19,9 @@ const AlarmComponent = ({item, navigateTo, navigateToProile}: any) => {
                     style={styles.image}
                   />
                 </TouchableOpacity>
-                <Text style={styles.text}>{item.content}</Text>
+                <Text style={styles.text} numberOfLines={1}>
+                  {item.content}
+                </Text>
               </View>
             </TouchableOpacity>
           </View>

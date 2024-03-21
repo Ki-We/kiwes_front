@@ -11,7 +11,7 @@ const url = `${apiServer}/api/v1/club/approval/my-own-club?cursor=`;
 
 const RequestList = ({navigation}: any) => {
   const navigateToRequestList = (clubId: any) => {
-    navigation.navigate('ClubApprovalList', {clubId: clubId});
+    navigation.navigate('ClubApproval', {clubId: clubId});
   };
   return (
     <>
