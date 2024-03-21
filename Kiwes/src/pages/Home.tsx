@@ -620,7 +620,7 @@ const styles = StyleSheet.create({
   },
   popHeart: {
     alignSelf: 'flex-end',
-    marginleft: width * 15,
+    marginLeft: width * 15,
     marginTop: height * 8,
   },
   overlayAddInfo: {

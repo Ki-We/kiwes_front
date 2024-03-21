@@ -141,6 +141,8 @@ export const translateText: any = {
   '모임의 날짜와 마감일,\n장소를 알려주세요':
     'Provide the date, deadline, and location of the Meetups',
   '모임의 정보를\n입력해주세요': 'Enter the information about the Meetups',
+  '모임의 비용과 참여인원,\n성별을 골라주세요':
+    'Select the cost, number of participants, and gender of the Meetups',
   '모집 마감일': 'Deadline',
   장소: 'Place',
   '모임 인원': 'The number of participants',
