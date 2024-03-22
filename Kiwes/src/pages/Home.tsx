@@ -483,7 +483,7 @@ const styles = StyleSheet.create({
   bannerImage: {
     width: '100%',
     height: height * 180,
-    resizeMode: 'cover',
+    resizeMode: 'contain',
   },
   sectionContainer: {
     alignItems: 'center',
