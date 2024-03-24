@@ -483,7 +483,7 @@ const styles = StyleSheet.create({
   bannerImage: {
     width: '100%',
     height: height * 180,
-    resizeMode: 'cover',
+    resizeMode: 'contain',
   },
   sectionContainer: {
     alignItems: 'center',
@@ -620,7 +620,7 @@ const styles = StyleSheet.create({
   },
   popHeart: {
     alignSelf: 'flex-end',
-    marginleft: width * 15,
+    marginLeft: width * 15,
     marginTop: height * 8,
   },
   overlayAddInfo: {
