@@ -1,17 +1,17 @@
 // 채팅방 화면에 번역 언어 선택 및 텍스트 보여지는 새로운 모달 보이기
 import React, {useState, useRef} from 'react';
-import {View, StyleSheet, Image, TouchableHighlight, Text} from 'react-native';
-// import Text from '@components/atoms/Text';
+import {View, StyleSheet, Image, TouchableHighlight} from 'react-native';
+import Text from '@components/atoms/Text';
 import {Chat} from '../utils/commonInterface';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faUser} from '@fortawesome/free-solid-svg-icons';
+// import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+// import {faUser} from '@fortawesome/free-solid-svg-icons';
 import OtherBubbleLongpressModal from '../components/OtherBubbleLongpressModal';
 import {width, height, DeviceHeight} from '../global';
 
 export default function ChatBubbleOther({
   writer,
   chat,
-  color,
+  // color,
   isHost,
   noticeChat,
   thumbnail,
