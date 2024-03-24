@@ -8,7 +8,7 @@ import SetupDetail1 from './SetupDetail1';
 import SetupDetail2 from './SetupDetail2';
 import SetupDetail3 from './SetupDetail3';
 import Loading from './Loading';
-import ErrorModal from '../errorModal';
+import ErrorModal from '../ErrorModal';
 import {apiServer, chatServer} from '../../utils/metaData';
 import {RESTAPIBuilder} from '../../utils/restapiBuilder';
 import RNFS from 'react-native-fs';

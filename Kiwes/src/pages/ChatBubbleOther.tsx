@@ -5,7 +5,7 @@ import {View, StyleSheet, Image, TouchableHighlight, Text} from 'react-native';
 import {Chat} from '../utils/commonInterface';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faUser} from '@fortawesome/free-solid-svg-icons';
-import OtherBubbleLongpressModal from '../components/otherBubbleLongpressModal';
+import OtherBubbleLongpressModal from '../components/OtherBubbleLongpressModal';
 import {width, height, DeviceHeight} from '../global';
 
 export default function ChatBubbleOther({

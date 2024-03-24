@@ -1,7 +1,7 @@
 import React, {useState, useRef} from 'react';
 import {View, StyleSheet, TouchableHighlight, Text} from 'react-native';
 import {Chat} from '../utils/commonInterface';
-import MyBubbleLongpressModal from '../components/myBubbleLongpressModal';
+import MyBubbleLongpressModal from '../components/MyBubbleLongpressModal';
 // import Text from '@components/atoms/Text';
 import {height, DeviceHeight} from '../global';
 
