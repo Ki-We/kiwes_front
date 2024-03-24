@@ -261,92 +261,76 @@ export function MyPage({navigation}: any) {
         {optionButton('개설 모임')}
         {optionButton('후기')}
       </View>
-      {selectedOption === '참여 모임' ? (
-        <>
-          {participatedClub.length === 0 ? (
-            <View
-              style={{
-                paddingTop: height * 45,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Image
-                source={require('../../assets/images/soSad.png')}
-                style={{height: height * 250}}
-                resizeMode="contain"
-              />
-              <Text style={styleKiwe.text}>조회 가능한 모임이 없어요!</Text>
-            </View>
-          ) : (
-            <ScrollView>
-              <View style={styles.participatedClubIconContainer}>
-                {participatedClub?.map((club: ParticipatedClubInfo, index) => {
-                  return (
-                    <View key={index}>
-                      <TouchableOpacity
-                        activeOpacity={0.5}
-                        onPress={() => {
-                          navigation.navigate('ClubDetail', {
-                            clubId: club.clubId,
-                          });
-                        }}>
-                        <Image
-                          source={{uri: club.thumbnailImage}}
-                          style={styles.participatedClubIcon}
-                          resizeMode="cover"
-                        />
-                      </TouchableOpacity>
-                    </View>
-                  );
-                })}
+      <View style={{flex: 1}}>
+        {selectedOption === '참여 모임' ? (
+          <>
+            {participatedClub.length === 0 ? (
+              <View style={{height: '100%'}}>
+                <Nothing text="조회 가능한 모임이 없어요!" />
               </View>
-            </ScrollView>
-          )}
-        </>
-      ) : selectedOption === '개설 모임' ? (
-        <View>
-          <View style={{height: height * 375}}>
-            <BoardList
-              url={urlOwn}
-              navigateToClub={navigateToClub}
-              Nothing={Nothing}
-            />
+            ) : (
+              <ScrollView>
+                <View style={styles.participatedClubIconContainer}>
+                  {participatedClub?.map(
+                    (club: ParticipatedClubInfo, index) => {
+                      return (
+                        <View key={index}>
+                          <TouchableOpacity
+                            activeOpacity={0.5}
+                            onPress={() => {
+                              navigation.navigate('ClubDetail', {
+                                clubId: club.clubId,
+                              });
+                            }}>
+                            <Image
+                              source={{uri: club.thumbnailImage}}
+                              style={styles.participatedClubIcon}
+                              resizeMode="cover"
+                            />
+                          </TouchableOpacity>
+                        </View>
+                      );
+                    },
+                  )}
+                </View>
+              </ScrollView>
+            )}
+          </>
+        ) : selectedOption === '개설 모임' ? (
+          <View>
+            <View style={{height: '100%'}}>
+              <BoardList
+                url={urlOwn}
+                navigateToClub={navigateToClub}
+                Nothing={Nothing}
+              />
+            </View>
           </View>
-        </View>
-      ) : (
-        <>
-          {reviewList.length === 0 ? (
-            <View
-              style={{
-                paddingTop: height * 45,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Image
-                source={require('../../assets/images/soSad.png')}
-                style={{height: height * 250}}
-                resizeMode="contain"
-              />
-              <Text style={styleKiwe.text}>조회 가능한 후기가 없어요!</Text>
-            </View>
-          ) : (
-            <ScrollView>
-              <View style={{marginBottom: 20}}>
-                {reviewList?.map((review: ReviewList, index) => {
-                  return (
-                    <View key={index}>
-                      <ReviewBubble
-                        reviewList={review}
-                        navigation={navigation}
-                      />
-                    </View>
-                  );
-                })}
+        ) : (
+          <>
+            {reviewList.length === 0 ? (
+              <View style={{height: '100%'}}>
+                <Nothing text="조회 가능한 후기가 없어요!" />
               </View>
-            </ScrollView>
-          )}
-        </>
-      )}
+            ) : (
+              <ScrollView>
+                <View style={{marginBottom: 20}}>
+                  {reviewList?.map((review: ReviewList, index) => {
+                    return (
+                      <View key={index}>
+                        <ReviewBubble
+                          reviewList={review}
+                          navigation={navigation}
+                        />
+                      </View>
+                    );
+                  })}
+                </View>
+              </ScrollView>
+            )}
+          </>
+        )}
+      </View>
     </SafeAreaView>
   );
 }
@@ -390,14 +374,12 @@ const styles = StyleSheet.create({
   },
   profileText: {
     color: '#303030',
-
     fontSize: height * 14,
     fontWeight: '400',
     textAlign: 'center',
   },
   introductionText: {
     color: '#303030',
-
     fontSize: height * 13,
     fontWeight: '400',
     textAlign: 'center',

@@ -21,7 +21,7 @@ function ProfileImageUploadModal({
         <TouchableOpacity
           style={[styles.button, {borderBottomWidth: 1.5}]}
           onPress={() => {
-            setImageBasic();
+            setImageBasic(true);
             onClose();
           }}>
           <Text style={styles.text}>기본 이미지</Text>

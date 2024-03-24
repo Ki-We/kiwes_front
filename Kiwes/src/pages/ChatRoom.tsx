@@ -23,10 +23,11 @@ import sendIcon from 'react-native-vector-icons/Feather';
 import {width, height} from '../global';
 import Modal from 'react-native-modal';
 import {io} from 'socket.io-client';
-import ErrorModal from '../components/errorModal';
-import KickModal from '../components/kickedOutModal';
-import ExitModal from '../components/exitModal';
-import ExitFailModal from '../components/exitFailModal';
+import ErrorModal from '../components/ErrorModal';
+import KickModal from '../components/KickedOutModal';
+import ExitModal from '../components/ExitModal';
+import ExitFailModal from '../components/ExitFailModal';
+import ChatRoomEnterModal from '../components/ChatRoomEnterModal';
 
 import {apiServer, chatServer} from '../utils/metaData';
 import ChatBubbleOther from './ChatBubbleOther';
@@ -98,6 +99,8 @@ const ChatScreen = ({navigation, route}) => {
     // },
   ]);
 
+  const [isChatRoomEnterModalVisible, setChatRoomEnterModaVisible] =
+    useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
   const [isTextInputFocused, setTextInputFocused] = useState(false);
   const [isErrorModalVisible, setErrorModalVisible] = useState(false);
@@ -133,6 +136,7 @@ const ChatScreen = ({navigation, route}) => {
   }, []);
 
   const initialize = async () => {
+    toggleChatRoomEnterModal();
     console.log('initialize chat');
     const urlClub = `${apiServer}/api/v1/club/info/simple/${clubId}`;
     const {data} = await new RESTAPIBuilder(urlClub, 'GET')
@@ -290,6 +294,9 @@ const ChatScreen = ({navigation, route}) => {
       .catch(err => console.log(err));
   };
 
+  const toggleChatRoomEnterModal = () => {
+    setChatRoomEnterModaVisible(!isChatRoomEnterModalVisible);
+  };
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
@@ -607,6 +614,10 @@ const ChatScreen = ({navigation, route}) => {
           <Text style={styles.send}>Send</Text>
         </Pressable>
       </KeyboardAvoidingView> */}
+      <ChatRoomEnterModal
+        isVisible={isChatRoomEnterModalVisible}
+        onClose={toggleChatRoomEnterModal}
+      />
       <Modal
         isVisible={isModalVisible}
         animationIn={'slideInRight'}

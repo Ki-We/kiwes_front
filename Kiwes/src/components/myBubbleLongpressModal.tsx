@@ -5,7 +5,7 @@ import {width, height, DeviceHeight, DeviceWidth} from '../global';
 import {apiServer} from '../utils/metaData';
 import {RESTAPIBuilder} from '../utils/restapiBuilder';
 import Clipboard from '@react-native-clipboard/clipboard';
-import TranslateModal from './translateModal';
+import TranslateModal from './TranslateModal';
 import Text from '@components/atoms/Text';
 // import TranslateModal from './translateModal2';
 
