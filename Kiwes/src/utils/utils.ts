@@ -92,7 +92,7 @@ export const translateText: any = {
   남아메리카: 'South America',
   오세아니아: 'Oceania',
   기타: 'Others',
-  '한국 문화': 'K-Culture',
+  한국문화: 'K-Culture',
   '맛집/카페': 'Restaurant/Cafe',
   스포츠: 'Sports',
   '문화/전시/공연': 'Exhibition/Show',

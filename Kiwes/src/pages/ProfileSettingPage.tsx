@@ -22,7 +22,10 @@ import backIcon from 'react-native-vector-icons/Ionicons';
 import cameraIcon from 'react-native-vector-icons/FontAwesome';
 import {width, height} from '../global';
 import ProfileImageUploadModal from '../components/ProfileImageUploadModal';
-import {Buffer} from 'buffer';
+import {Buffer, constants} from 'buffer';
+import {LANGUAGE} from '@/utils/utils';
+import {useSelector} from 'react-redux';
+import {RootState} from '@/slice/RootReducer';
 
 const imagePickerOption = {
   mediaType: 'photo',
@@ -34,6 +37,7 @@ let imagePath =
   'https://kiwes2-bucket.s3.ap-northeast-2.amazonaws.com/profileimg/profile.jpg';
 
 const ProfileSettingPage = ({route, navigation}) => {
+  const language = useSelector((state: RootState) => state.language);
   const {thumbnailImage, myIntroduction} = route.params;
   const [imageFile, setImageFile] = useState(thumbnailImage);
   const [isProfileImageBasic, setProfileImageBasic] = useState(false);
@@ -42,10 +46,11 @@ const ProfileSettingPage = ({route, navigation}) => {
       return;
     }
     setImageFile(response.assets[0].uri);
+    setProfileImageBasic(false);
   };
-  const setImageBasic = () => {
+  const setImageBasic = (isTrue: boolean) => {
     setImageFile(imagePath);
-    setProfileImageBasic(true);
+    setProfileImageBasic(isTrue);
   };
   // 갤러리에서 사진 선택
   const setImageFromLibrary = () => {
@@ -152,10 +157,20 @@ const ProfileSettingPage = ({route, navigation}) => {
     console.log(introduction);
     navigation.pop();
   };
-
+  /////////////////////////////////
+  const test = () => {
+    console.log('thumbnailImage : ', thumbnailImage);
+    console.log('imageFile : ', imageFile);
+    if (thumbnailImage === imageFile) console.log('TRUE');
+  };
+  /////////////////////////////////
   const settingComplete = async () => {
-    await profileImageSubmit();
-    await introductionSubmit();
+    if (thumbnailImage === imageFile) {
+      await introductionSubmit();
+    } else {
+      await profileImageSubmit();
+      await introductionSubmit();
+    }
   };
 
   return (
@@ -233,7 +248,11 @@ const ProfileSettingPage = ({route, navigation}) => {
               <View>
                 <View style={styles.inputContainer}>
                   <TextInput
-                    placeholder="간단하게 본인을 소개해주세요 :)"
+                    placeholder={
+                      language.language == LANGUAGE.KO
+                        ? '간단하게 본인을 소개해주세요 :)'
+                        : 'Please introduce yourself briefly :)'
+                    }
                     style={styles.input}
                     onChangeText={handleTextChange}
                     value={introduction}
@@ -331,6 +350,7 @@ const styles = StyleSheet.create({
     height: height * 220,
     textAlignVertical: 'top',
     textAlign: 'auto',
+    color: '#303030',
   },
   checkText: {
     color: '#303030',
