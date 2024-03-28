@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {ReviewList} from '../utils/commonInterface';
 import {height} from '../global';
