@@ -30,7 +30,7 @@ let basicImagePath =
 const ProfilePictureSettingPage = ({navigation}) => {
   const [response, setResponse] = useState('');
   const [imageFile, setImageFile] = useState(basicImagePath);
-  const [isProfileImageBasic, setProfileImageBasic] = useState(false);
+  const [isProfileImageBasic, setProfileImageBasic] = useState(true);
 
   const profileImageSubmit = async () => {
     if (isProfileImageBasic) {
@@ -83,15 +83,13 @@ const ProfilePictureSettingPage = ({navigation}) => {
     if (response.didCancel || !response) {
       return;
     }
-    // console.log(response);
     setResponse(response);
-    // console.log('Image Uri : ', response.assets[0].uri);
     setImageFile(response.assets[0].uri);
-    // console.log('ImageFile : ', imageFile);
+    setProfileImageBasic(false);
   };
-  const setImageBasic = () => {
+  const setImageBasic = (isTrue: boolean) => {
     setImageFile(basicImagePath);
-    setProfileImageBasic(true);
+    setProfileImageBasic(isTrue);
   };
   // 갤러리에서 사진 선택
   const setImageFromLibrary = () => {

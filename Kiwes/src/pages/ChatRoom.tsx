@@ -404,25 +404,33 @@ const ChatScreen = ({navigation, route}) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <backIcon.Button
-          backgroundColor="#FFFFFF"
-          iconStyle={{marginRight: 0, padding: 5}}
-          borderRadius={3}
-          name="arrow-back"
-          color="#303030"
-          size={25}
-          onPress={() => navigation.pop()}
-        />
-        <Text style={styles.headerText}>{clubData?.title || '모임'}</Text>
-        <optionIcon.Button
-          backgroundColor="#FFFFFF"
-          iconStyle={{marginRight: 0, padding: 5}}
-          borderRadius={3}
-          name="options-vertical"
-          color="#303030"
-          size={25}
-          onPress={toggleModal}
-        />
+        <View style={{width: '15%', alignItems: 'flex-start'}}>
+          <backIcon.Button
+            backgroundColor="#FFFFFF"
+            iconStyle={{marginRight: 0, padding: 5}}
+            borderRadius={3}
+            name="arrow-back"
+            color="#303030"
+            size={25}
+            onPress={() => navigation.pop()}
+          />
+        </View>
+        <View style={{width: '70%'}}>
+          <Text numberOfLines={1} style={styles.headerText}>
+            {clubData?.title || '모임'}
+          </Text>
+        </View>
+        <View style={{width: '15%', alignItems: 'flex-end'}}>
+          <optionIcon.Button
+            backgroundColor="#FFFFFF"
+            iconStyle={{marginRight: 0, padding: 5}}
+            borderRadius={3}
+            name="options-vertical"
+            color="#303030"
+            size={25}
+            onPress={toggleModal}
+          />
+        </View>
       </View>
       {/* ///////////////////////////////////////////////////////// 공지 */}
       <TouchableOpacity
@@ -816,7 +824,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingRight: width * 10,
+    // paddingRight: width * 50,
     height: height * 70,
     // marginBottom: height * 5,
     borderBottomColor: '#EDEDED',
