@@ -54,8 +54,7 @@ const styles = StyleSheet.create({
   },
   modalText: {
     textAlign: 'center',
-    // textAlign: 'center',
-
+    color: '#000',
     fontWeight: '500',
     fontSize: height * 16,
   },

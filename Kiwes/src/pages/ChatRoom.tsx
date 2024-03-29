@@ -36,7 +36,7 @@ import ChatBubbleSystem from './ChatBubbleSystem';
 import {ScrollView} from 'react-native-gesture-handler';
 import {Chat, ClubMember, ClubSimpleData} from '../utils/commonInterface';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faChessKing, faUser} from '@fortawesome/free-solid-svg-icons';
+import {faChessKing} from '@fortawesome/free-solid-svg-icons';
 import {RESTAPIBuilder} from '../utils/restapiBuilder';
 // import {Buffer} from 'buffer';
 

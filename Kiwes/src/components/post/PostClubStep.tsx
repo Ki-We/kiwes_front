@@ -49,6 +49,7 @@ const PostClubStep = ({
     if (post.title == '' || post.imageSource == '') return;
     else {
       setLoadingVisible(true);
+      console.log(post);
       await new RESTAPIBuilder(
         `${apiServer}/api/v1/club/article/${initPost.clubId}`,
         'PUT',

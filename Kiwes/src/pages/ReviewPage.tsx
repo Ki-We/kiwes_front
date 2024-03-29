@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#303030',
     marginLeft: 150,
+    alignItems: 'center',
   },
 });
 export default ReviewPage;
