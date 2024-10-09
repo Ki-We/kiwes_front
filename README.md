@@ -6,6 +6,7 @@
 <br/>
 
 ![KakaoTalk_20240222_053039020_02](https://github.com/wodnd0131/kiwes_front/assets/62841992/2a0a926f-79e1-415f-939d-4763b3ff6f0d)
+![0_0](https://github.com/user-attachments/assets/aa217e58-d29c-4bbd-857c-7006934c86cc)
 <br/>
 <br/>
 
